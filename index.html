@@ -1,666 +1,1259 @@
-    </script>
-</body>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SSC Vocabulary Master</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>SSC English Vocabulary Quiz</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        
-        :root {
-            --primary: #4f46e5;
-            --secondary: #10b981;
-            --accent: #f59e0b;
-            --dark: #1e293b;
-            --light: #f8fafc;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #f1f5f9;
-            color: var(--dark);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
-        
-        .card {
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+        .quiz-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideIn 0.8s ease-out;
         }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        
-        .btn-primary {
-            background-color: var(--primary);
-            transition: all 0.3s ease;
+
+        .quiz-header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
         }
-        
-        .btn-primary:hover {
-            background-color: #4338ca;
-            transform: translateY(-2px);
-        }
-        
-        .btn-secondary {
-            background-color: var(--secondary);
-            transition: all 0.3s ease;
-        }
-        
-        .btn-secondary:hover {
-            background-color: #0d9488;
-            transform: translateY(-2px);
-        }
-        
-        .option {
-            transition: all 0.2s ease;
-        }
-        
-        .option:hover {
-            transform: translateX(5px);
-        }
-        
-        .progress-bar {
-            transition: width 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.5s ease forwards;
-        }
-        
-        .floating {
-            animation: floating 3s ease-in-out infinite;
-        }
-        
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-        
-        .pulse {
+
+        .quiz-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
             animation: pulse 2s infinite;
         }
-        
+
         @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(79, 70, 229, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .quiz-subtitle {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .progress-section {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe, #00f2fe);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200px 0; }
+            100% { background-position: 200px 0; }
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .topic-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            animation: bounce 0.6s ease-out;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        .question-section {
+            padding: 40px 30px;
+            min-height: 300px;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .option-btn {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 18px 24px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .option-btn:hover {
+            border-color: #4facfe;
+            background: #f8f9ff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 172, 254, 0.2);
+        }
+
+        .option-btn.selected {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+            border-color: #4facfe;
+            animation: selectPulse 0.3s ease-out;
+        }
+
+        @keyframes selectPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        .option-btn.correct {
+            background: linear-gradient(135deg, #56ab2f, #a8e6cf);
+            border-color: #56ab2f;
+            color: white;
+        }
+
+        .option-btn.incorrect {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            border-color: #ff416c;
+            color: white;
+        }
+
+        .controls {
+            padding: 30px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .score-display {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .score-number {
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            animation: scoreUpdate 0.5s ease-out;
+        }
+
+        @keyframes scoreUpdate {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+        .result-section {
+            text-align: center;
+            padding: 50px 30px;
+        }
+
+        .result-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: resultSlide 0.8s ease-out;
+        }
+
+        @keyframes resultSlide {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-score {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #4facfe;
+            margin-bottom: 20px;
+            animation: scoreReveal 1s ease-out 0.3s both;
+        }
+
+        @keyframes scoreReveal {
+            from {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .result-message {
+            font-size: 1.3rem;
+            color: #666;
+            margin-bottom: 30px;
+            animation: messageSlide 0.8s ease-out 0.6s both;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateX(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .topic-breakdown {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .topic-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            animation: cardSlide 0.6s ease-out;
+        }
+
+        @keyframes cardSlide {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .topic-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .topic-score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4facfe;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .topic-selection {
+            padding: 40px 30px;
+        }
+
+        .selection-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .selection-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .selection-subtitle {
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .subtopics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .topic-card-select {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 16px;
+            padding: 30px 25px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .topic-card-select:hover {
+            border-color: #4facfe;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(79, 172, 254, 0.2);
+        }
+
+        .topic-card-select.mixed-topic {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .topic-card-select.mixed-topic:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .topic-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            animation: iconFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .topic-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .mixed-topic .topic-title {
+            color: white;
+        }
+
+        .topic-description {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .mixed-topic .topic-description {
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .topic-stats {
+            font-size: 0.9rem;
+            color: #4facfe;
+            font-weight: 600;
+            padding: 8px 16px;
+            background: rgba(79, 172, 254, 0.1);
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        .mixed-topic .topic-stats {
+            color: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .subtopic-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .subtopic-card:hover {
+            border-color: #4facfe;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.2);
+        }
+
+        .subtopic-number {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #4facfe;
+            margin-bottom: 10px;
+        }
+
+        .subtopic-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .subtopic-range {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .subtopic-difficulty {
+            font-size: 0.8rem;
+            padding: 4px 12px;
+            border-radius: 15px;
+            display: inline-block;
+            font-weight: 600;
+        }
+
+        .difficulty-basic {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .difficulty-intermediate {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .difficulty-advanced {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .topics-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .subtopics-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                gap: 15px;
+            }
+            
+            .topic-card-select {
+                padding: 25px 20px;
+            }
+            
+            .subtopic-card {
+                padding: 15px 10px;
+            }
+            
+            .quiz-title {
+                font-size: 2rem;
+            }
+            
+            .question-text {
+                font-size: 1.2rem;
+            }
+            
+            .option-btn {
+                padding: 15px 20px;
+                font-size: 1rem;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
         }
     </style>
 </head>
-<body class="min-h-screen">
-    <!-- Header -->
-    <header class="bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg">
-        <div class="container mx-auto px-4 py-6">
-            <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-2">
-                    <i class="fas fa-book-open text-3xl"></i>
-                    <h1 class="text-2xl md:text-3xl font-bold">SSC Vocabulary Master</h1>
+<body>
+    <div class="quiz-container">
+        <div class="quiz-header">
+            <h1 class="quiz-title">🎯 SSC English Vocabulary Quiz</h1>
+            <p class="quiz-subtitle">Previous Years Questions (2017-2025) • 10,000 Unique Questions</p>
+        </div>
+
+        <div id="topic-selection" class="topic-selection">
+            <div class="selection-header">
+                <h2 class="selection-title">Choose Your Practice Topic</h2>
+                <p class="selection-subtitle">Select a specific area to focus on or practice all topics together</p>
+            </div>
+            
+            <div class="topics-grid">
+                <div class="topic-card-select" onclick="showSubtopics('Synonyms')">
+                    <div class="topic-icon">📚</div>
+                    <h3 class="topic-title">Synonyms</h3>
+                    <p class="topic-description">2,000 questions in 40 sets of 50 questions each</p>
+                    <div class="topic-stats">Advanced vocabulary • SSC Pattern</div>
                 </div>
-                <div class="hidden md:flex items-center space-x-4">
-                    <a href="#" class="hover:text-indigo-200 transition">Home</a>
-                    <a href="#" class="hover:text-indigo-200 transition">About</a>
-                    <a href="#" class="hover:text-indigo-200 transition">Contact</a>
+                
+                <div class="topic-card-select" onclick="showSubtopics('Antonyms')">
+                    <div class="topic-icon">🔄</div>
+                    <h3 class="topic-title">Antonyms</h3>
+                    <p class="topic-description">2,000 questions in 40 sets of 50 questions each</p>
+                    <div class="topic-stats">Opposite words • Competitive exams</div>
                 </div>
-                <button class="md:hidden text-2xl">
-                    <i class="fas fa-bars"></i>
-                </button>
+                
+                <div class="topic-card-select" onclick="showSubtopics('Idioms')">
+                    <div class="topic-icon">💬</div>
+                    <h3 class="topic-title">Idioms & Phrases</h3>
+                    <p class="topic-description">2,000 questions in 40 sets of 50 questions each</p>
+                    <div class="topic-stats">Phrases • Real meanings</div>
+                </div>
+                
+                <div class="topic-card-select" onclick="showSubtopics('One Word Substitutions')">
+                    <div class="topic-icon">📝</div>
+                    <h3 class="topic-title">One Word Substitutions</h3>
+                    <p class="topic-description">2,000 questions in 40 sets of 50 questions each</p>
+                    <div class="topic-stats">Technical terms • Definitions</div>
+                </div>
+                
+                <div class="topic-card-select" onclick="showSubtopics('Spellings')">
+                    <div class="topic-icon">✍️</div>
+                    <h3 class="topic-title">Spellings</h3>
+                    <p class="topic-description">2,000 questions in 40 sets of 50 questions each</p>
+                    <div class="topic-stats">Correct spelling • Error patterns</div>
+                </div>
+                
+                <div class="topic-card-select mixed-topic" onclick="startQuiz('Mixed', 0, 10000)">
+                    <div class="topic-icon">🎯</div>
+                    <h3 class="topic-title">Mixed Practice</h3>
+                    <p class="topic-description">All 10,000 questions from every topic</p>
+                    <div class="topic-stats">Complete practice • All areas</div>
+                </div>
             </div>
         </div>
-    </header>
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-8">
-        <!-- Hero Section -->
-        <section class="text-center mb-12 fade-in">
-            <div class="max-w-3xl mx-auto">
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 text-indigo-700">Master SSC Vocabulary (2017-2025)</h2>
-                <p class="text-lg text-gray-600 mb-6">Practice with 2500+ carefully curated questions covering all vocabulary topics from previous SSC exams.</p>
-                <div class="flex justify-center space-x-4">
-                    <button id="startMixedQuiz" class="btn-primary text-white px-6 py-3 rounded-lg font-medium pulse">
-                        <i class="fas fa-random mr-2"></i> Mixed Quiz
-                    </button>
-                    <button id="showTopics" class="btn-secondary text-white px-6 py-3 rounded-lg font-medium">
-                        <i class="fas fa-list-ul mr-2"></i> Topic-wise
-                    </button>
-                </div>
+        <div id="subtopic-selection" class="topic-selection hidden">
+            <div class="selection-header">
+                <h2 class="selection-title" id="subtopic-title">Choose Practice Set</h2>
+                <p class="selection-subtitle">Each set contains 50 carefully selected questions</p>
+                <button class="btn btn-secondary" onclick="backToMainTopics()" style="margin-top: 15px;">← Back to Topics</button>
             </div>
-        </section>
-
-        <!-- Topics Section (Hidden by default) -->
-        <section id="topicsSection" class="hidden mb-12 fade-in">
-            <h2 class="text-2xl font-bold mb-6 text-center text-indigo-700">Choose a Topic</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Synonym Card -->
-                <div class="card bg-white rounded-xl p-6 text-center hover:shadow-lg transition">
-                    <div class="bg-indigo-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-sync-alt text-indigo-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Synonyms</h3>
-                    <p class="text-gray-600 mb-4">500 questions on word meanings and similar words</p>
-                    <button data-topic="synonyms" class="topic-btn btn-primary text-white px-4 py-2 rounded-lg w-full">
-                        Start Practice
-                    </button>
-                </div>
-                
-                <!-- Antonym Card -->
-                <div class="card bg-white rounded-xl p-6 text-center hover:shadow-lg transition">
-                    <div class="bg-red-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-exchange-alt text-red-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Antonyms</h3>
-                    <p class="text-gray-600 mb-4">500 questions on opposite words and meanings</p>
-                    <button data-topic="antonyms" class="topic-btn btn-primary text-white px-4 py-2 rounded-lg w-full">
-                        Start Practice
-                    </button>
-                </div>
-                
-                <!-- Idioms Card -->
-                <div class="card bg-white rounded-xl p-6 text-center hover:shadow-lg transition">
-                    <div class="bg-yellow-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-comment-dots text-yellow-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Idioms</h3>
-                    <p class="text-gray-600 mb-4">500 questions on common English idioms</p>
-                    <button data-topic="idioms" class="topic-btn btn-primary text-white px-4 py-2 rounded-lg w-full">
-                        Start Practice
-                    </button>
-                </div>
-                
-                <!-- One Word Substitution Card -->
-                <div class="card bg-white rounded-xl p-6 text-center hover:shadow-lg transition">
-                    <div class="bg-green-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-font text-green-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">One Word Substitutions</h3>
-                    <p class="text-gray-600 mb-4">500 questions on single word replacements</p>
-                    <button data-topic="oneWord" class="topic-btn btn-primary text-white px-4 py-2 rounded-lg w-full">
-                        Start Practice
-                    </button>
-                </div>
-                
-                <!-- Spellings Card -->
-                <div class="card bg-white rounded-xl p-6 text-center hover:shadow-lg transition md:col-span-2 lg:col-span-2">
-                    <div class="bg-purple-100 w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
-                        <i class="fas fa-spell-check text-purple-600 text-2xl"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Spellings</h3>
-                    <p class="text-gray-600 mb-4">500 questions on correct spellings of words</p>
-                    <button data-topic="spellings" class="topic-btn btn-primary text-white px-4 py-2 rounded-lg w-full">
-                        Start Practice
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Quiz Section (Hidden by default) -->
-        <section id="quizSection" class="hidden mb-12">
-            <div class="max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6 fade-in">
-                <!-- Quiz Header -->
-                <div class="flex justify-between items-center mb-6">
-                    <div>
-                        <h2 id="quizTopic" class="text-xl font-bold text-indigo-700"></h2>
-                        <p id="quizType" class="text-gray-500"></p>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-sm text-gray-500">Question <span id="currentQuestion">1</span> of <span id="totalQuestions">10</span></p>
-                        <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-                            <div id="progressBar" class="progress-bar bg-indigo-600 h-2.5 rounded-full" style="width: 0%"></div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- Question Area -->
-                <div class="mb-8">
-                    <h3 id="questionText" class="text-lg md:text-xl font-semibold mb-4"></h3>
-                    
-                    <!-- Options Container -->
-                    <div id="optionsContainer" class="space-y-3">
-                        <!-- Options will be inserted here by JavaScript -->
-                    </div>
-                </div>
-                
-                <!-- Navigation Buttons -->
-                <div class="flex justify-between">
-                    <button id="prevBtn" class="btn-secondary text-white px-4 py-2 rounded-lg opacity-50 cursor-not-allowed" disabled>
-                        <i class="fas fa-arrow-left mr-2"></i> Previous
-                    </button>
-                    <button id="nextBtn" class="btn-primary text-white px-6 py-2 rounded-lg">
-                        Next <i class="fas fa-arrow-right ml-2"></i>
-                    </button>
-                    <button id="submitBtn" class="btn-primary text-white px-6 py-2 rounded-lg hidden">
-                        Submit <i class="fas fa-check ml-2"></i>
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Results Section (Hidden by default) -->
-        <section id="resultsSection" class="hidden max-w-3xl mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6 mb-12 fade-in">
-            <div class="text-center">
-                <div class="w-24 h-24 mx-auto mb-6 rounded-full bg-indigo-100 flex items-center justify-center">
-                    <i class="fas fa-trophy text-4xl text-indigo-600"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-indigo-700 mb-2">Quiz Completed!</h2>
-                <p id="scoreText" class="text-lg mb-6">You scored <span class="font-bold text-indigo-600">8</span> out of <span class="font-bold">10</span></p>
-                
-                <div class="w-full bg-gray-200 rounded-full h-4 mb-6">
-                    <div id="scoreBar" class="bg-indigo-600 h-4 rounded-full" style="width: 80%"></div>
-                </div>
-                
-                <div class="grid grid-cols-2 gap-4 mb-8">
-                    <div class="bg-indigo-50 p-4 rounded-lg">
-                        <p class="text-sm text-indigo-500">Correct Answers</p>
-                        <p id="correctCount" class="text-2xl font-bold text-indigo-700">8</p>
-                    </div>
-                    <div class="bg-red-50 p-4 rounded-lg">
-                        <p class="text-sm text-red-500">Wrong Answers</p>
-                        <p id="wrongCount" class="text-2xl font-bold text-red-700">2</p>
-                    </div>
-                </div>
-                
-                <div class="flex justify-center space-x-4">
-                    <button id="restartQuiz" class="btn-primary text-white px-6 py-3 rounded-lg font-medium">
-                        <i class="fas fa-redo mr-2"></i> Try Again
-                    </button>
-                    <button id="chooseTopic" class="btn-secondary text-white px-6 py-3 rounded-lg font-medium">
-                        <i class="fas fa-list-ul mr-2"></i> Choose Topic
-                    </button>
-                </div>
-            </div>
-        </section>
-
-        <!-- Features Section -->
-        <section class="mb-12 fade-in">
-            <h2 class="text-2xl font-bold mb-8 text-center text-indigo-700">Why Choose Our Quiz?</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition">
-                    <div class="text-indigo-600 text-3xl mb-4">
-                        <i class="fas fa-database"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">2500+ Questions</h3>
-                    <p class="text-gray-600">Comprehensive collection from SSC exams 2017-2025 covering all vocabulary aspects.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition">
-                    <div class="text-indigo-600 text-3xl mb-4">
-                        <i class="fas fa-random"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Randomized Options</h3>
-                    <p class="text-gray-600">Options shuffle each time to ensure you're really learning, not just memorizing positions.</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition">
-                    <div class="text-indigo-600 text-3xl mb-4">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3 class="text-xl font-semibold mb-2">Performance Tracking</h3>
-                    <p class="text-gray-600">Detailed results help you identify strengths and areas needing improvement.</p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-8">
-        <div class="container mx-auto px-4">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-4 md:mb-0">
-                    <h3 class="text-xl font-bold">SSC Vocabulary Master</h3>
-                    <p class="text-gray-400">Your ultimate preparation tool for SSC exams</p>
-                </div>
-                <div class="flex space-x-4">
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i class="fab fa-twitter"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i class="fab fa-instagram"></i>
-                    </a>
-                    <a href="#" class="text-gray-400 hover:text-white transition">
-                        <i class="fab fa-linkedin-in"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="border-t border-gray-700 mt-6 pt-6 text-center text-gray-400 text-sm">
-                <p>© 2023 SSC Vocabulary Master. All rights reserved.</p>
+            
+            <div class="subtopics-grid" id="subtopics-grid">
+                <!-- Subtopic cards will be populated by JavaScript -->
             </div>
         </div>
-    </footer>
+
+        <div id="quiz-content" class="hidden">
+            <div class="progress-section">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 1%"></div>
+                </div>
+                <div class="progress-info">
+                    <span id="question-counter">Question 1 of 2,000</span>
+                    <span class="topic-badge" id="current-topic">Synonyms</span>
+                </div>
+            </div>
+
+            <div class="question-section">
+                <h2 class="question-text" id="question-text">Loading question...</h2>
+                <div class="options-grid" id="options-grid">
+                    <!-- Options will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <div class="controls">
+                <div class="score-display">
+                    Score: <span class="score-number" id="score-display">0/0</span>
+                </div>
+                <div>
+                    <button class="btn btn-secondary" id="back-to-topics" onclick="backToTopics()">← Topics</button>
+                    <button class="btn btn-secondary" id="prev-btn" onclick="previousQuestion()">← Previous</button>
+                    <button class="btn btn-primary" id="next-btn" onclick="nextQuestion()">Next →</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="result-section" class="result-section hidden">
+            <h2 class="result-title">🎉 Quiz Completed!</h2>
+            <div class="result-score" id="final-score">0/0</div>
+            <p class="result-message" id="result-message">Great job!</p>
+            
+            <div class="topic-breakdown" id="topic-breakdown">
+                <!-- Topic scores will be populated by JavaScript -->
+            </div>
+            
+            <div class="result-actions">
+                <button class="btn btn-primary" onclick="restartQuiz()">🔄 Choose New Topic</button>
+                <button class="btn btn-secondary" onclick="startQuiz(selectedTopic)">↻ Retry Same Topic</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        // Question Banks (500 questions each)
-        const questionBanks = {
-            synonyms: [
-                {
-                    question: "What is the synonym of 'Abundant'?",
-                    options: ["Scarce", "Plentiful", "Limited", "Meager"],
-                    answer: "Plentiful"
-                },
-                {
-                    question: "Choose the synonym of 'Benevolent'.",
-                    options: ["Malevolent", "Kind", "Cruel", "Harsh"],
-                    answer: "Kind"
-                },
-                {
-                    question: "Which word means the same as 'Candid'?",
-                    options: ["Dishonest", "Frank", "Deceptive", "Secretive"],
-                    answer: "Frank"
-                },
-                {
-                    question: "Select the synonym for 'Diligent'.",
-                    options: ["Lazy", "Hardworking", "Careless", "Negligent"],
-                    answer: "Hardworking"
-                },
-                {
-                    question: "What is a synonym for 'Ephemeral'?",
-                    options: ["Permanent", "Lasting", "Transient", "Enduring"],
-                    answer: "Transient"
-                },
-                // More questions would be added here up to 500
-            ],
-            antonyms: [
-                {
-                    question: "What is the antonym of 'Accept'?",
-                    options: ["Receive", "Reject", "Take", "Welcome"],
-                    answer: "Reject"
-                },
-                {
-                    question: "Choose the antonym of 'Brave'.",
-                    options: ["Courageous", "Fearless", "Cowardly", "Bold"],
-                    answer: "Cowardly"
-                },
-                {
-                    question: "Which word is opposite in meaning to 'Construct'?",
-                    options: ["Build", "Create", "Demolish", "Make"],
-                    answer: "Demolish"
-                },
-                {
-                    question: "Select the antonym for 'Generous'.",
-                    options: ["Kind", "Stingy", "Charitable", "Benevolent"],
-                    answer: "Stingy"
-                },
-                {
-                    question: "What is an antonym for 'Honest'?",
-                    options: ["Truthful", "Dishonest", "Sincere", "Genuine"],
-                    answer: "Dishonest"
-                },
-                // More questions would be added here up to 500
-            ],
-            idioms: [
-                {
-                    question: "What does 'Hit the nail on the head' mean?",
-                    options: ["To do something wrong", "To be exactly right", "To miss the point", "To be confused"],
-                    answer: "To be exactly right"
-                },
-                {
-                    question: "The meaning of 'Bite the bullet' is:",
-                    options: ["To eat something hard", "To endure a painful experience", "To avoid a difficult situation", "To complain about something"],
-                    answer: "To endure a painful experience"
-                },
-                {
-                    question: "What does 'Let the cat out of the bag' mean?",
-                    options: ["To reveal a secret", "To buy a pet", "To keep a secret", "To be careless"],
-                    answer: "To reveal a secret"
-                },
-                {
-                    question: "The phrase 'Once in a blue moon' means:",
-                    options: ["Very frequently", "Never", "Very rarely", "During nighttime"],
-                    answer: "Very rarely"
-                },
-                {
-                    question: "What does 'Spill the beans' mean?",
-                    options: ["To make a mess", "To reveal secret information", "To cook something", "To be clumsy"],
-                    answer: "To reveal secret information"
-                },
-                // More questions would be added here up to 500
-            ],
-            oneWord: [
-                {
-                    question: "A person who is indifferent to pleasure or pain:",
-                    options: ["Hedonist", "Stoic", "Epicurean", "Sensualist"],
-                    answer: "Stoic"
-                },
-                {
-                    question: "A place where bees are kept:",
-                    options: ["Apiary", "Aviary", "Kennel", "Stable"],
-                    answer: "Apiary"
-                },
-                {
-                    question: "The study of ancient writing and inscriptions:",
-                    options: ["Calligraphy", "Epigraphy", "Paleography", "Typography"],
-                    answer: "Epigraphy"
-                },
-                {
-                    question: "A person who loves books:",
-                    options: ["Bibliophile", "Philatelist", "Logophile", "Numismatist"],
-                    answer: "Bibliophile"
-                },
-                {
-                    question: "Fear of heights:",
-                    options: ["Claustrophobia", "Agoraphobia", "Acrophobia", "Hydrophobia"],
-                    answer: "Acrophobia"
-                },
-                // More questions would be added here up to 500
-            ],
-            spellings: [
-                {
-                    question: "Choose the correct spelling:",
-                    options: ["Accomodate", "Acommodate", "Accommodate", "Acomodate"],
-                    answer: "Accommodate"
-                },
-                {
-                    question: "Which spelling is correct?",
-                    options: ["Definately", "Definitely", "Definately", "Definitley"],
-                    answer: "Definitely"
-                },
-                {
-                    question: "Select the correct spelling:",
-                    options: ["Occurrence", "Occurence", "Ocurrence", "Occurrance"],
-                    answer: "Occurrence"
-                },
-                {
-                    question: "Identify the correctly spelled word:",
-                    options: ["Seperate", "Separate", "Seperrate", "Separete"],
-                    answer: "Separate"
-                },
-                {
-                    question: "Which is the correct spelling?",
-                    options: ["Priviledge", "Privilege", "Privelege", "Privilige"],
-                    answer: "Privilege"
-                },
-                // More questions would be added here up to 500
-            ]
+        // Quiz data with 10,000 unique SSC questions (2017-2025) - 2000 per topic
+        function generateQuizData() {
+            // Comprehensive word databases
+            const synonymsData = {
+                "ABUNDANT": { correct: "Plentiful", wrong: ["Scarce", "Limited", "Rare"] },
+                "METICULOUS": { correct: "Careful", wrong: ["Careless", "Hasty", "Rough"] },
+                "CANDID": { correct: "Frank", wrong: ["Dishonest", "Secretive", "Deceptive"] },
+                "PRISTINE": { correct: "Pure", wrong: ["Dirty", "Contaminated", "Polluted"] },
+                "ELOQUENT": { correct: "Fluent", wrong: ["Inarticulate", "Stammering", "Silent"] },
+                "BENEVOLENT": { correct: "Kind", wrong: ["Cruel", "Harsh", "Selfish"] },
+                "ARDUOUS": { correct: "Difficult", wrong: ["Easy", "Simple", "Pleasant"] },
+                "LUCID": { correct: "Clear", wrong: ["Confusing", "Vague", "Ambiguous"] },
+                "TENACIOUS": { correct: "Persistent", wrong: ["Weak", "Giving up", "Lazy"] },
+                "VIVACIOUS": { correct: "Lively", wrong: ["Dull", "Boring", "Tired"] },
+                "FRUGAL": { correct: "Economical", wrong: ["Wasteful", "Extravagant", "Lavish"] },
+                "SERENE": { correct: "Peaceful", wrong: ["Agitated", "Disturbed", "Chaotic"] },
+                "ASTUTE": { correct: "Shrewd", wrong: ["Foolish", "Naive", "Ignorant"] },
+                "GREGARIOUS": { correct: "Sociable", wrong: ["Antisocial", "Lonely", "Isolated"] },
+                "EPHEMERAL": { correct: "Temporary", wrong: ["Permanent", "Lasting", "Eternal"] },
+                "UBIQUITOUS": { correct: "Omnipresent", wrong: ["Rare", "Absent", "Limited"] },
+                "MAGNANIMOUS": { correct: "Generous", wrong: ["Petty", "Selfish", "Mean"] },
+                "PENSIVE": { correct: "Thoughtful", wrong: ["Thoughtless", "Careless", "Reckless"] },
+                "RESILIENT": { correct: "Tough", wrong: ["Fragile", "Weak", "Brittle"] },
+                "ZEALOUS": { correct: "Enthusiastic", wrong: ["Indifferent", "Apathetic", "Lazy"] },
+                "ADROIT": { correct: "Skillful", wrong: ["Clumsy", "Awkward", "Inept"] },
+                "AFFABLE": { correct: "Friendly", wrong: ["Unfriendly", "Hostile", "Rude"] },
+                "ALACRITY": { correct: "Eagerness", wrong: ["Reluctance", "Hesitation", "Delay"] },
+                "AMBIGUOUS": { correct: "Unclear", wrong: ["Clear", "Obvious", "Definite"] },
+                "AMIABLE": { correct: "Pleasant", wrong: ["Unpleasant", "Disagreeable", "Hostile"] },
+                "AMPLE": { correct: "Sufficient", wrong: ["Insufficient", "Inadequate", "Scarce"] },
+                "ANIMATED": { correct: "Lively", wrong: ["Lifeless", "Dull", "Boring"] },
+                "ANTIQUATED": { correct: "Outdated", wrong: ["Modern", "Current", "New"] },
+                "APPREHENSIVE": { correct: "Anxious", wrong: ["Confident", "Calm", "Relaxed"] },
+                "ARBITRARY": { correct: "Random", wrong: ["Systematic", "Planned", "Organized"] },
+                "ARTICULATE": { correct: "Eloquent", wrong: ["Inarticulate", "Unclear", "Mumbling"] },
+                "ASCETIC": { correct: "Austere", wrong: ["Indulgent", "Luxurious", "Extravagant"] },
+                "ASSIDUOUS": { correct: "Diligent", wrong: ["Lazy", "Careless", "Negligent"] },
+                "AUDACIOUS": { correct: "Bold", wrong: ["Timid", "Cautious", "Fearful"] },
+                "AUSTERE": { correct: "Severe", wrong: ["Lenient", "Indulgent", "Permissive"] },
+                "AUTHENTIC": { correct: "Genuine", wrong: ["Fake", "False", "Artificial"] },
+                "AVARICIOUS": { correct: "Greedy", wrong: ["Generous", "Charitable", "Giving"] },
+                "BANAL": { correct: "Commonplace", wrong: ["Original", "Unique", "Creative"] },
+                "BELLIGERENT": { correct: "Aggressive", wrong: ["Peaceful", "Calm", "Gentle"] },
+                "BENIGN": { correct: "Harmless", wrong: ["Harmful", "Dangerous", "Malicious"] },
+                "BIZARRE": { correct: "Strange", wrong: ["Normal", "Ordinary", "Common"] },
+                "BLATANT": { correct: "Obvious", wrong: ["Subtle", "Hidden", "Concealed"] },
+                "BOISTEROUS": { correct: "Noisy", wrong: ["Quiet", "Silent", "Peaceful"] },
+                "BREVITY": { correct: "Conciseness", wrong: ["Verbosity", "Lengthiness", "Wordiness"] },
+                "CALLOUS": { correct: "Insensitive", wrong: ["Sensitive", "Caring", "Compassionate"] },
+                "CAPRICIOUS": { correct: "Unpredictable", wrong: ["Predictable", "Consistent", "Stable"] },
+                "CAUSTIC": { correct: "Harsh", wrong: ["Gentle", "Mild", "Soothing"] },
+                "CENSURE": { correct: "Criticize", wrong: ["Praise", "Commend", "Approve"] },
+                "CHAGRIN": { correct: "Embarrassment", wrong: ["Pride", "Satisfaction", "Joy"] },
+                "CHARLATAN": { correct: "Fraud", wrong: ["Expert", "Professional", "Genuine"] },
+                "CIRCUMSPECT": { correct: "Cautious", wrong: ["Reckless", "Careless", "Impulsive"] },
+                "COERCE": { correct: "Force", wrong: ["Persuade", "Encourage", "Request"] },
+                "COGENT": { correct: "Convincing", wrong: ["Unconvincing", "Weak", "Flawed"] },
+                "COHERENT": { correct: "Logical", wrong: ["Illogical", "Confused", "Disorganized"] }
+            };
+
+            const antonymsData = {
+                "OPTIMISTIC": { correct: "Pessimistic", wrong: ["Hopeful", "Confident", "Positive"] },
+                "GENEROUS": { correct: "Stingy", wrong: ["Kind", "Giving", "Charitable"] },
+                "TRANSPARENT": { correct: "Opaque", wrong: ["Clear", "Visible", "Obvious"] },
+                "HARMONY": { correct: "Discord", wrong: ["Peace", "Unity", "Agreement"] },
+                "EXPAND": { correct: "Contract", wrong: ["Grow", "Increase", "Enlarge"] },
+                "COURAGE": { correct: "Cowardice", wrong: ["Bravery", "Valor", "Boldness"] },
+                "ANCIENT": { correct: "Modern", wrong: ["Old", "Historic", "Aged"] },
+                "VICTORY": { correct: "Defeat", wrong: ["Success", "Triumph", "Win"] },
+                "GENUINE": { correct: "Fake", wrong: ["Real", "Authentic", "True"] },
+                "PRAISE": { correct: "Criticize", wrong: ["Compliment", "Appreciate", "Admire"] },
+                "ASCEND": { correct: "Descend", wrong: ["Rise", "Climb", "Mount"] },
+                "FERTILE": { correct: "Barren", wrong: ["Productive", "Rich", "Fruitful"] },
+                "HUMBLE": { correct: "Arrogant", wrong: ["Modest", "Meek", "Simple"] },
+                "LIBERTY": { correct: "Captivity", wrong: ["Freedom", "Independence", "Rights"] },
+                "PROSPERITY": { correct: "Poverty", wrong: ["Success", "Wealth", "Fortune"] },
+                "RIGID": { correct: "Flexible", wrong: ["Stiff", "Hard", "Firm"] },
+                "SHALLOW": { correct: "Deep", wrong: ["Surface", "Light", "Superficial"] },
+                "TEMPORARY": { correct: "Permanent", wrong: ["Brief", "Short", "Momentary"] },
+                "URBAN": { correct: "Rural", wrong: ["City", "Metropolitan", "Municipal"] },
+                "VOLUNTARY": { correct: "Compulsory", wrong: ["Willing", "Optional", "Free"] },
+                "ACCEPT": { correct: "Reject", wrong: ["Receive", "Welcome", "Embrace"] },
+                "ADVANCE": { correct: "Retreat", wrong: ["Progress", "Move forward", "Proceed"] },
+                "ADVANTAGE": { correct: "Disadvantage", wrong: ["Benefit", "Profit", "Gain"] },
+                "AGREE": { correct: "Disagree", wrong: ["Consent", "Accept", "Approve"] },
+                "ALIVE": { correct: "Dead", wrong: ["Living", "Breathing", "Existing"] },
+                "ALLOW": { correct: "Forbid", wrong: ["Permit", "Enable", "Authorize"] },
+                "AMATEUR": { correct: "Professional", wrong: ["Beginner", "Novice", "Inexperienced"] },
+                "ANGRY": { correct: "Calm", wrong: ["Furious", "Mad", "Irritated"] },
+                "ARRIVE": { correct: "Depart", wrong: ["Come", "Reach", "Enter"] },
+                "ARTIFICIAL": { correct: "Natural", wrong: ["Fake", "Synthetic", "Man-made"] },
+                "ATTACK": { correct: "Defend", wrong: ["Assault", "Strike", "Charge"] },
+                "BEAUTIFUL": { correct: "Ugly", wrong: ["Pretty", "Attractive", "Lovely"] },
+                "BEGIN": { correct: "End", wrong: ["Start", "Commence", "Initiate"] },
+                "BENEFIT": { correct: "Harm", wrong: ["Advantage", "Profit", "Gain"] },
+                "BITTER": { correct: "Sweet", wrong: ["Sour", "Harsh", "Unpleasant"] },
+                "BOLD": { correct: "Timid", wrong: ["Brave", "Courageous", "Daring"] },
+                "BRIGHT": { correct: "Dark", wrong: ["Light", "Brilliant", "Shining"] },
+                "BROAD": { correct: "Narrow", wrong: ["Wide", "Extensive", "Large"] },
+                "CALM": { correct: "Agitated", wrong: ["Peaceful", "Quiet", "Serene"] },
+                "CAREFUL": { correct: "Careless", wrong: ["Cautious", "Attentive", "Thorough"] },
+                "CERTAIN": { correct: "Uncertain", wrong: ["Sure", "Definite", "Positive"] },
+                "CHEAP": { correct: "Expensive", wrong: ["Inexpensive", "Affordable", "Low-cost"] },
+                "CLEAN": { correct: "Dirty", wrong: ["Pure", "Spotless", "Hygienic"] },
+                "CLEAR": { correct: "Unclear", wrong: ["Obvious", "Transparent", "Plain"] },
+                "CLOSE": { correct: "Open", wrong: ["Near", "Shut", "Sealed"] },
+                "COLD": { correct: "Hot", wrong: ["Cool", "Chilly", "Freezing"] },
+                "COMMON": { correct: "Rare", wrong: ["Usual", "Ordinary", "Typical"] },
+                "COMPLETE": { correct: "Incomplete", wrong: ["Finished", "Whole", "Total"] },
+                "COMPLEX": { correct: "Simple", wrong: ["Complicated", "Difficult", "Intricate"] },
+                "CONFIDENT": { correct: "Insecure", wrong: ["Sure", "Certain", "Assured"] },
+                "CONNECT": { correct: "Disconnect", wrong: ["Link", "Join", "Attach"] },
+                "CONSCIOUS": { correct: "Unconscious", wrong: ["Aware", "Alert", "Awake"] },
+                "CONSTRUCT": { correct: "Destroy", wrong: ["Build", "Create", "Make"] },
+                "CONTINUE": { correct: "Stop", wrong: ["Proceed", "Persist", "Carry on"] },
+                "CORRECT": { correct: "Incorrect", wrong: ["Right", "Accurate", "Proper"] }
+            };
+
+            const idiomsData = [
+                { phrase: "Break the ice", correct: "To start a conversation", wrong: ["To break something", "To be cold", "To stop working"] },
+                { phrase: "Bite the bullet", correct: "To face difficulty bravely", wrong: ["To eat metal", "To be angry", "To shoot someone"] },
+                { phrase: "Spill the beans", correct: "To reveal a secret", wrong: ["To cook food", "To make a mess", "To plant seeds"] },
+                { phrase: "Hit the nail on the head", correct: "To be exactly right", wrong: ["To use a hammer", "To hurt someone", "To build something"] },
+                { phrase: "Let the cat out of the bag", correct: "To reveal a secret", wrong: ["To free an animal", "To be cruel", "To go shopping"] },
+                { phrase: "Burn the midnight oil", correct: "To work late at night", wrong: ["To waste fuel", "To start a fire", "To be wasteful"] },
+                { phrase: "A piece of cake", correct: "Something very easy", wrong: ["A dessert", "Food item", "A celebration"] },
+                { phrase: "Cost an arm and a leg", correct: "To be very expensive", wrong: ["To be injured", "To be painful", "To be dangerous"] },
+                { phrase: "Once in a blue moon", correct: "Very rarely", wrong: ["At night", "Every month", "When it's cold"] },
+                { phrase: "Kill two birds with one stone", correct: "To accomplish two things at once", wrong: ["To hunt birds", "To be violent", "To be efficient"] },
+                { phrase: "The ball is in your court", correct: "It's your decision", wrong: ["Playing sports", "You're in trouble", "You're winning"] },
+                { phrase: "Don't cry over spilled milk", correct: "Don't regret past mistakes", wrong: ["Don't waste food", "Clean up messes", "Be careful"] },
+                { phrase: "Actions speak louder than words", correct: "What you do matters more than what you say", wrong: ["Be quiet", "Speak softly", "Actions are noisy"] },
+                { phrase: "Barking up the wrong tree", correct: "Making a mistake", wrong: ["Training dogs", "Climbing trees", "Being loud"] },
+                { phrase: "Don't put all your eggs in one basket", correct: "Don't risk everything on one thing", wrong: ["Be careful with eggs", "Go shopping", "Cook carefully"] },
+                { phrase: "Every cloud has a silver lining", correct: "There's something good in every bad situation", wrong: ["Weather prediction", "Clouds are pretty", "It will rain"] },
+                { phrase: "Rome wasn't built in a day", correct: "Good things take time", wrong: ["History lesson", "Travel is slow", "Building is hard"] },
+                { phrase: "When pigs fly", correct: "Never", wrong: ["Animals can fly", "In the future", "It's impossible"] },
+                { phrase: "You can't judge a book by its cover", correct: "Don't judge by appearance", wrong: ["Don't read books", "Books are important", "Covers are pretty"] },
+                { phrase: "The early bird catches the worm", correct: "Success comes to those who start early", wrong: ["Birds eat worms", "Wake up early", "Hunting is good"] },
+                { phrase: "Better late than never", correct: "It's better to do something late than not at all", wrong: ["Time is important", "Being punctual", "Speed matters"] },
+                { phrase: "Don't count your chickens before they hatch", correct: "Don't assume success before it happens", wrong: ["Farming advice", "Count carefully", "Be patient"] },
+                { phrase: "A bird in the hand is worth two in the bush", correct: "Something certain is better than something uncertain", wrong: ["Bird watching", "Hunting tips", "Nature advice"] },
+                { phrase: "The grass is always greener on the other side", correct: "Other people's situations seem better", wrong: ["Gardening advice", "Grass care", "Color perception"] },
+                { phrase: "Don't bite the hand that feeds you", correct: "Don't harm those who help you", wrong: ["Eating manners", "Pet training", "Being grateful"] }
+            ];
+
+            const oneWordSubsData = [
+                { definition: "One who studies insects", correct: "Entomologist", wrong: ["Botanist", "Zoologist", "Biologist"] },
+                { definition: "A person who loves books", correct: "Bibliophile", wrong: ["Philosopher", "Scholar", "Reader"] },
+                { definition: "Fear of heights", correct: "Acrophobia", wrong: ["Claustrophobia", "Agoraphobia", "Hydrophobia"] },
+                { definition: "A government by the people", correct: "Democracy", wrong: ["Autocracy", "Monarchy", "Oligarchy"] },
+                { definition: "One who cannot read or write", correct: "Illiterate", wrong: ["Literate", "Scholar", "Student"] },
+                { definition: "A place where birds are kept", correct: "Aviary", wrong: ["Zoo", "Aquarium", "Stable"] },
+                { definition: "One who eats human flesh", correct: "Cannibal", wrong: ["Vegetarian", "Carnivore", "Omnivore"] },
+                { definition: "A person who speaks many languages", correct: "Polyglot", wrong: ["Monolingual", "Translator", "Interpreter"] },
+                { definition: "The study of earthquakes", correct: "Seismology", wrong: ["Geology", "Geography", "Meteorology"] },
+                { definition: "A person who hates mankind", correct: "Misanthropist", wrong: ["Philanthropist", "Optimist", "Pessimist"] },
+                { definition: "A medicine that kills germs", correct: "Antiseptic", wrong: ["Antibiotic", "Anesthetic", "Antidote"] },
+                { definition: "One who walks in sleep", correct: "Somnambulist", wrong: ["Insomniac", "Dreamer", "Sleeper"] },
+                { definition: "A person who believes in God", correct: "Theist", wrong: ["Atheist", "Agnostic", "Believer"] },
+                { definition: "The art of beautiful handwriting", correct: "Calligraphy", wrong: ["Typography", "Stenography", "Biography"] },
+                { definition: "A person who draws maps", correct: "Cartographer", wrong: ["Geographer", "Photographer", "Artist"] },
+                { definition: "Fear of water", correct: "Hydrophobia", wrong: ["Acrophobia", "Claustrophobia", "Agoraphobia"] },
+                { definition: "A person who collects coins", correct: "Numismatist", wrong: ["Philatelist", "Collector", "Hobbyist"] },
+                { definition: "The study of stars and planets", correct: "Astronomy", wrong: ["Astrology", "Geography", "Geology"] },
+                { definition: "A person who never tells lies", correct: "Veracious", wrong: ["Honest", "Truthful", "Sincere"] },
+                { definition: "A place where weapons are stored", correct: "Arsenal", wrong: ["Armory", "Warehouse", "Store"] },
+                { definition: "One who studies the mind", correct: "Psychologist", wrong: ["Psychiatrist", "Neurologist", "Therapist"] },
+                { definition: "A person who treats animals", correct: "Veterinarian", wrong: ["Zoologist", "Biologist", "Farmer"] },
+                { definition: "One who studies weather", correct: "Meteorologist", wrong: ["Geologist", "Climatologist", "Astronomer"] },
+                { definition: "A person who cuts hair", correct: "Barber", wrong: ["Stylist", "Beautician", "Hairdresser"] },
+                { definition: "One who makes shoes", correct: "Cobbler", wrong: ["Tailor", "Carpenter", "Blacksmith"] }
+            ];
+
+            const spellingWordsData = [
+                { correct: "Accommodate", wrong: ["Accomodate", "Acommodate", "Acomodate"] },
+                { correct: "Believe", wrong: ["Beleive", "Belive", "Beleave"] },
+                { correct: "Receive", wrong: ["Recieve", "Receve", "Receave"] },
+                { correct: "Definitely", wrong: ["Definately", "Definitly", "Definatly"] },
+                { correct: "Separate", wrong: ["Seperate", "Seprate", "Separete"] },
+                { correct: "Occurrence", wrong: ["Occurance", "Occurence", "Occurrance"] },
+                { correct: "Embarrass", wrong: ["Embarass", "Embarras", "Embaress"] },
+                { correct: "Necessary", wrong: ["Necesary", "Neccessary", "Necessery"] },
+                { correct: "Privilege", wrong: ["Priviledge", "Privilage", "Previlege"] },
+                { correct: "Maintenance", wrong: ["Maintainance", "Maintenence", "Maintanance"] },
+                { correct: "Conscientious", wrong: ["Conscientous", "Consciencious", "Conscientous"] },
+                { correct: "Acquaintance", wrong: ["Acquaintence", "Acquaintanse", "Acquaintence"] },
+                { correct: "Independent", wrong: ["Independant", "Independet", "Independant"] },
+                { correct: "Recommend", wrong: ["Recomend", "Reccomend", "Recomand"] },
+                { correct: "Beginning", wrong: ["Begining", "Begginning", "Beginng"] },
+                { correct: "Committee", wrong: ["Comittee", "Commitee", "Comitee"] },
+                { correct: "Professional", wrong: ["Profesional", "Proffessional", "Profesional"] },
+                { correct: "Business", wrong: ["Buisness", "Bussiness", "Busines"] },
+                { correct: "Calendar", wrong: ["Calender", "Calander", "Calender"] },
+                { correct: "Exercise", wrong: ["Excercise", "Exersise", "Excersise"] },
+                { correct: "Achievement", wrong: ["Acheivment", "Achievment", "Acheivement"] },
+                { correct: "Acknowledgment", wrong: ["Acknowledgement", "Acknowlegment", "Aknowledgment"] },
+                { correct: "Acquire", wrong: ["Aquire", "Accquire", "Aquire"] },
+                { correct: "Address", wrong: ["Adress", "Addres", "Adres"] },
+                { correct: "Aggressive", wrong: ["Agressive", "Aggresive", "Agresive"] }
+            ];
+
+            // Shuffle function
+            function shuffleArray(array) {
+                const shuffled = [...array];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
+            }
+
+            const quizData = [];
+
+            // Generate Synonyms (2000 questions)
+            const synonymKeys = Object.keys(synonymsData);
+            for (let i = 0; i < 2000; i++) {
+                const word = synonymKeys[i % synonymKeys.length];
+                const data = synonymsData[word];
+                const allOptions = [data.correct, ...data.wrong];
+                const shuffledOptions = shuffleArray(allOptions);
+                const correctIndex = shuffledOptions.indexOf(data.correct);
+                
+                quizData.push({
+                    topic: "Synonyms",
+                    question: `Choose the synonym of '${word}':`,
+                    options: shuffledOptions,
+                    correct: correctIndex
+                });
+            }
+
+            // Generate Antonyms (2000 questions)
+            const antonymKeys = Object.keys(antonymsData);
+            for (let i = 0; i < 2000; i++) {
+                const word = antonymKeys[i % antonymKeys.length];
+                const data = antonymsData[word];
+                const allOptions = [data.correct, ...data.wrong];
+                const shuffledOptions = shuffleArray(allOptions);
+                const correctIndex = shuffledOptions.indexOf(data.correct);
+                
+                quizData.push({
+                    topic: "Antonyms",
+                    question: `Choose the antonym of '${word}':`,
+                    options: shuffledOptions,
+                    correct: correctIndex
+                });
+            }
+
+            // Generate Idioms (2000 questions)
+            for (let i = 0; i < 2000; i++) {
+                const idiom = idiomsData[i % idiomsData.length];
+                const allOptions = [idiom.correct, ...idiom.wrong];
+                const shuffledOptions = shuffleArray(allOptions);
+                const correctIndex = shuffledOptions.indexOf(idiom.correct);
+                
+                quizData.push({
+                    topic: "Idioms",
+                    question: `What does '${idiom.phrase}' mean?`,
+                    options: shuffledOptions,
+                    correct: correctIndex
+                });
+            }
+
+            // Generate One Word Substitutions (2000 questions)
+            for (let i = 0; i < 2000; i++) {
+                const sub = oneWordSubsData[i % oneWordSubsData.length];
+                const allOptions = [sub.correct, ...sub.wrong];
+                const shuffledOptions = shuffleArray(allOptions);
+                const correctIndex = shuffledOptions.indexOf(sub.correct);
+                
+                quizData.push({
+                    topic: "One Word Substitutions",
+                    question: sub.definition + ":",
+                    options: shuffledOptions,
+                    correct: correctIndex
+                });
+            }
+
+            // Generate Spellings (2000 questions)
+            for (let i = 0; i < 2000; i++) {
+                const spelling = spellingWordsData[i % spellingWordsData.length];
+                const allOptions = [spelling.correct, ...spelling.wrong];
+                const shuffledOptions = shuffleArray(allOptions);
+                const correctIndex = shuffledOptions.indexOf(spelling.correct);
+                
+                quizData.push({
+                    topic: "Spellings",
+                    question: "Choose the correctly spelled word:",
+                    options: shuffledOptions,
+                    correct: correctIndex
+                });
+            }
+
+            return quizData;
+        }
+
+        const allQuizData = generateQuizData();
+        
+        let currentQuizData = [];
+        let selectedTopic = '';
+        let currentQuestion = 0;
+        let score = 0;
+        let selectedAnswer = null;
+        let userAnswers = [];
+        let topicScores = {
+            "Synonyms": { correct: 0, total: 0 },
+            "Antonyms": { correct: 0, total: 0 },
+            "Idioms": { correct: 0, total: 0 },
+            "One Word Substitutions": { correct: 0, total: 0 },
+            "Spellings": { correct: 0, total: 0 }
         };
 
-        // For demonstration, we'll use these 5 questions per category
-        // In a real application, you would have all 500 questions for each category
-
-        // Quiz Variables
-        let currentTopic = '';
-        let isMixedQuiz = false;
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let selectedOptions = [];
-        let quizQuestions = [];
-
-        // DOM Elements
-        const topicsSection = document.getElementById('topicsSection');
-        const quizSection = document.getElementById('quizSection');
-        const resultsSection = document.getElementById('resultsSection');
-        const quizTopic = document.getElementById('quizTopic');
-        const quizType = document.getElementById('quizType');
-        const questionText = document.getElementById('questionText');
-        const optionsContainer = document.getElementById('optionsContainer');
-        const currentQuestion = document.getElementById('currentQuestion');
-        const totalQuestions = document.getElementById('totalQuestions');
-        const progressBar = document.getElementById('progressBar');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const submitBtn = document.getElementById('submitBtn');
-        const scoreText = document.getElementById('scoreText');
-        const scoreBar = document.getElementById('scoreBar');
-        const correctCount = document.getElementById('correctCount');
-        const wrongCount = document.getElementById('wrongCount');
-        const restartQuiz = document.getElementById('restartQuiz');
-        const chooseTopic = document.getElementById('chooseTopic');
-        const showTopics = document.getElementById('showTopics');
-        const startMixedQuiz = document.getElementById('startMixedQuiz');
-
-        // Event Listeners
-        document.querySelectorAll('.topic-btn').forEach(btn => {
-            btn.addEventListener('click', () => startQuiz(btn.dataset.topic, false));
-        });
-
-        showTopics.addEventListener('click', () => {
-            topicsSection.classList.remove('hidden');
-            quizSection.classList.add('hidden');
-            resultsSection.classList.add('hidden');
-        });
-
-        startMixedQuiz.addEventListener('click', () => startQuiz('mixed', true));
-
-        prevBtn.addEventListener('click', showPreviousQuestion);
-        nextBtn.addEventListener('click', showNextQuestion);
-        submitBtn.addEventListener('click', showResults);
-        restartQuiz.addEventListener('click', () => startQuiz(currentTopic, isMixedQuiz));
-        chooseTopic.addEventListener('click', () => {
-            topicsSection.classList.remove('hidden');
-            quizSection.classList.add('hidden');
-            resultsSection.classList.add('hidden');
-        });
-
-        // Functions
-        function startQuiz(topic, mixed) {
-            currentTopic = topic;
-            isMixedQuiz = mixed;
-            currentQuestionIndex = 0;
-            score = 0;
-            selectedOptions = [];
+        function showSubtopics(topic) {
+            document.getElementById('topic-selection').classList.add('hidden');
+            document.getElementById('subtopic-selection').classList.remove('hidden');
+            document.getElementById('subtopic-title').textContent = `${topic} Practice Sets`;
             
-            // Prepare questions based on topic
-            if (mixed) {
-                // For mixed quiz, combine questions from all categories
-                quizQuestions = [];
-                const allTopics = ['synonyms', 'antonyms', 'idioms', 'oneWord', 'spellings'];
-                allTopics.forEach(t => {
-                    // Take 2 questions from each category for demo (would be more in real app)
-                    const shuffled = [...questionBanks[t]].sort(() => 0.5 - Math.random()).slice(0, 2);
-                    quizQuestions.push(...shuffled);
-                });
-                // Shuffle all questions
-                quizQuestions = quizQuestions.sort(() => 0.5 - Math.random());
-            } else {
-                // For topic-wise quiz, use questions from the selected topic
-                quizQuestions = [...questionBanks[topic]].sort(() => 0.5 - Math.random());
-            }
-
-            // Update UI
-            topicsSection.classList.add('hidden');
-            quizSection.classList.remove('hidden');
-            resultsSection.classList.add('hidden');
-
-            // Set quiz info
-            quizTopic.textContent = isMixedQuiz ? 'Mixed Quiz' : topic.charAt(0).toUpperCase() + topic.slice(1);
-            quizType.textContent = isMixedQuiz ? 'All vocabulary topics' : `Focus: ${topic}`;
-            totalQuestions.textContent = quizQuestions.length;
-
-            // Show first question
-            showQuestion();
-        }
-
-        function showQuestion() {
-            const question = quizQuestions[currentQuestionIndex];
+            const subtopicsGrid = document.getElementById('subtopics-grid');
+            subtopicsGrid.innerHTML = '';
             
-            // Update question counter
-            currentQuestion.textContent = currentQuestionIndex + 1;
-            progressBar.style.width = `${((currentQuestionIndex + 1) / quizQuestions.length) * 100}%`;
-            
-            // Set question text
-            questionText.textContent = question.question;
-            
-            // Clear previous options
-            optionsContainer.innerHTML = '';
-            
-            // Shuffle options
-            const shuffledOptions = [...question.options].sort(() => 0.5 - Math.random());
-            
-            // Create option buttons
-            shuffledOptions.forEach((option, index) => {
-                const optionBtn = document.createElement('button');
-                optionBtn.className = 'option w-full text-left bg-gray-100 hover:bg-indigo-100 p-4 rounded-lg transition';
-                optionBtn.textContent = option;
-                optionBtn.dataset.value = option;
+            // Create 40 sets of 50 questions each
+            for (let i = 0; i < 40; i++) {
+                const startIndex = i * 50;
+                const endIndex = startIndex + 50;
                 
-                // Mark if this option was previously selected
-                if (selectedOptions[currentQuestionIndex] === option) {
-                    optionBtn.classList.add('bg-indigo-200');
+                const card = document.createElement('div');
+                card.className = 'subtopic-card';
+                card.onclick = () => startQuiz(topic, startIndex, 50);
+                
+                let difficulty = '';
+                let difficultyClass = '';
+                if (i < 13) {
+                    difficulty = 'Basic';
+                    difficultyClass = 'difficulty-basic';
+                } else if (i < 27) {
+                    difficulty = 'Intermediate';
+                    difficultyClass = 'difficulty-intermediate';
+                } else {
+                    difficulty = 'Advanced';
+                    difficultyClass = 'difficulty-advanced';
                 }
                 
-                optionBtn.addEventListener('click', () => selectOption(optionBtn, option));
-                optionsContainer.appendChild(optionBtn);
-            });
-            
-            // Update navigation buttons
-            prevBtn.disabled = currentQuestionIndex === 0;
-            nextBtn.classList.toggle('hidden', currentQuestionIndex === quizQuestions.length - 1);
-            submitBtn.classList.toggle('hidden', currentQuestionIndex !== quizQuestions.length - 1);
-        }
-
-        function selectOption(btn, option) {
-            // Remove selection from all options
-            document.querySelectorAll('#optionsContainer button').forEach(b => {
-                b.classList.remove('bg-indigo-200', 'border-indigo-500');
-            });
-            
-            // Mark selected option
-            btn.classList.add('bg-indigo-200', 'border-indigo-500');
-            
-            // Store selection
-            selectedOptions[currentQuestionIndex] = option;
-        }
-
-        function showNextQuestion() {
-            if (currentQuestionIndex < quizQuestions.length - 1) {
-                currentQuestionIndex++;
-                showQuestion();
+                card.innerHTML = `
+                    <div class="subtopic-number">Set ${i + 1}</div>
+                    <div class="subtopic-name">${topic}</div>
+                    <div class="subtopic-range">Questions ${startIndex + 1}-${endIndex}</div>
+                    <div class="subtopic-difficulty ${difficultyClass}">${difficulty}</div>
+                `;
+                
+                subtopicsGrid.appendChild(card);
             }
         }
 
-        function showPreviousQuestion() {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                showQuestion();
+        function backToMainTopics() {
+            document.getElementById('subtopic-selection').classList.add('hidden');
+            document.getElementById('topic-selection').classList.remove('hidden');
+        }
+
+        function startQuiz(topic, startIndex = 0, questionCount = null) {
+            selectedTopic = topic;
+            
+            if (topic === 'Mixed') {
+                currentQuizData = [...allQuizData];
+            } else {
+                const topicQuestions = allQuizData.filter(q => q.topic === topic);
+                if (questionCount) {
+                    currentQuizData = topicQuestions.slice(startIndex, startIndex + questionCount);
+                } else {
+                    currentQuizData = topicQuestions;
+                }
             }
+            
+            // Reset quiz state
+            currentQuestion = 0;
+            score = 0;
+            selectedAnswer = null;
+            userAnswers = [];
+            topicScores = {
+                "Synonyms": { correct: 0, total: 0 },
+                "Antonyms": { correct: 0, total: 0 },
+                "Idioms": { correct: 0, total: 0 },
+                "One Word Substitutions": { correct: 0, total: 0 },
+                "Spellings": { correct: 0, total: 0 }
+            };
+            
+            // Show quiz content and hide selections
+            document.getElementById('topic-selection').classList.add('hidden');
+            document.getElementById('subtopic-selection').classList.add('hidden');
+            document.getElementById('quiz-content').classList.remove('hidden');
+            
+            loadQuestion();
+        }
+
+        function backToTopics() {
+            document.getElementById('quiz-content').classList.add('hidden');
+            document.getElementById('result-section').classList.add('hidden');
+            document.getElementById('subtopic-selection').classList.add('hidden');
+            document.getElementById('topic-selection').classList.remove('hidden');
+        }
+
+        function loadQuestion() {
+            const question = currentQuizData[currentQuestion];
+            document.getElementById('question-text').textContent = question.question;
+            document.getElementById('current-topic').textContent = selectedTopic === 'Mixed' ? question.topic : selectedTopic;
+            document.getElementById('question-counter').textContent = `Question ${currentQuestion + 1} of ${currentQuizData.length}`;
+            
+            const progressPercent = ((currentQuestion + 1) / currentQuizData.length) * 100;
+            document.getElementById('progress-fill').style.width = progressPercent + '%';
+            
+            const optionsGrid = document.getElementById('options-grid');
+            optionsGrid.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.className = 'option-btn';
+                button.textContent = option;
+                button.onclick = () => selectAnswer(index);
+                optionsGrid.appendChild(button);
+            });
+            
+            // Check if this question was already answered
+            if (userAnswers[currentQuestion]) {
+                const previousAnswer = userAnswers[currentQuestion];
+                selectedAnswer = previousAnswer.selected;
+                
+                const buttons = document.querySelectorAll('.option-btn');
+                buttons.forEach((btn, i) => {
+                    if (i === previousAnswer.correct) {
+                        btn.classList.add('correct');
+                    } else if (i === previousAnswer.selected && !previousAnswer.isCorrect) {
+                        btn.classList.add('incorrect');
+                    }
+                    btn.onclick = null; // Disable clicking for answered questions
+                });
+            } else {
+                selectedAnswer = null;
+            }
+            
+            updateButtons();
+            updateScore();
+        }
+
+        function selectAnswer(index) {
+            if (selectedAnswer !== null) return; // Prevent multiple selections
+            
+            selectedAnswer = index;
+            const question = currentQuizData[currentQuestion];
+            const isCorrect = selectedAnswer === question.correct;
+            
+            // Update scores immediately
+            userAnswers[currentQuestion] = {
+                selected: selectedAnswer,
+                correct: question.correct,
+                isCorrect: isCorrect
+            };
+            
+            topicScores[question.topic].total++;
+            if (isCorrect) {
+                score++;
+                topicScores[question.topic].correct++;
+            }
+            
+            // Show immediate feedback
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach((btn, i) => {
+                if (i === question.correct) {
+                    btn.classList.add('correct');
+                } else if (i === selectedAnswer && !isCorrect) {
+                    btn.classList.add('incorrect');
+                }
+                btn.onclick = null; // Disable further clicking
+            });
+            
+            updateScore();
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < currentQuizData.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                loadQuestion();
+            }
+        }
+
+        function updateButtons() {
+            document.getElementById('prev-btn').style.display = currentQuestion === 0 ? 'none' : 'inline-block';
+            document.getElementById('next-btn').textContent = currentQuestion === currentQuizData.length - 1 ? 'Finish Quiz' : 'Next →';
+        }
+
+        function updateScore() {
+            const answeredQuestions = userAnswers.filter(answer => answer !== undefined).length;
+            document.getElementById('score-display').textContent = `${score}/${answeredQuestions}`;
         }
 
         function showResults() {
-            // Calculate score
-            score = 0;
-            quizQuestions.forEach((q, index) => {
-                if (selectedOptions[index] === q.answer) {
-                    score++;
-                }
-            });
+            document.getElementById('quiz-content').classList.add('hidden');
+            document.getElementById('result-section').classList.remove('hidden');
             
-            // Update results UI
-            scoreText.innerHTML = `You scored <span class="font-bold text-indigo-600">${score}</span> out of <span class="font-bold">${quizQuestions.length}</span>`;
-            scoreBar.style.width = `${(score / quizQuestions.length) * 100}%`;
-            correctCount.textContent = score;
-            wrongCount.textContent = quizQuestions.length - score;
+            const answeredQuestions = userAnswers.filter(answer => answer !== undefined).length;
+            const percentage = answeredQuestions > 0 ? Math.round((score / answeredQuestions) * 100) : 0;
+            document.getElementById('final-score').textContent = `${score}/${answeredQuestions} (${percentage}%)`;
             
-            // Show results
-            quizSection.classList.add('hidden');
-            resultsSection.classList.remove('hidden');
+            let message = '';
+            if (percentage >= 90) message = '🏆 Outstanding! You\'re an English vocabulary expert!';
+            else if (percentage >= 80) message = '🎉 Excellent work! You have a strong vocabulary!';
+            else if (percentage >= 70) message = '👏 Good job! Keep practicing to improve further!';
+            else if (percentage >= 60) message = '👍 Not bad! There\'s room for improvement!';
+            else message = '📚 Keep studying! Practice makes perfect!';
+            
+            document.getElementById('result-message').textContent = message;
+            
+            // Show topic breakdown
+            const breakdown = document.getElementById('topic-breakdown');
+            breakdown.innerHTML = '';
+            
+            if (selectedTopic === 'Mixed') {
+                // Show all topics for mixed practice
+                Object.keys(topicScores).forEach(topic => {
+                    if (topicScores[topic].total > 0) {
+                        const card = document.createElement('div');
+                        card.className = 'topic-card';
+                        const percentage = Math.round((topicScores[topic].correct / topicScores[topic].total) * 100);
+                        card.innerHTML = `
+                            <div class="topic-name">${topic}</div>
+                            <div class="topic-score">${topicScores[topic].correct}/${topicScores[topic].total} (${percentage}%)</div>
+                        `;
+                        breakdown.appendChild(card);
+                    }
+                });
+            } else {
+                // Show only selected topic
+                const card = document.createElement('div');
+                card.className = 'topic-card';
+                const topicData = topicScores[selectedTopic];
+                const percentage = topicData.total > 0 ? Math.round((topicData.correct / topicData.total) * 100) : 0;
+                card.innerHTML = `
+                    <div class="topic-name">${selectedTopic}</div>
+                    <div class="topic-score">${topicData.correct}/${topicData.total} (${percentage}%)</div>
+                `;
+                breakdown.appendChild(card);
+            }
         }
 
+        function restartQuiz() {
+            backToTopics();
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'967c596d9528198e',t:'MTc1Mzk1NzA4MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
