@@ -3,502 +3,627 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shoe Store - Product Catalog</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>SoleStyle - Premium Shoes Collection</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
-
-        body {
-            background-color: #f5f5f5;
-            color: #333;
-        }
-
-        header {
-            background-color: #2c3e50;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-
-        .shoe-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-        }
-
+        
         .shoe-card {
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+        }
+        
+        .shoe-card:hover {
+            transform: rotateY(15deg) rotateX(5deg) translateZ(20px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+        
+        .shoe-3d {
+            transition: all 0.4s ease;
+            transform-style: preserve-3d;
+        }
+        
+        .shoe-3d:hover {
+            transform: rotateY(360deg) scale(1.1);
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .modal {
+            backdrop-filter: blur(10px);
+        }
+        
+        .size-option {
+            transition: all 0.3s ease;
+        }
+        
+        .size-option:hover {
+            transform: scale(1.1);
+        }
+        
+        .color-option {
+            transition: all 0.3s ease;
             cursor: pointer;
         }
-
-        .shoe-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        
+        .color-option:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
         }
 
-        .shoe-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-
-        .shoe-info {
-            padding: 15px;
-        }
-
-        .shoe-name {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .shoe-price {
-            color: #e74c3c;
-            font-weight: 700;
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
-
-        .shoe-brand {
-            color: #7f8c8d;
-            font-size: 14px;
-            margin-bottom: 10px;
-        }
-
-        /* Popup Styles */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
+        .shoe-svg {
+            filter: drop-shadow(0 10px 20px rgba(0,0,0,0.2));
             transition: all 0.3s ease;
         }
 
-        .popup-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .popup-container {
-            background-color: white;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 800px;
-            max-height: 90vh;
-            overflow-y: auto;
-            position: relative;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-        }
-
-        .popup-overlay.active .popup-container {
-            transform: scale(1);
-        }
-
-        .close-popup {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #7f8c8d;
-            transition: color 0.2s ease;
-        }
-
-        .close-popup:hover {
-            color: #e74c3c;
-        }
-
-        .popup-content {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        @media (min-width: 768px) {
-            .popup-content {
-                flex-direction: row;
-            }
-        }
-
-        .popup-image-container {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .popup-image {
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .popup-details {
-            flex: 1;
-            padding: 0 10px;
-        }
-
-        .popup-title {
-            font-size: 28px;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-
-        .popup-price {
-            font-size: 24px;
-            color: #e74c3c;
-            font-weight: 700;
-            margin-bottom: 15px;
-        }
-
-        .popup-description {
-            color: #7f8c8d;
-            margin-bottom: 20px;
-            line-height: 1.6;
-        }
-
-        .option-section {
-            margin-bottom: 20px;
-        }
-
-        .option-title {
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: #2c3e50;
-        }
-
-        .color-options {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .color-option {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: transform 0.2s ease;
-        }
-
-        .color-option:hover {
-            transform: scale(1.1);
-        }
-
-        .color-option.selected {
-            border-color: #2c3e50;
-            transform: scale(1.1);
-        }
-
-        .size-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .size-option {
-            padding: 8px 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .size-option:hover {
-            background-color: #f1f1f1;
-        }
-
-        .size-option.selected {
-            background-color: #2c3e50;
-            color: white;
-            border-color: #2c3e50;
-        }
-
-        .add-to-cart {
-            background-color: #e74c3c;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 5px;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            font-size: 16px;
-            transition: background-color 0.2s ease;
-            margin-top: 20px;
-        }
-
-        .add-to-cart:hover {
-            background-color: #c0392b;
-        }
-
-        .rating {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-
-        .stars {
-            color: #f1c40f;
-            margin-right: 10px;
-        }
-
-        .review-count {
-            color: #7f8c8d;
-            font-size: 14px;
-        }
-
-        .features {
-            margin-top: 20px;
-        }
-
-        .feature {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .feature i {
-            margin-right: 10px;
-            color: #e74c3c;
+        .shoe-svg:hover {
+            filter: drop-shadow(0 15px 30px rgba(0,0,0,0.3));
+            transform: scale(1.05);
         }
     </style>
 </head>
-<body>
-    <header>
-        <h1>Premium Shoe Collection</h1>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="text-3xl">👟</div>
+                    <h1 class="text-2xl font-bold">SoleStyle</h1>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="#" class="hover:text-yellow-300 transition">Home</a>
+                    <a href="#products" class="hover:text-yellow-300 transition">Products</a>
+                    <a href="#about" class="hover:text-yellow-300 transition">About</a>
+                    <a href="#contact" class="hover:text-yellow-300 transition">Contact</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <button id="cart-button" class="relative">
+                        <span class="text-2xl">🛒</span>
+                        <span id="cart-count" class="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center">0</span>
+                    </button>
+                    <button class="bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded-lg font-semibold text-gray-800 transition">
+                        Login
+                    </button>
+                </div>
+            </div>
+        </div>
     </header>
 
-    <div class="container">
-        <div class="shoe-grid">
-            <!-- Shoe 1 -->
-            <div class="shoe-card" onclick="showPopup('Nike Air Max 270', 'Nike', 150, 'https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/skwgyqrbfzhu6uyeh0gg/air-max-270-mens-shoes-KkLcGR.png', ['Black', 'White', 'Red'], ['7', '8', '9', '10', '11'], 4.5, 128, 'The Nike Air Max 270 delivers the brand\'s largest heel Air unit yet for a sensation unlike anything you\'ve felt before.')">
-                <img src="https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/skwgyqrbfzhu6uyeh0gg/air-max-270-mens-shoes-KkLcGR.png" alt="Nike Air Max 270" class="shoe-image">
-                <div class="shoe-info">
-                    <h3 class="shoe-name">Nike Air Max 270</h3>
-                    <div class="shoe-price">$150</div>
-                    <div class="shoe-brand">Nike</div>
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-20">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-5xl font-bold mb-6 floating">Step Into Style</h2>
+            <p class="text-xl mb-8 opacity-90">Discover our premium collection of handcrafted shoes</p>
+            <button class="bg-yellow-500 hover:bg-yellow-600 text-gray-800 font-bold py-3 px-8 rounded-full text-lg transition transform hover:scale-105 pulse-animation">
+                Shop Now
+            </button>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section id="products" class="py-16">
+        <div class="container mx-auto px-6">
+            <h3 class="text-4xl font-bold text-center mb-12 text-gray-800">Featured Collection</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8" id="products-grid">
+                <!-- Products will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-4xl font-bold mb-6 text-gray-800">About SoleStyle</h3>
+                    <p class="text-lg text-gray-600 mb-6">We craft premium shoes with passion and precision. Each pair tells a story of quality, comfort, and style.</p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center p-4 bg-gray-50 rounded-lg">
+                            <div class="text-3xl mb-2">🏆</div>
+                            <div class="font-semibold">Premium Quality</div>
+                        </div>
+                        <div class="text-center p-4 bg-gray-50 rounded-lg">
+                            <div class="text-3xl mb-2">🚚</div>
+                            <div class="font-semibold">Free Delivery</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <div class="text-9xl floating">👞</div>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- Shoe 2 -->
-            <div class="shoe-card" onclick="showPopup('Adidas Ultraboost 21', 'Adidas', 180, 'https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/1cee6d9b3f3e4c5d8eafaeca00d5a5a3_9366/Ultraboost_21_Shoes_Black_GZ0127_01_standard.jpg', ['Black', 'Blue', 'White'], ['7', '8', '9', '10', '11', '12'], 4.8, 256, 'The Ultraboost 21 features our most responsive cushioning ever for an energized run. The adidas Primeknit+ upper provides a snug, supportive fit.')">
-                <img src="https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/1cee6d9b3f3e4c5d8eafaeca00d5a5a3_9366/Ultraboost_21_Shoes_Black_GZ0127_01_standard.jpg" alt="Adidas Ultraboost 21" class="shoe-image">
-                <div class="shoe-info">
-                    <h3 class="shoe-name">Adidas Ultraboost 21</h3>
-                    <div class="shoe-price">$180</div>
-                    <div class="shoe-brand">Adidas</div>
+    <!-- Contact & Map Section -->
+    <section id="contact" class="py-16 bg-gray-100">
+        <div class="container mx-auto px-6">
+            <h3 class="text-4xl font-bold text-center mb-12 text-gray-800">Visit Our Store</h3>
+            <div class="grid md:grid-cols-2 gap-12">
+                <div>
+                    <h4 class="text-2xl font-semibold mb-6">Contact Information</h4>
+                    <div class="space-y-4">
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">📍</span>
+                            <span>456 Shoe Plaza, Connaught Place, New Delhi 110001</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">📞</span>
+                            <span>+91 98765 43210</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">✉️</span>
+                            <span>info@solestyle.com</span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <span class="text-2xl">🕒</span>
+                            <span>Mon-Sat: 10AM-8PM, Sun: 11AM-6PM</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-lg">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.9742329654163!2d77.21975931508236!3d28.63124098240836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390cfd371e8b7c1f%3A0x1b1b1b1b1b1b1b1b!2sConnaught%20Place%2C%20New%20Delhi%2C%20Delhi!5e0!3m2!1sen!2sin!4v1234567890"
+                        width="100%" 
+                        height="300" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                    </iframe>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- Shoe 3 -->
-            <div class="shoe-card" onclick="showPopup('Puma RS-X', 'Puma', 110, 'https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/374915/02/sv01/fnd/EEA/fmt/png/RS-X-Reinvention-Unisex-Sneakers', ['Gray', 'Red', 'Blue'], ['6', '7', '8', '9', '10'], 4.3, 87, 'The RS-X stands for "Running System" and takes inspiration from the running shoes of the 80s. The chunky silhouette features a mix of materials and colors for a bold look.')">
-                <img src="https://images.puma.com/image/upload/f_auto,q_auto,b_rgb:fafafa,w_2000,h_2000/global/374915/02/sv01/fnd/EEA/fmt/png/RS-X-Reinvention-Unisex-Sneakers" alt="Puma RS-X" class="shoe-image">
-                <div class="shoe-info">
-                    <h3 class="shoe-name">Puma RS-X</h3>
-                    <div class="shoe-price">$110</div>
-                    <div class="shoe-brand">Puma</div>
+    <!-- Product Modal -->
+    <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-50 modal hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 id="modal-title" class="text-3xl font-bold text-gray-800"></h3>
+                    <button id="close-modal" class="text-gray-500 hover:text-gray-700 text-3xl">&times;</button>
                 </div>
-            </div>
-
-            <!-- Shoe 4 -->
-            <div class="shoe-card" onclick="showPopup('New Balance 574', 'New Balance', 85, 'https://nb.scene7.com/is/image/NB/m5740gr_nb_02_i?$pdpflexf2$&wid=440&hei=440', ['Gray', 'Navy', 'Green'], ['6', '7', '8', '9', '10', '11', '12'], 4.6, 192, 'The New Balance 574 combines heritage styling with modern comfort. The ENCAP midsole technology provides durable cushioning and support.')">
-                <img src="https://nb.scene7.com/is/image/NB/m5740gr_nb_02_i?$pdpflexf2$&wid=440&hei=440" alt="New Balance 574" class="shoe-image">
-                <div class="shoe-info">
-                    <h3 class="shoe-name">New Balance 574</h3>
-                    <div class="shoe-price">$85</div>
-                    <div class="shoe-brand">New Balance</div>
-                </div>
-            </div>
-
-            <!-- Shoe 5 -->
-            <div class="shoe-card" onclick="showPopup('Vans Old Skool', 'Vans', 60, 'https://images.vans.com/is/image/Vans/D3HY28-HERO?$583x583$', ['Black', 'White', 'Red', 'Blue'], ['6', '7', '8', '9', '10', '11'], 4.7, 312, 'The Vans Old Skool, the classic skate shoe featuring the iconic side stripe, low profile silhouette, and durable suede and canvas uppers.')">
-                <img src="https://images.vans.com/is/image/Vans/D3HY28-HERO?$583x583$" alt="Vans Old Skool" class="shoe-image">
-                <div class="shoe-info">
-                    <h3 class="shoe-name">Vans Old Skool</h3>
-                    <div class="shoe-price">$60</div>
-                    <div class="shoe-brand">Vans</div>
-                </div>
-            </div>
-
-            <!-- Shoe 6 -->
-            <div class="shoe-card" onclick="showPopup('Converse Chuck Taylor All Star', 'Converse', 55, 'https://www.converse.com/dw/image/v2/BCZC_PRD/on/demandware.static/-/Sites-cnv-master-catalog/default/dw9d5f8d9a/images/a_107/M9160_A_107X1.jpg?sw=406', ['Black', 'White', 'Red', 'Blue', 'Yellow'], ['5', '6', '7', '8', '9', '10', '11', '12'], 4.9, 428, 'The Chuck Taylor All Star has been the favorite shoe of rebels, rockers, and risk-takers for over a century. The iconic high-top design features a canvas upper and rubber toe cap.')">
-                <img src="https://www.converse.com/dw/image/v2/BCZC_PRD/on/demandware.static/-/Sites-cnv-master-catalog/default/dw9d5f8d9a/images/a_107/M9160_A_107X1.jpg?sw=406" alt="Converse Chuck Taylor" class="shoe-image">
-                <div class="shoe-info">
-                    <h3 class="shoe-name">Converse Chuck Taylor</h3>
-                    <div class="shoe-price">$55</div>
-                    <div class="shoe-brand">Converse</div>
+                
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="text-center">
+                        <div id="modal-shoe" class="mb-4 flex justify-center"></div>
+                        <div id="modal-price" class="text-3xl font-bold text-blue-600 mb-4"></div>
+                    </div>
+                    
+                    <div>
+                        <div class="mb-6">
+                            <h4 class="text-xl font-semibold mb-3">Available Colors</h4>
+                            <div id="color-options" class="flex space-x-3">
+                                <!-- Color options will be populated here -->
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-xl font-semibold mb-3">Size</h4>
+                            <div id="size-options" class="grid grid-cols-5 gap-2">
+                                <!-- Size options will be populated here -->
+                            </div>
+                        </div>
+                        
+                        <div class="mb-6">
+                            <h4 class="text-xl font-semibold mb-3">Quantity</h4>
+                            <div class="flex items-center space-x-3">
+                                <button id="qty-minus" class="bg-gray-200 hover:bg-gray-300 w-10 h-10 rounded-full flex items-center justify-center font-bold">-</button>
+                                <span id="quantity" class="text-xl font-semibold px-4">1</span>
+                                <button id="qty-plus" class="bg-gray-200 hover:bg-gray-300 w-10 h-10 rounded-full flex items-center justify-center font-bold">+</button>
+                            </div>
+                        </div>
+                        
+                        <button id="add-to-cart" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg text-lg transition transform hover:scale-105">
+                            Add to Cart
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Popup -->
-    <div class="popup-overlay" id="popupOverlay">
-        <div class="popup-container">
-            <span class="close-popup" onclick="closePopup()">&times;</span>
-            <div class="popup-content" id="popupContent">
-                <!-- Content will be inserted here by JavaScript -->
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 modal hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full">
+            <div class="p-8 text-center">
+                <div class="text-6xl mb-4">🛒</div>
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">Your Cart is Empty</h3>
+                <p class="text-gray-600 mb-6">Add some amazing shoes to your cart to get started!</p>
+                <button id="close-cart-modal" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition">
+                    Continue Shopping
+                </button>
             </div>
         </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="flex items-center space-x-2 mb-4">
+                        <span class="text-2xl">👟</span>
+                        <span class="text-xl font-bold">SoleStyle</span>
+                    </div>
+                    <p class="text-gray-400">Premium shoes for every occasion. Step into style with confidence.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Home</a></li>
+                        <li><a href="#" class="hover:text-white transition">Products</a></li>
+                        <li><a href="#" class="hover:text-white transition">About</a></li>
+                        <li><a href="#" class="hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Categories</h4>
+                    <ul class="space-y-2 text-gray-400">
+                        <li><a href="#" class="hover:text-white transition">Sneakers</a></li>
+                        <li><a href="#" class="hover:text-white transition">Formal</a></li>
+                        <li><a href="#" class="hover:text-white transition">Sports</a></li>
+                        <li><a href="#" class="hover:text-white transition">Casual</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Follow Us</h4>
+                    <div class="flex space-x-4 text-2xl">
+                        <a href="#" class="hover:text-blue-400 transition">📘</a>
+                        <a href="#" class="hover:text-pink-400 transition">📷</a>
+                        <a href="#" class="hover:text-blue-300 transition">🐦</a>
+                        <a href="#" class="hover:text-red-400 transition">📺</a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
+                <p>&copy; 2024 SoleStyle. All rights reserved. Made with ❤️ in India</p>
+            </div>
+        </div>
+    </footer>
 
     <script>
-        function showPopup(name, brand, price, image, colors, sizes, rating, reviews, description) {
-            const popupOverlay = document.getElementById('popupOverlay');
-            const popupContent = document.getElementById('popupContent');
-            
-            // Generate stars HTML
-            let starsHtml = '';
-            const fullStars = Math.floor(rating);
-            const hasHalfStar = rating % 1 >= 0.5;
-            
-            for (let i = 0; i < fullStars; i++) {
-                starsHtml += '<i class="fas fa-star"></i>';
-            }
-            
-            if (hasHalfStar) {
-                starsHtml += '<i class="fas fa-star-half-alt"></i>';
-            }
-            
-            const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-            for (let i = 0; i < emptyStars; i++) {
-                starsHtml += '<i class="far fa-star"></i>';
-            }
-            
-            // Generate color options HTML
-            let colorOptionsHtml = '';
-            const colorMap = {
-                'Black': '#000000',
-                'White': '#ffffff',
-                'Red': '#ff0000',
-                'Blue': '#0000ff',
-                'Green': '#008000',
-                'Gray': '#808080',
-                'Navy': '#000080',
-                'Yellow': '#ffff00'
-            };
-            
-            colors.forEach((color, index) => {
-                const isSelected = index === 0 ? 'selected' : '';
-                colorOptionsHtml += `
-                    <div class="color-option ${isSelected}" style="background-color: ${colorMap[color] || '#cccccc'};" title="${color}"></div>
-                `;
-            });
-            
-            // Generate size options HTML
-            let sizeOptionsHtml = '';
-            sizes.forEach((size, index) => {
-                const isSelected = index === 0 ? 'selected' : '';
-                sizeOptionsHtml += `
-                    <div class="size-option ${isSelected}">${size}</div>
-                `;
-            });
-            
-            // Set the popup content
-            popupContent.innerHTML = `
-                <div class="popup-image-container">
-                    <img src="${image}" alt="${name}" class="popup-image">
-                </div>
-                <div class="popup-details">
-                    <h2 class="popup-title">${name}</h2>
-                    <div class="popup-price">$${price}</div>
-                    <div class="rating">
-                        <div class="stars">${starsHtml}</div>
-                        <div class="review-count">${reviews} reviews</div>
-                    </div>
-                    <p class="popup-description">${description}</p>
-                    
-                    <div class="option-section">
-                        <div class="option-title">Color</div>
-                        <div class="color-options">${colorOptionsHtml}</div>
-                    </div>
-                    
-                    <div class="option-section">
-                        <div class="option-title">Size</div>
-                        <div class="size-options">${sizeOptionsHtml}</div>
-                    </div>
-                    
-                    <div class="features">
-                        <div class="feature">
-                            <i class="fas fa-truck"></i>
-                            <span>Free shipping on orders over $50</span>
-                        </div>
-                        <div class="feature">
-                            <i class="fas fa-exchange-alt"></i>
-                            <span>30-day return policy</span>
-                        </div>
-                        <div class="feature">
-                            <i class="fas fa-shield-alt"></i>
-                            <span>2-year warranty</span>
-                        </div>
-                    </div>
-                    
-                    <button class="add-to-cart">Add to Cart</button>
-                </div>
-            `;
-            
-            // Add event listeners to color options
-            const colorOptions = document.querySelectorAll('.color-option');
-            colorOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    colorOptions.forEach(opt => opt.classList.remove('selected'));
-                    this.classList.add('selected');
-                });
-            });
-            
-            // Add event listeners to size options
-            const sizeOptions = document.querySelectorAll('.size-option');
-            sizeOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    sizeOptions.forEach(opt => opt.classList.remove('selected'));
-                    this.classList.add('selected');
-                });
-            });
-            
-            // Show the popup
-            popupOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
+        // Real shoe images from internet
+        const shoeImages = {
+            sneaker: [
+                'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=400&h=300&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=400&h=300&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=400&h=300&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?w=400&h=300&fit=crop&crop=center'
+            ],
+            formal: [
+                'https://images.unsplash.com/photo-1614252369475-531eba835eb1?w=400&h=300&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1582897085656-c636d006a246?w=400&h=300&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1533867617858-e7b97e060509?w=400&h=300&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=300&fit=crop&crop=center'
+            ],
+            sports: [
+                'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=400&h=300&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=400&h=300&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=400&h=300&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1605348532760-6753d2c43329?w=400&h=300&fit=crop&crop=center'
+            ],
+            casual: [
+                'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=400&h=300&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=400&h=300&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1603808033192-082d6919d3e1?w=400&h=300&fit=crop&crop=center',
+                'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?w=400&h=300&fit=crop&crop=center'
+            ]
+        };
+
+        // Function to get shoe image based on type and color index
+        function getShoeImage(type, colorIndex = 0) {
+            const images = shoeImages[type];
+            return images[colorIndex % images.length];
         }
-        
-        function closePopup() {
-            const popupOverlay = document.getElementById('popupOverlay');
-            popupOverlay.classList.remove('active');
-            document.body.style.overflow = 'auto';
+
+        // Product data with SVG types
+        const products = [
+            {
+                id: 1,
+                name: "Urban Runner",
+                price: 4999,
+                svgType: "sneaker",
+                colors: ["#FF6B6B", "#4ECDC4", "#45B7D1", "#96CEB4"],
+                sizes: [6, 7, 8, 9, 10, 11, 12],
+                category: "Sneakers"
+            },
+            {
+                id: 2,
+                name: "Classic Oxford",
+                price: 7999,
+                svgType: "formal",
+                colors: ["#8B4513", "#000000", "#654321", "#2F1B14"],
+                sizes: [6, 7, 8, 9, 10, 11, 12],
+                category: "Formal"
+            },
+            {
+                id: 3,
+                name: "Sport Elite",
+                price: 5999,
+                svgType: "sports",
+                colors: ["#FF4757", "#3742FA", "#2ED573", "#FFA502"],
+                sizes: [6, 7, 8, 9, 10, 11, 12],
+                category: "Sports"
+            },
+            {
+                id: 4,
+                name: "Casual Comfort",
+                price: 3999,
+                svgType: "casual",
+                colors: ["#A4B0BE", "#57606F", "#2F3542", "#F1F2F6"],
+                sizes: [6, 7, 8, 9, 10, 11, 12],
+                category: "Casual"
+            },
+            {
+                id: 5,
+                name: "High-Top Style",
+                price: 6499,
+                svgType: "sneaker",
+                colors: ["#E74C3C", "#9B59B6", "#3498DB", "#E67E22"],
+                sizes: [6, 7, 8, 9, 10, 11, 12],
+                category: "Sneakers"
+            },
+            {
+                id: 6,
+                name: "Business Pro",
+                price: 8999,
+                svgType: "formal",
+                colors: ["#2C3E50", "#8B4513", "#000000", "#4A4A4A"],
+                sizes: [6, 7, 8, 9, 10, 11, 12],
+                category: "Formal"
+            },
+            {
+                id: 7,
+                name: "Athletic Max",
+                price: 7499,
+                svgType: "sports",
+                colors: ["#00D2FF", "#FF6B9D", "#C44569", "#F8B500"],
+                sizes: [6, 7, 8, 9, 10, 11, 12],
+                category: "Sports"
+            },
+            {
+                id: 8,
+                name: "Weekend Walker",
+                price: 4499,
+                svgType: "casual",
+                colors: ["#6C5CE7", "#A29BFE", "#FD79A8", "#FDCB6E"],
+                sizes: [6, 7, 8, 9, 10, 11, 12],
+                category: "Casual"
+            }
+        ];
+
+        let cart = [];
+        let selectedProduct = null;
+        let selectedColor = null;
+        let selectedSize = null;
+        let quantity = 1;
+
+        // Load products
+        function loadProducts() {
+            const grid = document.getElementById('products-grid');
+            grid.innerHTML = '';
+            
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'shoe-card bg-white rounded-2xl shadow-lg p-6 cursor-pointer transform transition-all duration-300 hover:shadow-2xl';
+                productCard.innerHTML = `
+                    <div class="text-center">
+                        <div class="mb-4 flex justify-center">
+                            <img src="${getShoeImage(product.svgType, 0)}" alt="${product.name}" class="w-48 h-36 object-cover rounded-lg shoe-svg" />
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2 text-gray-800">${product.name}</h4>
+                        <p class="text-gray-600 mb-3">${product.category}</p>
+                        <div class="text-2xl font-bold text-blue-600 mb-4">₹${product.price.toLocaleString()}</div>
+                        <div class="flex justify-center space-x-2 mb-4">
+                            ${product.colors.slice(0, 3).map(color => 
+                                `<div class="w-4 h-4 rounded-full border-2 border-gray-300" style="background-color: ${color}"></div>`
+                            ).join('')}
+                            ${product.colors.length > 3 ? '<div class="text-gray-500 text-sm">+more</div>' : ''}
+                        </div>
+                        <button class="w-full bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold py-2 px-4 rounded-lg transition transform hover:scale-105">
+                            View Details
+                        </button>
+                    </div>
+                `;
+                
+                productCard.addEventListener('click', () => openProductModal(product));
+                grid.appendChild(productCard);
+            });
         }
-        
-        // Close popup when clicking outside of it
-        document.getElementById('popupOverlay').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closePopup();
+
+        // Open product modal
+        function openProductModal(product) {
+            selectedProduct = product;
+            selectedColor = product.colors[0];
+            selectedSize = product.sizes[0];
+            quantity = 1;
+            
+            document.getElementById('modal-title').textContent = product.name;
+            document.getElementById('modal-price').textContent = `₹${product.price.toLocaleString()}`;
+            
+            // Update shoe SVG
+            updateModalShoe();
+            
+            // Load colors
+            const colorOptions = document.getElementById('color-options');
+            colorOptions.innerHTML = '';
+            product.colors.forEach(color => {
+                const colorDiv = document.createElement('div');
+                colorDiv.className = `color-option w-8 h-8 rounded-full border-4 ${color === selectedColor ? 'border-gray-800' : 'border-gray-300'}`;
+                colorDiv.style.backgroundColor = color;
+                colorDiv.addEventListener('click', () => selectColor(color));
+                colorOptions.appendChild(colorDiv);
+            });
+            
+            // Load sizes
+            const sizeOptions = document.getElementById('size-options');
+            sizeOptions.innerHTML = '';
+            product.sizes.forEach(size => {
+                const sizeDiv = document.createElement('div');
+                sizeDiv.className = `size-option text-center py-2 px-3 border-2 rounded-lg cursor-pointer ${size === selectedSize ? 'border-blue-500 bg-blue-50' : 'border-gray-300 hover:border-gray-400'}`;
+                sizeDiv.textContent = size;
+                sizeDiv.addEventListener('click', () => selectSize(size));
+                sizeOptions.appendChild(sizeDiv);
+            });
+            
+            document.getElementById('quantity').textContent = quantity;
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        // Update modal shoe image
+        function updateModalShoe() {
+            const modalShoe = document.getElementById('modal-shoe');
+            const colorIndex = selectedProduct.colors.indexOf(selectedColor);
+            modalShoe.innerHTML = `<img src="${getShoeImage(selectedProduct.svgType, colorIndex)}" alt="${selectedProduct.name}" class="w-64 h-48 object-cover rounded-lg shoe-svg" />`;
+        }
+
+        // Select color
+        function selectColor(color) {
+            selectedColor = color;
+            updateModalShoe();
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.className = option.className.replace('border-gray-800', 'border-gray-300');
+            });
+            event.target.className = event.target.className.replace('border-gray-300', 'border-gray-800');
+        }
+
+        // Select size
+        function selectSize(size) {
+            selectedSize = size;
+            document.querySelectorAll('.size-option').forEach(option => {
+                option.className = option.className.replace('border-blue-500 bg-blue-50', 'border-gray-300');
+            });
+            event.target.className = event.target.className.replace('border-gray-300', 'border-blue-500 bg-blue-50');
+        }
+
+        // Quantity controls
+        document.getElementById('qty-minus').addEventListener('click', () => {
+            if (quantity > 1) {
+                quantity--;
+                document.getElementById('quantity').textContent = quantity;
             }
         });
+
+        document.getElementById('qty-plus').addEventListener('click', () => {
+            quantity++;
+            document.getElementById('quantity').textContent = quantity;
+        });
+
+        // Add to cart
+        document.getElementById('add-to-cart').addEventListener('click', () => {
+            const cartItem = {
+                id: selectedProduct.id,
+                name: selectedProduct.name,
+                price: selectedProduct.price,
+                color: selectedColor,
+                size: selectedSize,
+                quantity: quantity,
+                svgType: selectedProduct.svgType
+            };
+            
+            cart.push(cartItem);
+            updateCartCount();
+            
+            // Show success message
+            const button = document.getElementById('add-to-cart');
+            const originalText = button.textContent;
+            button.textContent = 'Added to Cart! ✓';
+            button.className = button.className.replace('bg-blue-600 hover:bg-blue-700', 'bg-green-600');
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.className = button.className.replace('bg-green-600', 'bg-blue-600 hover:bg-blue-700');
+                closeModal();
+            }, 1500);
+        });
+
+        // Update cart count
+        function updateCartCount() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cart-count').textContent = totalItems;
+        }
+
+        // Cart button click
+        document.getElementById('cart-button').addEventListener('click', () => {
+            if (cart.length === 0) {
+                document.getElementById('cart-modal').classList.remove('hidden');
+            } else {
+                // Here you would show the actual cart contents
+                alert(`You have ${cart.length} items in your cart!`);
+            }
+        });
+
+        // Close cart modal
+        document.getElementById('close-cart-modal').addEventListener('click', () => {
+            document.getElementById('cart-modal').classList.add('hidden');
+        });
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+        }
+
+        document.getElementById('close-modal').addEventListener('click', closeModal);
+
+        // Close modal when clicking outside
+        document.getElementById('product-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'product-modal') {
+                closeModal();
+            }
+        });
+
+        // Close cart modal when clicking outside
+        document.getElementById('cart-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'cart-modal') {
+                document.getElementById('cart-modal').classList.add('hidden');
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProducts();
+        });
     </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9676f8d863b8594b',t:'MTc1MzkwMDY5Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
