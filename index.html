@@ -47,6 +47,33 @@
             color: white;
             padding: 30px;
             text-align: center;
+            position: relative;
+        }
+
+        .sound-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .sound-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+
+        .sound-toggle.muted {
+            opacity: 0.5;
         }
 
         .quiz-title {
@@ -186,12 +213,26 @@
             background: linear-gradient(135deg, #56ab2f, #a8e6cf);
             border-color: #56ab2f;
             color: white;
+            animation: correctPulse 0.6s ease-out;
+        }
+
+        @keyframes correctPulse {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(86, 171, 47, 0.7); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(86, 171, 47, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(86, 171, 47, 0); }
         }
 
         .option-btn.incorrect {
             background: linear-gradient(135deg, #ff416c, #ff4b2b);
             border-color: #ff416c;
             color: white;
+            animation: incorrectShake 0.6s ease-out;
+        }
+
+        @keyframes incorrectShake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
         }
 
         .controls {
@@ -557,6 +598,14 @@
             
             .quiz-header {
                 padding: 20px 15px;
+            }
+
+            .sound-toggle {
+                top: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
             }
             
             .quiz-title {
@@ -956,6 +1005,9 @@
 <body>
     <div class="quiz-container">
         <div class="quiz-header">
+            <div class="sound-toggle" id="sound-toggle" onclick="toggleSound()" title="Toggle Sound Effects">
+                🔊
+            </div>
             <h1 class="quiz-title">🎯 SSC English Vocabulary Quiz</h1>
             <p class="quiz-subtitle">Previous Years Questions (2017-2025) • 10,000 Unique Questions</p>
         </div>
@@ -1070,6 +1122,140 @@
     </div>
 
     <script>
+        // Sound System using Web Audio API
+        class SoundSystem {
+            constructor() {
+                this.audioContext = null;
+                this.soundEnabled = true;
+                this.initAudioContext();
+            }
+
+            initAudioContext() {
+                try {
+                    this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                } catch (e) {
+                    console.log('Web Audio API not supported');
+                    this.soundEnabled = false;
+                }
+            }
+
+            // Create correct answer sound (pleasant chime)
+            playCorrectSound() {
+                if (!this.soundEnabled || !this.audioContext) return;
+
+                const oscillator1 = this.audioContext.createOscillator();
+                const oscillator2 = this.audioContext.createOscillator();
+                const gainNode = this.audioContext.createGain();
+
+                // Create harmonious frequencies
+                oscillator1.frequency.setValueAtTime(523.25, this.audioContext.currentTime); // C5
+                oscillator2.frequency.setValueAtTime(659.25, this.audioContext.currentTime); // E5
+
+                oscillator1.connect(gainNode);
+                oscillator2.connect(gainNode);
+                gainNode.connect(this.audioContext.destination);
+
+                // Envelope for pleasant sound
+                gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.3, this.audioContext.currentTime + 0.1);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.8);
+
+                oscillator1.start(this.audioContext.currentTime);
+                oscillator2.start(this.audioContext.currentTime);
+                oscillator1.stop(this.audioContext.currentTime + 0.8);
+                oscillator2.stop(this.audioContext.currentTime + 0.8);
+            }
+
+            // Create incorrect answer sound (gentle buzz)
+            playIncorrectSound() {
+                if (!this.soundEnabled || !this.audioContext) return;
+
+                const oscillator = this.audioContext.createOscillator();
+                const gainNode = this.audioContext.createGain();
+
+                oscillator.frequency.setValueAtTime(200, this.audioContext.currentTime);
+                oscillator.frequency.linearRampToValueAtTime(150, this.audioContext.currentTime + 0.3);
+
+                oscillator.connect(gainNode);
+                gainNode.connect(this.audioContext.destination);
+
+                // Envelope for buzz sound
+                gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.2, this.audioContext.currentTime + 0.05);
+                gainNode.gain.linearRampToValueAtTime(0.1, this.audioContext.currentTime + 0.15);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.3);
+
+                oscillator.start(this.audioContext.currentTime);
+                oscillator.stop(this.audioContext.currentTime + 0.3);
+            }
+
+            // Create button click sound
+            playClickSound() {
+                if (!this.soundEnabled || !this.audioContext) return;
+
+                const oscillator = this.audioContext.createOscillator();
+                const gainNode = this.audioContext.createGain();
+
+                oscillator.frequency.setValueAtTime(800, this.audioContext.currentTime);
+                oscillator.frequency.exponentialRampToValueAtTime(400, this.audioContext.currentTime + 0.1);
+
+                oscillator.connect(gainNode);
+                gainNode.connect(this.audioContext.destination);
+
+                gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.1, this.audioContext.currentTime + 0.01);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.1);
+
+                oscillator.start(this.audioContext.currentTime);
+                oscillator.stop(this.audioContext.currentTime + 0.1);
+            }
+
+            // Create completion sound (victory fanfare)
+            playCompletionSound() {
+                if (!this.soundEnabled || !this.audioContext) return;
+
+                const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+                
+                notes.forEach((freq, index) => {
+                    setTimeout(() => {
+                        const oscillator = this.audioContext.createOscillator();
+                        const gainNode = this.audioContext.createGain();
+
+                        oscillator.frequency.setValueAtTime(freq, this.audioContext.currentTime);
+                        oscillator.connect(gainNode);
+                        gainNode.connect(this.audioContext.destination);
+
+                        gainNode.gain.setValueAtTime(0, this.audioContext.currentTime);
+                        gainNode.gain.linearRampToValueAtTime(0.2, this.audioContext.currentTime + 0.1);
+                        gainNode.gain.exponentialRampToValueAtTime(0.01, this.audioContext.currentTime + 0.4);
+
+                        oscillator.start(this.audioContext.currentTime);
+                        oscillator.stop(this.audioContext.currentTime + 0.4);
+                    }, index * 150);
+                });
+            }
+
+            toggle() {
+                this.soundEnabled = !this.soundEnabled;
+                const toggle = document.getElementById('sound-toggle');
+                toggle.textContent = this.soundEnabled ? '🔊' : '🔇';
+                toggle.classList.toggle('muted', !this.soundEnabled);
+                
+                // Resume audio context if needed
+                if (this.soundEnabled && this.audioContext && this.audioContext.state === 'suspended') {
+                    this.audioContext.resume();
+                }
+            }
+        }
+
+        // Initialize sound system
+        const soundSystem = new SoundSystem();
+
+        function toggleSound() {
+            soundSystem.toggle();
+            soundSystem.playClickSound();
+        }
+
         // Quiz data with 10,000 unique SSC questions (2017-2025) - 2000 per topic
         function generateQuizData() {
             // Comprehensive word databases
@@ -1383,6 +1569,7 @@
         };
 
         function showSubtopics(topic) {
+            soundSystem.playClickSound();
             document.getElementById('topic-selection').classList.add('hidden');
             document.getElementById('subtopic-selection').classList.remove('hidden');
             document.getElementById('subtopic-title').textContent = `${topic} Practice Sets`;
@@ -1397,7 +1584,10 @@
                 
                 const card = document.createElement('div');
                 card.className = 'subtopic-card';
-                card.onclick = () => startQuiz(topic, startIndex, 50);
+                card.onclick = () => {
+                    soundSystem.playClickSound();
+                    startQuiz(topic, startIndex, 50);
+                };
                 
                 let difficulty = '';
                 let difficultyClass = '';
@@ -1424,11 +1614,13 @@
         }
 
         function backToMainTopics() {
+            soundSystem.playClickSound();
             document.getElementById('subtopic-selection').classList.add('hidden');
             document.getElementById('topic-selection').classList.remove('hidden');
         }
 
         function startQuiz(topic, startIndex = 0, questionCount = null) {
+            soundSystem.playClickSound();
             selectedTopic = topic;
             
             if (topic === 'Mixed') {
@@ -1464,6 +1656,7 @@
         }
 
         function backToTopics() {
+            soundSystem.playClickSound();
             document.getElementById('quiz-content').classList.add('hidden');
             document.getElementById('result-section').classList.add('hidden');
             document.getElementById('subtopic-selection').classList.add('hidden');
@@ -1519,6 +1712,13 @@
             const question = currentQuizData[currentQuestion];
             const isCorrect = selectedAnswer === question.correct;
             
+            // Play sound effect immediately
+            if (isCorrect) {
+                soundSystem.playCorrectSound();
+            } else {
+                soundSystem.playIncorrectSound();
+            }
+            
             // Update scores immediately
             userAnswers[currentQuestion] = {
                 selected: selectedAnswer,
@@ -1547,6 +1747,7 @@
         }
 
         function nextQuestion() {
+            soundSystem.playClickSound();
             currentQuestion++;
             if (currentQuestion < currentQuizData.length) {
                 loadQuestion();
@@ -1556,6 +1757,7 @@
         }
 
         function previousQuestion() {
+            soundSystem.playClickSound();
             if (currentQuestion > 0) {
                 currentQuestion--;
                 loadQuestion();
@@ -1573,6 +1775,9 @@
         }
 
         function showResults() {
+            // Play completion sound
+            soundSystem.playCompletionSound();
+            
             document.getElementById('quiz-content').classList.add('hidden');
             document.getElementById('result-section').classList.remove('hidden');
             
@@ -1622,8 +1827,22 @@
         }
 
         function restartQuiz() {
+            soundSystem.playClickSound();
             backToTopics();
         }
+
+        // Add click sound to topic cards
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click sounds to all topic cards
+            const topicCards = document.querySelectorAll('.topic-card-select');
+            topicCards.forEach(card => {
+                const originalOnClick = card.onclick;
+                card.onclick = function() {
+                    soundSystem.playClickSound();
+                    if (originalOnClick) originalOnClick.call(this);
+                };
+            });
+        });
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'967c5d2f3466198e',t:'MTc1Mzk1NzIzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'967c677d705559d2',t:'MTc1Mzk1NzY1Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
