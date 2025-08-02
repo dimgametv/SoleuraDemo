@@ -1,0 +1,1872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TestPrep - Online Exam Preparation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f5f7fa;
+        }
+        .modal {
+            transition: opacity 0.3s ease;
+        }
+        .slide-in {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        .slide-in.active {
+            transform: translateX(0);
+        }
+        .question-panel {
+            transition: all 0.3s ease;
+        }
+        .loader {
+            border-top-color: #3498db;
+            animation: spinner 1.5s linear infinite;
+        }
+        @keyframes spinner {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .exam-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .exam-card {
+            transition: all 0.3s ease;
+        }
+        .subject-card:hover {
+            transform: translateY(-3px);
+        }
+        .subject-card {
+            transition: all 0.3s ease;
+        }
+        .chapter-card:hover {
+            background-color: #f0f7ff;
+        }
+        .topic-card:hover {
+            background-color: #e6f2ff;
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header id="main-header" class="bg-gradient-to-r from-blue-600 to-blue-800 text-white shadow-md">
+            <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+                <div class="flex items-center">
+                    <a href="#" class="text-2xl font-bold" onclick="showPage('home')">TestPrep</a>
+                </div>
+                <div id="header-buttons" class="flex items-center space-x-4">
+                    <div id="user-menu" class="hidden">
+                        <button id="profile-btn" onclick="showPage('profile')" class="bg-white text-blue-700 px-4 py-2 rounded-md font-medium hover:bg-blue-50 transition">Profile</button>
+                        <button id="logout-btn" onclick="logout()" class="bg-transparent border border-white text-white px-4 py-2 rounded-md font-medium hover:bg-white hover:text-blue-700 transition">Logout</button>
+                    </div>
+                    <div id="auth-buttons">
+                        <button onclick="showModal('login-modal')" class="bg-white text-blue-700 px-4 py-2 rounded-md font-medium hover:bg-blue-50 transition">Login</button>
+                        <button onclick="showModal('signup-modal')" class="bg-transparent border border-white text-white px-4 py-2 rounded-md font-medium hover:bg-white hover:text-blue-700 transition">Sign Up</button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="flex-grow">
+            <!-- Home Page -->
+            <div id="home-page" class="page">
+                <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-16">
+                    <div class="container mx-auto px-4 text-center">
+                        <h1 class="text-4xl md:text-5xl font-bold mb-4">Prepare for Government Exams</h1>
+                        <p class="text-xl mb-8">Practice tests, study materials, and expert guidance to help you succeed</p>
+                        <button onclick="showModal('login-modal')" class="bg-white text-blue-700 px-6 py-3 rounded-lg font-medium text-lg hover:bg-blue-50 transition mr-4">Get Started</button>
+                        <button onclick="scrollToExams()" class="bg-transparent border border-white text-white px-6 py-3 rounded-lg font-medium text-lg hover:bg-white hover:text-blue-700 transition">Explore Exams</button>
+                    </div>
+                </div>
+
+                <div id="exams-section" class="container mx-auto px-4 py-12">
+                    <h2 class="text-3xl font-bold text-center mb-12">Popular Exam Categories</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="exam-card bg-white rounded-xl shadow-lg overflow-hidden">
+                            <div class="h-3 bg-blue-600"></div>
+                            <div class="p-6">
+                                <h3 class="text-2xl font-bold mb-3 text-gray-800">SSC CGL</h3>
+                                <p class="text-gray-600 mb-4">Combined Graduate Level Examination for various posts in government departments.</p>
+                                <button onclick="showExamDetails('cgl')" class="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition w-full">View Details</button>
+                            </div>
+                        </div>
+                        <div class="exam-card bg-white rounded-xl shadow-lg overflow-hidden">
+                            <div class="h-3 bg-green-600"></div>
+                            <div class="p-6">
+                                <h3 class="text-2xl font-bold mb-3 text-gray-800">SSC CHSL</h3>
+                                <p class="text-gray-600 mb-4">Combined Higher Secondary Level Examination for clerical and data entry positions.</p>
+                                <button onclick="showExamDetails('chsl')" class="bg-green-600 text-white px-4 py-2 rounded-md font-medium hover:bg-green-700 transition w-full">View Details</button>
+                            </div>
+                        </div>
+                        <div class="exam-card bg-white rounded-xl shadow-lg overflow-hidden">
+                            <div class="h-3 bg-purple-600"></div>
+                            <div class="p-6">
+                                <h3 class="text-2xl font-bold mb-3 text-gray-800">SSC Stenographer</h3>
+                                <p class="text-gray-600 mb-4">Examination for stenographer positions in various government departments.</p>
+                                <button onclick="showExamDetails('steno')" class="bg-purple-600 text-white px-4 py-2 rounded-md font-medium hover:bg-purple-700 transition w-full">View Details</button>
+                            </div>
+                        </div>
+                        <div class="exam-card bg-white rounded-xl shadow-lg overflow-hidden">
+                            <div class="h-3 bg-red-600"></div>
+                            <div class="p-6">
+                                <h3 class="text-2xl font-bold mb-3 text-gray-800">SSC CPO</h3>
+                                <p class="text-gray-600 mb-4">Central Police Organization Examination for police and paramilitary forces.</p>
+                                <button onclick="showExamDetails('cpo')" class="bg-red-600 text-white px-4 py-2 rounded-md font-medium hover:bg-red-700 transition w-full">View Details</button>
+                            </div>
+                        </div>
+                        <div class="exam-card bg-white rounded-xl shadow-lg overflow-hidden">
+                            <div class="h-3 bg-yellow-600"></div>
+                            <div class="p-6">
+                                <h3 class="text-2xl font-bold mb-3 text-gray-800">SSC MTS</h3>
+                                <p class="text-gray-600 mb-4">Multi-Tasking Staff Examination for various Group 'C' posts.</p>
+                                <button onclick="showExamDetails('mts')" class="bg-yellow-600 text-white px-4 py-2 rounded-md font-medium hover:bg-yellow-700 transition w-full">View Details</button>
+                            </div>
+                        </div>
+                        <div class="exam-card bg-white rounded-xl shadow-lg overflow-hidden">
+                            <div class="h-3 bg-indigo-600"></div>
+                            <div class="p-6">
+                                <h3 class="text-2xl font-bold mb-3 text-gray-800">SSC GD</h3>
+                                <p class="text-gray-600 mb-4">General Duty Constable Examination for paramilitary forces.</p>
+                                <button onclick="showExamDetails('gd')" class="bg-indigo-600 text-white px-4 py-2 rounded-md font-medium hover:bg-indigo-700 transition w-full">View Details</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-gray-100 py-12">
+                    <div class="container mx-auto px-4">
+                        <h2 class="text-3xl font-bold text-center mb-12">Why Choose TestPrep?</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div class="bg-white p-6 rounded-lg shadow-md">
+                                <div class="text-blue-600 text-4xl mb-4">📚</div>
+                                <h3 class="text-xl font-bold mb-2">Comprehensive Content</h3>
+                                <p class="text-gray-600">Access detailed study materials and practice tests for all major government exams.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-md">
+                                <div class="text-blue-600 text-4xl mb-4">🎯</div>
+                                <h3 class="text-xl font-bold mb-2">Exam-like Experience</h3>
+                                <p class="text-gray-600">Our tests simulate the actual exam environment to help you prepare better.</p>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow-md">
+                                <div class="text-blue-600 text-4xl mb-4">📊</div>
+                                <h3 class="text-xl font-bold mb-2">Performance Analytics</h3>
+                                <p class="text-gray-600">Track your progress and identify areas for improvement with detailed analytics.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exam Details Page -->
+            <div id="exam-details-page" class="page hidden">
+                <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-10">
+                    <div class="container mx-auto px-4">
+                        <div class="flex items-center mb-6">
+                            <button onclick="showPage('home')" class="mr-4 bg-white bg-opacity-20 p-2 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <h1 id="exam-title" class="text-3xl font-bold">Exam Details</h1>
+                        </div>
+                        <p id="exam-description" class="text-lg opacity-90">Loading exam details...</p>
+                    </div>
+                </div>
+
+                <div class="container mx-auto px-4 py-8">
+                    <h2 class="text-2xl font-bold mb-6">Subjects</h2>
+                    <div id="subjects-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Subjects will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subject Details Page -->
+            <div id="subject-details-page" class="page hidden">
+                <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-10">
+                    <div class="container mx-auto px-4">
+                        <div class="flex items-center mb-6">
+                            <button id="back-to-exam" class="mr-4 bg-white bg-opacity-20 p-2 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <h1 id="subject-title" class="text-3xl font-bold">Subject Details</h1>
+                        </div>
+                        <p id="subject-description" class="text-lg opacity-90">Loading subject details...</p>
+                    </div>
+                </div>
+
+                <div class="container mx-auto px-4 py-8">
+                    <h2 class="text-2xl font-bold mb-6">Chapters</h2>
+                    <div id="chapters-container" class="space-y-4">
+                        <!-- Chapters will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chapter Details Page -->
+            <div id="chapter-details-page" class="page hidden">
+                <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-10">
+                    <div class="container mx-auto px-4">
+                        <div class="flex items-center mb-6">
+                            <button id="back-to-subject" class="mr-4 bg-white bg-opacity-20 p-2 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <h1 id="chapter-title" class="text-3xl font-bold">Chapter Details</h1>
+                        </div>
+                        <p id="chapter-description" class="text-lg opacity-90">Loading chapter details...</p>
+                    </div>
+                </div>
+
+                <div class="container mx-auto px-4 py-8">
+                    <h2 class="text-2xl font-bold mb-6">Topics</h2>
+                    <div id="topics-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Topics will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Topic Details Page -->
+            <div id="topic-details-page" class="page hidden">
+                <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-10">
+                    <div class="container mx-auto px-4">
+                        <div class="flex items-center mb-6">
+                            <button id="back-to-chapter" class="mr-4 bg-white bg-opacity-20 p-2 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <h1 id="topic-title" class="text-3xl font-bold">Topic Details</h1>
+                        </div>
+                        <p id="topic-description" class="text-lg opacity-90">Loading topic details...</p>
+                    </div>
+                </div>
+
+                <div class="container mx-auto px-4 py-8">
+                    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                        <h2 class="text-2xl font-bold mb-4">Practice Test</h2>
+                        <p class="text-gray-600 mb-6">This test contains 10 multiple choice questions based on this topic. You'll have 15 minutes to complete the test.</p>
+                        <button id="start-test-btn" class="bg-blue-600 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-700 transition">Start Test</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test Page -->
+            <div id="test-page" class="page hidden">
+                <div class="bg-white shadow-md fixed top-0 left-0 right-0 z-10">
+                    <div class="container mx-auto px-4 py-3">
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center">
+                                <h1 id="test-header-title" class="text-xl font-bold text-gray-800">Test</h1>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <div id="test-timer" class="bg-blue-100 text-blue-800 px-4 py-2 rounded-md font-medium">15:00</div>
+                                <button id="pause-test-btn" class="bg-yellow-500 text-white px-4 py-2 rounded-md font-medium hover:bg-yellow-600 transition">Pause</button>
+                                <button id="submit-test-btn" class="bg-green-600 text-white px-4 py-2 rounded-md font-medium hover:bg-green-700 transition">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-16 pb-24 md:pb-16">
+                    <div class="container mx-auto px-4 py-8 flex flex-col md:flex-row">
+                        <div class="w-full md:w-3/4 pr-0 md:pr-6">
+                            <div id="question-container" class="bg-white rounded-lg shadow-md p-6 mb-6">
+                                <!-- Question will be loaded here -->
+                            </div>
+                            <div class="flex justify-between">
+                                <button id="prev-question-btn" class="bg-gray-200 text-gray-800 px-4 py-2 rounded-md font-medium hover:bg-gray-300 transition">Previous</button>
+                                <button id="next-question-btn" class="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition">Next</button>
+                            </div>
+                        </div>
+                        
+                        <div id="question-panel-container" class="w-full md:w-1/4 mt-6 md:mt-0 fixed bottom-0 left-0 right-0 md:static bg-white md:bg-transparent shadow-lg md:shadow-none z-10">
+                            <div class="md:hidden flex justify-between items-center bg-gray-100 p-3">
+                                <span class="font-medium">Questions</span>
+                                <button id="toggle-question-panel" class="bg-blue-600 text-white p-2 rounded-md">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div id="question-panel" class="question-panel h-0 md:h-auto overflow-hidden md:overflow-visible">
+                                <div class="bg-white rounded-lg shadow-md p-4">
+                                    <h3 class="text-lg font-bold mb-4">Go to Question</h3>
+                                    <div id="question-buttons" class="grid grid-cols-5 gap-2">
+                                        <!-- Question buttons will be loaded here -->
+                                    </div>
+                                    <div class="mt-4 pt-4 border-t">
+                                        <div class="flex items-center mb-2">
+                                            <div class="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
+                                            <span class="text-sm">Answered</span>
+                                        </div>
+                                        <div class="flex items-center mb-2">
+                                            <div class="w-4 h-4 bg-red-500 rounded-full mr-2"></div>
+                                            <span class="text-sm">Marked for Review</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <div class="w-4 h-4 bg-gray-300 rounded-full mr-2"></div>
+                                            <span class="text-sm">Not Visited</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Test Results Page -->
+            <div id="test-results-page" class="page hidden">
+                <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-10">
+                    <div class="container mx-auto px-4">
+                        <div class="flex items-center mb-6">
+                            <button id="back-to-topic" class="mr-4 bg-white bg-opacity-20 p-2 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <h1 class="text-3xl font-bold">Test Results</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container mx-auto px-4 py-8">
+                    <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+                        <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                            <h2 class="text-2xl font-bold">Your Performance</h2>
+                            <div class="mt-4 md:mt-0 flex items-center">
+                                <div class="text-3xl font-bold text-blue-600 mr-2" id="result-score">0/10</div>
+                                <div class="text-lg text-gray-600">Score</div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-8">
+                            <div class="h-4 bg-gray-200 rounded-full">
+                                <div id="result-progress" class="h-4 bg-blue-600 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div class="bg-green-100 p-4 rounded-lg">
+                                <div class="text-green-600 font-bold text-xl mb-1" id="result-correct">0</div>
+                                <div class="text-green-800">Correct</div>
+                            </div>
+                            <div class="bg-red-100 p-4 rounded-lg">
+                                <div class="text-red-600 font-bold text-xl mb-1" id="result-incorrect">0</div>
+                                <div class="text-red-800">Incorrect</div>
+                            </div>
+                            <div class="bg-gray-100 p-4 rounded-lg">
+                                <div class="text-gray-600 font-bold text-xl mb-1" id="result-unattempted">0</div>
+                                <div class="text-gray-800">Unattempted</div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+                            <button onclick="reviewTest()" class="bg-blue-600 text-white px-6 py-3 rounded-md font-medium hover:bg-blue-700 transition">Review Answers</button>
+                            <button onclick="retakeTest()" class="bg-gray-200 text-gray-800 px-6 py-3 rounded-md font-medium hover:bg-gray-300 transition">Retake Test</button>
+                            <button id="back-to-topic-btn" class="bg-white border border-gray-300 text-gray-800 px-6 py-3 rounded-md font-medium hover:bg-gray-100 transition">Back to Topic</button>
+                        </div>
+                    </div>
+
+                    <div id="answers-review-container" class="hidden">
+                        <h2 class="text-2xl font-bold mb-6">Review Answers</h2>
+                        <div id="review-questions-container" class="space-y-8">
+                            <!-- Review questions will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Page -->
+            <div id="profile-page" class="page hidden">
+                <div class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-10">
+                    <div class="container mx-auto px-4">
+                        <div class="flex items-center mb-6">
+                            <button onclick="showPage('home')" class="mr-4 bg-white bg-opacity-20 p-2 rounded-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <h1 class="text-3xl font-bold">Your Profile</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container mx-auto px-4 py-8">
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <div class="p-6">
+                            <div class="flex flex-col md:flex-row">
+                                <div class="w-full md:w-1/3 mb-6 md:mb-0 md:pr-6">
+                                    <div class="bg-gray-100 p-6 rounded-lg">
+                                        <div class="flex justify-center mb-4">
+                                            <div class="w-24 h-24 bg-blue-600 rounded-full flex items-center justify-center text-white text-3xl font-bold" id="profile-avatar">JS</div>
+                                        </div>
+                                        <h2 class="text-xl font-bold text-center mb-2" id="profile-name">John Smith</h2>
+                                        <div id="membership-status" class="text-center mb-4">
+                                            <span class="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                                                Membership Active
+                                            </span>
+                                            <p class="text-sm text-gray-600 mt-1">Valid till: <span id="membership-date">31 Dec 2023</span></p>
+                                        </div>
+                                        <button onclick="showModal('edit-profile-modal')" class="bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition w-full">Edit Profile</button>
+                                    </div>
+                                </div>
+                                <div class="w-full md:w-2/3">
+                                    <h3 class="text-lg font-bold mb-4 pb-2 border-b">Personal Information</h3>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <p class="text-sm text-gray-600">Email</p>
+                                            <p class="font-medium" id="profile-email">john.smith@example.com</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600">Mobile Number</p>
+                                            <p class="font-medium" id="profile-mobile">+91 9876543210</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600">Category</p>
+                                            <p class="font-medium" id="profile-category">General</p>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm text-gray-600">Date of Birth</p>
+                                            <p class="font-medium" id="profile-dob">15 Jan 1995</p>
+                                        </div>
+                                    </div>
+
+                                    <h3 class="text-lg font-bold mt-8 mb-4 pb-2 border-b">Recent Activity</h3>
+                                    <div id="recent-activity" class="space-y-4">
+                                        <div class="bg-gray-50 p-4 rounded-lg">
+                                            <div class="flex justify-between items-center">
+                                                <div>
+                                                    <h4 class="font-medium">English - Vocabulary Test</h4>
+                                                    <p class="text-sm text-gray-600">Completed on 10 Jun 2023</p>
+                                                </div>
+                                                <div class="text-blue-600 font-bold">7/10</div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gray-50 p-4 rounded-lg">
+                                            <div class="flex justify-between items-center">
+                                                <div>
+                                                    <h4 class="font-medium">Reasoning - Logical Reasoning Test</h4>
+                                                    <p class="text-sm text-gray-600">Completed on 8 Jun 2023</p>
+                                                </div>
+                                                <div class="text-blue-600 font-bold">8/10</div>
+                                            </div>
+                                        </div>
+                                        <div class="bg-gray-50 p-4 rounded-lg">
+                                            <div class="flex justify-between items-center">
+                                                <div>
+                                                    <h4 class="font-medium">GS - Current Affairs Test</h4>
+                                                    <p class="text-sm text-gray-600">Completed on 5 Jun 2023</p>
+                                                </div>
+                                                <div class="text-blue-600 font-bold">6/10</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer id="main-footer" class="bg-gray-800 text-white py-8">
+            <div class="container mx-auto px-4">
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-4">TestPrep</h3>
+                        <p class="text-gray-400">Your one-stop solution for government exam preparation.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold mb-4">Quick Links</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">Home</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">About Us</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">Contact</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">FAQs</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold mb-4">Popular Exams</h4>
+                        <ul class="space-y-2">
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">SSC CGL</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">SSC CHSL</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">SSC GD</a></li>
+                            <li><a href="#" class="text-gray-400 hover:text-white transition">SSC MTS</a></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-bold mb-4">Connect With Us</h4>
+                        <div class="flex space-x-4">
+                            <a href="#" class="text-gray-400 hover:text-white transition">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-white transition">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
+                                </svg>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-white transition">
+                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748.353.137.882.3 1.857.344 1.054.048 1.37.058 4.041.058h.08c2.597 0 2.917-.01 3.96-.058.976-.045 1.505-.207 1.858-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-4.041v-.08c0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
+                    <p>&copy; 2023 TestPrep. All rights reserved.</p>
+                </div>
+            </div>
+        </footer>
+
+        <!-- Login Modal -->
+        <div id="login-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">Login</h2>
+                        <button onclick="hideModal('login-modal')" class="text-gray-500 hover:text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <form id="login-form" onsubmit="login(event)">
+                        <div class="mb-4">
+                            <label for="login-email" class="block text-gray-700 font-medium mb-2">Email</label>
+                            <input type="email" id="login-email" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="login-password" class="block text-gray-700 font-medium mb-2">Password</label>
+                            <input type="password" id="login-password" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition">Login</button>
+                    </form>
+                    <div class="mt-4 text-center">
+                        <p class="text-gray-600">Don't have an account? <a href="#" onclick="hideModal('login-modal'); showModal('signup-modal')" class="text-blue-600 hover:underline">Sign up</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Signup Modal -->
+        <div id="signup-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">Sign Up</h2>
+                        <button onclick="hideModal('signup-modal')" class="text-gray-500 hover:text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <form id="signup-form" onsubmit="signup(event)">
+                        <div class="mb-4">
+                            <label for="signup-name" class="block text-gray-700 font-medium mb-2">Full Name</label>
+                            <input type="text" id="signup-name" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="signup-email" class="block text-gray-700 font-medium mb-2">Email</label>
+                            <input type="email" id="signup-email" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="signup-mobile" class="block text-gray-700 font-medium mb-2">Mobile Number</label>
+                            <input type="tel" id="signup-mobile" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="signup-password" class="block text-gray-700 font-medium mb-2">Password</label>
+                            <input type="password" id="signup-password" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition">Sign Up</button>
+                    </form>
+                    <div class="mt-4 text-center">
+                        <p class="text-gray-600">Already have an account? <a href="#" onclick="hideModal('signup-modal'); showModal('login-modal')" class="text-blue-600 hover:underline">Login</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Profile Modal -->
+        <div id="edit-profile-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">Edit Profile</h2>
+                        <button onclick="hideModal('edit-profile-modal')" class="text-gray-500 hover:text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <form id="edit-profile-form" onsubmit="updateProfile(event)">
+                        <div class="mb-4">
+                            <label for="edit-name" class="block text-gray-700 font-medium mb-2">Full Name</label>
+                            <input type="text" id="edit-name" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="edit-email" class="block text-gray-700 font-medium mb-2">Email</label>
+                            <input type="email" id="edit-email" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+                        </div>
+                        <div class="mb-4">
+                            <label for="edit-mobile" class="block text-gray-700 font-medium mb-2">Mobile Number</label>
+                            <input type="tel" id="edit-mobile" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" disabled>
+                            <p class="text-xs text-gray-500 mt-1">Mobile number cannot be changed</p>
+                        </div>
+                        <div class="mb-4">
+                            <label for="edit-category" class="block text-gray-700 font-medium mb-2">Category</label>
+                            <select id="edit-category" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                                <option value="General">General</option>
+                                <option value="OBC">OBC</option>
+                                <option value="SC">SC</option>
+                                <option value="ST">ST</option>
+                                <option value="EWS">EWS</option>
+                            </select>
+                        </div>
+                        <div class="mb-6">
+                            <label for="edit-dob" class="block text-gray-700 font-medium mb-2">Date of Birth</label>
+                            <input type="date" id="edit-dob" class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white px-4 py-2 rounded-md font-medium hover:bg-blue-700 transition">Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pause Test Modal -->
+        <div id="pause-test-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">Pause Test</h2>
+                        <button onclick="hideModal('pause-test-modal')" class="text-gray-500 hover:text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="mb-6">Are you sure you want to pause the test? You can resume it later.</p>
+                    <div class="flex space-x-4">
+                        <button onclick="pauseTest()" class="flex-1 bg-yellow-500 text-white px-4 py-2 rounded-md font-medium hover:bg-yellow-600 transition">Pause Test</button>
+                        <button onclick="hideModal('pause-test-modal')" class="flex-1 bg-gray-200 text-gray-800 px-4 py-2 rounded-md font-medium hover:bg-gray-300 transition">Continue Test</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Test Modal -->
+        <div id="submit-test-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">Submit Test</h2>
+                        <button onclick="hideModal('submit-test-modal')" class="text-gray-500 hover:text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="mb-6">Are you sure you want to submit the test? You cannot change your answers after submission.</p>
+                    <div class="flex space-x-4">
+                        <button onclick="submitTest()" class="flex-1 bg-green-600 text-white px-4 py-2 rounded-md font-medium hover:bg-green-700 transition">Submit Test</button>
+                        <button onclick="hideModal('submit-test-modal')" class="flex-1 bg-gray-200 text-gray-800 px-4 py-2 rounded-md font-medium hover:bg-gray-300 transition">Continue Test</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leave Test Modal -->
+        <div id="leave-test-modal" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold">Leave Test</h2>
+                        <button onclick="hideModal('leave-test-modal')" class="text-gray-500 hover:text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="mb-6">Are you sure you want to leave the test? Your progress will be saved and you can resume later.</p>
+                    <div class="flex space-x-4">
+                        <button onclick="leaveTest()" class="flex-1 bg-yellow-500 text-white px-4 py-2 rounded-md font-medium hover:bg-yellow-600 transition">Pause & Leave</button>
+                        <button onclick="submitAndLeaveTest()" class="flex-1 bg-green-600 text-white px-4 py-2 rounded-md font-medium hover:bg-green-700 transition">Submit & Leave</button>
+                        <button onclick="hideModal('leave-test-modal')" class="flex-1 bg-gray-200 text-gray-800 px-4 py-2 rounded-md font-medium hover:bg-gray-300 transition">Stay</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="toast" class="fixed bottom-4 right-4 bg-gray-800 text-white px-6 py-3 rounded-md shadow-lg transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+            <p id="toast-message">Notification message</p>
+        </div>
+
+        <!-- Loading Overlay -->
+        <div id="loading-overlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white p-6 rounded-lg shadow-xl flex items-center">
+                <div class="loader w-8 h-8 border-4 border-gray-300 border-t-4 rounded-full mr-4"></div>
+                <p class="text-lg font-medium">Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Store
+        const store = {
+            currentUser: null,
+            currentExam: null,
+            currentSubject: null,
+            currentChapter: null,
+            currentTopic: null,
+            currentTest: null,
+            currentQuestion: 0,
+            testTimer: null,
+            testTimeRemaining: 0,
+            testPaused: false,
+            
+            // Sample data
+            exams: {
+                cgl: {
+                    id: 'cgl',
+                    name: 'SSC CGL',
+                    description: 'Combined Graduate Level Examination for various posts in government departments.',
+                    subjects: ['english', 'reasoning', 'gs', 'maths']
+                },
+                chsl: {
+                    id: 'chsl',
+                    name: 'SSC CHSL',
+                    description: 'Combined Higher Secondary Level Examination for clerical and data entry positions.',
+                    subjects: ['english', 'reasoning', 'gs', 'maths']
+                },
+                steno: {
+                    id: 'steno',
+                    name: 'SSC Stenographer',
+                    description: 'Examination for stenographer positions in various government departments.',
+                    subjects: ['english', 'reasoning', 'gs']
+                },
+                cpo: {
+                    id: 'cpo',
+                    name: 'SSC CPO',
+                    description: 'Central Police Organization Examination for police and paramilitary forces.',
+                    subjects: ['english', 'reasoning', 'gs', 'maths']
+                },
+                mts: {
+                    id: 'mts',
+                    name: 'SSC MTS',
+                    description: 'Multi-Tasking Staff Examination for various Group \'C\' posts.',
+                    subjects: ['english', 'reasoning', 'gs', 'maths']
+                },
+                gd: {
+                    id: 'gd',
+                    name: 'SSC GD',
+                    description: 'General Duty Constable Examination for paramilitary forces.',
+                    subjects: ['english', 'reasoning', 'gs', 'maths']
+                }
+            },
+            
+            subjects: {
+                english: {
+                    id: 'english',
+                    name: 'English',
+                    description: 'English language and comprehension for competitive exams.',
+                    color: 'blue',
+                    chapters: ['grammar', 'vocabulary', 'comprehension']
+                },
+                reasoning: {
+                    id: 'reasoning',
+                    name: 'Reasoning',
+                    description: 'Logical and analytical reasoning for competitive exams.',
+                    color: 'green',
+                    chapters: ['logical', 'analytical', 'verbal']
+                },
+                gs: {
+                    id: 'gs',
+                    name: 'General Studies',
+                    description: 'General knowledge and current affairs for competitive exams.',
+                    color: 'purple',
+                    chapters: ['history', 'geography', 'polity', 'current']
+                },
+                maths: {
+                    id: 'maths',
+                    name: 'Mathematics',
+                    description: 'Quantitative aptitude and mathematical skills for competitive exams.',
+                    color: 'red',
+                    chapters: ['arithmetic', 'algebra', 'geometry', 'data']
+                }
+            },
+            
+            chapters: {
+                // English chapters
+                grammar: {
+                    id: 'grammar',
+                    name: 'Grammar',
+                    description: 'Rules and principles of English grammar.',
+                    subjectId: 'english',
+                    topics: ['tenses', 'articles', 'prepositions']
+                },
+                vocabulary: {
+                    id: 'vocabulary',
+                    name: 'Vocabulary',
+                    description: 'Word meanings, synonyms, antonyms, and usage.',
+                    subjectId: 'english',
+                    topics: ['synonyms', 'antonyms', 'idioms']
+                },
+                comprehension: {
+                    id: 'comprehension',
+                    name: 'Reading Comprehension',
+                    description: 'Understanding and analyzing written passages.',
+                    subjectId: 'english',
+                    topics: ['passages', 'summary', 'inference']
+                },
+                
+                // Reasoning chapters
+                logical: {
+                    id: 'logical',
+                    name: 'Logical Reasoning',
+                    description: 'Logical puzzles and problems.',
+                    subjectId: 'reasoning',
+                    topics: ['syllogism', 'coding', 'blood']
+                },
+                analytical: {
+                    id: 'analytical',
+                    name: 'Analytical Reasoning',
+                    description: 'Analysis and interpretation of data.',
+                    subjectId: 'reasoning',
+                    topics: ['arrangement', 'series', 'analogy']
+                },
+                verbal: {
+                    id: 'verbal',
+                    name: 'Verbal Reasoning',
+                    description: 'Reasoning with words and language.',
+                    subjectId: 'reasoning',
+                    topics: ['statements', 'assumptions', 'arguments']
+                },
+                
+                // GS chapters
+                history: {
+                    id: 'history',
+                    name: 'History',
+                    description: 'Indian and world history.',
+                    subjectId: 'gs',
+                    topics: ['ancient', 'medieval', 'modern']
+                },
+                geography: {
+                    id: 'geography',
+                    name: 'Geography',
+                    description: 'Physical and political geography.',
+                    subjectId: 'gs',
+                    topics: ['physical', 'indian', 'world']
+                },
+                polity: {
+                    id: 'polity',
+                    name: 'Polity',
+                    description: 'Indian constitution and political system.',
+                    subjectId: 'gs',
+                    topics: ['constitution', 'governance', 'rights']
+                },
+                current: {
+                    id: 'current',
+                    name: 'Current Affairs',
+                    description: 'Recent events and developments.',
+                    subjectId: 'gs',
+                    topics: ['national', 'international', 'sports']
+                },
+                
+                // Maths chapters
+                arithmetic: {
+                    id: 'arithmetic',
+                    name: 'Arithmetic',
+                    description: 'Basic mathematical operations and calculations.',
+                    subjectId: 'maths',
+                    topics: ['percentage', 'ratio', 'average']
+                },
+                algebra: {
+                    id: 'algebra',
+                    name: 'Algebra',
+                    description: 'Algebraic expressions and equations.',
+                    subjectId: 'maths',
+                    topics: ['equations', 'inequalities', 'functions']
+                },
+                geometry: {
+                    id: 'geometry',
+                    name: 'Geometry',
+                    description: 'Properties and relations of points, lines, surfaces, and solids.',
+                    subjectId: 'maths',
+                    topics: ['triangles', 'circles', 'coordinate']
+                },
+                data: {
+                    id: 'data',
+                    name: 'Data Interpretation',
+                    description: 'Analysis and interpretation of data in various forms.',
+                    subjectId: 'maths',
+                    topics: ['tables', 'graphs', 'charts']
+                }
+            },
+            
+            topics: {
+                // Sample topic with questions for demonstration
+                tenses: {
+                    id: 'tenses',
+                    name: 'Tenses',
+                    description: 'Different forms of verbs that indicate time.',
+                    chapterId: 'grammar',
+                    questions: [
+                        {
+                            id: 1,
+                            text: 'He _____ to the market yesterday.',
+                            options: ['go', 'goes', 'went', 'gone'],
+                            correctAnswer: 2
+                        },
+                        {
+                            id: 2,
+                            text: 'She _____ a book now.',
+                            options: ['read', 'reads', 'is reading', 'was reading'],
+                            correctAnswer: 2
+                        },
+                        {
+                            id: 3,
+                            text: 'They _____ their homework by tomorrow.',
+                            options: ['will finish', 'will have finished', 'are finishing', 'finish'],
+                            correctAnswer: 1
+                        },
+                        {
+                            id: 4,
+                            text: 'I _____ here since morning.',
+                            options: ['am', 'was', 'have been', 'will be'],
+                            correctAnswer: 2
+                        },
+                        {
+                            id: 5,
+                            text: 'We _____ dinner when he called.',
+                            options: ['are having', 'were having', 'have', 'had'],
+                            correctAnswer: 1
+                        },
+                        {
+                            id: 6,
+                            text: 'He _____ tennis every Sunday.',
+                            options: ['plays', 'play', 'is playing', 'played'],
+                            correctAnswer: 0
+                        },
+                        {
+                            id: 7,
+                            text: 'She _____ the piano for five years.',
+                            options: ['learns', 'is learning', 'has been learning', 'learned'],
+                            correctAnswer: 2
+                        },
+                        {
+                            id: 8,
+                            text: 'They _____ to Paris next week.',
+                            options: ['go', 'will go', 'went', 'are going'],
+                            correctAnswer: 3
+                        },
+                        {
+                            id: 9,
+                            text: 'He _____ his keys yesterday.',
+                            options: ['loses', 'lost', 'has lost', 'had lost'],
+                            correctAnswer: 1
+                        },
+                        {
+                            id: 10,
+                            text: 'I _____ my breakfast before I left for work.',
+                            options: ['have', 'had', 'had had', 'was having'],
+                            correctAnswer: 1
+                        }
+                    ]
+                },
+                
+                // Other topics with placeholder data
+                articles: {
+                    id: 'articles',
+                    name: 'Articles',
+                    description: 'Usage of a, an, and the in English.',
+                    chapterId: 'grammar',
+                    questions: Array(10).fill().map((_, i) => ({
+                        id: i + 1,
+                        text: `Sample question ${i + 1} about articles.`,
+                        options: ['Option A', 'Option B', 'Option C', 'Option D'],
+                        correctAnswer: Math.floor(Math.random() * 4)
+                    }))
+                },
+                
+                prepositions: {
+                    id: 'prepositions',
+                    name: 'Prepositions',
+                    description: 'Words that show the relationship between a noun and other words in a sentence.',
+                    chapterId: 'grammar',
+                    questions: Array(10).fill().map((_, i) => ({
+                        id: i + 1,
+                        text: `Sample question ${i + 1} about prepositions.`,
+                        options: ['Option A', 'Option B', 'Option C', 'Option D'],
+                        correctAnswer: Math.floor(Math.random() * 4)
+                    }))
+                },
+                
+                // Add more topics with placeholder questions
+                synonyms: {
+                    id: 'synonyms',
+                    name: 'Synonyms',
+                    description: 'Words with similar meanings.',
+                    chapterId: 'vocabulary',
+                    questions: Array(10).fill().map((_, i) => ({
+                        id: i + 1,
+                        text: `Sample question ${i + 1} about synonyms.`,
+                        options: ['Option A', 'Option B', 'Option C', 'Option D'],
+                        correctAnswer: Math.floor(Math.random() * 4)
+                    }))
+                }
+            },
+            
+            users: {
+                'user1@example.com': {
+                    id: 'user1',
+                    name: 'John Smith',
+                    email: 'user1@example.com',
+                    mobile: '+91 9876543210',
+                    password: 'password123',
+                    category: 'General',
+                    dob: '1995-01-15',
+                    membershipStatus: 'active',
+                    membershipExpiry: '2023-12-31',
+                    tests: []
+                }
+            }
+        };
+
+        // Utility Functions
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.add('hidden');
+            });
+            document.getElementById(`${pageId}-page`).classList.remove('hidden');
+            
+            // Show/hide header and footer based on test page
+            if (pageId === 'test') {
+                document.getElementById('main-header').classList.add('hidden');
+                document.getElementById('main-footer').classList.add('hidden');
+            } else {
+                document.getElementById('main-header').classList.remove('hidden');
+                document.getElementById('main-footer').classList.remove('hidden');
+            }
+            
+            window.scrollTo(0, 0);
+        }
+
+        function showModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+            document.getElementById(modalId).classList.add('flex');
+        }
+
+        function hideModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            document.getElementById(modalId).classList.remove('flex');
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastMessage.textContent = message;
+            
+            if (type === 'success') {
+                toast.classList.add('bg-green-600');
+                toast.classList.remove('bg-red-600', 'bg-gray-800');
+            } else if (type === 'error') {
+                toast.classList.add('bg-red-600');
+                toast.classList.remove('bg-green-600', 'bg-gray-800');
+            } else {
+                toast.classList.add('bg-gray-800');
+                toast.classList.remove('bg-green-600', 'bg-red-600');
+            }
+            
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function showLoading() {
+            document.getElementById('loading-overlay').classList.remove('hidden');
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').classList.add('hidden');
+        }
+
+        function scrollToExams() {
+            document.getElementById('exams-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Authentication Functions
+        function login(event) {
+            event.preventDefault();
+            
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            
+            showLoading();
+            
+            // Simulate API call
+            setTimeout(() => {
+                hideLoading();
+                
+                const user = store.users[email];
+                
+                if (user && user.password === password) {
+                    store.currentUser = user;
+                    updateAuthUI();
+                    hideModal('login-modal');
+                    showToast('Login successful!', 'success');
+                } else {
+                    showToast('Invalid email or password.', 'error');
+                }
+            }, 1000);
+        }
+
+        function signup(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const mobile = document.getElementById('signup-mobile').value;
+            const password = document.getElementById('signup-password').value;
+            
+            showLoading();
+            
+            // Simulate API call
+            setTimeout(() => {
+                hideLoading();
+                
+                if (store.users[email]) {
+                    showToast('Email already registered.', 'error');
+                    return;
+                }
+                
+                const newUser = {
+                    id: `user${Object.keys(store.users).length + 1}`,
+                    name,
+                    email,
+                    mobile,
+                    password,
+                    category: null,
+                    dob: null,
+                    membershipStatus: 'active',
+                    membershipExpiry: new Date(new Date().setMonth(new Date().getMonth() + 1)).toISOString().split('T')[0],
+                    tests: []
+                };
+                
+                store.users[email] = newUser;
+                store.currentUser = newUser;
+                
+                updateAuthUI();
+                hideModal('signup-modal');
+                showToast('Account created successfully!', 'success');
+            }, 1000);
+        }
+
+        function logout() {
+            store.currentUser = null;
+            updateAuthUI();
+            showPage('home');
+            showToast('Logged out successfully!');
+        }
+
+        function updateAuthUI() {
+            const authButtons = document.getElementById('auth-buttons');
+            const userMenu = document.getElementById('user-menu');
+            
+            if (store.currentUser) {
+                authButtons.classList.add('hidden');
+                userMenu.classList.remove('hidden');
+            } else {
+                authButtons.classList.remove('hidden');
+                userMenu.classList.add('hidden');
+            }
+        }
+
+        function updateProfile(event) {
+            event.preventDefault();
+            
+            if (!store.currentUser) {
+                showToast('You must be logged in to update your profile.', 'error');
+                return;
+            }
+            
+            const name = document.getElementById('edit-name').value;
+            const email = document.getElementById('edit-email').value;
+            const category = document.getElementById('edit-category').value;
+            const dob = document.getElementById('edit-dob').value;
+            
+            showLoading();
+            
+            // Simulate API call
+            setTimeout(() => {
+                hideLoading();
+                
+                // Update user data
+                const oldEmail = store.currentUser.email;
+                
+                if (oldEmail !== email && store.users[email]) {
+                    showToast('Email already in use.', 'error');
+                    return;
+                }
+                
+                // Remove old email entry if changed
+                if (oldEmail !== email) {
+                    delete store.users[oldEmail];
+                }
+                
+                store.currentUser.name = name;
+                store.currentUser.email = email;
+                store.currentUser.category = category;
+                store.currentUser.dob = dob;
+                
+                // Update users object with new email key
+                store.users[email] = store.currentUser;
+                
+                // Update profile display
+                updateProfileDisplay();
+                
+                hideModal('edit-profile-modal');
+                showToast('Profile updated successfully!', 'success');
+            }, 1000);
+        }
+
+        function updateProfileDisplay() {
+            if (!store.currentUser) return;
+            
+            const user = store.currentUser;
+            
+            // Update profile avatar with initials
+            const initials = user.name.split(' ').map(n => n[0]).join('').toUpperCase();
+            document.getElementById('profile-avatar').textContent = initials;
+            
+            // Update profile details
+            document.getElementById('profile-name').textContent = user.name;
+            document.getElementById('profile-email').textContent = user.email;
+            document.getElementById('profile-mobile').textContent = user.mobile;
+            document.getElementById('profile-category').textContent = user.category || 'Not set';
+            document.getElementById('profile-dob').textContent = user.dob ? new Date(user.dob).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Not set';
+            
+            // Update membership status
+            const membershipStatus = document.getElementById('membership-status').querySelector('span');
+            const membershipDate = document.getElementById('membership-date');
+            
+            if (user.membershipStatus === 'active') {
+                membershipStatus.textContent = 'Membership Active';
+                membershipStatus.classList.add('bg-green-100', 'text-green-800');
+                membershipStatus.classList.remove('bg-red-100', 'text-red-800');
+            } else {
+                membershipStatus.textContent = 'Membership Expired';
+                membershipStatus.classList.add('bg-red-100', 'text-red-800');
+                membershipStatus.classList.remove('bg-green-100', 'text-green-800');
+            }
+            
+            membershipDate.textContent = new Date(user.membershipExpiry).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+            
+            // Update edit profile form
+            document.getElementById('edit-name').value = user.name;
+            document.getElementById('edit-email').value = user.email;
+            document.getElementById('edit-mobile').value = user.mobile;
+            if (user.category) {
+                document.getElementById('edit-category').value = user.category;
+            }
+            if (user.dob) {
+                document.getElementById('edit-dob').value = user.dob;
+            }
+        }
+
+        // Exam Navigation Functions
+        function showExamDetails(examId) {
+            if (!store.exams[examId]) {
+                showToast('Exam not found.', 'error');
+                return;
+            }
+            
+            store.currentExam = store.exams[examId];
+            
+            // Update exam details
+            document.getElementById('exam-title').textContent = store.currentExam.name;
+            document.getElementById('exam-description').textContent = store.currentExam.description;
+            
+            // Load subjects
+            const subjectsContainer = document.getElementById('subjects-container');
+            subjectsContainer.innerHTML = '';
+            
+            store.currentExam.subjects.forEach(subjectId => {
+                const subject = store.subjects[subjectId];
+                
+                if (!subject) return;
+                
+                const subjectCard = document.createElement('div');
+                subjectCard.className = `subject-card bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-transform`;
+                subjectCard.innerHTML = `
+                    <div class="h-2 bg-${subject.color}-600"></div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-2">${subject.name}</h3>
+                        <p class="text-gray-600 mb-4">${subject.description}</p>
+                    </div>
+                `;
+                
+                subjectCard.addEventListener('click', () => {
+                    showSubjectDetails(subject.id);
+                });
+                
+                subjectsContainer.appendChild(subjectCard);
+            });
+            
+            showPage('exam-details');
+        }
+
+        function showSubjectDetails(subjectId) {
+            if (!store.subjects[subjectId]) {
+                showToast('Subject not found.', 'error');
+                return;
+            }
+            
+            store.currentSubject = store.subjects[subjectId];
+            
+            // Update subject details
+            document.getElementById('subject-title').textContent = store.currentSubject.name;
+            document.getElementById('subject-description').textContent = store.currentSubject.description;
+            
+            // Set back button action
+            document.getElementById('back-to-exam').onclick = () => {
+                showExamDetails(store.currentExam.id);
+            };
+            
+            // Load chapters
+            const chaptersContainer = document.getElementById('chapters-container');
+            chaptersContainer.innerHTML = '';
+            
+            store.currentSubject.chapters.forEach(chapterId => {
+                const chapter = store.chapters[chapterId];
+                
+                if (!chapter) return;
+                
+                const chapterCard = document.createElement('div');
+                chapterCard.className = `chapter-card bg-white rounded-lg shadow-md p-6 cursor-pointer transition-all`;
+                chapterCard.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xl font-bold">${chapter.name}</h3>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                    <p class="text-gray-600 mt-2">${chapter.description}</p>
+                `;
+                
+                chapterCard.addEventListener('click', () => {
+                    showChapterDetails(chapter.id);
+                });
+                
+                chaptersContainer.appendChild(chapterCard);
+            });
+            
+            showPage('subject-details');
+        }
+
+        function showChapterDetails(chapterId) {
+            if (!store.chapters[chapterId]) {
+                showToast('Chapter not found.', 'error');
+                return;
+            }
+            
+            store.currentChapter = store.chapters[chapterId];
+            
+            // Update chapter details
+            document.getElementById('chapter-title').textContent = store.currentChapter.name;
+            document.getElementById('chapter-description').textContent = store.currentChapter.description;
+            
+            // Set back button action
+            document.getElementById('back-to-subject').onclick = () => {
+                showSubjectDetails(store.currentChapter.subjectId);
+            };
+            
+            // Load topics
+            const topicsContainer = document.getElementById('topics-container');
+            topicsContainer.innerHTML = '';
+            
+            store.currentChapter.topics.forEach(topicId => {
+                const topic = store.topics[topicId];
+                
+                if (!topic) return;
+                
+                const topicCard = document.createElement('div');
+                topicCard.className = `topic-card bg-white rounded-lg shadow-md p-6 cursor-pointer transition-all`;
+                topicCard.innerHTML = `
+                    <h3 class="text-lg font-bold mb-2">${topic.name}</h3>
+                    <p class="text-gray-600 mb-4">${topic.description}</p>
+                    <div class="flex items-center text-blue-600">
+                        <span class="mr-2">Practice Test</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                `;
+                
+                topicCard.addEventListener('click', () => {
+                    showTopicDetails(topic.id);
+                });
+                
+                topicsContainer.appendChild(topicCard);
+            });
+            
+            showPage('chapter-details');
+        }
+
+        function showTopicDetails(topicId) {
+            if (!store.topics[topicId]) {
+                showToast('Topic not found.', 'error');
+                return;
+            }
+            
+            store.currentTopic = store.topics[topicId];
+            
+            // Update topic details
+            document.getElementById('topic-title').textContent = store.currentTopic.name;
+            document.getElementById('topic-description').textContent = store.currentTopic.description;
+            
+            // Set back button action
+            document.getElementById('back-to-chapter').onclick = () => {
+                showChapterDetails(store.currentTopic.chapterId);
+            };
+            
+            // Set start test button action
+            document.getElementById('start-test-btn').onclick = () => {
+                startTest();
+            };
+            
+            showPage('topic-details');
+        }
+
+        // Test Functions
+        function startTest() {
+            if (!store.currentUser) {
+                showToast('Please login to take the test.', 'error');
+                showModal('login-modal');
+                return;
+            }
+            
+            if (!store.currentTopic || !store.currentTopic.questions || store.currentTopic.questions.length === 0) {
+                showToast('No questions available for this topic.', 'error');
+                return;
+            }
+            
+            // Initialize test
+            store.currentTest = {
+                id: `test_${Date.now()}`,
+                topicId: store.currentTopic.id,
+                startTime: new Date(),
+                endTime: null,
+                timeSpent: 0,
+                answers: Array(store.currentTopic.questions.length).fill(null),
+                status: 'in-progress'
+            };
+            
+            store.currentQuestion = 0;
+            store.testTimeRemaining = 15 * 60; // 15 minutes in seconds
+            store.testPaused = false;
+            
+            // Update test header
+            document.getElementById('test-header-title').textContent = `Test: ${store.currentTopic.name}`;
+            
+            // Load first question
+            loadQuestion(0);
+            
+            // Initialize question buttons
+            const questionButtons = document.getElementById('question-buttons');
+            questionButtons.innerHTML = '';
+            
+            store.currentTopic.questions.forEach((_, index) => {
+                const button = document.createElement('button');
+                button.className = 'w-8 h-8 rounded-full bg-gray-300 text-gray-800 font-medium flex items-center justify-center';
+                button.textContent = index + 1;
+                button.onclick = () => {
+                    loadQuestion(index);
+                };
+                
+                questionButtons.appendChild(button);
+            });
+            
+            // Start timer
+            startTimer();
+            
+            // Show test page
+            showPage('test');
+            
+            // Initialize question panel for mobile
+            initQuestionPanel();
+        }
+
+        function loadQuestion(index) {
+            if (index < 0 || index >= store.currentTopic.questions.length) {
+                return;
+            }
+            
+            store.currentQuestion = index;
+            const question = store.currentTopic.questions[index];
+            
+            // Update question container
+            const questionContainer = document.getElementById('question-container');
+            questionContainer.innerHTML = `
+                <div class="mb-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <span class="text-sm text-gray-500">Question ${index + 1} of ${store.currentTopic.questions.length}</span>
+                        <button id="mark-review-btn" class="text-red-600 text-sm flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
+                            </svg>
+                            Mark for Review
+                        </button>
+                    </div>
+                    <h3 class="text-xl font-medium mb-6">${question.text}</h3>
+                    <div class="space-y-4" id="options-container">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="option-item">
+                                <label class="flex items-start p-4 border rounded-lg ${store.currentTest.answers[index] === optIndex ? 'bg-blue-50 border-blue-500' : 'border-gray-300 hover:bg-gray-50'}">
+                                    <input type="radio" name="question-option" value="${optIndex}" class="mt-1 mr-3" ${store.currentTest.answers[index] === optIndex ? 'checked' : ''}>
+                                    <span>${option}</span>
+                                </label>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+            
+            // Add event listeners to options
+            const optionInputs = questionContainer.querySelectorAll('input[type="radio"]');
+            optionInputs.forEach((input, optIndex) => {
+                input.addEventListener('change', () => {
+                    store.currentTest.answers[index] = optIndex;
+                    updateQuestionStatus(index, 'answered');
+                });
+            });
+            
+            // Add event listener to mark for review button
+            const markReviewBtn = document.getElementById('mark-review-btn');
+            markReviewBtn.addEventListener('click', () => {
+                updateQuestionStatus(index, 'review');
+            });
+            
+            // Update navigation buttons
+            const prevBtn = document.getElementById('prev-question-btn');
+            const nextBtn = document.getElementById('next-question-btn');
+            
+            prevBtn.disabled = index === 0;
+            prevBtn.classList.toggle('opacity-50', index === 0);
+            
+            nextBtn.textContent = index === store.currentTopic.questions.length - 1 ? 'Finish' : 'Next';
+            
+            // Update question buttons
+            updateQuestionButtons();
+        }
+
+        function updateQuestionStatus(index, status) {
+            const questionButtons = document.getElementById('question-buttons').children;
+            const button = questionButtons[index];
+            
+            // Remove existing status classes
+            button.classList.remove('bg-green-500', 'bg-red-500', 'text-white');
+            
+            if (status === 'answered') {
+                button.classList.add('bg-green-500', 'text-white');
+            } else if (status === 'review') {
+                button.classList.add('bg-red-500', 'text-white');
+            }
+        }
+
+        function updateQuestionButtons() {
+            const questionButtons = document.getElementById('question-buttons').children;
+            
+            for (let i = 0; i < questionButtons.length; i++) {
+                const button = questionButtons[i];
+                
+                // Remove active class from all buttons
+                button.classList.remove('ring-2', 'ring-blue-500');
+                
+                // Add active class to current question button
+                if (i === store.currentQuestion) {
+                    button.classList.add('ring-2', 'ring-blue-500');
+                }
+            }
+        }
+
+        function startTimer() {
+            // Clear existing timer
+            if (store.testTimer) {
+                clearInterval(store.testTimer);
+            }
+            
+            // Update timer display
+            updateTimerDisplay();
+            
+            // Start new timer
+            store.testTimer = setInterval(() => {
+                if (store.testPaused) return;
+                
+                store.testTimeRemaining--;
+                updateTimerDisplay();
+                
+                if (store.testTimeRemaining <= 0) {
+                    clearInterval(store.testTimer);
+                    submitTest();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(store.testTimeRemaining / 60);
+            const seconds = store.testTimeRemaining % 60;
+            
+            document.getElementById('test-timer').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Change color when time is running out
+            if (store.testTimeRemaining <= 60) {
+                document.getElementById('test-timer').classList.add('bg-red-100', 'text-red-800');
+                document.getElementById('test-timer').classList.remove('bg-blue-100', 'text-blue-800');
+            }
+        }
+
+        function initQuestionPanel() {
+            const toggleBtn = document.getElementById('toggle-question-panel');
+            const questionPanel = document.getElementById('question-panel');
+            
+            toggleBtn.addEventListener('click', () => {
+                if (questionPanel.classList.contains('h-0')) {
+                    questionPanel.classList.remove('h-0');
+                    questionPanel.classList.add('h-64');
+                    toggleBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    `;
+                } else {
+                    questionPanel.classList.add('h-0');
+                    questionPanel.classList.remove('h-64');
+                    toggleBtn.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
+                        </svg>
+                    `;
+                }
+            });
+            
+            // Set up navigation buttons
+            document.getElementById('prev-question-btn').addEventListener('click', () => {
+                if (store.currentQuestion > 0) {
+                    loadQuestion(store.currentQuestion - 1);
+                }
+            });
+            
+            document.getElementById('next-question-btn').addEventListener('click', () => {
+                if (store.currentQuestion < store.currentTopic.questions.length - 1) {
+                    loadQuestion(store.currentQuestion + 1);
+                } else {
+                    showModal('submit-test-modal');
+                }
+            });
+            
+            // Set up test control buttons
+            document.getElementById('pause-test-btn').addEventListener('click', () => {
+                showModal('pause-test-modal');
+            });
+            
+            document.getElementById('submit-test-btn').addEventListener('click', () => {
+                showModal('submit-test-modal');
+            });
+        }
+
+        function pauseTest() {
+            store.testPaused = true;
+            store.currentTest.timeSpent += (15 * 60) - store.testTimeRemaining;
+            
+            hideModal('pause-test-modal');
+            showToast('Test paused. You can resume it later.');
+            
+            // Save test state
+            if (store.currentUser) {
+                const testIndex = store.currentUser.tests.findIndex(t => t.id === store.currentTest.id);
+                
+                if (testIndex >= 0) {
+                    store.currentUser.tests[testIndex] = store.currentTest;
+                } else {
+                    store.currentUser.tests.push(store.currentTest);
+                }
+            }
+            
+            showPage('topic-details');
+        }
+
+        function leaveTest() {
+            pauseTest();
+            hideModal('leave-test-modal');
+        }
+
+        function submitAndLeaveTest() {
+            submitTest();
+            hideModal('leave-test-modal');
+        }
+
+        function submitTest() {
+            clearInterval(store.testTimer);
+            
+            // Calculate time spent
+            store.currentTest.timeSpent += (15 * 60) - store.testTimeRemaining;
+            store.currentTest.endTime = new Date();
+            store.currentTest.status = 'completed';
+            
+            // Calculate results
+            const results = calculateResults();
+            
+            // Save test results
+            if (store.currentUser) {
+                const testIndex = store.currentUser.tests.findIndex(t => t.id === store.currentTest.id);
+                
+                if (testIndex >= 0) {
+                    store.currentUser.tests[testIndex] = {
+                        ...store.currentTest,
+                        results
+                    };
+                } else {
+                    store.currentUser.tests.push({
+                        ...store.currentTest,
+                        results
+                    });
+                }
+            }
+            
+            // Update results page
+            document.getElementById('result-score').textContent = `${results.correct}/${store.currentTopic.questions.length}`;
+            document.getElementById('result-progress').style.width = `${(results.correct / store.currentTopic.questions.length) * 100}%`;
+            document.getElementById('result-correct').textContent = results.correct;
+            document.getElementById('result-incorrect').textContent = results.incorrect;
+            document.getElementById('result-unattempted').textContent = results.unattempted;
+            
+            // Set back button action
+            document.getElementById('back-to-topic-btn').onclick = () => {
+                showTopicDetails(store.currentTopic.id);
+            };
+            
+            // Hide review container
+            document.getElementById('answers-review-container').classList.add('hidden');
+            
+            hideModal('submit-test-modal');
+            showPage('test-results');
+        }
+
+        function calculateResults() {
+            let correct = 0;
+            let incorrect = 0;
+            let unattempted = 0;
+            
+            store.currentTest.answers.forEach((answer, index) => {
+                const question = store.currentTopic.questions[index];
+                
+                if (answer === null) {
+                    unattempted++;
+                } else if (answer === question.correctAnswer) {
+                    correct++;
+                } else {
+                    incorrect++;
+                }
+            });
+            
+            return {
+                correct,
+                incorrect,
+                unattempted,
+                score: correct,
+                total: store.currentTopic.questions.length
+            };
+        }
+
+        function reviewTest() {
+            const reviewContainer = document.getElementById('review-questions-container');
+            reviewContainer.innerHTML = '';
+            
+            store.currentTopic.questions.forEach((question, index) => {
+                const userAnswer = store.currentTest.answers[index];
+                const isCorrect = userAnswer === question.correctAnswer;
+                
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'bg-white rounded-lg shadow-md p-6';
+                questionDiv.innerHTML = `
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-medium">Question ${index + 1}</h3>
+                        <span class="px-3 py-1 rounded-full text-sm font-medium ${isCorrect ? 'bg-green-100 text-green-800' : userAnswer === null ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800'}">
+                            ${isCorrect ? 'Correct' : userAnswer === null ? 'Unattempted' : 'Incorrect'}
+                        </span>
+                    </div>
+                    <p class="mb-4">${question.text}</p>
+                    <div class="space-y-2">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="p-3 rounded-lg ${
+                                optIndex === question.correctAnswer ? 'bg-green-100 border border-green-500' : 
+                                optIndex === userAnswer && optIndex !== question.correctAnswer ? 'bg-red-100 border border-red-500' : 
+                                'bg-gray-50 border border-gray-300'
+                            }">
+                                <div class="flex items-center">
+                                    <span class="w-5 h-5 rounded-full flex items-center justify-center mr-3 ${
+                                        optIndex === question.correctAnswer ? 'bg-green-500 text-white' : 
+                                        optIndex === userAnswer && optIndex !== question.correctAnswer ? 'bg-red-500 text-white' : 
+                                        'bg-gray-300 text-gray-700'
+                                    }">${String.fromCharCode(65 + optIndex)}</span>
+                                    <span>${option}</span>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    ${optIndex === question.correctAnswer && optIndex !== userAnswer ? `
+                        <div class="mt-4 pt-4 border-t border-gray-200">
+                            <p class="text-sm font-medium text-gray-700">Correct Answer: ${question.options[question.correctAnswer]}</p>
+                        </div>
+                    ` : ''}
+                `;
+                
+                reviewContainer.appendChild(questionDiv);
+            });
+            
+            document.getElementById('answers-review-container').classList.remove('hidden');
+        }
+
+        function retakeTest() {
+            startTest();
+        }
+
+        // Handle browser back button during test
+        window.addEventListener('popstate', function(event) {
+            if (document.getElementById('test-page').classList.contains('hidden') === false) {
+                event.preventDefault();
+                showModal('leave-test-modal');
+            }
+        });
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            // Show home page by default
+            showPage('home');
+            
+            // Update auth UI
+            updateAuthUI();
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'968e5afaf6f45952',t:'MTc1NDE0NTg4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
