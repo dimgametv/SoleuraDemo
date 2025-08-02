@@ -1,0 +1,2114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduTest - Online Test Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .slide-panel {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .slide-panel.open {
+            transform: translateX(0);
+        }
+        .slide-up-panel {
+            transform: translateY(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+        .slide-up-panel.open {
+            transform: translateY(0);
+        }
+        .question-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 8px;
+        }
+        @media (max-width: 640px) {
+            .question-grid {
+                grid-template-columns: repeat(auto-fill, minmax(35px, 1fr));
+                gap: 6px;
+            }
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .exam-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .exam-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.1);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .exam-card:hover::before {
+            opacity: 1;
+        }
+        
+        .stats-card {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+        
+        .feature-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .floating-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .progress-bar {
+            background: linear-gradient(90deg, #4ade80, #22c55e);
+            border-radius: 10px;
+            height: 8px;
+            transition: width 0.3s ease;
+        }
+        
+        .exam-badge {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+        
+        .subject-card {
+            background: linear-gradient(135deg, #e0c3fc 0%, #9bb5ff 100%);
+        }
+        
+        .chapter-card {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+        }
+        
+        .topic-card {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+        }
+        
+        .practice-card {
+            background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%);
+        }
+        
+        .difficulty-easy { color: #22c55e; }
+        .difficulty-medium { color: #f59e0b; }
+        .difficulty-hard { color: #ef4444; }
+        
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Navigation -->
+    <nav id="navbar" class="gradient-bg text-white shadow-2xl relative overflow-hidden">
+        <div class="absolute inset-0 bg-black opacity-10"></div>
+        <div class="container mx-auto px-2 sm:px-4 py-4 relative z-10">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-2 sm:space-x-4">
+                    <div class="flex items-center space-x-2 cursor-pointer" onclick="showHome()">
+                        <div class="w-8 h-8 bg-white rounded-lg flex items-center justify-center">
+                            <i class="fas fa-graduation-cap text-blue-600 text-lg"></i>
+                        </div>
+                        <h1 class="text-lg sm:text-2xl font-bold">EduTest</h1>
+                    </div>
+                </div>
+                <div id="navButtons" class="flex items-center space-x-2 sm:space-x-4">
+                    <button onclick="showLogin()" class="glassmorphism hover:bg-white hover:bg-opacity-20 px-3 sm:px-6 py-2 rounded-full text-sm font-medium transition-all duration-300">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Login
+                    </button>
+                    <button onclick="showSignup()" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 sm:px-6 py-2 rounded-full text-sm font-medium transition-all duration-300">
+                        <i class="fas fa-user-plus mr-2"></i>Sign Up
+                    </button>
+                </div>
+                <div id="userNav" class="hidden flex items-center space-x-1 sm:space-x-4">
+                    <div class="hidden sm:flex items-center space-x-2 glassmorphism px-3 py-2 rounded-full">
+                        <i class="fas fa-user-circle text-lg"></i>
+                        <span id="welcomeUser" class="text-sm font-medium"></span>
+                    </div>
+                    <button onclick="showProfile()" class="glassmorphism hover:bg-white hover:bg-opacity-20 px-2 sm:px-4 py-2 rounded-full text-xs sm:text-sm transition-all duration-300">
+                        <i class="fas fa-user mr-1"></i>Profile
+                    </button>
+                    <button onclick="logout()" class="bg-red-500 bg-opacity-80 hover:bg-opacity-100 px-2 sm:px-4 py-2 rounded-full text-xs sm:text-sm transition-all duration-300">
+                        <i class="fas fa-sign-out-alt mr-1"></i>Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+        <!-- Home Page -->
+        <div id="homePage" class="space-y-8">
+            <!-- Hero Section -->
+            <div class="gradient-bg rounded-3xl p-8 sm:p-12 text-white relative overflow-hidden">
+                <div class="absolute inset-0 bg-black opacity-10"></div>
+                <div class="relative z-10 text-center">
+                    <div class="floating-animation inline-block mb-6">
+                        <i class="fas fa-trophy text-6xl text-yellow-300"></i>
+                    </div>
+                    <h1 class="text-3xl sm:text-5xl font-bold mb-4">Welcome to EduTest</h1>
+                    <p class="text-lg sm:text-xl mb-8 opacity-90">Your Ultimate Test Preparation Platform</p>
+                    <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
+                        <div class="stats-card text-gray-800 px-6 py-3 rounded-full">
+                            <i class="fas fa-users mr-2"></i>
+                            <span class="font-semibold">50,000+ Students</span>
+                        </div>
+                        <div class="stats-card text-gray-800 px-6 py-3 rounded-full">
+                            <i class="fas fa-question-circle mr-2"></i>
+                            <span class="font-semibold">10,000+ Questions</span>
+                        </div>
+                        <div class="stats-card text-gray-800 px-6 py-3 rounded-full">
+                            <i class="fas fa-medal mr-2"></i>
+                            <span class="font-semibold">95% Success Rate</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features Section -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="bg-white rounded-2xl p-6 shadow-lg card-hover">
+                    <div class="text-center">
+                        <i class="fas fa-brain feature-icon text-4xl mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Smart Learning</h3>
+                        <p class="text-gray-600">AI-powered adaptive learning system</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl p-6 shadow-lg card-hover">
+                    <div class="text-center">
+                        <i class="fas fa-chart-line feature-icon text-4xl mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Performance Analytics</h3>
+                        <p class="text-gray-600">Detailed insights and progress tracking</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl p-6 shadow-lg card-hover">
+                    <div class="text-center">
+                        <i class="fas fa-mobile-alt feature-icon text-4xl mb-4"></i>
+                        <h3 class="text-xl font-bold mb-2">Mobile Friendly</h3>
+                        <p class="text-gray-600">Study anywhere, anytime on any device</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exams Section -->
+            <div>
+                <h2 class="text-2xl sm:text-3xl font-bold text-center mb-8 text-gray-800">
+                    <i class="fas fa-clipboard-list mr-3 text-blue-600"></i>
+                    Choose Your Exam
+                </h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="exam-card rounded-2xl p-6 text-white cursor-pointer card-hover relative z-10" onclick="showExam('cgl')">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="exam-badge text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
+                                Tier 1 & 2
+                            </div>
+                            <i class="fas fa-arrow-right text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">SSC CGL</h3>
+                        <p class="text-sm opacity-90 mb-4">Combined Graduate Level Examination</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span><i class="fas fa-clock mr-1"></i>100 Questions</span>
+                            <span><i class="fas fa-users mr-1"></i>8L+ Aspirants</span>
+                        </div>
+                    </div>
+                    
+                    <div class="exam-card rounded-2xl p-6 text-white cursor-pointer card-hover relative z-10" onclick="showExam('chsl')" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="exam-badge text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
+                                Tier 1 & 2
+                            </div>
+                            <i class="fas fa-arrow-right text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">SSC CHSL</h3>
+                        <p class="text-sm opacity-90 mb-4">Combined Higher Secondary Level</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span><i class="fas fa-clock mr-1"></i>100 Questions</span>
+                            <span><i class="fas fa-users mr-1"></i>5L+ Aspirants</span>
+                        </div>
+                    </div>
+                    
+                    <div class="exam-card rounded-2xl p-6 text-white cursor-pointer card-hover relative z-10" onclick="showExam('steno')" style="background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="exam-badge text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
+                                Grade C & D
+                            </div>
+                            <i class="fas fa-arrow-right text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">SSC Stenographer</h3>
+                        <p class="text-sm opacity-90 mb-4">Stenographer Grade C & D</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span><i class="fas fa-clock mr-1"></i>200 Questions</span>
+                            <span><i class="fas fa-users mr-1"></i>2L+ Aspirants</span>
+                        </div>
+                    </div>
+                    
+                    <div class="exam-card rounded-2xl p-6 text-white cursor-pointer card-hover relative z-10" onclick="showExam('cpo')" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); color: #374151;">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="exam-badge text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
+                                Paper 1 & 2
+                            </div>
+                            <i class="fas fa-arrow-right text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">SSC CPO</h3>
+                        <p class="text-sm opacity-90 mb-4">Central Police Organisation</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span><i class="fas fa-clock mr-1"></i>200 Questions</span>
+                            <span><i class="fas fa-users mr-1"></i>3L+ Aspirants</span>
+                        </div>
+                    </div>
+                    
+                    <div class="exam-card rounded-2xl p-6 text-white cursor-pointer card-hover relative z-10" onclick="showExam('mts')" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="exam-badge text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
+                                Paper 1
+                            </div>
+                            <i class="fas fa-arrow-right text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">SSC MTS</h3>
+                        <p class="text-sm opacity-90 mb-4">Multi Tasking Staff</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span><i class="fas fa-clock mr-1"></i>100 Questions</span>
+                            <span><i class="fas fa-users mr-1"></i>6L+ Aspirants</span>
+                        </div>
+                    </div>
+                    
+                    <div class="exam-card rounded-2xl p-6 text-white cursor-pointer card-hover relative z-10" onclick="showExam('gd')" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); color: #374151;">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="exam-badge text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
+                                CBE
+                            </div>
+                            <i class="fas fa-arrow-right text-xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold mb-2">SSC GD</h3>
+                        <p class="text-sm opacity-90 mb-4">General Duty Constable</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span><i class="fas fa-clock mr-1"></i>80 Questions</span>
+                            <span><i class="fas fa-users mr-1"></i>10L+ Aspirants</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginPage" class="hidden max-w-md mx-auto bg-white rounded-lg shadow-md p-4 sm:p-8">
+            <h2 class="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Login</h2>
+            <form onsubmit="handleLogin(event)">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                    <input type="email" id="loginEmail" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                    <input type="password" id="loginPassword" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">Login</button>
+            </form>
+            <p class="text-center mt-4">
+                Don't have an account? 
+                <button onclick="showSignup()" class="text-blue-600 hover:underline">Sign up</button>
+            </p>
+        </div>
+
+        <!-- Signup Form -->
+        <div id="signupPage" class="hidden max-w-md mx-auto bg-white rounded-lg shadow-md p-4 sm:p-8">
+            <h2 class="text-xl sm:text-2xl font-bold text-center mb-4 sm:mb-6">Sign Up</h2>
+            <form onsubmit="handleSignup(event)">
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
+                    <input type="text" id="signupName" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                    <input type="email" id="signupEmail" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Mobile Number</label>
+                    <input type="tel" id="signupMobile" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                    <input type="password" id="signupPassword" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500" required>
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">Sign Up</button>
+            </form>
+            <p class="text-center mt-4">
+                Already have an account? 
+                <button onclick="showLogin()" class="text-blue-600 hover:underline">Login</button>
+            </p>
+        </div>
+
+        <!-- Profile Page -->
+        <div id="profilePage" class="hidden max-w-2xl mx-auto bg-white rounded-lg shadow-md p-4 sm:p-8">
+            <h2 class="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">User Profile</h2>
+            <form onsubmit="updateProfile(event)">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Full Name</label>
+                        <input type="text" id="profileName" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Email</label>
+                        <input type="email" id="profileEmail" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Mobile Number</label>
+                        <input type="tel" id="profileMobile" class="w-full px-3 py-2 border rounded-lg bg-gray-100" readonly>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Category</label>
+                        <select id="profileCategory" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                            <option value="">Select Category</option>
+                            <option value="General">General</option>
+                            <option value="OBC">OBC</option>
+                            <option value="SC">SC</option>
+                            <option value="ST">ST</option>
+                            <option value="EWS">EWS</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Date of Birth</label>
+                        <input type="date" id="profileDOB" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-bold mb-2">Membership Status</label>
+                        <div class="px-3 py-2 border rounded-lg bg-gray-100">
+                            <span id="membershipStatus" class="font-semibold text-green-600">Active</span>
+                            <span id="membershipDate" class="text-sm text-gray-600 ml-2">Expires: 31 Dec 2024</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-6">
+                    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Update Profile</button>
+                    <button type="button" onclick="showHome()" class="ml-4 bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700">Back to Home</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Exam Page -->
+        <div id="examPage" class="hidden space-y-8">
+            <div class="flex items-center mb-6">
+                <button onclick="showHome()" class="glassmorphism text-gray-700 px-4 py-2 rounded-full hover:bg-gray-100 mr-4 transition-all duration-300">
+                    <i class="fas fa-arrow-left mr-2"></i>Back to Home
+                </button>
+            </div>
+            
+            <!-- Exam Header -->
+            <div id="examHeader" class="gradient-bg rounded-3xl p-8 text-white relative overflow-hidden">
+                <div class="absolute inset-0 bg-black opacity-10"></div>
+                <div class="relative z-10">
+                    <div class="flex flex-col lg:flex-row justify-between items-start lg:items-center">
+                        <div class="mb-6 lg:mb-0">
+                            <h1 id="examTitle" class="text-3xl sm:text-4xl font-bold mb-2"></h1>
+                            <p id="examFullName" class="text-lg opacity-90 mb-4"></p>
+                            <p id="examDescription" class="text-sm opacity-80 max-w-2xl"></p>
+                        </div>
+                        <div class="bg-white bg-opacity-20 rounded-2xl p-6 backdrop-blur-sm">
+                            <div class="grid grid-cols-2 gap-4 text-center">
+                                <div>
+                                    <div class="text-2xl font-bold" id="examTotalQuestions"></div>
+                                    <div class="text-sm opacity-80">Questions</div>
+                                </div>
+                                <div>
+                                    <div class="text-2xl font-bold" id="examDuration"></div>
+                                    <div class="text-sm opacity-80">Minutes</div>
+                                </div>
+                                <div>
+                                    <div class="text-2xl font-bold" id="examTotalMarks"></div>
+                                    <div class="text-sm opacity-80">Total Marks</div>
+                                </div>
+                                <div>
+                                    <div class="text-2xl font-bold" id="examNegativeMarking"></div>
+                                    <div class="text-sm opacity-80">Negative</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Exam Details -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-2">
+                    <h3 class="text-2xl font-bold mb-6 text-gray-800">
+                        <i class="fas fa-book-open mr-3 text-blue-600"></i>
+                        Subjects
+                    </h3>
+                    <div id="subjectsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-6"></div>
+                </div>
+                
+                <div class="space-y-6">
+                    <!-- Exam Info Card -->
+                    <div class="bg-white rounded-2xl p-6 shadow-lg">
+                        <h4 class="text-xl font-bold mb-4 text-gray-800">
+                            <i class="fas fa-info-circle mr-2 text-blue-600"></i>
+                            Exam Information
+                        </h4>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Eligibility:</span>
+                                <span id="examEligibility" class="font-medium text-right max-w-xs"></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Age Limit:</span>
+                                <span id="examAgeLimit" class="font-medium"></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Attempts:</span>
+                                <span id="examAttempts" class="font-medium"></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Pattern:</span>
+                                <span id="examPattern" class="font-medium text-right max-w-xs"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Exam Tiers -->
+                    <div class="bg-white rounded-2xl p-6 shadow-lg">
+                        <h4 class="text-xl font-bold mb-4 text-gray-800">
+                            <i class="fas fa-layer-group mr-2 text-green-600"></i>
+                            Exam Structure
+                        </h4>
+                        <div id="examTiers" class="space-y-2"></div>
+                    </div>
+                    
+                    <!-- Quick Stats -->
+                    <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-6 text-white">
+                        <h4 class="text-xl font-bold mb-4">
+                            <i class="fas fa-chart-bar mr-2"></i>
+                            Quick Stats
+                        </h4>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="flex items-center">
+                                    <i class="fas fa-users mr-2"></i>
+                                    Active Students
+                                </span>
+                                <span class="font-bold">12,450+</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="flex items-center">
+                                    <i class="fas fa-question-circle mr-2"></i>
+                                    Practice Questions
+                                </span>
+                                <span class="font-bold">2,500+</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="flex items-center">
+                                    <i class="fas fa-trophy mr-2"></i>
+                                    Success Rate
+                                </span>
+                                <span class="font-bold">94%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Subject Page -->
+        <div id="subjectPage" class="hidden">
+            <div class="flex items-center mb-4 sm:mb-6">
+                <button onclick="goBackToExam()" class="bg-gray-600 text-white px-2 sm:px-4 py-1 sm:py-2 rounded-lg hover:bg-gray-700 mr-2 sm:mr-4 text-sm sm:text-base">← Back</button>
+                <h2 id="subjectTitle" class="text-lg sm:text-2xl font-bold"></h2>
+            </div>
+            <div id="chaptersGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"></div>
+        </div>
+
+        <!-- Chapter Page -->
+        <div id="chapterPage" class="hidden">
+            <div class="flex items-center mb-4 sm:mb-6">
+                <button onclick="goBackToSubject()" class="bg-gray-600 text-white px-2 sm:px-4 py-1 sm:py-2 rounded-lg hover:bg-gray-700 mr-2 sm:mr-4 text-sm sm:text-base">← Back</button>
+                <h2 id="chapterTitle" class="text-lg sm:text-2xl font-bold"></h2>
+            </div>
+            <div id="topicsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"></div>
+        </div>
+
+        <!-- Practice Sets Page -->
+        <div id="practiceSetsPage" class="hidden">
+            <div class="flex items-center mb-4 sm:mb-6">
+                <button onclick="goBackToChapter()" class="bg-gray-600 text-white px-2 sm:px-4 py-1 sm:py-2 rounded-lg hover:bg-gray-700 mr-2 sm:mr-4 text-sm sm:text-base">← Back</button>
+                <h2 id="practiceTitle" class="text-lg sm:text-2xl font-bold"></h2>
+            </div>
+            <div id="practiceSetsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6"></div>
+        </div>
+
+        <!-- About Us Page -->
+        <div id="aboutPage" class="hidden max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
+            <h2 class="text-3xl font-bold mb-6">About Us</h2>
+            <div class="prose max-w-none">
+                <p class="text-lg mb-4">EduTest is a comprehensive online test preparation platform designed to help students excel in competitive examinations. We provide high-quality practice tests, detailed solutions, and performance analytics to ensure your success.</p>
+                <h3 class="text-xl font-semibold mb-3">Our Mission</h3>
+                <p class="mb-4">To democratize quality education and make test preparation accessible to every student, regardless of their geographical location or economic background.</p>
+                <h3 class="text-xl font-semibold mb-3">Features</h3>
+                <ul class="list-disc pl-6 mb-4">
+                    <li>Comprehensive practice tests for various competitive exams</li>
+                    <li>Detailed performance analytics and progress tracking</li>
+                    <li>Mobile-responsive design for learning on the go</li>
+                    <li>Expert-curated question banks</li>
+                    <li>Timed tests simulating real exam conditions</li>
+                </ul>
+            </div>
+            <button onclick="showHome()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Back to Home</button>
+        </div>
+
+        <!-- Contact Page -->
+        <div id="contactPage" class="hidden max-w-2xl mx-auto bg-white rounded-lg shadow-md p-8">
+            <h2 class="text-3xl font-bold mb-6">Contact Us</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Get in Touch</h3>
+                    <div class="space-y-3">
+                        <p><strong>Email:</strong> support@edutest.com</p>
+                        <p><strong>Phone:</strong> +91 9876543210</p>
+                        <p><strong>Address:</strong> 123 Education Street, Learning City, India</p>
+                        <p><strong>Hours:</strong> Mon-Fri 9AM-6PM</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Send Message</h3>
+                    <form class="space-y-4">
+                        <input type="text" placeholder="Your Name" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                        <input type="email" placeholder="Your Email" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500">
+                        <textarea placeholder="Your Message" rows="4" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"></textarea>
+                        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Send Message</button>
+                    </form>
+                </div>
+            </div>
+            <button onclick="showHome()" class="mt-6 bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700">Back to Home</button>
+        </div>
+
+        <!-- FAQ Page -->
+        <div id="faqPage" class="hidden max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
+            <h2 class="text-3xl font-bold mb-6">Frequently Asked Questions</h2>
+            <div class="space-y-6">
+                <div class="border-b pb-4">
+                    <h3 class="text-lg font-semibold mb-2">How do I start a practice test?</h3>
+                    <p class="text-gray-600">Navigate to your desired exam, select a subject, choose a chapter, and then select from available practice sets. Click on any practice set to begin.</p>
+                </div>
+                <div class="border-b pb-4">
+                    <h3 class="text-lg font-semibold mb-2">Can I pause a test and resume later?</h3>
+                    <p class="text-gray-600">Yes, if you navigate away during a test, it will automatically pause and save your progress. You can resume from where you left off.</p>
+                </div>
+                <div class="border-b pb-4">
+                    <h3 class="text-lg font-semibold mb-2">How do I update my profile information?</h3>
+                    <p class="text-gray-600">Click on the Profile button in the navigation bar to access and edit your profile information.</p>
+                </div>
+                <div class="border-b pb-4">
+                    <h3 class="text-lg font-semibold mb-2">Is the platform mobile-friendly?</h3>
+                    <p class="text-gray-600">Yes, our platform is fully responsive and optimized for mobile devices, tablets, and desktops.</p>
+                </div>
+                <div class="border-b pb-4">
+                    <h3 class="text-lg font-semibold mb-2">How are the questions marked for review?</h3>
+                    <p class="text-gray-600">Click the "Mark for Review" button on any question. Click it again to unmark. Marked questions appear in orange in the question navigation panel.</p>
+                </div>
+            </div>
+            <button onclick="showHome()" class="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">Back to Home</button>
+        </div>
+
+        <!-- Test Results Page -->
+        <div id="testResultsPage" class="hidden max-w-6xl mx-auto space-y-8">
+            <!-- Results Header -->
+            <div class="gradient-bg rounded-3xl p-8 text-white text-center relative overflow-hidden">
+                <div class="absolute inset-0 bg-black opacity-10"></div>
+                <div class="relative z-10">
+                    <div class="floating-animation inline-block mb-4">
+                        <i class="fas fa-trophy text-5xl text-yellow-300"></i>
+                    </div>
+                    <h2 class="text-3xl sm:text-4xl font-bold mb-2">Test Completed!</h2>
+                    <p class="text-lg opacity-90">Here's your detailed performance analysis</p>
+                </div>
+            </div>
+            
+            <!-- Score Overview -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Main Score Card -->
+                <div class="lg:col-span-2 bg-white rounded-3xl p-8 shadow-xl">
+                    <div class="text-center mb-8">
+                        <div class="text-6xl font-bold text-blue-600 mb-2" id="resultScore"></div>
+                        <div class="text-gray-600 text-lg">Final Score</div>
+                        <div class="mt-4">
+                            <div class="bg-gray-200 rounded-full h-4 overflow-hidden">
+                                <div id="scoreProgressBar" class="progress-bar h-full transition-all duration-1000 ease-out" style="width: 0%"></div>
+                            </div>
+                            <div class="mt-2 text-2xl font-bold text-green-600" id="resultPercentage"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-3 gap-6 text-center">
+                        <div class="bg-green-50 rounded-2xl p-4">
+                            <div class="text-3xl font-bold text-green-600" id="resultCorrect"></div>
+                            <div class="text-sm text-gray-600 mt-1">Correct</div>
+                            <div class="text-xs text-green-600 font-medium" id="positiveMarks"></div>
+                        </div>
+                        <div class="bg-red-50 rounded-2xl p-4">
+                            <div class="text-3xl font-bold text-red-600" id="resultWrong"></div>
+                            <div class="text-sm text-gray-600 mt-1">Wrong</div>
+                            <div class="text-xs text-red-600 font-medium" id="negativeMarks"></div>
+                        </div>
+                        <div class="bg-gray-50 rounded-2xl p-4">
+                            <div class="text-3xl font-bold text-gray-600" id="resultUnattempted"></div>
+                            <div class="text-sm text-gray-600 mt-1">Unattempted</div>
+                            <div class="text-xs text-gray-500 font-medium">0 marks</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Test Information -->
+                <div class="space-y-6">
+                    <div class="bg-white rounded-3xl p-6 shadow-xl">
+                        <h3 class="text-xl font-bold mb-4 text-gray-800">
+                            <i class="fas fa-info-circle mr-2 text-blue-600"></i>
+                            Test Information
+                        </h3>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Test Name:</span>
+                                <span id="resultTestName" class="font-medium text-right"></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Topic:</span>
+                                <span id="resultTopic" class="font-medium text-right"></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Questions:</span>
+                                <span id="resultTotalQuestions" class="font-medium"></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Time Taken:</span>
+                                <span id="resultTimeTaken" class="font-medium"></span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Negative Marking:</span>
+                                <span id="resultNegativeMarking" class="font-medium text-red-600"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Performance Insights -->
+                    <div class="bg-gradient-to-r from-purple-500 to-pink-500 rounded-3xl p-6 text-white">
+                        <h4 class="text-xl font-bold mb-4">
+                            <i class="fas fa-chart-line mr-2"></i>
+                            Performance Insights
+                        </h4>
+                        <div id="performanceInsights" class="space-y-2 text-sm"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Question Analysis -->
+            <div class="bg-white rounded-3xl p-8 shadow-xl">
+                <h3 class="text-2xl font-bold mb-6 text-gray-800">
+                    <i class="fas fa-chart-bar mr-3 text-blue-600"></i>
+                    Question-wise Analysis
+                </h3>
+                <div id="questionAnalysis" class="grid grid-cols-5 sm:grid-cols-10 lg:grid-cols-15 gap-3 mb-6"></div>
+                <div class="flex flex-wrap gap-6 text-sm">
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-green-500 rounded mr-2"></div>
+                        <span class="font-medium">Correct Answer</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-red-500 rounded mr-2"></div>
+                        <span class="font-medium">Wrong Answer</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-4 h-4 bg-gray-400 rounded mr-2"></div>
+                        <span class="font-medium">Not Attempted</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
+                <button onclick="retakeTest()" class="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-8 py-3 rounded-full hover:from-blue-600 hover:to-blue-700 transition-all duration-300 font-medium">
+                    <i class="fas fa-redo mr-2"></i>Retake Test
+                </button>
+                <button onclick="showPracticeSets(currentTopic)" class="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-3 rounded-full hover:from-green-600 hover:to-green-700 transition-all duration-300 font-medium">
+                    <i class="fas fa-plus mr-2"></i>More Practice Sets
+                </button>
+                <button onclick="showHome()" class="bg-gradient-to-r from-gray-500 to-gray-600 text-white px-8 py-3 rounded-full hover:from-gray-600 hover:to-gray-700 transition-all duration-300 font-medium">
+                    <i class="fas fa-home mr-2"></i>Back to Home
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Test Interface -->
+    <div id="testInterface" class="hidden bg-white min-h-screen">
+        <!-- Test Header -->
+        <div class="bg-blue-600 text-white p-2 sm:p-4 flex justify-between items-center">
+            <div class="flex items-center space-x-2 sm:space-x-4">
+                <h3 id="testName" class="font-semibold hidden md:block text-sm sm:text-base"></h3>
+                <h3 id="testNameMobile" class="font-semibold md:hidden text-xs sm:text-sm"></h3>
+            </div>
+            <div class="flex items-center space-x-2 sm:space-x-4">
+                <div id="timer" class="bg-red-600 px-2 sm:px-3 py-1 rounded text-xs sm:text-sm font-mono"></div>
+                <button onclick="submitTest()" class="bg-green-600 hover:bg-green-700 px-2 sm:px-4 py-1 sm:py-2 rounded text-xs sm:text-sm">Submit</button>
+            </div>
+        </div>
+
+        <div class="flex h-screen overflow-hidden">
+            <!-- Question Panel -->
+            <div class="flex-1 p-3 sm:p-6 overflow-y-auto">
+                <div id="questionContainer">
+                    <div class="mb-3 sm:mb-4">
+                        <span class="text-xs sm:text-sm text-gray-600">Question <span id="currentQuestionNum">1</span> of <span id="totalQuestions">25</span></span>
+                    </div>
+                    <div id="questionText" class="text-sm sm:text-lg mb-4 sm:mb-6 leading-relaxed"></div>
+                    <div id="optionsContainer" class="space-y-2 sm:space-y-3"></div>
+                    <div class="flex flex-col sm:flex-row justify-between items-center mt-6 sm:mt-8 space-y-3 sm:space-y-0">
+                        <button onclick="previousQuestion()" class="bg-gray-600 text-white px-3 sm:px-4 py-2 rounded hover:bg-gray-700 text-sm w-full sm:w-auto">Previous</button>
+                        <div class="flex space-x-2 w-full sm:w-auto">
+                            <button onclick="toggleMarkForReview()" id="markReviewBtn" class="bg-orange-500 text-white px-2 sm:px-4 py-2 rounded hover:bg-orange-600 text-xs sm:text-sm flex-1 sm:flex-none">Mark for Review</button>
+                            <button onclick="clearResponse()" class="bg-red-500 text-white px-2 sm:px-4 py-2 rounded hover:bg-red-600 text-xs sm:text-sm flex-1 sm:flex-none">Clear</button>
+                        </div>
+                        <button onclick="nextQuestion()" class="bg-blue-600 text-white px-3 sm:px-4 py-2 rounded hover:bg-blue-700 text-sm w-full sm:w-auto">Next</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Question Navigation Panel -->
+            <div id="questionNavPanel" class="w-72 sm:w-80 bg-gray-100 p-3 sm:p-4 border-l hidden lg:block">
+                <h4 class="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Questions</h4>
+                <div class="mb-3 sm:mb-4 text-xs">
+                    <div class="flex items-center mb-1 sm:mb-2">
+                        <div class="w-3 h-3 sm:w-4 sm:h-4 bg-green-500 rounded mr-2"></div>
+                        <span>Answered</span>
+                    </div>
+                    <div class="flex items-center mb-1 sm:mb-2">
+                        <div class="w-3 h-3 sm:w-4 sm:h-4 bg-red-500 rounded mr-2"></div>
+                        <span>Not Answered</span>
+                    </div>
+                    <div class="flex items-center mb-1 sm:mb-2">
+                        <div class="w-3 h-3 sm:w-4 sm:h-4 bg-orange-500 rounded mr-2"></div>
+                        <span>Marked for Review</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 sm:w-4 sm:h-4 bg-purple-500 rounded mr-2"></div>
+                        <span>Answered & Marked</span>
+                    </div>
+                </div>
+                <div id="questionNumbers" class="question-grid"></div>
+            </div>
+
+            <!-- Mobile Question Navigation Slide Up Panel -->
+            <div id="mobileQuestionPanel" class="fixed inset-x-0 bottom-0 h-96 bg-gray-100 p-3 sm:p-4 slide-up-panel lg:hidden z-50 overflow-y-auto rounded-t-lg shadow-lg">
+                <div class="flex justify-between items-center mb-3 sm:mb-4">
+                    <h4 class="font-semibold text-sm sm:text-base">Questions</h4>
+                    <button onclick="toggleMobileQuestionPanel()" class="text-gray-600 hover:text-gray-800 text-lg">✕</button>
+                </div>
+                <div class="mb-3 sm:mb-4 text-xs">
+                    <div class="flex items-center mb-1 sm:mb-2">
+                        <div class="w-3 h-3 sm:w-4 sm:h-4 bg-green-500 rounded mr-2"></div>
+                        <span>Answered</span>
+                    </div>
+                    <div class="flex items-center mb-1 sm:mb-2">
+                        <div class="w-3 h-3 sm:w-4 sm:h-4 bg-red-500 rounded mr-2"></div>
+                        <span>Not Answered</span>
+                    </div>
+                    <div class="flex items-center mb-1 sm:mb-2">
+                        <div class="w-3 h-3 sm:w-4 sm:h-4 bg-orange-500 rounded mr-2"></div>
+                        <span>Marked for Review</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="w-3 h-3 sm:w-4 sm:h-4 bg-purple-500 rounded mr-2"></div>
+                        <span>Answered & Marked</span>
+                    </div>
+                </div>
+                <div id="mobileQuestionNumbers" class="question-grid"></div>
+            </div>
+
+            <!-- Mobile Question Panel Toggle Button -->
+            <button id="mobileQuestionToggle" class="fixed bottom-4 right-4 bg-blue-600 text-white p-2 sm:p-3 rounded-full shadow-lg lg:hidden z-40" onclick="toggleMobileQuestionPanel()">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer" class="bg-gray-800 text-white py-6 sm:py-8 mt-8 sm:mt-12">
+        <div class="container mx-auto px-2 sm:px-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8">
+                <div>
+                    <h3 class="text-base sm:text-lg font-semibold mb-3 sm:mb-4">EduTest</h3>
+                    <p class="text-gray-400 text-sm sm:text-base">Your ultimate test preparation platform for competitive exams.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Quick Links</h4>
+                    <ul class="space-y-1 sm:space-y-2 text-gray-400 text-sm sm:text-base">
+                        <li><button onclick="showAbout()" class="hover:text-white">About Us</button></li>
+                        <li><button onclick="showContact()" class="hover:text-white">Contact</button></li>
+                        <li><button onclick="showFAQ()" class="hover:text-white">FAQ</button></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Popular Exams</h4>
+                    <ul class="space-y-1 sm:space-y-2 text-gray-400 text-sm sm:text-base">
+                        <li><button onclick="showExam('cgl')" class="hover:text-white">SSC CGL</button></li>
+                        <li><button onclick="showExam('chsl')" class="hover:text-white">SSC CHSL</button></li>
+                        <li><button onclick="showExam('cpo')" class="hover:text-white">SSC CPO</button></li>
+                        <li><button onclick="showExam('mts')" class="hover:text-white">SSC MTS</button></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-3 sm:mb-4 text-sm sm:text-base">Contact Info</h4>
+                    <ul class="space-y-1 sm:space-y-2 text-gray-400 text-sm sm:text-base">
+                        <li>Email: support@edutest.com</li>
+                        <li>Phone: +91 9876543210</li>
+                        <li>Mon-Fri 9AM-6PM</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-6 sm:mt-8 pt-6 sm:pt-8 text-center text-gray-400">
+                <p class="text-sm sm:text-base">&copy; 2024 EduTest. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white p-6 rounded-lg max-w-md mx-4">
+            <h3 class="text-lg font-semibold mb-4">Confirm Action</h3>
+            <p id="confirmMessage" class="mb-6"></p>
+            <div class="flex justify-end space-x-4">
+                <button onclick="closeConfirmModal()" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700">Cancel</button>
+                <button id="confirmButton" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let currentExam = '';
+        let currentSubject = '';
+        let currentChapter = '';
+        let currentTopic = '';
+        let currentPracticeSet = '';
+        let currentTest = null;
+        let testTimer = null;
+        let testStartTime = null;
+        let testDuration = 0;
+        let timeLeft = 0;
+        let currentQuestionIndex = 0;
+        let userAnswers = {};
+        let markedForReview = new Set();
+        let testPaused = false;
+
+        // Sample data with exam-specific information
+        const examData = {
+            cgl: {
+                name: 'SSC CGL',
+                fullName: 'Staff Selection Commission Combined Graduate Level',
+                subjects: ['General Intelligence & Reasoning', 'General Awareness', 'Quantitative Aptitude', 'English Comprehension'],
+                totalQuestions: 100,
+                duration: 60,
+                negativeMarking: 0.5,
+                totalMarks: 200,
+                description: 'The SSC CGL exam is conducted to recruit candidates for various Group B and Group C posts in government ministries and departments.',
+                eligibility: 'Bachelor\'s degree from a recognized university',
+                ageLimit: '18-32 years',
+                attempts: 'No limit',
+                examPattern: 'Computer Based Examination (CBE)',
+                tiers: ['Tier-I (Preliminary)', 'Tier-II (Mains)', 'Tier-III (Descriptive)', 'Tier-IV (Skill Test)']
+            },
+            chsl: {
+                name: 'SSC CHSL',
+                fullName: 'Staff Selection Commission Combined Higher Secondary Level',
+                subjects: ['General Intelligence', 'English Language', 'Quantitative Aptitude', 'General Awareness'],
+                totalQuestions: 100,
+                duration: 60,
+                negativeMarking: 0.5,
+                totalMarks: 200,
+                description: 'SSC CHSL is conducted to recruit candidates for posts like LDC, JSA, PA, SA, and DEO in various government departments.',
+                eligibility: '12th pass from a recognized board',
+                ageLimit: '18-27 years',
+                attempts: 'No limit',
+                examPattern: 'Computer Based Examination (CBE)',
+                tiers: ['Tier-I (CBE)', 'Tier-II (Descriptive)', 'Tier-III (Skill Test)']
+            },
+            steno: {
+                name: 'SSC Stenographer',
+                fullName: 'Staff Selection Commission Stenographer Grade C & D',
+                subjects: ['General Intelligence & Reasoning', 'General Awareness', 'English Language & Comprehension'],
+                totalQuestions: 200,
+                duration: 120,
+                negativeMarking: 0.25,
+                totalMarks: 200,
+                description: 'SSC Stenographer exam is conducted to recruit Stenographer Grade C and Grade D in various ministries/departments.',
+                eligibility: '12th pass from a recognized board',
+                ageLimit: '18-30 years',
+                attempts: 'No limit',
+                examPattern: 'Computer Based Examination (CBE) + Skill Test',
+                tiers: ['Computer Based Examination', 'Skill Test (Stenography)']
+            },
+            cpo: {
+                name: 'SSC CPO',
+                fullName: 'Staff Selection Commission Central Police Organisation',
+                subjects: ['General Intelligence & Reasoning', 'General Knowledge & General Awareness', 'Quantitative Aptitude', 'English Comprehension'],
+                totalQuestions: 200,
+                duration: 120,
+                negativeMarking: 0.25,
+                totalMarks: 200,
+                description: 'SSC CPO exam is conducted to recruit Sub-Inspectors in Delhi Police, CAPFs and Assistant Sub-Inspectors in CISF.',
+                eligibility: 'Bachelor\'s degree from a recognized university',
+                ageLimit: '20-25 years',
+                attempts: 'No limit',
+                examPattern: 'Computer Based Examination (CBE)',
+                tiers: ['Paper-I (CBE)', 'Physical Standard Test', 'Paper-II (CBE)', 'Medical Examination']
+            },
+            mts: {
+                name: 'SSC MTS',
+                fullName: 'Staff Selection Commission Multi Tasking Staff',
+                subjects: ['General Intelligence & Reasoning', 'Numerical Aptitude', 'General Awareness', 'English Language & Comprehension'],
+                totalQuestions: 100,
+                duration: 90,
+                negativeMarking: 0.25,
+                totalMarks: 100,
+                description: 'SSC MTS exam is conducted to recruit Multi Tasking Staff in various ministries/departments of Government of India.',
+                eligibility: '10th pass from a recognized board',
+                ageLimit: '18-25 years',
+                attempts: 'No limit',
+                examPattern: 'Computer Based Examination (CBE)',
+                tiers: ['Paper-I (CBE)', 'Paper-II (Descriptive)']
+            },
+            gd: {
+                name: 'SSC GD',
+                fullName: 'Staff Selection Commission General Duty Constable',
+                subjects: ['General Intelligence & Reasoning', 'General Knowledge & General Awareness', 'Elementary Mathematics', 'English/Hindi'],
+                totalQuestions: 80,
+                duration: 60,
+                negativeMarking: 0.25,
+                totalMarks: 160,
+                description: 'SSC GD Constable exam is conducted to recruit General Duty Constables in CAPFs, NIA, SSF and Rifleman in Assam Rifles.',
+                eligibility: '10th pass from a recognized board',
+                ageLimit: '18-23 years',
+                attempts: 'No limit',
+                examPattern: 'Computer Based Examination (CBE)',
+                tiers: ['Computer Based Examination', 'Physical Efficiency Test', 'Physical Standard Test', 'Medical Examination']
+            }
+        };
+
+        const subjectChapters = {
+            'General Intelligence & Reasoning': ['Logical Reasoning', 'Analytical Reasoning', 'Verbal Reasoning', 'Non-Verbal Reasoning'],
+            'General Intelligence': ['Logical Reasoning', 'Analytical Reasoning', 'Verbal Reasoning', 'Non-Verbal Reasoning'],
+            'General Awareness': ['History', 'Geography', 'Polity', 'Economics', 'Science', 'Current Affairs'],
+            'General Knowledge & General Awareness': ['History', 'Geography', 'Polity', 'Economics', 'Science', 'Current Affairs'],
+            'Quantitative Aptitude': ['Arithmetic', 'Algebra', 'Geometry', 'Trigonometry', 'Statistics'],
+            'English Comprehension': ['Grammar', 'Vocabulary', 'Reading Comprehension', 'Error Detection'],
+            'English Language': ['Grammar', 'Vocabulary', 'Reading Comprehension', 'Error Detection'],
+            'English Language & Comprehension': ['Grammar', 'Vocabulary', 'Reading Comprehension', 'Error Detection'],
+            'Numerical Aptitude': ['Arithmetic', 'Basic Mathematics', 'Number System', 'Percentage'],
+            'Elementary Mathematics': ['Arithmetic', 'Basic Mathematics', 'Number System', 'Percentage'],
+            'English/Hindi': ['Grammar', 'Vocabulary', 'Basic Language Skills', 'Comprehension']
+        };
+
+        const chapterTopics = {
+            'Grammar': ['Tenses', 'Articles', 'Prepositions', 'Conjunctions'],
+            'Vocabulary': ['Synonyms', 'Antonyms', 'Idioms', 'Phrases'],
+            'Reading Comprehension': ['Passage Analysis', 'Inference', 'Main Ideas', 'Supporting Details'],
+            'Error Detection': ['Subject-Verb Agreement', 'Tense Errors', 'Pronoun Errors', 'Modifier Errors'],
+            'Basic Language Skills': ['Basic Grammar', 'Simple Vocabulary', 'Sentence Formation', 'Word Usage'],
+            'Comprehension': ['Simple Passages', 'Basic Understanding', 'Question Answering', 'Main Ideas'],
+            'Logical Reasoning': ['Syllogism', 'Blood Relations', 'Direction Sense', 'Coding-Decoding'],
+            'Analytical Reasoning': ['Puzzles', 'Seating Arrangement', 'Data Sufficiency', 'Critical Reasoning'],
+            'Verbal Reasoning': ['Analogies', 'Classification', 'Series', 'Logical Deduction'],
+            'Non-Verbal Reasoning': ['Pattern Recognition', 'Figure Series', 'Mirror Images', 'Paper Folding'],
+            'History': ['Ancient India', 'Medieval India', 'Modern India', 'World History'],
+            'Geography': ['Physical Geography', 'Human Geography', 'Indian Geography', 'World Geography'],
+            'Polity': ['Constitution', 'Fundamental Rights', 'Government Structure', 'Elections'],
+            'Economics': ['Basic Economics', 'Indian Economy', 'Banking', 'Budget and Planning'],
+            'Science': ['Physics', 'Chemistry', 'Biology', 'Environmental Science'],
+            'Current Affairs': ['National Events', 'International Events', 'Sports', 'Awards & Honors'],
+            'Arithmetic': ['Number System', 'Percentage', 'Profit & Loss', 'Simple & Compound Interest'],
+            'Basic Mathematics': ['Basic Operations', 'Fractions', 'Decimals', 'Ratios'],
+            'Number System': ['Natural Numbers', 'Whole Numbers', 'Integers', 'Prime Numbers'],
+            'Percentage': ['Basic Percentage', 'Percentage Change', 'Applications', 'Word Problems'],
+            'Algebra': ['Linear Equations', 'Quadratic Equations', 'Polynomials', 'Functions'],
+            'Geometry': ['Lines and Angles', 'Triangles', 'Circles', 'Mensuration'],
+            'Trigonometry': ['Basic Ratios', 'Identities', 'Heights and Distances', 'Applications'],
+            'Statistics': ['Mean, Median, Mode', 'Probability', 'Data Interpretation', 'Graphs and Charts']
+        };
+
+        // Sample questions
+        const sampleQuestions = [
+            {
+                question: "What is the synonym of 'abundant'?",
+                options: ["Scarce", "Plentiful", "Limited", "Rare"],
+                correct: 1
+            },
+            {
+                question: "If A is the brother of B, and B is the sister of C, then A is C's:",
+                options: ["Brother", "Sister", "Cousin", "Uncle"],
+                correct: 0
+            },
+            {
+                question: "The capital of India is:",
+                options: ["Mumbai", "Kolkata", "New Delhi", "Chennai"],
+                correct: 2
+            },
+            {
+                question: "What is 25% of 200?",
+                options: ["25", "50", "75", "100"],
+                correct: 1
+            },
+            {
+                question: "Choose the correct sentence:",
+                options: ["He don't like apples", "He doesn't likes apples", "He doesn't like apples", "He not like apples"],
+                correct: 2
+            },
+            {
+                question: "Complete the series: 2, 6, 12, 20, ?",
+                options: ["28", "30", "32", "36"],
+                correct: 1
+            },
+            {
+                question: "Who was the first Prime Minister of India?",
+                options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Sardar Patel", "Dr. Rajendra Prasad"],
+                correct: 1
+            },
+            {
+                question: "If the cost price is ₹100 and selling price is ₹120, what is the profit percentage?",
+                options: ["15%", "20%", "25%", "30%"],
+                correct: 1
+            },
+            {
+                question: "What is the antonym of 'expand'?",
+                options: ["Grow", "Increase", "Contract", "Extend"],
+                correct: 2
+            },
+            {
+                question: "In a code language, if CAT is written as 3120, how is DOG written?",
+                options: ["4157", "4167", "4147", "4177"],
+                correct: 0
+            },
+            {
+                question: "The longest river in India is:",
+                options: ["Yamuna", "Brahmaputra", "Ganga", "Godavari"],
+                correct: 2
+            },
+            {
+                question: "What is the square root of 144?",
+                options: ["10", "11", "12", "13"],
+                correct: 2
+            },
+            {
+                question: "Identify the error: 'Each of the students have submitted their assignments.'",
+                options: ["Each of", "students have", "submitted their", "No error"],
+                correct: 1
+            },
+            {
+                question: "If all roses are flowers and some flowers are red, then:",
+                options: ["All roses are red", "Some roses are red", "No roses are red", "Cannot be determined"],
+                correct: 3
+            },
+            {
+                question: "The Indian Constitution was adopted on:",
+                options: ["15 August 1947", "26 January 1950", "26 November 1949", "2 October 1948"],
+                correct: 2
+            },
+            {
+                question: "Simple Interest on ₹1000 at 10% per annum for 2 years is:",
+                options: ["₹100", "₹150", "₹200", "₹250"],
+                correct: 2
+            },
+            {
+                question: "Choose the word that best completes: 'As light as a ____'",
+                options: ["Stone", "Feather", "Rock", "Metal"],
+                correct: 1
+            },
+            {
+                question: "Find the odd one out: 3, 7, 11, 14, 17",
+                options: ["3", "7", "14", "17"],
+                correct: 2
+            },
+            {
+                question: "The study of earthquakes is called:",
+                options: ["Geology", "Seismology", "Meteorology", "Astronomy"],
+                correct: 1
+            },
+            {
+                question: "If x + 5 = 12, then x = ?",
+                options: ["5", "6", "7", "8"],
+                correct: 2
+            },
+            {
+                question: "What is the plural of 'child'?",
+                options: ["Childs", "Children", "Childes", "Childrens"],
+                correct: 1
+            },
+            {
+                question: "A man walks 3 km north, then 4 km east. What is his distance from the starting point?",
+                options: ["5 km", "6 km", "7 km", "8 km"],
+                correct: 0
+            },
+            {
+                question: "The largest planet in our solar system is:",
+                options: ["Saturn", "Jupiter", "Neptune", "Uranus"],
+                correct: 1
+            },
+            {
+                question: "What is 15% of 80?",
+                options: ["10", "12", "15", "18"],
+                correct: 1
+            },
+            {
+                question: "Choose the correctly spelled word:",
+                options: ["Recieve", "Receive", "Receve", "Receeve"],
+                correct: 1
+            }
+        ];
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            checkLoginStatus();
+            
+            // Handle browser back button during test
+            window.addEventListener('beforeunload', function(e) {
+                if (currentTest && !testPaused) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                    return '';
+                }
+            });
+
+            window.addEventListener('popstate', function(e) {
+                if (currentTest && !testPaused) {
+                    e.preventDefault();
+                    showConfirmModal('Do you want to pause the test before leaving?', function() {
+                        pauseTest();
+                        history.back();
+                    });
+                    return false;
+                }
+            });
+        });
+
+        // Authentication functions
+        function checkLoginStatus() {
+            const userData = localStorage.getItem('currentUser');
+            if (userData) {
+                currentUser = JSON.parse(userData);
+                updateNavigation();
+            }
+        }
+
+        function updateNavigation() {
+            if (currentUser) {
+                document.getElementById('navButtons').classList.add('hidden');
+                document.getElementById('userNav').classList.remove('hidden');
+                document.getElementById('welcomeUser').textContent = `Welcome, ${currentUser.name}`;
+            } else {
+                document.getElementById('navButtons').classList.remove('hidden');
+                document.getElementById('userNav').classList.add('hidden');
+            }
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            // Check if user exists
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                updateNavigation();
+                showHome();
+                alert('Login successful!');
+            } else {
+                alert('Invalid credentials!');
+            }
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const mobile = document.getElementById('signupMobile').value;
+            const password = document.getElementById('signupPassword').value;
+
+            // Check if user already exists
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            if (users.find(u => u.email === email)) {
+                alert('User already exists!');
+                return;
+            }
+
+            // Create new user
+            const newUser = {
+                name,
+                email,
+                mobile,
+                password,
+                category: '',
+                dob: '',
+                membershipStatus: 'Active',
+                membershipDate: '31 Dec 2024'
+            };
+
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            currentUser = newUser;
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+            updateNavigation();
+            showHome();
+            alert('Signup successful!');
+        }
+
+        function updateProfile(event) {
+            event.preventDefault();
+            if (!currentUser) return;
+
+            currentUser.name = document.getElementById('profileName').value;
+            currentUser.email = document.getElementById('profileEmail').value;
+            currentUser.category = document.getElementById('profileCategory').value;
+            currentUser.dob = document.getElementById('profileDOB').value;
+
+            // Update in localStorage
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const userIndex = users.findIndex(u => u.email === currentUser.email);
+            if (userIndex !== -1) {
+                users[userIndex] = currentUser;
+                localStorage.setItem('users', JSON.stringify(users));
+            }
+
+            updateNavigation();
+            alert('Profile updated successfully!');
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateNavigation();
+            showHome();
+        }
+
+        // Navigation functions
+        function showHome() {
+            hideAllPages();
+            document.getElementById('homePage').classList.remove('hidden');
+            document.getElementById('navbar').classList.remove('hidden');
+            document.getElementById('footer').classList.remove('hidden');
+        }
+
+        function showLogin() {
+            hideAllPages();
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('navbar').classList.remove('hidden');
+            document.getElementById('footer').classList.remove('hidden');
+        }
+
+        function showSignup() {
+            hideAllPages();
+            document.getElementById('signupPage').classList.remove('hidden');
+            document.getElementById('navbar').classList.remove('hidden');
+            document.getElementById('footer').classList.remove('hidden');
+        }
+
+        function showProfile() {
+            if (!currentUser) {
+                showLogin();
+                return;
+            }
+            
+            hideAllPages();
+            document.getElementById('profilePage').classList.remove('hidden');
+            document.getElementById('navbar').classList.remove('hidden');
+            document.getElementById('footer').classList.remove('hidden');
+            
+            // Populate profile form
+            document.getElementById('profileName').value = currentUser.name || '';
+            document.getElementById('profileEmail').value = currentUser.email || '';
+            document.getElementById('profileMobile').value = currentUser.mobile || '';
+            document.getElementById('profileCategory').value = currentUser.category || '';
+            document.getElementById('profileDOB').value = currentUser.dob || '';
+            document.getElementById('membershipStatus').textContent = currentUser.membershipStatus || 'Active';
+            document.getElementById('membershipDate').textContent = `Expires: ${currentUser.membershipDate || '31 Dec 2024'}`;
+        }
+
+        function showAbout() {
+            hideAllPages();
+            document.getElementById('aboutPage').classList.remove('hidden');
+            document.getElementById('navbar').classList.remove('hidden');
+            document.getElementById('footer').classList.remove('hidden');
+        }
+
+        function showContact() {
+            hideAllPages();
+            document.getElementById('contactPage').classList.remove('hidden');
+            document.getElementById('navbar').classList.remove('hidden');
+            document.getElementById('footer').classList.remove('hidden');
+        }
+
+        function showFAQ() {
+            hideAllPages();
+            document.getElementById('faqPage').classList.remove('hidden');
+            document.getElementById('navbar').classList.remove('hidden');
+            document.getElementById('footer').classList.remove('hidden');
+        }
+
+        function showExam(examId) {
+            if (!currentUser) {
+                showLogin();
+                return;
+            }
+            
+            currentExam = examId;
+            hideAllPages();
+            document.getElementById('examPage').classList.remove('hidden');
+            document.getElementById('navbar').classList.remove('hidden');
+            document.getElementById('footer').classList.remove('hidden');
+            
+            const exam = examData[examId];
+            
+            // Populate exam header
+            document.getElementById('examTitle').textContent = exam.name;
+            document.getElementById('examFullName').textContent = exam.fullName;
+            document.getElementById('examDescription').textContent = exam.description;
+            document.getElementById('examTotalQuestions').textContent = exam.totalQuestions;
+            document.getElementById('examDuration').textContent = exam.duration;
+            document.getElementById('examTotalMarks').textContent = exam.totalMarks;
+            document.getElementById('examNegativeMarking').textContent = `-${exam.negativeMarking}`;
+            
+            // Populate exam information
+            document.getElementById('examEligibility').textContent = exam.eligibility;
+            document.getElementById('examAgeLimit').textContent = exam.ageLimit;
+            document.getElementById('examAttempts').textContent = exam.attempts;
+            document.getElementById('examPattern').textContent = exam.examPattern;
+            
+            // Populate exam tiers
+            const tiersContainer = document.getElementById('examTiers');
+            tiersContainer.innerHTML = '';
+            exam.tiers.forEach((tier, index) => {
+                const tierDiv = document.createElement('div');
+                tierDiv.className = 'flex items-center space-x-3 p-3 bg-gray-50 rounded-lg';
+                tierDiv.innerHTML = `
+                    <div class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold">
+                        ${index + 1}
+                    </div>
+                    <span class="text-sm font-medium text-gray-700">${tier}</span>
+                `;
+                tiersContainer.appendChild(tierDiv);
+            });
+            
+            // Populate subjects grid
+            const subjectsGrid = document.getElementById('subjectsGrid');
+            subjectsGrid.innerHTML = '';
+            
+            const subjectIcons = {
+                'General Intelligence & Reasoning': 'fas fa-brain',
+                'General Intelligence': 'fas fa-brain',
+                'General Awareness': 'fas fa-globe',
+                'General Knowledge & General Awareness': 'fas fa-globe',
+                'Quantitative Aptitude': 'fas fa-calculator',
+                'English Comprehension': 'fas fa-language',
+                'English Language': 'fas fa-language',
+                'English Language & Comprehension': 'fas fa-language',
+                'Numerical Aptitude': 'fas fa-calculator',
+                'Elementary Mathematics': 'fas fa-calculator',
+                'English/Hindi': 'fas fa-language'
+            };
+            
+            exam.subjects.forEach((subject, index) => {
+                const subjectCard = document.createElement('div');
+                subjectCard.className = 'subject-card rounded-2xl p-6 text-white cursor-pointer card-hover relative overflow-hidden';
+                subjectCard.onclick = () => showSubject(subject);
+                
+                const icon = subjectIcons[subject] || 'fas fa-book';
+                const chapters = subjectChapters[subject] || [];
+                const totalTopics = chapters.reduce((total, chapter) => {
+                    const topics = chapterTopics[chapter] || [];
+                    return total + topics.length;
+                }, 0);
+                
+                subjectCard.innerHTML = `
+                    <div class="relative z-10">
+                        <div class="flex items-center justify-between mb-4">
+                            <i class="${icon} text-2xl"></i>
+                            <div class="bg-white bg-opacity-20 px-3 py-1 rounded-full text-xs font-medium">
+                                ${totalTopics || chapters.length || 4} Topics
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">${subject}</h3>
+                        <p class="text-sm opacity-90 mb-4">Comprehensive practice questions and mock tests</p>
+                        <div class="flex items-center justify-between text-sm">
+                            <span><i class="fas fa-question-circle mr-1"></i>${(totalTopics || chapters.length || 4) * 15 * 25} Questions</span>
+                            <span><i class="fas fa-clock mr-1"></i>Updated Daily</span>
+                        </div>
+                    </div>
+                `;
+                subjectsGrid.appendChild(subjectCard);
+            });
+        }
+
+        function showSubject(subject) {
+            currentSubject = subject;
+            hideAllPages();
+            document.getElementById('subjectPage').classList.remove('hidden');
+            document.getElementById('navbar').classList.remove('hidden');
+            document.getElementById('footer').classList.remove('hidden');
+            
+            document.getElementById('subjectTitle').textContent = subject;
+            
+            const chaptersGrid = document.getElementById('chaptersGrid');
+            chaptersGrid.innerHTML = '';
+            
+            const chapters = subjectChapters[subject] || [];
+            if (chapters.length === 0) {
+                // Fallback chapters if subject not found
+                const fallbackChapters = ['Basic Concepts', 'Intermediate Topics', 'Advanced Topics', 'Practice Questions'];
+                fallbackChapters.forEach(chapter => {
+                    const chapterCard = document.createElement('div');
+                    chapterCard.className = 'chapter-card rounded-2xl p-6 text-gray-800 cursor-pointer card-hover';
+                    chapterCard.onclick = () => showChapter(chapter);
+                    chapterCard.innerHTML = `
+                        <div class="flex items-center justify-between mb-4">
+                            <i class="fas fa-book text-2xl text-blue-600"></i>
+                            <div class="bg-white bg-opacity-30 px-3 py-1 rounded-full text-xs font-medium">
+                                4 Topics
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">${chapter}</h3>
+                        <p class="text-sm opacity-90">Study ${chapter} in detail</p>
+                    `;
+                    chaptersGrid.appendChild(chapterCard);
+                });
+            } else {
+                chapters.forEach(chapter => {
+                    const chapterCard = document.createElement('div');
+                    chapterCard.className = 'chapter-card rounded-2xl p-6 text-gray-800 cursor-pointer card-hover';
+                    chapterCard.onclick = () => showChapter(chapter);
+                    const topics = chapterTopics[chapter] || [];
+                    const topicCount = topics.length || 4;
+                    chapterCard.innerHTML = `
+                        <div class="flex items-center justify-between mb-4">
+                            <i class="fas fa-book text-2xl text-blue-600"></i>
+                            <div class="bg-white bg-opacity-30 px-3 py-1 rounded-full text-xs font-medium">
+                                ${topicCount} Topics
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">${chapter}</h3>
+                        <p class="text-sm opacity-90">Study ${chapter} topics</p>
+                    `;
+                    chaptersGrid.appendChild(chapterCard);
+                });
+            }
+        }
+
+        function showChapter(chapter) {
+            currentChapter = chapter;
+            hideAllPages();
+            document.getElementById('chapterPage').classList.remove('hidden');
+            document.getElementById('navbar').classList.remove('hidden');
+            document.getElementById('footer').classList.remove('hidden');
+            
+            document.getElementById('chapterTitle').textContent = chapter;
+            
+            const topicsGrid = document.getElementById('topicsGrid');
+            topicsGrid.innerHTML = '';
+            
+            const topics = chapterTopics[chapter] || [];
+            if (topics.length === 0) {
+                // Fallback topics if chapter not found
+                const fallbackTopics = ['Topic 1', 'Topic 2', 'Topic 3', 'Topic 4', 'Topic 5', 'Topic 6'];
+                fallbackTopics.forEach(topic => {
+                    const topicCard = document.createElement('div');
+                    topicCard.className = 'topic-card rounded-2xl p-6 text-gray-800 cursor-pointer card-hover';
+                    topicCard.onclick = () => showPracticeSets(topic);
+                    topicCard.innerHTML = `
+                        <div class="flex items-center justify-between mb-4">
+                            <i class="fas fa-lightbulb text-2xl text-purple-600"></i>
+                            <div class="bg-white bg-opacity-30 px-3 py-1 rounded-full text-xs font-medium">
+                                15 Sets
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">${topic}</h3>
+                        <p class="text-sm opacity-90">Practice ${topic} questions</p>
+                        <div class="flex items-center justify-between text-sm mt-4">
+                            <span><i class="fas fa-question-circle mr-1"></i>375 Questions</span>
+                            <span class="difficulty-medium"><i class="fas fa-star mr-1"></i>Medium</span>
+                        </div>
+                    `;
+                    topicsGrid.appendChild(topicCard);
+                });
+            } else {
+                topics.forEach(topic => {
+                    const topicCard = document.createElement('div');
+                    topicCard.className = 'topic-card rounded-2xl p-6 text-gray-800 cursor-pointer card-hover';
+                    topicCard.onclick = () => showPracticeSets(topic);
+                    const difficulties = ['easy', 'medium', 'hard'];
+                    const difficulty = difficulties[Math.floor(Math.random() * difficulties.length)];
+                    topicCard.innerHTML = `
+                        <div class="flex items-center justify-between mb-4">
+                            <i class="fas fa-lightbulb text-2xl text-purple-600"></i>
+                            <div class="bg-white bg-opacity-30 px-3 py-1 rounded-full text-xs font-medium">
+                                15 Sets
+                            </div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">${topic}</h3>
+                        <p class="text-sm opacity-90">Practice ${topic} questions</p>
+                        <div class="flex items-center justify-between text-sm mt-4">
+                            <span><i class="fas fa-question-circle mr-1"></i>375 Questions</span>
+                            <span class="difficulty-${difficulty}"><i class="fas fa-star mr-1"></i>${difficulty.charAt(0).toUpperCase() + difficulty.slice(1)}</span>
+                        </div>
+                    `;
+                    topicsGrid.appendChild(topicCard);
+                });
+            }
+        }
+
+        function showPracticeSets(topic) {
+            currentTopic = topic;
+            hideAllPages();
+            document.getElementById('practiceSetsPage').classList.remove('hidden');
+            document.getElementById('navbar').classList.remove('hidden');
+            document.getElementById('footer').classList.remove('hidden');
+            
+            document.getElementById('practiceTitle').textContent = `${topic} - Practice Sets`;
+            
+            const practiceSetsGrid = document.getElementById('practiceSetsGrid');
+            practiceSetsGrid.innerHTML = '';
+            
+            // Generate 15 practice sets
+            for (let i = 1; i <= 15; i++) {
+                const setCard = document.createElement('div');
+                setCard.className = 'practice-card rounded-2xl p-6 text-gray-800 cursor-pointer card-hover';
+                setCard.onclick = () => startTest(`Practice Set ${i}`, topic);
+                
+                const difficulties = ['Easy', 'Medium', 'Hard'];
+                const difficulty = difficulties[Math.floor(Math.random() * difficulties.length)];
+                const difficultyClass = difficulty.toLowerCase();
+                
+                setCard.innerHTML = `
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="flex items-center space-x-2">
+                            <i class="fas fa-clipboard-list text-2xl text-green-600"></i>
+                            <span class="text-lg font-bold">Set ${i}</span>
+                        </div>
+                        <div class="bg-white bg-opacity-40 px-3 py-1 rounded-full text-xs font-medium">
+                            <span class="difficulty-${difficultyClass}"><i class="fas fa-star mr-1"></i>${difficulty}</span>
+                        </div>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">Practice Set ${i}</h3>
+                    <div class="space-y-2 text-sm mb-4">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Questions:</span>
+                            <span class="font-medium">25</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Duration:</span>
+                            <span class="font-medium">30 minutes</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Total Marks:</span>
+                            <span class="font-medium">50</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Negative Marking:</span>
+                            <span class="font-medium text-red-600">-0.5</span>
+                        </div>
+                    </div>
+                    <button class="w-full bg-gradient-to-r from-blue-500 to-blue-600 text-white py-3 rounded-xl hover:from-blue-600 hover:to-blue-700 transition-all duration-300 font-medium">
+                        <i class="fas fa-play mr-2"></i>Start Test
+                    </button>
+                `;
+                practiceSetsGrid.appendChild(setCard);
+            }
+        }
+
+        function goBackToExam() {
+            showExam(currentExam);
+        }
+
+        function goBackToSubject() {
+            showSubject(currentSubject);
+        }
+
+        function goBackToChapter() {
+            showChapter(currentChapter);
+        }
+
+        function hideAllPages() {
+            const pages = ['homePage', 'loginPage', 'signupPage', 'profilePage', 'examPage', 'subjectPage', 'chapterPage', 'practiceSetsPage', 'testInterface', 'aboutPage', 'contactPage', 'faqPage', 'testResultsPage'];
+            pages.forEach(page => {
+                document.getElementById(page).classList.add('hidden');
+            });
+        }
+
+        // Test functions
+        function startTest(testName, topic) {
+            currentPracticeSet = testName;
+            currentTest = {
+                name: testName,
+                topic: topic,
+                questions: generateTestQuestions(),
+                startTime: Date.now(),
+                duration: 30 * 60 * 1000, // 30 minutes
+                paused: false,
+                pausedTime: 0
+            };
+            
+            // Check for existing test state
+            const savedTest = localStorage.getItem(`test_${currentUser.email}_${testName}`);
+            if (savedTest) {
+                const testData = JSON.parse(savedTest);
+                if (testData.paused) {
+                    currentTest = testData;
+                    userAnswers = testData.userAnswers || {};
+                    markedForReview = new Set(testData.markedForReview || []);
+                    currentQuestionIndex = testData.currentQuestionIndex || 0;
+                }
+            }
+            
+            hideAllPages();
+            document.getElementById('testInterface').classList.remove('hidden');
+            document.getElementById('navbar').classList.add('hidden');
+            document.getElementById('footer').classList.add('hidden');
+            
+            initializeTest();
+        }
+
+        function generateTestQuestions() {
+            // Shuffle and select 25 questions
+            const shuffled = [...sampleQuestions].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, 25);
+        }
+
+        function initializeTest() {
+            testPaused = false;
+            document.getElementById('testName').textContent = currentTest.name;
+            document.getElementById('testNameMobile').textContent = currentTest.name.split(' ').slice(0, 2).join(' ');
+            document.getElementById('totalQuestions').textContent = currentTest.questions.length;
+            
+            // Calculate time left
+            if (currentTest.paused) {
+                timeLeft = currentTest.duration - currentTest.pausedTime;
+            } else {
+                const elapsed = Date.now() - currentTest.startTime;
+                timeLeft = Math.max(0, currentTest.duration - elapsed);
+            }
+            
+            startTimer();
+            renderQuestion();
+            renderQuestionNavigation();
+        }
+
+        function startTimer() {
+            if (testTimer) clearInterval(testTimer);
+            
+            testTimer = setInterval(() => {
+                if (testPaused) return;
+                
+                timeLeft -= 1000;
+                updateTimerDisplay();
+                
+                if (timeLeft <= 0) {
+                    autoSubmitTest();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeLeft / 60000);
+            const seconds = Math.floor((timeLeft % 60000) / 1000);
+            document.getElementById('timer').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function renderQuestion() {
+            const question = currentTest.questions[currentQuestionIndex];
+            document.getElementById('currentQuestionNum').textContent = currentQuestionIndex + 1;
+            document.getElementById('questionText').textContent = question.question;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer';
+                
+                const isSelected = userAnswers[currentQuestionIndex] === index;
+                if (isSelected) {
+                    optionDiv.classList.add('bg-blue-50', 'border-blue-500');
+                }
+                
+                optionDiv.onclick = () => selectOption(index);
+                optionDiv.innerHTML = `
+                    <input type="radio" name="option" value="${index}" ${isSelected ? 'checked' : ''} class="text-blue-600">
+                    <label class="flex-1 cursor-pointer">${option}</label>
+                `;
+                
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // Update mark for review button
+            const markBtn = document.getElementById('markReviewBtn');
+            if (markedForReview.has(currentQuestionIndex)) {
+                markBtn.textContent = 'Unmark Review';
+                markBtn.className = 'bg-orange-600 text-white px-4 py-2 rounded hover:bg-orange-700';
+            } else {
+                markBtn.textContent = 'Mark for Review';
+                markBtn.className = 'bg-orange-500 text-white px-4 py-2 rounded hover:bg-orange-600';
+            }
+        }
+
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            renderQuestion();
+            renderQuestionNavigation();
+            saveTestState();
+        }
+
+        function clearResponse() {
+            delete userAnswers[currentQuestionIndex];
+            renderQuestion();
+            renderQuestionNavigation();
+            saveTestState();
+        }
+
+        function toggleMarkForReview() {
+            if (markedForReview.has(currentQuestionIndex)) {
+                markedForReview.delete(currentQuestionIndex);
+            } else {
+                markedForReview.add(currentQuestionIndex);
+            }
+            renderQuestion();
+            renderQuestionNavigation();
+            saveTestState();
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < currentTest.questions.length - 1) {
+                currentQuestionIndex++;
+                renderQuestion();
+                saveTestState();
+            }
+        }
+
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                renderQuestion();
+                saveTestState();
+            }
+        }
+
+        function goToQuestion(index) {
+            currentQuestionIndex = index;
+            renderQuestion();
+            saveTestState();
+            
+            // Close mobile panel if open
+            if (window.innerWidth < 1024) {
+                toggleMobileQuestionPanel();
+            }
+        }
+
+        function renderQuestionNavigation() {
+            const containers = ['questionNumbers', 'mobileQuestionNumbers'];
+            
+            containers.forEach(containerId => {
+                const container = document.getElementById(containerId);
+                container.innerHTML = '';
+                
+                currentTest.questions.forEach((_, index) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'w-8 h-8 rounded text-sm font-semibold';
+                    btn.textContent = index + 1;
+                    btn.onclick = () => goToQuestion(index);
+                    
+                    // Determine button color based on status
+                    const isAnswered = userAnswers.hasOwnProperty(index);
+                    const isMarked = markedForReview.has(index);
+                    
+                    if (isAnswered && isMarked) {
+                        btn.className += ' bg-purple-500 text-white';
+                    } else if (isAnswered) {
+                        btn.className += ' bg-green-500 text-white';
+                    } else if (isMarked) {
+                        btn.className += ' bg-orange-500 text-white';
+                    } else {
+                        btn.className += ' bg-red-500 text-white';
+                    }
+                    
+                    if (index === currentQuestionIndex) {
+                        btn.className += ' ring-2 ring-blue-600';
+                    }
+                    
+                    container.appendChild(btn);
+                });
+            });
+        }
+
+        function toggleMobileQuestionPanel() {
+            const panel = document.getElementById('mobileQuestionPanel');
+            panel.classList.toggle('open');
+        }
+
+        function pauseTest() {
+            testPaused = true;
+            currentTest.paused = true;
+            currentTest.pausedTime = currentTest.duration - timeLeft;
+            currentTest.userAnswers = userAnswers;
+            currentTest.markedForReview = Array.from(markedForReview);
+            currentTest.currentQuestionIndex = currentQuestionIndex;
+            
+            saveTestState();
+            
+            if (testTimer) {
+                clearInterval(testTimer);
+            }
+        }
+
+        function saveTestState() {
+            if (currentTest && currentUser) {
+                const testState = {
+                    ...currentTest,
+                    userAnswers,
+                    markedForReview: Array.from(markedForReview),
+                    currentQuestionIndex,
+                    pausedTime: currentTest.duration - timeLeft
+                };
+                localStorage.setItem(`test_${currentUser.email}_${currentTest.name}`, JSON.stringify(testState));
+            }
+        }
+
+        function submitTest() {
+            showConfirmModal('Are you sure you want to submit the test?', function() {
+                finishTest();
+            });
+        }
+
+        function autoSubmitTest() {
+            alert('Time is up! Test will be submitted automatically.');
+            finishTest();
+        }
+
+        function finishTest() {
+            if (testTimer) {
+                clearInterval(testTimer);
+            }
+            
+            // Get exam-specific marking scheme
+            const exam = examData[currentExam];
+            const negativeMarking = exam ? exam.negativeMarking : 0.25;
+            const positiveMarks = 2; // Standard 2 marks per question
+            
+            // Calculate results
+            let correct = 0;
+            let wrong = 0;
+            let unattempted = 0;
+            const totalQuestions = currentTest.questions.length;
+            const timeTaken = formatTime(currentTest.duration - timeLeft);
+            
+            currentTest.questions.forEach((question, index) => {
+                if (userAnswers.hasOwnProperty(index)) {
+                    if (userAnswers[index] === question.correct) {
+                        correct++;
+                    } else {
+                        wrong++;
+                    }
+                } else {
+                    unattempted++;
+                }
+            });
+            
+            // Calculate score with negative marking
+            const positiveScore = correct * positiveMarks;
+            const negativeScore = wrong * negativeMarking;
+            const finalScore = Math.max(0, positiveScore - negativeScore); // Score cannot be negative
+            const maxScore = totalQuestions * positiveMarks;
+            const percentage = ((finalScore / maxScore) * 100).toFixed(1);
+            
+            // Show results page
+            showTestResults({
+                testName: currentTest.name,
+                topic: currentTest.topic,
+                totalQuestions,
+                timeTaken,
+                score: finalScore,
+                maxScore,
+                correct,
+                wrong,
+                unattempted,
+                percentage,
+                positiveScore,
+                negativeScore,
+                negativeMarking
+            });
+            
+            // Clear saved test state
+            if (currentUser) {
+                localStorage.removeItem(`test_${currentUser.email}_${currentTest.name}`);
+            }
+            
+            // Reset test variables
+            currentTest = null;
+            userAnswers = {};
+            markedForReview.clear();
+            currentQuestionIndex = 0;
+            testPaused = false;
+        }
+
+        function formatTime(milliseconds) {
+            const totalSeconds = Math.floor(milliseconds / 1000);
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = totalSeconds % 60;
+            return `${minutes}m ${seconds}s`;
+        }
+
+        function showTestResults(results) {
+            hideAllPages();
+            document.getElementById('testResultsPage').classList.remove('hidden');
+            document.getElementById('navbar').classList.remove('hidden');
+            document.getElementById('footer').classList.remove('hidden');
+            
+            // Populate basic results
+            document.getElementById('resultTestName').textContent = results.testName;
+            document.getElementById('resultTopic').textContent = results.topic;
+            document.getElementById('resultTotalQuestions').textContent = results.totalQuestions;
+            document.getElementById('resultTimeTaken').textContent = results.timeTaken;
+            document.getElementById('resultScore').textContent = `${results.score}/${results.maxScore}`;
+            document.getElementById('resultCorrect').textContent = results.correct;
+            document.getElementById('resultWrong').textContent = results.wrong;
+            document.getElementById('resultUnattempted').textContent = results.unattempted;
+            document.getElementById('resultPercentage').textContent = `${results.percentage}%`;
+            document.getElementById('resultNegativeMarking').textContent = `-${results.negativeMarking} per wrong answer`;
+            
+            // Show detailed marking breakdown
+            document.getElementById('positiveMarks').textContent = `+${results.positiveScore} marks`;
+            document.getElementById('negativeMarks').textContent = `-${results.negativeScore} marks`;
+            
+            // Animate progress bar
+            setTimeout(() => {
+                document.getElementById('scoreProgressBar').style.width = `${results.percentage}%`;
+            }, 500);
+            
+            // Generate performance insights
+            const insights = [];
+            if (results.percentage >= 80) {
+                insights.push("🎉 Excellent performance! You're well prepared.");
+            } else if (results.percentage >= 60) {
+                insights.push("👍 Good job! Focus on weak areas for improvement.");
+            } else if (results.percentage >= 40) {
+                insights.push("📚 Need more practice. Review concepts thoroughly.");
+            } else {
+                insights.push("💪 Don't give up! More practice will help you improve.");
+            }
+            
+            if (results.wrong > results.correct) {
+                insights.push("⚠️ High negative marking impact. Be more careful with answers.");
+            }
+            
+            if (results.unattempted > results.totalQuestions * 0.3) {
+                insights.push("⏰ Try to attempt more questions within time limit.");
+            }
+            
+            const accuracy = ((results.correct / (results.correct + results.wrong)) * 100).toFixed(1);
+            insights.push(`🎯 Your accuracy rate: ${accuracy}%`);
+            
+            const insightsContainer = document.getElementById('performanceInsights');
+            insightsContainer.innerHTML = insights.map(insight => `<div>${insight}</div>`).join('');
+            
+            // Show question-wise analysis
+            const analysisContainer = document.getElementById('questionAnalysis');
+            analysisContainer.innerHTML = '';
+            
+            currentTest.questions.forEach((question, index) => {
+                const questionBox = document.createElement('div');
+                questionBox.className = 'w-10 h-10 rounded-lg flex items-center justify-center text-white text-sm font-bold cursor-pointer transition-all duration-300 hover:scale-110';
+                questionBox.textContent = index + 1;
+                
+                if (userAnswers.hasOwnProperty(index)) {
+                    if (userAnswers[index] === question.correct) {
+                        questionBox.className += ' bg-green-500 hover:bg-green-600';
+                        questionBox.title = `Question ${index + 1}: Correct ✓`;
+                    } else {
+                        questionBox.className += ' bg-red-500 hover:bg-red-600';
+                        questionBox.title = `Question ${index + 1}: Wrong ✗`;
+                    }
+                } else {
+                    questionBox.className += ' bg-gray-400 hover:bg-gray-500';
+                    questionBox.title = `Question ${index + 1}: Not Attempted`;
+                }
+                
+                analysisContainer.appendChild(questionBox);
+            });
+        }
+
+        function retakeTest() {
+            startTest(currentPracticeSet, currentTopic);
+        }
+
+        function showConfirmModal(message, onConfirm) {
+            document.getElementById('confirmMessage').textContent = message;
+            document.getElementById('confirmModal').classList.remove('hidden');
+            document.getElementById('confirmButton').onclick = function() {
+                closeConfirmModal();
+                onConfirm();
+            };
+        }
+
+        function closeConfirmModal() {
+            document.getElementById('confirmModal').classList.add('hidden');
+        }
+
+        // Initialize the app
+        showHome();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'968f9275f1355a1a',t:'MTc1NDE1ODY0Ny4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
