@@ -1727,23 +1727,45 @@
 
     // Authentication functions
     function checkLoginStatus() {
-        const userData = localStorage.getItem('currentUser');
-        if (userData) {
-            currentUser = JSON.parse(userData);
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            // User is signed in
+            database.ref('users/' + user.uid).once('value')
+                .then((snapshot) => {
+                    const userData = snapshot.val();
+                    currentUser = {
+                        name: userData.name,
+                        email: user.email,
+                        uid: user.uid,
+                        ...userData
+                    };
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    updateNavigation();
+                })
+                .catch((error) => {
+                    console.error('Error reading user data from Firebase Database', error);
+                });
+        } else {
+            // User is signed out
+            currentUser = null;
+            localStorage.removeItem('currentUser');
             updateNavigation();
         }
-    }
+    });
+}
+
 
     function updateNavigation() {
-        if (currentUser) {
-            document.getElementById('navButtons').classList.add('hidden');
-            document.getElementById('userNav').classList.remove('hidden');
-            document.getElementById('welcomeUser').textContent = `Welcome, ${currentUser.name}`;
-        } else {
-            document.getElementById('navButtons').classList.remove('hidden');
-            document.getElementById('userNav').classList.add('hidden');
-        }
+    if (currentUser) {
+        document.getElementById('navButtons').classList.add('hidden');
+        document.getElementById('userNav').classList.remove('hidden');
+        document.getElementById('welcomeUser').textContent = `Welcome, ${currentUser.name}`;
+    } else {
+        document.getElementById('navButtons').classList.remove('hidden');
+        document.getElementById('userNav').classList.add('hidden');
     }
+}
+
 
     function handleLogin() {
         const email = document.getElementById('loginEmail').value;
@@ -1798,15 +1820,16 @@
     }
 
     function logout() {
-        auth.signOut().then(() => {
-            currentUser = null;
-            localStorage.removeItem('currentUser');
-            updateNavigation();
-            showHome();
-        }).catch((error) => {
-            alert('Logout failed: ' + error.message);
-        });
-    }
+    auth.signOut().then(() => {
+        currentUser = null;
+        localStorage.removeItem('currentUser');
+        updateNavigation();
+        showHome();
+    }).catch((error) => {
+        alert('Logout failed: ' + error.message);
+    });
+}
+
 
     // Initialize app
     document.addEventListener('DOMContentLoaded', function() {
@@ -2494,44 +2517,83 @@
 
         // Authentication functions
         function checkLoginStatus() {
-            const userData = localStorage.getItem('currentUser');
-            if (userData) {
-                currentUser = JSON.parse(userData);
-                updateNavigation();
-            }
+    auth.onAuthStateChanged((user) => {
+        if (user) {
+            // User is signed in
+            database.ref('users/' + user.uid).once('value')
+                .then((snapshot) => {
+                    const userData = snapshot.val();
+                    currentUser = {
+                        name: userData.name,
+                        email: user.email,
+                        uid: user.uid,
+                        ...userData
+                    };
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    updateNavigation();
+                })
+                .catch((error) => {
+                    console.error('Error reading user data from Firebase Database', error);
+                });
+        } else {
+            // User is signed out
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateNavigation();
         }
+    });
+}
+
 
         function updateNavigation() {
-            if (currentUser) {
-                document.getElementById('navButtons').classList.add('hidden');
-                document.getElementById('userNav').classList.remove('hidden');
-                document.getElementById('welcomeUser').textContent = `Welcome, ${currentUser.name}`;
-            } else {
-                document.getElementById('navButtons').classList.remove('hidden');
-                document.getElementById('userNav').classList.add('hidden');
-            }
-        }
+    if (currentUser) {
+        document.getElementById('navButtons').classList.add('hidden');
+        document.getElementById('userNav').classList.remove('hidden');
+        document.getElementById('welcomeUser').textContent = `Welcome, ${currentUser.name}`;
+    } else {
+        document.getElementById('navButtons').classList.remove('hidden');
+        document.getElementById('userNav').classList.add('hidden');
+    }
+}
+
 
         function handleLogin(event) {
-            event.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
+    event.preventDefault();
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
 
-            // Check if user exists
-            const users = JSON.parse(localStorage.getItem('users') || '[]');
-            const user = users.find(u => u.email === email && u.password === password);
+    auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
 
-            if (user) {
-                currentUser = user;
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                updateNavigation();
-                showHome();
-                playSuccessSound();
-                alert('Login successful!');
-            } else {
-                alert('Invalid credentials!');
-            }
-        }
+            // Retrieve user data from Firebase Realtime Database
+            database.ref('users/' + user.uid).once('value')
+                .then((snapshot) => {
+                    const userData = snapshot.val();
+                    currentUser = {
+                        name: userData.name,
+                        email: user.email,
+                        uid: user.uid,
+                        ...userData
+                    };
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    updateNavigation();
+                    showHome();
+                    alert('Login successful!');
+                })
+                .catch((error) => {
+                    console.error('Error reading user data from Firebase Database', error);
+                    alert('Login failed: ' + error.message);
+                });
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert('Login failed: ' + error.message);
+        });
+}
+
 
         function handleSignup(event) {
     event.preventDefault();
@@ -2584,29 +2646,36 @@
 
 
 
+
         function updateProfile(event) {
-            event.preventDefault();
-            if (!currentUser) return;
+    event.preventDefault();
+    if (!currentUser) return;
 
-            currentUser.name = document.getElementById('profileName').value;
-            currentUser.category = document.getElementById('profileCategory').value;
-            currentUser.dob = document.getElementById('profileDOB').value;
+    currentUser.name = document.getElementById('profileName').value;
+    currentUser.category = document.getElementById('profileCategory').value;
+    currentUser.dob = document.getElementById('profileDOB').value;
 
-            // Update in localStorage
-            localStorage.setItem('currentUser', JSON.stringify(currentUser));
-            
-            const users = JSON.parse(localStorage.getItem('users') || '[]');
-            const userIndex = users.findIndex(u => u.email === currentUser.email);
-            if (userIndex !== -1) {
-                users[userIndex] = currentUser;
-                localStorage.setItem('users', JSON.stringify(users));
-            }
+    // Update in localStorage
+    localStorage.setItem('currentUser', JSON.stringify(currentUser));
 
-            updateNavigation();
-            cancelProfileEdit();
-            playSuccessSound();
-            alert('Profile updated successfully!');
-        }
+    // Update in Firebase Realtime Database
+    database.ref('users/' + currentUser.uid).update({
+        name: currentUser.name,
+        category: currentUser.category,
+        dob: currentUser.dob
+    })
+    .then(() => {
+        updateNavigation();
+        cancelProfileEdit();
+        playSuccessSound();
+        alert('Profile updated successfully!');
+    })
+    .catch((error) => {
+        console.error('Error updating user data in Firebase Database', error);
+        alert('Failed to update profile: ' + error.message);
+    });
+}
+
 
         function logout() {
             currentUser = null;
