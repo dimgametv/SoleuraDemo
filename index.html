@@ -1755,6 +1755,8 @@
 }
 
 
+
+
     function updateNavigation() {
     if (currentUser) {
         document.getElementById('navButtons').classList.add('hidden');
@@ -2351,28 +2353,30 @@
         }
 
         function loadProfileData() {
-            if (!currentUser) return;
-            
-            document.getElementById('profileName').value = currentUser.name || '';
-            document.getElementById('profileEmail').value = currentUser.email || '';
-            document.getElementById('profileMobile').value = currentUser.mobile || '';
-            document.getElementById('profileCategory').value = currentUser.category || '';
-            document.getElementById('profileDOB').value = currentUser.dob || '';
-            
-            // Update membership plan details
-            document.getElementById('membershipPlan').textContent = `${(currentUser.currentPlan || 'Premium').charAt(0).toUpperCase() + (currentUser.currentPlan || 'Premium').slice(1)} Plan`;
-            document.getElementById('membershipStatus').textContent = currentUser.membershipStatus || 'Active';
-            document.getElementById('membershipDate').textContent = currentUser.membershipDate || '31 Dec 2024';
-            document.getElementById('purchaseDate').textContent = currentUser.purchaseDate || '01 Jan 2024';
-            
-            // Set plan value based on current plan
-            const planValues = {
-                'basic': '₹499/year',
-                'premium': '₹999/year',
-                'pro': '₹1,999/year'
-            };
-            document.getElementById('planValue').textContent = planValues[currentUser.currentPlan] || '₹999/year';
-        }
+    if (!currentUser) return;
+
+    // Display user data in the profile form
+    document.getElementById('profileName').value = currentUser.name || '';
+    document.getElementById('profileEmail').value = currentUser.email || '';
+    document.getElementById('profileMobile').value = currentUser.mobile || '';
+    document.getElementById('profileCategory').value = currentUser.category || '';
+    document.getElementById('profileDOB').value = currentUser.dob || '';
+
+    // Update membership plan details
+    document.getElementById('membershipPlan').textContent = `${(currentUser.currentPlan || 'Premium').charAt(0).toUpperCase() + (currentUser.currentPlan || 'Premium').slice(1)} Plan`;
+    document.getElementById('membershipStatus').textContent = currentUser.membershipStatus || 'Active';
+    document.getElementById('membershipDate').textContent = currentUser.membershipDate || '31 Dec 2024';
+    document.getElementById('purchaseDate').textContent = currentUser.purchaseDate || '01 Jan 2024';
+
+    // Set plan value based on current plan
+    const planValues = {
+        'basic': '₹499/year',
+        'premium': '₹999/year',
+        'pro': '₹1,999/year'
+    };
+    document.getElementById('planValue').textContent = planValues[currentUser.currentPlan] || '₹999/year';
+}
+
 
         function loadDashboardData() {
             // Load user data
@@ -2545,6 +2549,8 @@
 }
 
 
+
+
         function updateNavigation() {
     if (currentUser) {
         document.getElementById('navButtons').classList.add('hidden');
@@ -2607,11 +2613,18 @@
             // Signed up
             const user = userCredential.user;
 
-            // Create user data object
+            // Create user data object with default values
             const userData = {
                 name: name,
                 email: email,
                 mobile: mobile,
+                category: '',
+                testsTaken: 0,
+                testsCompleted: 0,
+                studyTime: 0,
+                accuracy: 0,
+                averageScore: 0,
+                overallPerformance: 0,
                 joinDate: new Date().toISOString(),
                 membershipStatus: 'Active',
                 membershipDate: '31 Dec 2024',
@@ -2624,6 +2637,7 @@
                     currentUser = {
                         name: name,
                         email: user.email,
+                        mobile: mobile,
                         uid: user.uid,
                         ...userData
                     };
@@ -2647,10 +2661,12 @@
 
 
 
+
         function updateProfile(event) {
     event.preventDefault();
     if (!currentUser) return;
 
+    // Update currentUser object with new values
     currentUser.name = document.getElementById('profileName').value;
     currentUser.category = document.getElementById('profileCategory').value;
     currentUser.dob = document.getElementById('profileDOB').value;
@@ -2675,6 +2691,8 @@
         alert('Failed to update profile: ' + error.message);
     });
 }
+
+
 
 
         function logout() {
@@ -3373,6 +3391,33 @@
             markedForReview.clear();
             currentQuestionIndex = 0;
             testPaused = false;
+            if (currentUser) {
+        const testStats = {
+            testsTaken: currentUser.testsTaken ? currentUser.testsTaken + 1 : 1,
+            testsCompleted: currentUser.testsCompleted ? currentUser.testsCompleted + 1 : 1,
+            studyTime: currentUser.studyTime ? currentUser.studyTime + (timeTakenMs / 3600000) : (timeTakenMs / 3600000),
+            accuracy: ((results.correct / (results.correct + results.wrong)) * 100).toFixed(1),
+            averageScore: currentUser.averageScore ?
+                ((currentUser.averageScore + parseFloat(percentage)) / (currentUser.testsTaken + 1)).toFixed(1) :
+                parseFloat(percentage),
+            overallPerformance: parseFloat(percentage)
+        };
+
+        database.ref('users/' + currentUser.uid).update(testStats)
+            .then(() => {
+                // Update currentUser object with new test statistics
+                currentUser.testsTaken = testStats.testsTaken;
+                currentUser.testsCompleted = testStats.testsCompleted;
+                currentUser.studyTime = testStats.studyTime;
+                currentUser.accuracy = testStats.accuracy;
+                currentUser.averageScore = testStats.averageScore;
+                currentUser.overallPerformance = testStats.overallPerformance;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            })
+            .catch((error) => {
+                console.error('Error updating user test statistics in Firebase Database', error);
+            });
+    }
         }
 
         function formatTime(milliseconds) {
@@ -3686,25 +3731,32 @@
                     // Remove loading modal
                     document.getElementById('paymentLoadingModal').remove();
                     
-                    // Update user's plan
                     if (currentUser) {
-                        const currentDate = new Date();
-                        const expiryDate = new Date(currentDate.getTime() + 365 * 24 * 60 * 60 * 1000); // 1 year from now
-                        
-                        currentUser.membershipStatus = 'Active';
-                        currentUser.membershipDate = expiryDate.toLocaleDateString('en-GB');
-                        currentUser.purchaseDate = currentDate.toLocaleDateString('en-GB');
-                        currentUser.currentPlan = planType;
-                        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-                        
-                        // Update users array
-                        const users = JSON.parse(localStorage.getItem('users') || '[]');
-                        const userIndex = users.findIndex(u => u.email === currentUser.email);
-                        if (userIndex !== -1) {
-                            users[userIndex] = currentUser;
-                            localStorage.setItem('users', JSON.stringify(users));
-                        }
-                    }
+                const currentDate = new Date();
+                const expiryDate = new Date(currentDate.getTime() + 365 * 24 * 60 * 60 * 1000); // 1 year from now
+
+                currentUser.membershipStatus = 'Active';
+                currentUser.membershipDate = expiryDate.toLocaleDateString('en-GB');
+                currentUser.purchaseDate = currentDate.toLocaleDateString('en-GB');
+                currentUser.currentPlan = planType;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+                // Update Firebase Realtime Database
+                const userUpdates = {
+                    membershipStatus: 'Active',
+                    membershipDate: expiryDate.toISOString(),
+                    purchaseDate: currentDate.toISOString(),
+                    currentPlan: planType
+                };
+
+                database.ref('users/' + currentUser.uid).update(userUpdates)
+                    .then(() => {
+                        console.log('User plan updated in Firebase successfully');
+                    })
+                    .catch((error) => {
+                        console.error('Error updating user plan in Firebase:', error);
+                    });
+            }
                     
                     // Show success modal
                     const successModal = `
