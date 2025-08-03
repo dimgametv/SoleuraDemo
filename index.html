@@ -2613,18 +2613,12 @@
             // Signed up
             const user = userCredential.user;
 
-            // Create user data object with default values
+            // Create user data object with only the necessary fields
             const userData = {
                 name: name,
                 email: email,
                 mobile: mobile,
                 category: '',
-                testsTaken: 0,
-                testsCompleted: 0,
-                studyTime: 0,
-                accuracy: 0,
-                averageScore: 0,
-                overallPerformance: 0,
                 joinDate: new Date().toISOString(),
                 membershipStatus: 'Active',
                 membershipDate: '31 Dec 2024',
@@ -2657,9 +2651,6 @@
             alert('Signup failed: ' + errorMessage);
         });
 }
-
-
-
 
 
         function updateProfile(event) {
