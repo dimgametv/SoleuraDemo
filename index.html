@@ -7,6 +7,26 @@
     <title>PowerLift Pro - Complete SBD Training Platform</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD622Vu-OiFgIVc9n2TbE51Qpka7_vKXRQ",
+            authDomain: "prepssc-d65cd.firebaseapp.com",
+            databaseURL: "https://prepssc-d65cd-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "prepssc-d65cd",
+            storageBucket: "prepssc-d65cd.appspot.com",
+            messagingSenderId: "431061951062",
+            appId: "1:431061951062:web:e574c6935192ba6ea4d1f7"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+    </script>
     <style>
         .gradient-bg {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
@@ -1263,104 +1283,98 @@
         return;
     }
 
-    if (!isValidEmail(email)) {
-        alert('Please enter a valid email address.');
-        return;
-    }
-
-    // Demo login - In production, this would connect to Firebase
-    const users = JSON.parse(localStorage.getItem('demoUsers')) || [];
-    const user = users.find(u => u.email === email && u.password === password);
-
-    if (user) {
-        currentUser = user;
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        updateAuthUI();
-        closeAuthModal();
-        showSuccessMessage(`Welcome back, ${user.name}! 🎉`);
-    } else {
-        alert('Invalid email or password. Please try again or sign up for a new account.');
-    }
+    auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            // Signed in
+            const user = userCredential.user;
+            database.ref('users/' + user.uid).once('value')
+                .then((snapshot) => {
+                    const userData = snapshot.val();
+                    currentUser = {
+                        name: userData.name,
+                        email: user.email,
+                        uid: user.uid,
+                        ...userData
+                    };
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    updateAuthUI();
+                    closeAuthModal();
+                    showSuccessMessage(`Welcome back, ${userData.name}! 🎉`);
+                })
+                .catch((error) => {
+                    console.error('Error reading user data from Firebase Database', error);
+                    alert('Login failed: ' + error.message);
+                });
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert('Login failed: ' + errorMessage);
+        });
 }
 
-        function handleSignup() {
-    console.log("handleSignup function called"); // Debugging statement
-
+function handleSignup() {
     const name = document.getElementById('signupName').value.trim();
     const email = document.getElementById('signupEmail').value.trim();
     const password = document.getElementById('signupPassword').value;
 
-    console.log("Name:", name); // Debugging statement
-    console.log("Email:", email); // Debugging statement
-    console.log("Password:", password); // Debugging statement
-
     if (!name || !email || !password) {
-        console.log("Validation failed: Please fill in all fields."); // Debugging statement
         alert('Please fill in all fields.');
         return;
     }
 
     if (!isValidEmail(email)) {
-        console.log("Validation failed: Invalid email address."); // Debugging statement
         alert('Please enter a valid email address.');
         return;
     }
 
     if (password.length < 6) {
-        console.log("Validation failed: Password too short."); // Debugging statement
         alert('Password must be at least 6 characters long.');
         return;
     }
 
-    // Demo signup - In production, this would connect to Firebase
-    const users = JSON.parse(localStorage.getItem('demoUsers')) || [];
-    console.log("Existing users:", users); // Debugging statement
+    auth.createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+            // Signed up
+            const user = userCredential.user;
+            const userData = {
+                name: name,
+                email: email,
+                uid: user.uid,
+                joinDate: new Date().toISOString()
+            };
 
-    if (users.find(u => u.email === email)) {
-        console.log("User already exists."); // Debugging statement
-        alert('An account with this email already exists. Please login instead.');
-        return;
-    }
-
-    const newUser = {
-        id: Date.now(),
-        name: name,
-        email: email,
-        password: password, // In production, this would be hashed
-        createdAt: new Date().toISOString()
-    };
-
-    users.push(newUser);
-    localStorage.setItem('demoUsers', JSON.stringify(users));
-    console.log("New user added:", newUser); // Debugging statement
-
-    currentUser = newUser;
-    localStorage.setItem('currentUser', JSON.stringify(newUser));
-    updateAuthUI();
-    closeAuthModal();
-
-    // Show success message
-    showSuccessMessage(`Welcome to PowerLift Pro, ${name}! 🚀 Your account has been created successfully.`);
+            database.ref('users/' + user.uid).set(userData)
+                .then(() => {
+                    currentUser = userData;
+                    localStorage.setItem('currentUser', JSON.stringify(userData));
+                    updateAuthUI();
+                    closeAuthModal();
+                    showSuccessMessage(`Welcome to PowerLift Pro, ${name}! 🚀 Your account has been created successfully.`);
+                })
+                .catch((error) => {
+                    console.error('Error writing user data to Firebase Database', error);
+                    alert('Signup failed: ' + error.message);
+                });
+        })
+        .catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            alert('Signup failed: ' + errorMessage);
+        });
 }
 
-
-        function handleLogout() {
-    // Hide the logout button instantly
-    const logoutButton = document.querySelector('#mobileMenuContent button[onclick="handleLogout()"]');
-    if (logoutButton) {
-        logoutButton.classList.add('hidden');
-    }
-
-    // Clear the current user session
-    currentUser = null;
-    localStorage.removeItem('currentUser');
-
-    // Update the UI to reflect the logout
-    updateAuthUI();
-
-    // Show success message
-    showSuccessMessage('See you next time! 👋');
+function handleLogout() {
+    auth.signOut().then(() => {
+        currentUser = null;
+        localStorage.removeItem('currentUser');
+        updateAuthUI();
+        showSuccessMessage('See you next time! 👋');
+    }).catch((error) => {
+        alert('Logout failed: ' + error.message);
+    });
 }
+
 
 
         function updateAuthUI() {
@@ -1373,6 +1387,12 @@
     if (currentUser) {
         if (userInfo) {
             userInfo.classList.remove('hidden');
+            userInfo.innerHTML = `
+                <div class="text-sm font-medium mr-4">${currentUser.name}</div>
+                <button onclick="handleLogout()" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm transition-colors">
+                    Logout
+                </button>
+            `;
         }
         if (authButtons) {
             authButtons.classList.add('hidden');
@@ -1383,15 +1403,8 @@
         if (loginButton) {
             loginButton.classList.add('hidden');
         }
-        // Check if the logged-in user's email is heysharvi@gmail.com
-        if (currentUser.email === 'heysharvi@gmail.com') {
-            if (addRecordSection) {
-                addRecordSection.style.display = 'block';
-            }
-        } else {
-            if (addRecordSection) {
-                addRecordSection.style.display = 'none';
-            }
+        if (addRecordSection) {
+            addRecordSection.style.display = currentUser.email === 'heysharvi@gmail.com' ? 'block' : 'none';
         }
     } else {
         if (userInfo) {
@@ -1411,6 +1424,7 @@
         }
     }
 }
+
 
 
 
@@ -2657,69 +2671,79 @@
         }
         // Initialize the page
         document.addEventListener('DOMContentLoaded', function() {
-            // Check for existing user session
-            const savedUser = localStorage.getItem('currentUser');
-            if (savedUser) {
-                currentUser = JSON.parse(savedUser);   
-            }
-            updateAuthUI();
-            // Load initial records from localStorage
-            displayRecords(powerliftingRecords);
-            // Set today's date as default for record entry
-            document.getElementById('recordDate').value = new Date().toISOString().split('T')[0];
-            // Add event listeners for all navigation links
-            document.querySelectorAll('a[href^="#"]').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href').substring(1);
-                    scrollToSection(targetId);
-                });
-            });
-            // Show initial message if no records exist
-            if (powerliftingRecords.length === 0) {
-                const tableBody = document.getElementById('recordsTable');
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="8" class="px-4 py-8 text-center text-gray-400">
-                            <div class="text-xl mb-2">📝 No records yet</div>
-                            <div>Add your first powerlifting record using the form above!</div>
-                        </td>
-                    </tr>
-                `;
-            }
-            // Close modal when clicking outside
-            document.getElementById('authModal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeAuthModal();
-                }
-            });
-            // Close SBD modal when clicking outside
-            document.getElementById('sbdDetailsModal').addEventListener('click', function(e) {
-                if (e.target === this) {
-                    closeSBDModal();
-                }
-            });
-            // Handle Enter key in auth forms
-            document.querySelectorAll('#loginForm input, #signupForm input').forEach(input => {
-                input.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        if (this.closest('#loginForm')) {
-                            handleLogin();
-                        } else {
-                            handleSignup();
-                        }
-                    }
-                });
-            });
-            // Handle Enter key in SBD modal
-            document.querySelectorAll('#sbdDetailsModal input, #sbdDetailsModal select').forEach(input => {
-                input.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        generatePersonalizedProgram();
-                    }
-                });
-            });
+    // Check for existing user session
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+    }
+
+    updateAuthUI();
+
+    // Load initial records from localStorage
+    displayRecords(powerliftingRecords);
+
+    // Set today's date as default for record entry
+    document.getElementById('recordDate').value = new Date().toISOString().split('T')[0];
+
+    // Add event listeners for all navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href').substring(1);
+            scrollToSection(targetId);
         });
+    });
+
+    // Show initial message if no records exist
+    if (powerliftingRecords.length === 0) {
+        const tableBody = document.getElementById('recordsTable');
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="8" class="px-4 py-8 text-center text-gray-400">
+                    <div class="text-xl mb-2">📝 No records yet</div>
+                    <div>Add your first powerlifting record using the form above!</div>
+                </td>
+            </tr>
+        `;
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('authModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeAuthModal();
+        }
+    });
+
+    // Close SBD modal when clicking outside
+    document.getElementById('sbdDetailsModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeSBDModal();
+        }
+    });
+
+    // Handle Enter key in auth forms
+    document.querySelectorAll('#loginForm input, #signupForm input').forEach(input => {
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                if (this.closest('#loginForm')) {
+                    handleLogin();
+                } else {
+                    handleSignup();
+                }
+            }
+        });
+    });
+
+    // Handle Enter key in SBD modal
+    document.querySelectorAll('#sbdDetailsModal input, #sbdDetailsModal select').forEach(input => {
+        input.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                generatePersonalizedProgram();
+            }
+        });
+    });
+});
+
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96a549f780124621',t:'MTc1NDM4NjM2NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
