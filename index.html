@@ -238,8 +238,7 @@
 </nav>
                 <div class="flex items-center space-x-4">
                     <div id="userInfo" class="hidden">
-                        
-                        
+                                             
                     </div>
                     <div id="authButtons">
                         <button onclick="showAuthModal()" class="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg font-semibold transition-all glow-button">
@@ -1388,7 +1387,6 @@ function handleLogout() {
         if (userInfo) {
             userInfo.classList.remove('hidden');
             userInfo.innerHTML = `
-                <div class="text-sm font-medium mr-4">${currentUser.name}</div>
                 <button onclick="handleLogout()" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm transition-colors">
                     Logout
                 </button>
@@ -1424,6 +1422,7 @@ function handleLogout() {
         }
     }
 }
+
 
 
 
