@@ -1417,7 +1417,7 @@ th, td {
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
-            alert('Login failed: ' + errorMessage);
+            alert('Invalid Credentials!');
         });
 }
 function loadRecordsFromFirebase() {
@@ -1584,6 +1584,63 @@ function updateWeightClassFilter() {
         }
     }
 }
+// Function to check if the user is logged in
+function isUserLoggedIn() {
+    return currentUser !== null;
+}
+
+// Modify the scrollToSection function to handle the records section
+function scrollToSection(sectionId) {
+    if (sectionId === 'records' && !isUserLoggedIn()) {
+        showLoginPrompt();
+        return;
+    }
+    document.getElementById(sectionId).scrollIntoView({
+        behavior: 'smooth'
+    });
+}
+
+// Function to show a login prompt message
+function showLoginPrompt() {
+    // Create a temporary message element
+    const promptDiv = document.createElement('div');
+    promptDiv.className = 'fixed top-20 right-4 bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300';
+    promptDiv.innerHTML = `
+        <div class="flex items-center">
+            <div class="mr-2">🔒</div>
+            <div>Please <button onclick="showAuthModal()" class="underline font-semibold">log in</button> to view lifting records.</div>
+        </div>
+    `;
+    document.body.appendChild(promptDiv);
+
+    // Animate in
+    setTimeout(() => {
+        promptDiv.classList.remove('translate-x-full');
+    }, 100);
+
+    // Remove after 5 seconds
+    setTimeout(() => {
+        promptDiv.classList.add('translate-x-full');
+        setTimeout(() => {
+            document.body.removeChild(promptDiv);
+        }, 300);
+    }, 5000);
+}
+
+// Add an event listener for the records section link
+document.addEventListener('DOMContentLoaded', function() {
+    const recordsLink = document.querySelector('a[href="#records"]');
+    if (recordsLink) {
+        recordsLink.addEventListener('click', function(e) {
+            if (!isUserLoggedIn()) {
+                e.preventDefault();
+                showLoginPrompt();
+            }
+        });
+    }
+});
+
+
         function isValidEmail(email) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return emailRegex.test(email);
@@ -2959,8 +3016,8 @@ function closeEditModal() {
         tableBody.innerHTML = `
             <tr>
                 <td colspan="8" class="px-4 py-8 text-center text-gray-400">
-                    <div class="text-xl mb-2">📝 No records yet</div>
-                    <div>Add your first powerlifting record using the form above!</div>
+                    <div class="text-xl mb-2">📝 LOGIN TO VIEW RECORDS</div>
+                    
                 </td>
             </tr>
         `;
