@@ -396,7 +396,7 @@ th, td {
             <p class="text-xl md:text-2xl mb-8 text-gray-100 drop-shadow">Structured 12-Week Programs • Progress Tracking • Nutrition Planning</p>
             <div class="flex flex-col md:flex-row gap-4 justify-center">
                 <button onclick="scrollToSection('programs')" class="bg-white text-gray-900 hover:bg-gray-100 px-8 py-4 rounded-lg text-lg font-semibold transition-all transform hover:scale-105 shadow-lg">
-                    GET YOUR SBD SPLIT
+                    MAKE ME STRONG
                 </button>
                 <button onclick="scrollToSection('oneRMCalculator')" class="bg-gray-900 bg-opacity-50 hover:bg-opacity-70 px-8 py-4 rounded-lg text-lg font-semibold transition-all transform hover:scale-105 shadow-lg backdrop-blur">
                     CALCULATE 1RM
@@ -471,7 +471,7 @@ th, td {
                     
                     <div class="text-center">
                         <button onclick="goToSBDCalculator('beginner')" class="bg-green-600 hover:bg-green-700 px-8 py-4 rounded-lg text-lg font-semibold transition-all transform hover:scale-105 glow-button">
-                            Create My SBD Split
+                            GET YOUR SBD SPLIT
                         </button>
                     </div>
                 </div>
@@ -482,15 +482,14 @@ th, td {
     <!-- 1RM Calculator Section -->
     <section id="oneRMCalculator" class="py-16 bg-gray-900">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-red-400">💪 1RM Calculator</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-red-400">💪 1RM CALCULATOR</h2>
             
             <div class="max-w-6xl mx-auto">
                 <div class="grid md:grid-cols-3 gap-6 mb-6">
                     <!-- Squat Calculator -->
                     <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-6 shadow-xl border border-gray-600">
                         <h3 class="text-2xl font-bold mb-4 text-red-400 flex items-center">
-                            🏋️ Squat 1RM
-                            <span class="ml-2 text-sm bg-blue-600 px-2 py-1 rounded-full cursor-help" title="Calculate your one-rep max using the proven Wendler formula">ℹ️</span>
+                            🏋️ SQUAT 1RM
                         </h3>
                         <div class="space-y-4">
                             <div>
@@ -502,7 +501,7 @@ th, td {
                                 <input type="number" id="squatReps" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="5" max="15">
                             </div>
                             <button onclick="calculateSquat1RM()" class="w-full bg-red-600 hover:bg-red-700 py-3 rounded-lg font-semibold transition-all glow-button">
-                                Calculate Squat 1RM
+                                CALCULATE SQUAT 1RM
                             </button>
                             <div id="squatResult" class="text-center text-2xl font-bold text-green-400 min-h-[2rem]"></div>
                         </div>
@@ -510,8 +509,7 @@ th, td {
                     <!-- Bench Calculator -->
                     <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-6 shadow-xl border border-gray-600">
                         <h3 class="text-2xl font-bold mb-4 text-red-400 flex items-center">
-                            💪 Bench 1RM
-                            <span class="ml-2 text-sm bg-blue-600 px-2 py-1 rounded-full cursor-help" title="Calculate your bench press one-rep max">ℹ️</span>
+                            🏋️ BENCH 1RM
                         </h3>
                         <div class="space-y-4">
                             <div>
@@ -523,7 +521,7 @@ th, td {
                                 <input type="number" id="benchReps" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="5" max="15">
                             </div>
                             <button onclick="calculateBench1RM()" class="w-full bg-red-600 hover:bg-red-700 py-3 rounded-lg font-semibold transition-all glow-button">
-                                Calculate Bench 1RM
+                                CALCULATE BENCH 1RM
                             </button>
                             <div id="benchResult" class="text-center text-2xl font-bold text-green-400 min-h-[2rem]"></div>
                         </div>
@@ -531,8 +529,7 @@ th, td {
                     <!-- Deadlift Calculator -->
                     <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-6 shadow-xl border border-gray-600">
                         <h3 class="text-2xl font-bold mb-4 text-red-400 flex items-center">
-                            🔥 Deadlift 1RM
-                            <span class="ml-2 text-sm bg-blue-600 px-2 py-1 rounded-full cursor-help" title="Calculate your deadlift one-rep max">ℹ️</span>
+                            🏋️ DEADLIFT 1RM
                         </h3>
                         <div class="space-y-4">
                             <div>
@@ -544,28 +541,20 @@ th, td {
                                 <input type="number" id="deadliftReps" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="5" max="15">
                             </div>
                             <button onclick="calculateDeadlift1RM()" class="w-full bg-red-600 hover:bg-red-700 py-3 rounded-lg font-semibold transition-all glow-button">
-                                Calculate Deadlift 1RM
+                                CALCULATE DEADLIFT 1RM
                             </button>
                             <div id="deadliftResult" class="text-center text-2xl font-bold text-green-400 min-h-[2rem]"></div>
                         </div>
                     </div>
                 </div>
-                <!-- Quick Actions -->
-                <div class="flex flex-wrap justify-center gap-4 mb-8">
-                    <button onclick="calculateAll1RM()" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-semibold transition-all glow-button">
-                        🎯 Calculate All 1RMs
-                    </button>
-                    <button onclick="clearAll1RM()" class="bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-semibold transition-all">
-                        🗑️ Clear All Fields
-                    </button>
-                </div>
+                
             </div>
         </div>
     </section>
     <!-- Nutrition Calculator Section -->
     <section id="nutritionCalculator" class="py-16 bg-gray-800">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-green-400">🥗 Smart Nutrition Planner</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-green-400">🥗 NUTRITION PLANNER</h2>
             
             <div class="max-w-6xl mx-auto">
                 <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-6 mb-8 shadow-xl border border-gray-600">
@@ -777,7 +766,7 @@ th, td {
     <!-- Wilks Score Calculator Section -->
     <section id="wilksCalculator" class="py-16 bg-gray-800">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-yellow-400">🏆 Wilks Score Calculator</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-yellow-400">🏆 WILKS SCORE CHECKER</h2>
             
             <div class="max-w-6xl mx-auto">
                 <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-6 mb-8 shadow-xl border border-gray-600">
@@ -841,8 +830,7 @@ th, td {
                 </div>
                 <!-- Guarantee Statement -->
                 <div class="bg-gradient-to-r from-red-600 to-orange-600 rounded-2xl p-6 mt-8 text-center shadow-xl">
-                    <h3 class="text-2xl font-bold mb-4">💪 12-Week SBD Outcome</h3>
-                    <p class="text-lg mb-4">We guarantee visible improvement in your SBD.</p>
+                    <h3 class="text-2xl font-bold mb-4">💪 Guaranteed SBD Outcome</h3>
                     <div class="grid md:grid-cols-3 gap-4 text-center">
                         <div class="bg-black bg-opacity-30 rounded-lg p-4">
                             <div class="text-3xl font-bold text-yellow-400">+15%</div>
@@ -864,7 +852,7 @@ th, td {
     <!-- Indian Powerlifting Records Section -->
     <section id="records" class="py-16 bg-gray-800">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-red-400">🏋️‍♂️ Powerlifting Records</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-red-400">🏋️‍♂️ POWERLIFTING RECORDS</h2>
             
             <!-- Add New Record Form -->
             <div id="addRecordSection" class="bg-gradient-to-br from-gray-700 to-gray-600 rounded-2xl p-6 mb-8 shadow-xl border border-gray-600">
