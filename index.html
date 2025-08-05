@@ -1370,23 +1370,38 @@
         function updateAuthUI() {
     const userInfo = document.getElementById('userInfo');
     const authButtons = document.getElementById('authButtons');
-    const userName = document.getElementById('userName');
     const logoutButton = document.querySelector('#mobileMenuContent button[onclick="handleLogout()"]');
     const loginButton = document.querySelector('#mobileMenuContent button[onclick="showAuthModal()"]');
 
     if (currentUser) {
-        userInfo.classList.remove('hidden');
-        authButtons.classList.add('hidden');
-        userName.textContent = currentUser.name;
-        if (logoutButton) logoutButton.classList.remove('hidden');
-        if (loginButton) loginButton.classList.add('hidden');
+        if (userInfo) {
+            userInfo.classList.remove('hidden');
+        }
+        if (authButtons) {
+            authButtons.classList.add('hidden');
+        }
+        if (logoutButton) {
+            logoutButton.classList.remove('hidden');
+        }
+        if (loginButton) {
+            loginButton.classList.add('hidden');
+        }
     } else {
-        userInfo.classList.add('hidden');
-        authButtons.classList.remove('hidden');
-        if (logoutButton) logoutButton.classList.add('hidden');
-        if (loginButton) loginButton.classList.remove('hidden');
+        if (userInfo) {
+            userInfo.classList.add('hidden');
+        }
+        if (authButtons) {
+            authButtons.classList.remove('hidden');
+        }
+        if (logoutButton) {
+            logoutButton.classList.add('hidden');
+        }
+        if (loginButton) {
+            loginButton.classList.remove('hidden');
+        }
     }
 }
+
 
         function isValidEmail(email) {
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
