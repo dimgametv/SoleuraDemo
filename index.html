@@ -857,7 +857,7 @@
             <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-red-400">🇮🇳 Indian Powerlifting Records</h2>
             
             <!-- Add New Record Form -->
-            <div class="bg-gradient-to-br from-gray-700 to-gray-600 rounded-2xl p-6 mb-8 shadow-xl border border-gray-600">
+            <div id="addRecordSection" class="bg-gradient-to-br from-gray-700 to-gray-600 rounded-2xl p-6 mb-8 shadow-xl border border-gray-600">
                 <h3 class="text-xl font-bold mb-4 text-red-400">➕ Add New Record</h3>
                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                     <div>
@@ -1377,6 +1377,9 @@
         if (loginButton) {
             loginButton.classList.add('hidden');
         }
+        if (addRecordSection) {
+            addRecordSection.style.display = 'block';
+        }
     } else {
         if (userInfo) {
             userInfo.classList.add('hidden');
@@ -1389,6 +1392,9 @@
         }
         if (loginButton) {
             loginButton.classList.remove('hidden');
+        }
+        if (addRecordSection) {
+            addRecordSection.style.display = 'none';
         }
     }
 }
@@ -2640,9 +2646,9 @@
             // Check for existing user session
             const savedUser = localStorage.getItem('currentUser');
             if (savedUser) {
-                currentUser = JSON.parse(savedUser);
-                updateAuthUI();
+                currentUser = JSON.parse(savedUser);   
             }
+            updateAuthUI();
             // Load initial records from localStorage
             displayRecords(powerliftingRecords);
             // Set today's date as default for record entry
