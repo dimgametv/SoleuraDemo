@@ -1290,43 +1290,52 @@
             }
         }
         function handleSignup() {
-            const name = document.getElementById('signupName').value.trim();
-            const email = document.getElementById('signupEmail').value.trim();
-            const password = document.getElementById('signupPassword').value;
-            if (!name || !email || !password) {
-                alert('Please fill in all fields.');
-                return;
-            }
-            if (!isValidEmail(email)) {
-                alert('Please enter a valid email address.');
-                return;
-            }
-            if (password.length < 6) {
-                alert('Password must be at least 6 characters long.');
-                return;
-            }
-            // Demo signup - In production, this would connect to Firebase
-            const users = JSON.parse(localStorage.getItem('demoUsers')) || [];
-            
-            if (users.find(u => u.email === email)) {
-                alert('An account with this email already exists. Please login instead.');
-                return;
-            }
-            const newUser = {
-                id: Date.now(),
-                name: name,
-                email: email,
-                password: password, // In production, this would be hashed
-                createdAt: new Date().toISOString()
-            };
-            users.push(newUser);
-            localStorage.setItem('demoUsers', JSON.stringify(users));
-            currentUser = newUser;
-            localStorage.setItem('currentUser', JSON.stringify(newUser));
-            updateAuthUI();
-            closeAuthModal();
-            showSuccessMessage(`Welcome to PowerLift Pro, ${name}! 🚀 Your account has been created successfully.`);
-        }
+    const name = document.getElementById('signupName').value.trim();
+    const email = document.getElementById('signupEmail').value.trim();
+    const password = document.getElementById('signupPassword').value;
+
+    if (!name || !email || !password) {
+        alert('Please fill in all fields.');
+        return;
+    }
+
+    if (!isValidEmail(email)) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+
+    if (password.length < 6) {
+        alert('Password must be at least 6 characters long.');
+        return;
+    }
+
+    // Demo signup - In production, this would connect to Firebase
+    const users = JSON.parse(localStorage.getItem('demoUsers')) || [];
+
+    if (users.find(u => u.email === email)) {
+        alert('An account with this email already exists. Please login instead.');
+        return;
+    }
+
+    const newUser = {
+        id: Date.now(),
+        name: name,
+        email: email,
+        password: password, // In production, this would be hashed
+        createdAt: new Date().toISOString()
+    };
+
+    users.push(newUser);
+    localStorage.setItem('demoUsers', JSON.stringify(users));
+    currentUser = newUser;
+    localStorage.setItem('currentUser', JSON.stringify(newUser));
+    updateAuthUI();
+    closeAuthModal();
+
+    // Show success message
+    showSuccessMessage(`Welcome to PowerLift Pro, ${name}! 🚀 Your account has been created successfully.`);
+}
+
         function handleLogout() {
             currentUser = null;
             localStorage.removeItem('currentUser');
