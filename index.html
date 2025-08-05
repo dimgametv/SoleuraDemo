@@ -116,6 +116,93 @@
         <div class="shape w-48 h-48 bg-orange-500 rounded-full" style="top: 60%; right: 10%; animation-delay: 2s;"></div>
         <div class="shape w-32 h-32 bg-yellow-500 rounded-full" style="top: 30%; left: 70%; animation-delay: 4s;"></div>
     </div>
+    <!-- Edit Record Modal -->
+<div id="editRecordModal" class="hidden fixed inset-0 auth-modal z-50 flex items-center justify-center p-4">
+    <div class="auth-form rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
+        <div class="text-center mb-6">
+            <div class="text-4xl mb-2">🏋️‍♂️</div>
+            <h2 class="text-2xl font-bold text-red-400">Edit Record</h2>
+            <p class="text-gray-400 mt-2">Update the record details</p>
+        </div>
+        <div class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-2 text-gray-300">Athlete Name</label>
+                <input type="text" id="editAthleteName" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="Enter athlete name">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2 text-gray-300">Category</label>
+                <select id="editRecordCategory" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                    <option value="">Select Category</option>
+                    <option value="open-men-equipped">Open Men Equipped</option>
+                    <option value="open-women-equipped">Open Women Equipped</option>
+                    <option value="open-men-classic">Open Men Classic</option>
+                    <option value="open-women-classic">Open Women Classic</option>
+                    <option value="sub-junior-men-equipped">Sub Junior Men Equipped</option>
+                    <option value="sub-junior-women-equipped">Sub Junior Women Equipped</option>
+                    <option value="sub-junior-men-classic">Sub Junior Men Classic</option>
+                    <option value="sub-junior-women-classic">Sub Junior Women Classic</option>
+                    <option value="junior-men-equipped">Junior Men Equipped</option>
+                    <option value="junior-women-equipped">Junior Women Equipped</option>
+                    <option value="junior-men-classic">Junior Men Classic</option>
+                    <option value="junior-women-classic">Junior Women Classic</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2 text-gray-300">Weight Class</label>
+                <select id="editRecordWeightClass" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                    <option value="">Select Weight Class</option>
+                    <option value="53">53kg</option>
+                    <option value="59">59kg</option>
+                    <option value="66">66kg</option>
+                    <option value="74">74kg</option>
+                    <option value="83">83kg</option>
+                    <option value="93">93kg</option>
+                    <option value="105">105kg</option>
+                    <option value="120">120kg</option>
+                    <option value="120+">120kg+</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2 text-gray-300">Lift Type</label>
+                <select id="editRecordLift" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                    <option value="">Select Lift</option>
+                    <option value="squat">Squat</option>
+                    <option value="bench">Bench Press</option>
+                    <option value="deadlift">Deadlift</option>
+                    <option value="total">Total (SBD)</option>
+                    <option value="bench-only">Single Bench Lift</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2 text-gray-300">Weight Lifted (kg)</label>
+                <input type="number" id="editRecordWeight" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="Enter weight" step="0.5">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2 text-gray-300">Record Level</label>
+                <select id="editRecordLevel" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                    <option value="">Select Record Level</option>
+                    <option value="India">India</option>
+                    <option value="Asia">Asia</option>
+                    <option value="Europe">Europe</option>
+                    <option value="World">World</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-2 text-gray-300">Date</label>
+                <input type="date" id="editRecordDate" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+            </div>
+            <button onclick="updateRecord()" class="w-full bg-green-600 hover:bg-green-700 py-3 rounded-lg font-semibold transition-all glow-button">
+                Update Record
+            </button>
+        </div>
+        <button onclick="closeEditModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">×</button>
+    </div>
+</div>
+
+
+
+
+
     <!-- SBD Details Modal -->
     <div id="sbdDetailsModal" class="hidden fixed inset-0 auth-modal z-50 flex items-center justify-center p-4">
         <div class="auth-form rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
@@ -2030,12 +2117,10 @@ function handleLogout() {
     records.forEach(record => {
         const row = document.createElement('tr');
         row.className = 'record-row transition-all duration-300 hover:bg-gray-600';
-
         // Format category display
         const categoryDisplay = record.category.split('-').map(word =>
             word.charAt(0).toUpperCase() + word.slice(1)
         ).join(' ');
-
         // Format lift display
         let liftDisplay = record.lift;
         if (record.lift === 'bench-only') {
@@ -2043,7 +2128,6 @@ function handleLogout() {
         } else {
             liftDisplay = record.lift.charAt(0).toUpperCase() + record.lift.slice(1);
         }
-
         // Record level badge color
         let levelColor = 'bg-gray-500';
         switch(record.recordLevel) {
@@ -2052,7 +2136,6 @@ function handleLogout() {
             case 'Europe': levelColor = 'bg-purple-500'; break;
             case 'World': levelColor = 'bg-red-500'; break;
         }
-
         row.innerHTML = `
             <td class="px-4 py-3 font-semibold">${record.athlete}</td>
             <td class="px-4 py-3 text-yellow-400">${categoryDisplay}</td>
@@ -2066,6 +2149,9 @@ function handleLogout() {
             </td>
             <td class="px-4 py-3">${record.date}</td>
             <td class="px-4 py-3">
+                <button onclick="editRecord('${record.id}')" class="edit-btn bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-xs font-semibold transition-all">
+                    Edit
+                </button>
                 <button onclick="deleteRecord('${record.id}')" class="delete-btn bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-xs font-semibold transition-all">
                     Delete
                 </button>
@@ -2074,6 +2160,93 @@ function handleLogout() {
         tableBody.appendChild(row);
     });
 }
+
+function editRecord(recordId) {
+    const record = powerliftingRecords.find(r => r.id === recordId);
+    if (!record) return;
+
+    // Populate the edit modal with the record's data
+    document.getElementById('editAthleteName').value = record.athlete;
+    document.getElementById('editRecordCategory').value = record.category;
+    document.getElementById('editRecordWeightClass').value = record.weightClass;
+    document.getElementById('editRecordLift').value = record.lift;
+    document.getElementById('editRecordWeight').value = record.weight;
+    document.getElementById('editRecordLevel').value = record.recordLevel;
+    document.getElementById('editRecordDate').value = record.date;
+
+    // Store the record ID in a hidden field or a global variable
+    window.currentEditRecordId = recordId;
+
+    // Show the edit modal
+    document.getElementById('editRecordModal').classList.remove('hidden');
+}
+
+function updateRecord() {
+    const recordId = window.currentEditRecordId;
+    const record = powerliftingRecords.find(r => r.id === recordId);
+    if (!record) return;
+
+    // Get the updated values from the edit modal
+    const athleteName = document.getElementById('editAthleteName').value.trim();
+    const category = document.getElementById('editRecordCategory').value;
+    const weightClass = document.getElementById('editRecordWeightClass').value;
+    const lift = document.getElementById('editRecordLift').value;
+    const weight = parseFloat(document.getElementById('editRecordWeight').value);
+    const recordLevel = document.getElementById('editRecordLevel').value;
+    const date = document.getElementById('editRecordDate').value;
+
+    // Validation
+    if (!athleteName || !category || !weightClass || !lift || !weight || !recordLevel || !date) {
+        alert('Please fill in all fields before updating the record.');
+        return;
+    }
+    if (weight <= 0) {
+        alert('Please enter a valid weight greater than 0.');
+        return;
+    }
+
+    // Create updated record object
+    const updatedRecord = {
+        athlete: athleteName,
+        category: category,
+        lift: lift,
+        weight: weight,
+        weightClass: weightClass,
+        recordLevel: recordLevel,
+        date: date,
+        timestamp: Date.now() // Update timestamp
+    };
+
+    // Update in Firebase
+    if (currentUser) {
+        database.ref('powerliftingRecords').child(recordId).update(updatedRecord)
+            .then(() => {
+                // If successful, update the local array and display
+                const index = powerliftingRecords.findIndex(r => r.id === recordId);
+                powerliftingRecords[index] = { id: recordId, ...updatedRecord };
+                localStorage.setItem('powerliftingRecords', JSON.stringify(powerliftingRecords));
+                closeEditModal();
+                displayRecords(powerliftingRecords);
+                showSuccessMessage(`✅ Record updated successfully! ${athleteName} - ${weight}kg ${lift.charAt(0).toUpperCase() + lift.slice(1)} (${recordLevel} Record)`);
+            })
+            .catch((error) => {
+                console.error("Error updating record in Firebase:", error);
+                alert("Error updating record. Please try again.");
+            });
+    } else {
+        // If not logged in, just update locally
+        const index = powerliftingRecords.findIndex(r => r.id === recordId);
+        powerliftingRecords[index] = { id: recordId, ...updatedRecord };
+        localStorage.setItem('powerliftingRecords', JSON.stringify(powerliftingRecords));
+        closeEditModal();
+        displayRecords(powerliftingRecords);
+        showSuccessMessage(`✅ Record updated locally! ${athleteName} - ${weight}kg ${lift.charAt(0).toUpperCase() + lift.slice(1)} (${recordLevel} Record)`);
+    }
+}
+function closeEditModal() {
+    document.getElementById('editRecordModal').classList.add('hidden');
+}
+
 
         // Generate direct program without calculation step
         function generateDirectProgram() {
