@@ -1,0 +1,2664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerLift Pro - Complete SBD Training Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
+        }
+        .hero-gradient {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 25%, #f97316 50%, #eab308 75%, #22c55e 100%);
+        }
+        .lift-card {
+            transition: all 0.4s ease;
+            background: linear-gradient(145deg, #1e293b, #334155);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+        .lift-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px rgba(239, 68, 68, 0.3);
+            border-color: rgba(239, 68, 68, 0.5);
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #ef4444, #f97316, #eab308);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
+        }
+        .record-row:hover {
+            background: linear-gradient(90deg, #374151, #4b5563);
+            transform: scale(1.01);
+        }
+        .tab-active {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+        }
+        .nutrition-card {
+            background: linear-gradient(145deg, #065f46, #047857);
+        }
+        .auth-modal {
+            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.8);
+        }
+        .auth-form {
+            background: linear-gradient(145deg, #1e293b, #334155);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: -1;
+        }
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        .glow-button {
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+            transition: all 0.3s ease;
+        }
+        .glow-button:hover {
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.8);
+            transform: translateY(-2px);
+        }
+        .stats-card {
+            background: linear-gradient(145deg, #7c3aed, #8b5cf6);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        .delete-btn {
+            transition: all 0.3s ease;
+        }
+        .delete-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-sans">
+    <!-- Floating Background Shapes -->
+    <div class="floating-shapes">
+        <div class="shape w-64 h-64 bg-red-500 rounded-full" style="top: 10%; left: 10%; animation-delay: 0s;"></div>
+        <div class="shape w-48 h-48 bg-orange-500 rounded-full" style="top: 60%; right: 10%; animation-delay: 2s;"></div>
+        <div class="shape w-32 h-32 bg-yellow-500 rounded-full" style="top: 30%; left: 70%; animation-delay: 4s;"></div>
+    </div>
+    <!-- SBD Details Modal -->
+    <div id="sbdDetailsModal" class="hidden fixed inset-0 auth-modal z-50 flex items-center justify-center p-4">
+        <div class="auth-form rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
+            <div class="text-center mb-6">
+                <div class="text-4xl mb-2">🏋️‍♂️</div>
+                <h2 class="text-2xl font-bold text-red-400">Enter Your SBD Details</h2>
+                <p class="text-gray-400 mt-2">We need your current stats to create your personalized program</p>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-gray-300">Body Weight (kg)</label>
+                    <input type="number" id="modalBodyWeight" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="75">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-gray-300">Current Squat 1RM (kg)</label>
+                    <input type="number" id="modalSquatMax" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="120">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-gray-300">Current Bench 1RM (kg)</label>
+                    <input type="number" id="modalBenchMax" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="80">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-gray-300">Current Deadlift 1RM (kg)</label>
+                    <input type="number" id="modalDeadliftMax" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="140">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2 text-gray-300">Experience Level</label>
+                    <select id="modalExperience" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                        <option value="beginner">Beginner (0-2 years)</option>
+                        <option value="intermediate">Intermediate (2-5 years)</option>
+                        <option value="advanced">Advanced (5+ years)</option>
+                    </select>
+                </div>
+                <button onclick="generatePersonalizedProgram()" class="w-full bg-green-600 hover:bg-green-700 py-3 rounded-lg font-semibold transition-all glow-button">
+                    Generate My Program
+                </button>
+            </div>
+            <button onclick="closeSBDModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">×</button>
+        </div>
+    </div>
+    <!-- Authentication Modal -->
+    <div id="authModal" class="hidden fixed inset-0 auth-modal z-50 flex items-center justify-center p-4">
+        <div class="auth-form rounded-2xl p-8 max-w-md w-full mx-4 shadow-2xl">
+            <div class="text-center mb-6">
+                <div class="text-4xl mb-2">🏋️‍♂️</div>
+                <h2 id="authTitle" class="text-2xl font-bold text-red-400">Welcome to PowerLift Pro</h2>
+                <p class="text-gray-400 mt-2">Join the strongest community</p>
+            </div>
+            <!-- Login Form -->
+            <div id="loginForm">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Email</label>
+                        <input type="email" id="loginEmail" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="your@email.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Password</label>
+                        <div class="relative">
+                            <input type="password" id="loginPassword" class="w-full p-3 pr-12 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="••••••••">
+                            <button type="button" onclick="togglePassword('loginPassword')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
+                                <span id="loginPasswordIcon">👁️</span>
+                            </button>
+                        </div>
+                    </div>
+                    <button onclick="handleLogin()" class="w-full bg-red-600 hover:bg-red-700 py-3 rounded-lg font-semibold transition-all glow-button">
+                        Sign In
+                    </button>
+                </div>
+                <div class="text-center mt-6">
+                    <p class="text-gray-400">Don't have an account? 
+                        <button onclick="showSignup()" class="text-red-400 hover:text-red-300 font-semibold">Sign Up</button>
+                    </p>
+                </div>
+            </div>
+            <!-- Signup Form -->
+            <div id="signupForm" class="hidden">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Full Name</label>
+                        <input type="text" id="signupName" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="John Doe">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Email</label>
+                        <input type="email" id="signupEmail" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="your@email.com">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Password</label>
+                        <div class="relative">
+                            <input type="password" id="signupPassword" class="w-full p-3 pr-12 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="••••••••">
+                            <button type="button" onclick="togglePassword('signupPassword')" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors">
+                                <span id="signupPasswordIcon">👁️</span>
+                            </button>
+                        </div>
+                    </div>
+                    <button onclick="handleSignup()" class="w-full bg-green-600 hover:bg-green-700 py-3 rounded-lg font-semibold transition-all glow-button">
+                        Create Account
+                    </button>
+                </div>
+                <div class="text-center mt-6">
+                    <p class="text-gray-400">Already have an account? 
+                        <button onclick="showLogin()" class="text-red-400 hover:text-red-300 font-semibold">Sign In</button>
+                    </p>
+                </div>
+            </div>
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl">×</button>
+        </div>
+    </div>
+    <!-- Header -->
+    <header class="gradient-bg shadow-2xl sticky top-0 z-40">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="text-3xl">🏋️‍♂️</div>
+                    <h1 class="text-2xl md:text-3xl font-bold text-red-400">PowerLift Pro</h1>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+            <a href="#oneRMCalculator" class="hover:text-red-400 transition-colors">1RM</a>
+            <a href="#sbdProgramCalculator" class="hover:text-red-400 transition-colors">SBD Plan</a>
+            <a href="#records" class="hover:text-red-400 transition-colors">Lifting Records</a>
+</nav>
+                <div class="flex items-center space-x-4">
+                    <div id="userInfo" class="hidden">
+                        
+                        
+                    </div>
+                    <div id="authButtons">
+                        <button onclick="showAuthModal()" class="bg-red-600 hover:bg-red-700 px-6 py-2 rounded-lg font-semibold transition-all glow-button">
+                            Login
+                        </button>
+                    </div>
+                    <button id="mobileMenu" class="md:hidden text-2xl">☰</button>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Mobile Menu -->
+    <div id="mobileMenuContent" class="hidden md:hidden bg-gray-800 p-4">
+    <nav class="flex flex-col space-y-3">
+        <a href="#oneRMCalculator" class="hover:text-red-400 transition-colors">1RM</a>
+        <a href="#sbdProgramCalculator" class="hover:text-red-400 transition-colors">SBD Plan</a>
+        <a href="#records" class="hover:text-red-400 transition-colors">Lifting Records</a>
+        <!-- Login button hidden by default -->
+        <button onclick="showAuthModal()" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm transition-colors hidden">
+            Login
+        </button>
+        <!-- Logout button hidden by default -->
+        <button onclick="handleLogout()" class="bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded-lg text-sm transition-colors hidden">
+            Logout
+        </button>
+    </nav>
+</div>
+
+    <!-- Hero Section -->
+    <section class="hero-gradient py-20 relative overflow-hidden">
+        <div class="container mx-auto px-4 text-center relative z-10">
+            <h2 class="text-4xl md:text-6xl font-bold mb-6 text-white drop-shadow-lg">Master Your SBD</h2>
+            <p class="text-xl md:text-2xl mb-8 text-gray-100 drop-shadow">Structured 12-Week Programs • Progress Tracking • Nutrition Planning</p>
+            <div class="flex flex-col md:flex-row gap-4 justify-center">
+                <button onclick="scrollToSection('programs')" class="bg-white text-gray-900 hover:bg-gray-100 px-8 py-4 rounded-lg text-lg font-semibold transition-all transform hover:scale-105 shadow-lg">
+                    Start Training Program
+                </button>
+                <button onclick="scrollToSection('oneRMCalculator')" class="bg-gray-900 bg-opacity-50 hover:bg-opacity-70 px-8 py-4 rounded-lg text-lg font-semibold transition-all transform hover:scale-105 shadow-lg backdrop-blur">
+                    Calculate 1RM
+                </button>
+            </div>
+        </div>
+    </section>
+    <!-- Training Programs Section -->
+    <section id="programs" class="py-16 bg-gray-800 relative">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12 text-red-400">12-Week SBD Training Programs</h2>
+            
+            <!-- Program Content -->
+            <div id="programContent">
+                <!-- Beginner Program -->
+                <div class="mb-12">
+                    <h3 class="text-2xl font-bold mb-6 text-center text-green-400">🌟 Beginner Program (0-2 years)</h3>
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <div class="lift-card rounded-2xl p-6 shadow-xl">
+                            <h4 class="text-xl font-bold mb-4 text-red-400">🏋️ Squat Focus</h4>
+                            <div class="space-y-2">
+                                <p><strong>Week 1-4:</strong> 3x8 @ 70% 1RM</p>
+                                <p><strong>Week 5-8:</strong> 4x6 @ 75% 1RM</p>
+                                <p><strong>Week 9-12:</strong> 5x5 @ 80% 1RM</p>
+                                <p><strong>Rest:</strong> 3-4 minutes</p>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-semibold text-yellow-400">Accessories:</h5>
+                                <ul class="text-sm space-y-1">
+                                    <li>• Front Squats: 3x10</li>
+                                    <li>• Bulgarian Split Squats: 3x12</li>
+                                    <li>• Leg Press: 3x15</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="lift-card rounded-2xl p-6 shadow-xl">
+                            <h4 class="text-xl font-bold mb-4 text-red-400">💪 Bench Focus</h4>
+                            <div class="space-y-2">
+                                <p><strong>Week 1-4:</strong> 3x8 @ 70% 1RM</p>
+                                <p><strong>Week 5-8:</strong> 4x6 @ 75% 1RM</p>
+                                <p><strong>Week 9-12:</strong> 5x5 @ 80% 1RM</p>
+                                <p><strong>Rest:</strong> 3-4 minutes</p>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-semibold text-yellow-400">Accessories:</h5>
+                                <ul class="text-sm space-y-1">
+                                    <li>• Incline Dumbbell Press: 3x10</li>
+                                    <li>• Dips: 3x12</li>
+                                    <li>• Close-Grip Bench: 3x8</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="lift-card rounded-2xl p-6 shadow-xl">
+                            <h4 class="text-xl font-bold mb-4 text-red-400">🔥 Deadlift Focus</h4>
+                            <div class="space-y-2">
+                                <p><strong>Week 1-4:</strong> 3x5 @ 75% 1RM</p>
+                                <p><strong>Week 5-8:</strong> 4x4 @ 80% 1RM</p>
+                                <p><strong>Week 9-12:</strong> 5x3 @ 85% 1RM</p>
+                                <p><strong>Rest:</strong> 4-5 minutes</p>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-semibold text-yellow-400">Accessories:</h5>
+                                <ul class="text-sm space-y-1">
+                                    <li>• Romanian Deadlifts: 3x10</li>
+                                    <li>• Deficit Deadlifts: 3x8</li>
+                                    <li>• Barbell Rows: 3x10</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button onclick="goToSBDCalculator('beginner')" class="bg-green-600 hover:bg-green-700 px-8 py-4 rounded-lg text-lg font-semibold transition-all transform hover:scale-105 glow-button">
+                            Create My Personalized Program
+                        </button>
+                    </div>
+                </div>
+                <!-- Expert Program -->
+                <div class="mb-12">
+                    <h3 class="text-2xl font-bold mb-6 text-center text-orange-400">🔥 Intermediate Program (2-5 years)</h3>
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <div class="lift-card rounded-2xl p-6 shadow-xl">
+                            <h4 class="text-xl font-bold mb-4 text-red-400">🏋️ Advanced Squat</h4>
+                            <div class="space-y-2">
+                                <p><strong>Week 1-4:</strong> 4x6 @ 75% 1RM</p>
+                                <p><strong>Week 5-8:</strong> 5x5 @ 80% 1RM</p>
+                                <p><strong>Week 9-12:</strong> 6x3 @ 87% 1RM</p>
+                                <p><strong>Rest:</strong> 4-5 minutes</p>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-semibold text-yellow-400">Accessories:</h5>
+                                <ul class="text-sm space-y-1">
+                                    <li>• Pause Squats: 4x5</li>
+                                    <li>• Box Squats: 4x8</li>
+                                    <li>• Walking Lunges: 3x16</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="lift-card rounded-2xl p-6 shadow-xl">
+                            <h4 class="text-xl font-bold mb-4 text-red-400">💪 Advanced Bench</h4>
+                            <div class="space-y-2">
+                                <p><strong>Week 1-4:</strong> 4x6 @ 75% 1RM</p>
+                                <p><strong>Week 5-8:</strong> 5x5 @ 80% 1RM</p>
+                                <p><strong>Week 9-12:</strong> 6x3 @ 87% 1RM</p>
+                                <p><strong>Rest:</strong> 4-5 minutes</p>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-semibold text-yellow-400">Accessories:</h5>
+                                <ul class="text-sm space-y-1">
+                                    <li>• Pause Bench Press: 4x5</li>
+                                    <li>• Floor Press: 4x6</li>
+                                    <li>• Weighted Dips: 3x10</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="lift-card rounded-2xl p-6 shadow-xl">
+                            <h4 class="text-xl font-bold mb-4 text-red-400">🔥 Advanced Deadlift</h4>
+                            <div class="space-y-2">
+                                <p><strong>Week 1-4:</strong> 4x4 @ 80% 1RM</p>
+                                <p><strong>Week 5-8:</strong> 5x3 @ 85% 1RM</p>
+                                <p><strong>Week 9-12:</strong> 6x2 @ 90% 1RM</p>
+                                <p><strong>Rest:</strong> 5-6 minutes</p>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-semibold text-yellow-400">Accessories:</h5>
+                                <ul class="text-sm space-y-1">
+                                    <li>• Deficit Deadlifts: 4x6</li>
+                                    <li>• Rack Pulls: 4x5</li>
+                                    <li>• Good Mornings: 3x12</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button onclick="goToSBDCalculator('intermediate')" class="bg-green-600 hover:bg-green-700 px-8 py-4 rounded-lg text-lg font-semibold transition-all transform hover:scale-105 glow-button">
+                            Create My Personalized Program
+                        </button>
+                    </div>
+                </div>
+                <!-- Master Program -->
+                <div class="mb-12">
+                    <h3 class="text-2xl font-bold mb-6 text-center text-purple-400">👑 Advanced Program (5+ years)</h3>
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <div class="lift-card rounded-2xl p-6 shadow-xl">
+                            <h4 class="text-xl font-bold mb-4 text-red-400">🏋️ Elite Squat</h4>
+                            <div class="space-y-2">
+                                <p><strong>Week 1-4:</strong> 5x5 @ 80% 1RM</p>
+                                <p><strong>Week 5-8:</strong> 6x3 @ 87% 1RM</p>
+                                <p><strong>Week 9-12:</strong> 8x2 @ 92% 1RM</p>
+                                <p><strong>Rest:</strong> 5-7 minutes</p>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-semibold text-yellow-400">Accessories:</h5>
+                                <ul class="text-sm space-y-1">
+                                    <li>• Competition Squats: 5x3</li>
+                                    <li>• Pin Squats: 5x5</li>
+                                    <li>• Single Leg Press: 4x12</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="lift-card rounded-2xl p-6 shadow-xl">
+                            <h4 class="text-xl font-bold mb-4 text-red-400">💪 Elite Bench</h4>
+                            <div class="space-y-2">
+                                <p><strong>Week 1-4:</strong> 5x5 @ 80% 1RM</p>
+                                <p><strong>Week 5-8:</strong> 6x3 @ 87% 1RM</p>
+                                <p><strong>Week 9-12:</strong> 8x2 @ 92% 1RM</p>
+                                <p><strong>Rest:</strong> 5-7 minutes</p>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-semibold text-yellow-400">Accessories:</h5>
+                                <ul class="text-sm space-y-1">
+                                    <li>• Competition Bench: 5x3</li>
+                                    <li>• Board Press: 5x5</li>
+                                    <li>• Heavy Tricep Work: 4x8</li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="lift-card rounded-2xl p-6 shadow-xl">
+                            <h4 class="text-xl font-bold mb-4 text-red-400">🔥 Elite Deadlift</h4>
+                            <div class="space-y-2">
+                                <p><strong>Week 1-4:</strong> 5x3 @ 85% 1RM</p>
+                                <p><strong>Week 5-8:</strong> 6x2 @ 90% 1RM</p>
+                                <p><strong>Week 9-12:</strong> 8x1 @ 95% 1RM</p>
+                                <p><strong>Rest:</strong> 6-8 minutes</p>
+                            </div>
+                            <div class="mt-4">
+                                <h5 class="font-semibold text-yellow-400">Accessories:</h5>
+                                <ul class="text-sm space-y-1">
+                                    <li>• Competition Deadlifts: 5x2</li>
+                                    <li>• Block Pulls: 5x3</li>
+                                    <li>• Speed Deadlifts: 8x1</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="text-center">
+                        <button onclick="goToSBDCalculator('advanced')" class="bg-green-600 hover:bg-green-700 px-8 py-4 rounded-lg text-lg font-semibold transition-all transform hover:scale-105 glow-button">
+                            Create My Personalized Program
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 1RM Calculator Section -->
+    <section id="oneRMCalculator" class="py-16 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-red-400">💪 1RM Calculator</h2>
+            <p class="text-center text-gray-300 mb-12">Calculate your one-rep max using the proven Wendler formula</p>
+            
+            <div class="max-w-6xl mx-auto">
+                <div class="grid md:grid-cols-3 gap-6 mb-6">
+                    <!-- Squat Calculator -->
+                    <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-6 shadow-xl border border-gray-600">
+                        <h3 class="text-2xl font-bold mb-4 text-red-400 flex items-center">
+                            🏋️ Squat 1RM
+                            <span class="ml-2 text-sm bg-blue-600 px-2 py-1 rounded-full cursor-help" title="Calculate your one-rep max using the proven Wendler formula">ℹ️</span>
+                        </h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-300">Weight Lifted (kg)</label>
+                                <input type="number" id="squatWeight" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="100">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-300">Reps Performed</label>
+                                <input type="number" id="squatReps" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="5" max="15">
+                            </div>
+                            <button onclick="calculateSquat1RM()" class="w-full bg-red-600 hover:bg-red-700 py-3 rounded-lg font-semibold transition-all glow-button">
+                                Calculate Squat 1RM
+                            </button>
+                            <div id="squatResult" class="text-center text-2xl font-bold text-green-400 min-h-[2rem]"></div>
+                        </div>
+                    </div>
+                    <!-- Bench Calculator -->
+                    <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-6 shadow-xl border border-gray-600">
+                        <h3 class="text-2xl font-bold mb-4 text-red-400 flex items-center">
+                            💪 Bench 1RM
+                            <span class="ml-2 text-sm bg-blue-600 px-2 py-1 rounded-full cursor-help" title="Calculate your bench press one-rep max">ℹ️</span>
+                        </h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-300">Weight Lifted (kg)</label>
+                                <input type="number" id="benchWeight" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="80">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-300">Reps Performed</label>
+                                <input type="number" id="benchReps" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="5" max="15">
+                            </div>
+                            <button onclick="calculateBench1RM()" class="w-full bg-red-600 hover:bg-red-700 py-3 rounded-lg font-semibold transition-all glow-button">
+                                Calculate Bench 1RM
+                            </button>
+                            <div id="benchResult" class="text-center text-2xl font-bold text-green-400 min-h-[2rem]"></div>
+                        </div>
+                    </div>
+                    <!-- Deadlift Calculator -->
+                    <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-6 shadow-xl border border-gray-600">
+                        <h3 class="text-2xl font-bold mb-4 text-red-400 flex items-center">
+                            🔥 Deadlift 1RM
+                            <span class="ml-2 text-sm bg-blue-600 px-2 py-1 rounded-full cursor-help" title="Calculate your deadlift one-rep max">ℹ️</span>
+                        </h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-300">Weight Lifted (kg)</label>
+                                <input type="number" id="deadliftWeight" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="120">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2 text-gray-300">Reps Performed</label>
+                                <input type="number" id="deadliftReps" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="5" max="15">
+                            </div>
+                            <button onclick="calculateDeadlift1RM()" class="w-full bg-red-600 hover:bg-red-700 py-3 rounded-lg font-semibold transition-all glow-button">
+                                Calculate Deadlift 1RM
+                            </button>
+                            <div id="deadliftResult" class="text-center text-2xl font-bold text-green-400 min-h-[2rem]"></div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Quick Actions -->
+                <div class="flex flex-wrap justify-center gap-4 mb-8">
+                    <button onclick="calculateAll1RM()" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-semibold transition-all glow-button">
+                        🎯 Calculate All 1RMs
+                    </button>
+                    <button onclick="clearAll1RM()" class="bg-gray-600 hover:bg-gray-700 px-6 py-3 rounded-lg font-semibold transition-all">
+                        🗑️ Clear All Fields
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Nutrition Calculator Section -->
+    <section id="nutritionCalculator" class="py-16 bg-gray-800">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-green-400">🥗 Smart Nutrition Planner</h2>
+            <p class="text-center text-gray-300 mb-12">Calculate personalized nutrition needs for your powerlifting goals</p>
+            
+            <div class="max-w-6xl mx-auto">
+                <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-6 mb-8 shadow-xl border border-gray-600">
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-300">Current Weight (kg)</label>
+                            <input type="number" id="currentWeight" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="75">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-300">Target Weight (kg)</label>
+                            <input type="number" id="targetWeight" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="80">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-300">Timeline (weeks)</label>
+                            <input type="number" id="timeline" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="12">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-300">Goal</label>
+                            <select id="nutritionGoal" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                                <option value="loss">Fat Loss</option>
+                                <option value="maintenance">Maintenance</option>
+                                <option value="gain">Muscle Gain</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button onclick="calculateNutrition()" class="w-full bg-green-600 hover:bg-green-700 py-3 rounded-lg font-semibold transition-all glow-button">
+                        📊 Calculate Nutrition Plan
+                    </button>
+                </div>
+                <!-- Warning Message -->
+                <div id="nutritionWarning" class="hidden bg-yellow-600 rounded-lg p-4 mb-6">
+                    <p class="font-semibold">⚠️ Please choose a realistic goal. Based on your timeline, you can safely aim for a maximum of <span id="maxRealistic"></span> kg gain/loss.</p>
+                </div>
+                <!-- Nutrition Results -->
+                <div id="nutritionResults" class="hidden">
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <div class="nutrition-card rounded-2xl p-6 text-center shadow-xl">
+                            <h3 class="text-xl font-bold mb-2 text-yellow-400">Daily Calories</h3>
+                            <div class="relative">
+                                <div id="dailyCalories" class="text-3xl font-bold text-white mb-2">0</div>
+                                <div class="w-16 h-16 mx-auto mb-2">
+                                    <svg class="w-full h-full transform -rotate-90">
+                                        <circle cx="32" cy="32" r="28" stroke="#374151" stroke-width="4" fill="none"/>
+                                        <circle id="calorieProgress" cx="32" cy="32" r="28" stroke="#10b981" stroke-width="4" fill="none" stroke-dasharray="176" stroke-dashoffset="176"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-300">Per Day</p>
+                        </div>
+                        
+                        <div class="nutrition-card rounded-2xl p-6 text-center shadow-xl">
+                            <h3 class="text-xl font-bold mb-2 text-yellow-400">Protein</h3>
+                            <div id="proteinAmount" class="text-3xl font-bold text-white mb-2">0g</div>
+                            <div class="w-full bg-gray-600 rounded-full h-2 mb-2">
+                                <div id="proteinBar" class="bg-red-500 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                            </div>
+                            <p class="text-sm text-gray-300">Per Day</p>
+                        </div>
+                        
+                        <div class="nutrition-card rounded-2xl p-6 text-center shadow-xl">
+                            <h3 class="text-xl font-bold mb-2 text-yellow-400">Carbs / Fats</h3>
+                            <div id="macroSplit" class="text-xl font-bold text-white mb-2">0g / 0g</div>
+                            <div class="flex space-x-2 mb-2">
+                                <div class="flex-1 bg-gray-600 rounded-full h-2">
+                                    <div id="carbBar" class="bg-blue-500 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                                </div>
+                                <div class="flex-1 bg-gray-600 rounded-full h-2">
+                                    <div id="fatBar" class="bg-yellow-500 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-300">Per Day</p>
+                        </div>
+                    </div>
+                    <!-- Weight Timeline Chart -->
+                    <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-6 shadow-xl border border-gray-600">
+                        <h3 class="text-2xl font-bold mb-4 text-center text-yellow-400">📈 Weight Progression Timeline</h3>
+                        <canvas id="weightChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 12-Week SBD Program Calculator Section -->
+    <section id="sbdProgramCalculator" class="py-16 bg-gray-900">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-orange-400">📅 12-Week SBD Program Calculator</h2>
+            <p class="text-center text-gray-300 mb-12">Generate personalized 12-week training programs with projected gains</p>
+            
+            <div class="max-w-6xl mx-auto">
+                <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-6 mb-8 shadow-xl border border-gray-600">
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-300">Body Weight (kg)</label>
+                            <input type="number" id="sbdBodyWeight" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="75">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-300">Current Squat 1RM (kg)</label>
+                            <input type="number" id="sbdSquatMax" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="120">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-300">Current Bench 1RM (kg)</label>
+                            <input type="number" id="sbdBenchMax" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="80">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-300">Current Deadlift 1RM (kg)</label>
+                            <input type="number" id="sbdDeadliftMax" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="140">
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-2 gap-4 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-300">Experience Level</label>
+                            <select id="sbdExperience" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                                <option value="beginner">Beginner (0-2 years)</option>
+                                <option value="intermediate">Intermediate (2-5 years)</option>
+                                <option value="advanced">Advanced (5+ years)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-300">Training Goal</label>
+                            <select id="sbdGoal" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                                <option value="strength">Maximum Strength</option>
+                                <option value="powerlifting">Powerlifting Competition</option>
+                                <option value="general">General Fitness</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <button onclick="calculateSBDProgram()" class="bg-orange-600 hover:bg-orange-700 py-3 rounded-lg font-semibold transition-all glow-button">
+                            📊 Generate 12-Week SBD Program
+                        </button>
+                        <button onclick="generateDirectProgram()" class="bg-green-600 hover:bg-green-700 py-3 rounded-lg font-semibold transition-all glow-button">
+                            📋 View Complete 12-Week Program
+                        </button>
+                    </div>
+                </div>
+                <!-- Generate Full Program Button -->
+                <div id="generateFullProgramBtn" class="hidden text-center mt-6">
+                    <button onclick="generateFullProgram()" class="bg-green-600 hover:bg-green-700 px-8 py-4 rounded-lg text-lg font-semibold transition-all transform hover:scale-105 glow-button">
+                        📋 View Complete 12-Week Program
+                    </button>
+                </div>
+                <!-- SBD Program Results -->
+                <div id="sbdProgramResults" class="hidden">
+                    <!-- Progress Overview -->
+                    <div class="grid md:grid-cols-3 gap-6 mb-8">
+                        <div class="stats-card rounded-2xl p-6 text-center shadow-xl">
+                            <h3 class="text-xl font-bold mb-2 text-white">Squat Progress</h3>
+                            <div id="sbdSquatProgress" class="text-3xl font-bold text-yellow-400 mb-2">+0 kg</div>
+                            <div class="progress-bar h-4 rounded-full mb-2">
+                                <div id="sbdSquatProgressBar" class="h-full rounded-full bg-green-500" style="width: 0%"></div>
+                            </div>
+                            <p class="text-sm text-gray-200">12-Week Projection</p>
+                        </div>
+                        
+                        <div class="stats-card rounded-2xl p-6 text-center shadow-xl">
+                            <h3 class="text-xl font-bold mb-2 text-white">Bench Progress</h3>
+                            <div id="sbdBenchProgress" class="text-3xl font-bold text-yellow-400 mb-2">+0 kg</div>
+                            <div class="progress-bar h-4 rounded-full mb-2">
+                                <div id="sbdBenchProgressBar" class="h-full rounded-full bg-green-500" style="width: 0%"></div>
+                            </div>
+                            <p class="text-sm text-gray-200">12-Week Projection</p>
+                        </div>
+                        
+                        <div class="stats-card rounded-2xl p-6 text-center shadow-xl">
+                            <h3 class="text-xl font-bold mb-2 text-white">Deadlift Progress</h3>
+                            <div id="sbdDeadliftProgress" class="text-3xl font-bold text-yellow-400 mb-2">+0 kg</div>
+                            <div class="progress-bar h-4 rounded-full mb-2">
+                                <div id="sbdDeadliftProgressBar" class="h-full rounded-full bg-green-500" style="width: 0%"></div>
+                            </div>
+                            <p class="text-sm text-gray-200">12-Week Projection</p>
+                        </div>
+                    </div>
+                    <!-- Program Summary -->
+                    <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-6 mb-6 shadow-xl border border-gray-600">
+                        <h3 class="text-2xl font-bold mb-4 text-center text-yellow-400">📋 Your Personalized Program Summary</h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="text-lg font-bold text-orange-400 mb-3">Current Stats</h4>
+                                <div class="space-y-2 text-gray-300">
+                                    <div>Body Weight: <span id="currentBodyWeight" class="text-white font-semibold">0kg</span></div>
+                                    <div>Squat 1RM: <span id="currentSquatMax" class="text-white font-semibold">0kg</span></div>
+                                    <div>Bench 1RM: <span id="currentBenchMax" class="text-white font-semibold">0kg</span></div>
+                                    <div>Deadlift 1RM: <span id="currentDeadliftMax" class="text-white font-semibold">0kg</span></div>
+                                    <div>Total: <span id="currentTotal" class="text-green-400 font-bold">0kg</span></div>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold text-orange-400 mb-3">Projected After 12 Weeks</h4>
+                                <div class="space-y-2 text-gray-300">
+                                    <div>Squat 1RM: <span id="projectedSquat" class="text-green-400 font-bold">0kg</span></div>
+                                    <div>Bench 1RM: <span id="projectedBench" class="text-green-400 font-bold">0kg</span></div>
+                                    <div>Deadlift 1RM: <span id="projectedDeadlift" class="text-green-400 font-bold">0kg</span></div>
+                                    <div>New Total: <span id="projectedTotal" class="text-green-400 font-bold">0kg</span></div>
+                                    <div>Total Gain: <span id="totalGain" class="text-yellow-400 font-bold">+0kg</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Weekly Breakdown Chart -->
+                    <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-6 shadow-xl border border-gray-600">
+                        <h3 class="text-2xl font-bold mb-4 text-center text-yellow-400">📈 12-Week Progression Chart</h3>
+                        <canvas id="sbdProgressChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Wilks Score Calculator Section -->
+    <section id="wilksCalculator" class="py-16 bg-gray-800">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-yellow-400">🏆 Wilks Score Calculator</h2>
+            <p class="text-center text-gray-300 mb-12">Calculate your Wilks score to compare performance across weight classes</p>
+            
+            <div class="max-w-6xl mx-auto">
+                <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-6 mb-8 shadow-xl border border-gray-600">
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-300">Gender</label>
+                            <select id="wilksGender" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-300">Body Weight (kg)</label>
+                            <input type="number" id="wilksBodyWeight" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="75">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-300">Squat (kg)</label>
+                            <input type="number" id="wilksSquat" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="120">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-300">Bench Press (kg)</label>
+                            <input type="number" id="wilksBench" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="80">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2 text-gray-300">Deadlift (kg)</label>
+                            <input type="number" id="wilksDeadlift" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="140">
+                        </div>
+                    </div>
+                    
+                    <button onclick="calculateWilks()" class="w-full bg-yellow-600 hover:bg-yellow-700 py-3 rounded-lg font-semibold transition-all glow-button">
+                        🏆 Calculate Wilks Score
+                    </button>
+                </div>
+                <!-- Wilks Results -->
+                <div id="wilksResults" class="hidden">
+                    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <div class="bg-gradient-to-br from-yellow-600 to-yellow-700 rounded-2xl p-6 text-center shadow-xl">
+                            <h3 class="text-xl font-bold mb-2 text-white">Total</h3>
+                            <div id="totalResult" class="text-3xl font-bold text-black mb-2">0kg</div>
+                            <p class="text-sm text-yellow-200">SBD Combined</p>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-orange-600 to-orange-700 rounded-2xl p-6 text-center shadow-xl">
+                            <h3 class="text-xl font-bold mb-2 text-white">Wilks Score</h3>
+                            <div id="wilksResult" class="text-3xl font-bold text-yellow-200 mb-2">0</div>
+                            <p class="text-sm text-orange-200">Performance Rating</p>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-red-600 to-red-700 rounded-2xl p-6 text-center shadow-xl">
+                            <h3 class="text-xl font-bold mb-2 text-white">Rating</h3>
+                            <div id="wilksRating" class="text-xl font-bold text-yellow-200 mb-2">-</div>
+                            <p class="text-sm text-red-200">Skill Level</p>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl p-6 text-center shadow-xl">
+                            <h3 class="text-xl font-bold mb-2 text-white">Level</h3>
+                            <div id="competitiveLevel" class="text-xl font-bold text-yellow-200 mb-2">-</div>
+                            <p class="text-sm text-purple-200">Competition</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Guarantee Statement -->
+                <div class="bg-gradient-to-r from-red-600 to-orange-600 rounded-2xl p-6 mt-8 text-center shadow-xl">
+                    <h3 class="text-2xl font-bold mb-4">💪 Our 12-Week Guarantee</h3>
+                    <p class="text-lg mb-4">We guarantee visible improvement in your SBD lifts if you follow the program correctly!</p>
+                    <div class="grid md:grid-cols-3 gap-4 text-center">
+                        <div class="bg-black bg-opacity-30 rounded-lg p-4">
+                            <div class="text-3xl font-bold text-yellow-400">+15%</div>
+                            <div class="text-sm">Squat Increase</div>
+                        </div>
+                        <div class="bg-black bg-opacity-30 rounded-lg p-4">
+                            <div class="text-3xl font-bold text-yellow-400">+12%</div>
+                            <div class="text-sm">Bench Increase</div>
+                        </div>
+                        <div class="bg-black bg-opacity-30 rounded-lg p-4">
+                            <div class="text-3xl font-bold text-yellow-400">+18%</div>
+                            <div class="text-sm">Deadlift Increase</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Indian Powerlifting Records Section -->
+    <section id="records" class="py-16 bg-gray-800">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-red-400">🇮🇳 Indian Powerlifting Records</h2>
+            <p class="text-center text-gray-300 mb-12">Latest national records across all weight classes and age categories (2023-2024)</p>
+            
+            <!-- Add New Record Form -->
+            <div class="bg-gradient-to-br from-gray-700 to-gray-600 rounded-2xl p-6 mb-8 shadow-xl border border-gray-600">
+                <h3 class="text-xl font-bold mb-4 text-red-400">➕ Add New Record</h3>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Athlete Name</label>
+                        <input type="text" id="athleteName" class="w-full p-3 bg-gray-800 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="Enter athlete name">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Category</label>
+                        <select id="recordCategory" class="w-full p-3 bg-gray-800 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                            <option value="">Select Category</option>
+                            <option value="open-men-equipped">Open Men Equipped</option>
+                            <option value="open-women-equipped">Open Women Equipped</option>
+                            <option value="open-men-classic">Open Men Classic</option>
+                            <option value="open-women-classic">Open Women Classic</option>
+                            <option value="sub-junior-men-equipped">Sub Junior Men Equipped</option>
+                            <option value="sub-junior-women-equipped">Sub Junior Women Equipped</option>
+                            <option value="sub-junior-men-classic">Sub Junior Men Classic</option>
+                            <option value="sub-junior-women-classic">Sub Junior Women Classic</option>
+                            <option value="junior-men-equipped">Junior Men Equipped</option>
+                            <option value="junior-women-equipped">Junior Women Equipped</option>
+                            <option value="junior-men-classic">Junior Men Classic</option>
+                            <option value="junior-women-classic">Junior Women Classic</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Weight Class</label>
+                        <select id="recordWeightClass" class="w-full p-3 bg-gray-800 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                            <option value="">Select Weight Class</option>
+                            <option value="53">53kg</option>
+                            <option value="59">59kg</option>
+                            <option value="66">66kg</option>
+                            <option value="74">74kg</option>
+                            <option value="83">83kg</option>
+                            <option value="93">93kg</option>
+                            <option value="105">105kg</option>
+                            <option value="120">120kg</option>
+                            <option value="120+">120kg+</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Lift Type</label>
+                        <select id="recordLift" class="w-full p-3 bg-gray-800 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                            <option value="">Select Lift</option>
+                            <option value="squat">Squat</option>
+                            <option value="bench">Bench Press</option>
+                            <option value="deadlift">Deadlift</option>
+                            <option value="total">Total (SBD)</option>
+                            <option value="bench-only">Single Bench Lift</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-3 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Weight Lifted (kg)</label>
+                        <input type="number" id="recordWeight" class="w-full p-3 bg-gray-800 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="Enter weight" step="0.5">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Record Level</label>
+                        <select id="recordLevel" class="w-full p-3 bg-gray-800 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                            <option value="">Select Record Level</option>
+                            <option value="India">India</option>
+                            <option value="Asia">Asia</option>
+                            <option value="Europe">Europe</option>
+                            <option value="World">World</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Date</label>
+                        <input type="date" id="recordDate" class="w-full p-3 bg-gray-800 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                    </div>
+                </div>
+                <button onclick="addRecord()" class="bg-green-600 hover:bg-green-700 px-6 py-3 rounded-lg font-semibold transition-all glow-button">
+                    Add Record
+                </button>
+            </div>
+            <!-- Filters -->
+            <div class="bg-gradient-to-br from-gray-700 to-gray-600 rounded-2xl p-6 mb-8 shadow-xl border border-gray-600">
+                <h3 class="text-xl font-bold mb-4 text-yellow-400">🔍 Filter Records</h3>
+                <div class="grid md:grid-cols-5 gap-4">
+                    <select id="categoryFilter" class="p-3 bg-gray-800 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                        <option value="all">All Categories</option>
+                        <option value="open-men-equipped">Open Men Equipped</option>
+                        <option value="open-women-equipped">Open Women Equipped</option>
+                        <option value="open-men-classic">Open Men Classic</option>
+                        <option value="open-women-classic">Open Women Classic</option>
+                        <option value="sub-junior-men-equipped">Sub Junior Men Equipped</option>
+                        <option value="sub-junior-women-equipped">Sub Junior Women Equipped</option>
+                        <option value="sub-junior-men-classic">Sub Junior Men Classic</option>
+                        <option value="sub-junior-women-classic">Sub Junior Women Classic</option>
+                        <option value="junior-men-equipped">Junior Men Equipped</option>
+                        <option value="junior-women-equipped">Junior Women Equipped</option>
+                        <option value="junior-men-classic">Junior Men Classic</option>
+                        <option value="junior-women-classic">Junior Women Classic</option>
+                    </select>
+                    
+                    <select id="liftFilter" class="p-3 bg-gray-800 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                        <option value="all">All Lifts</option>
+                        <option value="squat">Squat</option>
+                        <option value="bench">Bench Press</option>
+                        <option value="deadlift">Deadlift</option>
+                        <option value="total">Total (SBD)</option>
+                        <option value="bench-only">Single Bench Lift</option>
+                    </select>
+                    
+                    <select id="weightClassFilter" class="p-3 bg-gray-800 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                        <option value="all">All Weight Classes</option>
+                        <option value="53">53kg</option>
+                        <option value="59">59kg</option>
+                        <option value="66">66kg</option>
+                        <option value="74">74kg</option>
+                        <option value="83">83kg</option>
+                        <option value="93">93kg</option>
+                        <option value="105">105kg</option>
+                        <option value="120">120kg</option>
+                        <option value="120+">120kg+</option>
+                    </select>
+                    <select id="recordLevelFilter" class="p-3 bg-gray-800 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors">
+                        <option value="all">All Record Levels</option>
+                        <option value="India">India</option>
+                        <option value="Asia">Asia</option>
+                        <option value="Europe">Europe</option>
+                        <option value="World">World</option>
+                    </select>
+                    
+                    <button onclick="filterRecords()" class="bg-red-600 hover:bg-red-700 px-4 py-3 rounded-lg font-semibold transition-all glow-button">
+                        Filter Records
+                    </button>
+                </div>
+            </div>
+            <!-- Records Table -->
+            <div class="bg-gradient-to-br from-gray-700 to-gray-600 rounded-2xl overflow-hidden shadow-xl border border-gray-600">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead class="bg-gray-800">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-yellow-400">Athlete</th>
+                                <th class="px-4 py-3 text-left text-yellow-400">Category</th>
+                                <th class="px-4 py-3 text-left text-yellow-400">Lift</th>
+                                <th class="px-4 py-3 text-left text-yellow-400">Weight (kg)</th>
+                                <th class="px-4 py-3 text-left text-yellow-400">Weight Class</th>
+                                <th class="px-4 py-3 text-left text-yellow-400">Record Level</th>
+                                <th class="px-4 py-3 text-left text-yellow-400">Date</th>
+                                <th class="px-4 py-3 text-left text-yellow-400">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recordsTable">
+                            <!-- Records will be populated here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Full Program Page -->
+    <div id="fullProgramPage" class="hidden">
+        <!-- Program Header -->
+        <section class="gradient-bg py-16">
+            <div class="container mx-auto px-4">
+                <div class="flex items-center justify-between mb-6">
+                    <button onclick="backToMain()" class="bg-gray-700 hover:bg-gray-600 px-6 py-3 rounded-lg font-semibold transition-all flex items-center glow-button">
+                        ← Back to Programs
+                    </button>
+                    <div class="text-center">
+                        <h1 id="programPageTitle" class="text-3xl md:text-5xl font-bold text-red-400 mb-2">Beginner Program</h1>
+                        <p class="text-xl text-gray-300">Complete 12-Week SBD Training Plan</p>
+                    </div>
+                    <div class="w-32"></div> <!-- Spacer for centering -->
+                </div>
+                
+                <!-- Program Stats -->
+                <div id="programStats" class="grid md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+                    <div class="stats-card rounded-2xl p-4 text-center shadow-xl">
+                        <div class="text-2xl font-bold text-yellow-400" id="currentSquat">120kg</div>
+                        <div class="text-sm text-gray-200">Current Squat</div>
+                    </div>
+                    <div class="stats-card rounded-2xl p-4 text-center shadow-xl">
+                        <div class="text-2xl font-bold text-yellow-400" id="currentBench">80kg</div>
+                        <div class="text-sm text-gray-200">Current Bench</div>
+                    </div>
+                    <div class="stats-card rounded-2xl p-4 text-center shadow-xl">
+                        <div class="text-2xl font-bold text-yellow-400" id="currentDeadlift">140kg</div>
+                        <div class="text-sm text-gray-200">Current Deadlift</div>
+                    </div>
+                    <div class="stats-card rounded-2xl p-4 text-center shadow-xl">
+                        <div class="text-2xl font-bold text-white" id="totalLifts">340kg</div>
+                        <div class="text-sm text-gray-200">Current Total</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- Full Program Content -->
+        <section class="py-16 bg-gray-900">
+            <div class="container mx-auto px-4">
+                <div id="fullProgramContent">
+                    <!-- Program weeks will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </div>
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-12 border-t border-gray-700">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex items-center justify-center space-x-3 mb-6">
+                <div class="text-3xl">🏋️‍♂️</div>
+                <h3 class="text-2xl font-bold text-red-400">PowerLift Pro</h3>
+            </div>
+            <p class="text-gray-400 mb-4">Your complete powerlifting training companion</p>
+            <div class="flex justify-center space-x-6">
+                <a href="#programs" class="hover:text-red-400 transition-colors">Programs</a>
+                <a href="#oneRMCalculator" class="hover:text-red-400 transition-colors">1RM Calculator</a>
+                <a href="#nutritionCalculator" class="hover:text-red-400 transition-colors">Nutrition</a>
+                <a href="#sbdProgramCalculator" class="hover:text-red-400 transition-colors">SBD Calculator</a>
+                <a href="#wilksCalculator" class="hover:text-red-400 transition-colors">Wilks Score</a>
+                <a href="#records" class="hover:text-red-400 transition-colors">Records</a>
+            </div>
+        </div>
+    </footer>
+    <script>
+        // Global variables
+        let currentProgram = 'beginner';
+        let selectedProgramLevel = '';
+        let userStats = {
+            bodyWeight: 0,
+            squatMax: 0,
+            benchMax: 0,
+            deadliftMax: 0,
+            experience: 'beginner'
+        };
+        let currentUser = null;
+        let calculatedProgramData = null;
+        // Powerlifting Records - Load from localStorage or initialize empty
+        let powerliftingRecords = JSON.parse(localStorage.getItem('powerliftingRecords')) || [];
+        // Function to go to SBD Calculator with pre-selected experience level
+        function goToSBDCalculator(level) {
+            // Set the experience level in the calculator
+            const experienceMap = {
+                'beginner': 'beginner',
+                'intermediate': 'intermediate', 
+                'advanced': 'advanced'
+            };
+            
+            document.getElementById('sbdExperience').value = experienceMap[level];
+            
+            // Scroll to the SBD calculator section
+            scrollToSection('sbdProgramCalculator');
+            
+            // Show success message
+            showSuccessMessage(`🎯 ${level.charAt(0).toUpperCase() + level.slice(1)} program level pre-selected! Fill in your stats to generate your personalized program.`);
+        }
+        // SBD Details Modal Functions
+        function requestSBDDetails(level) {
+            selectedProgramLevel = level;
+            
+            // Pre-fill with existing data if available
+            if (userStats.bodyWeight > 0) {
+                document.getElementById('modalBodyWeight').value = userStats.bodyWeight;
+                document.getElementById('modalSquatMax').value = userStats.squatMax;
+                document.getElementById('modalBenchMax').value = userStats.benchMax;
+                document.getElementById('modalDeadliftMax').value = userStats.deadliftMax;
+            }
+            
+            // Set experience level based on selected program
+            document.getElementById('modalExperience').value = level === 'master' ? 'advanced' : level === 'expert' ? 'intermediate' : 'beginner';
+            
+            document.getElementById('sbdDetailsModal').classList.remove('hidden');
+        }
+        function closeSBDModal() {
+            document.getElementById('sbdDetailsModal').classList.add('hidden');
+        }
+        function generatePersonalizedProgram() {
+            const bodyWeight = parseFloat(document.getElementById('modalBodyWeight').value);
+            const squatMax = parseFloat(document.getElementById('modalSquatMax').value);
+            const benchMax = parseFloat(document.getElementById('modalBenchMax').value);
+            const deadliftMax = parseFloat(document.getElementById('modalDeadliftMax').value);
+            const experience = document.getElementById('modalExperience').value;
+            // Validation
+            if (!bodyWeight || !squatMax || !benchMax || !deadliftMax) {
+                alert('Please fill in all your current stats to generate your personalized program.');
+                return;
+            }
+            if (bodyWeight <= 0 || squatMax <= 0 || benchMax <= 0 || deadliftMax <= 0) {
+                alert('Please enter valid positive values for all stats.');
+                return;
+            }
+            // Update user stats
+            userStats = {
+                bodyWeight: bodyWeight,
+                squatMax: squatMax,
+                benchMax: benchMax,
+                deadliftMax: deadliftMax,
+                experience: experience
+            };
+            // Close modal
+            closeSBDModal();
+            // Show full program with personalized data
+            showFullProgram(selectedProgramLevel);
+            // Show success message
+            showSuccessMessage(`🎯 Personalized ${selectedProgramLevel} program generated with your stats!`);
+        }
+        // Calculate projected gains based on program level and experience
+        function calculateProjectedGains(level, stats) {
+            let squatGainPercent, benchGainPercent, deadliftGainPercent;
+            
+            // Base gains by program level
+            switch(level) {
+                case 'beginner':
+                    squatGainPercent = 0.20; // 20% gain
+                    benchGainPercent = 0.15; // 15% gain
+                    deadliftGainPercent = 0.25; // 25% gain
+                    break;
+                case 'expert':
+                    squatGainPercent = 0.12; // 12% gain
+                    benchGainPercent = 0.10; // 10% gain
+                    deadliftGainPercent = 0.15; // 15% gain
+                    break;
+                case 'master':
+                    squatGainPercent = 0.08; // 8% gain
+                    benchGainPercent = 0.06; // 6% gain
+                    deadliftGainPercent = 0.10; // 10% gain
+                    break;
+            }
+            // Adjust based on actual experience level
+            if (stats.experience === 'advanced' && level !== 'master') {
+                squatGainPercent *= 0.8;
+                benchGainPercent *= 0.8;
+                deadliftGainPercent *= 0.8;
+            } else if (stats.experience === 'beginner' && level !== 'beginner') {
+                squatGainPercent *= 1.2;
+                benchGainPercent *= 1.2;
+                deadliftGainPercent *= 1.2;
+            }
+            const squatGain = Math.round(stats.squatMax * squatGainPercent);
+            const benchGain = Math.round(stats.benchMax * benchGainPercent);
+            const deadliftGain = Math.round(stats.deadliftMax * deadliftGainPercent);
+            return {
+                squatGain: squatGain,
+                benchGain: benchGain,
+                deadliftGain: deadliftGain,
+                projectedSquat: stats.squatMax + squatGain,
+                projectedBench: stats.benchMax + benchGain,
+                projectedDeadlift: stats.deadliftMax + deadliftGain,
+                currentTotal: stats.squatMax + stats.benchMax + stats.deadliftMax,
+                projectedTotal: (stats.squatMax + squatGain) + (stats.benchMax + benchGain) + (stats.deadliftMax + deadliftGain)
+            };
+        }
+        // Update program stats display with projected gains
+        function updateProgramStatsDisplay(gains) {
+            // Add projected gains to the program stats section
+            const programStats = document.getElementById('programStats');
+            programStats.innerHTML = `
+                <div class="stats-card rounded-2xl p-4 text-center shadow-xl">
+                    <div class="text-2xl font-bold text-yellow-400">${userStats.squatMax}kg</div>
+                    <div class="text-sm text-gray-200">Current Squat</div>
+                    <div class="text-xs text-green-400 mt-1">→ ${gains.projectedSquat}kg (+${gains.squatGain}kg)</div>
+                </div>
+                <div class="stats-card rounded-2xl p-4 text-center shadow-xl">
+                    <div class="text-2xl font-bold text-yellow-400">${userStats.benchMax}kg</div>
+                    <div class="text-sm text-gray-200">Current Bench</div>
+                    <div class="text-xs text-green-400 mt-1">→ ${gains.projectedBench}kg (+${gains.benchGain}kg)</div>
+                </div>
+                <div class="stats-card rounded-2xl p-4 text-center shadow-xl">
+                    <div class="text-2xl font-bold text-yellow-400">${userStats.deadliftMax}kg</div>
+                    <div class="text-sm text-gray-200">Current Deadlift</div>
+                    <div class="text-xs text-green-400 mt-1">→ ${gains.projectedDeadlift}kg (+${gains.deadliftGain}kg)</div>
+                </div>
+                <div class="stats-card rounded-2xl p-4 text-center shadow-xl">
+                    <div class="text-2xl font-bold text-white">${gains.currentTotal}kg</div>
+                    <div class="text-sm text-gray-200">Current Total</div>
+                    <div class="text-xs text-green-400 mt-1">→ ${gains.projectedTotal}kg (+${gains.projectedTotal - gains.currentTotal}kg)</div>
+                </div>
+            `;
+        }
+        // Password toggle function
+        function togglePassword(inputId) {
+            const input = document.getElementById(inputId);
+            const icon = document.getElementById(inputId + 'Icon');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.textContent = '🙈';
+            } else {
+                input.type = 'password';
+                icon.textContent = '👁️';
+            }
+        }
+        // Authentication Functions
+        function showAuthModal() {
+            document.getElementById('authModal').classList.remove('hidden');
+            showLogin();
+        }
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.add('hidden');
+        }
+        function showLogin() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('signupForm').classList.add('hidden');
+            document.getElementById('authTitle').textContent = 'Welcome Back!';
+        }
+        function showSignup() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('signupForm').classList.remove('hidden');
+            document.getElementById('authTitle').textContent = 'Join PowerLift Pro';
+        }
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            if (!email || !password) {
+                alert('Please fill in all fields.');
+                return;
+            }
+            if (!isValidEmail(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            // Demo login - In production, this would connect to Firebase
+            const users = JSON.parse(localStorage.getItem('demoUsers')) || [];
+            const user = users.find(u => u.email === email && u.password === password);
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(user));
+                updateAuthUI();
+                closeAuthModal();
+                showSuccessMessage(`Welcome back, ${user.name}! 🎉`);
+            } else {
+                alert('Invalid email or password. Please try again or sign up for a new account.');
+            }
+        }
+        function handleSignup() {
+            const name = document.getElementById('signupName').value.trim();
+            const email = document.getElementById('signupEmail').value.trim();
+            const password = document.getElementById('signupPassword').value;
+            if (!name || !email || !password) {
+                alert('Please fill in all fields.');
+                return;
+            }
+            if (!isValidEmail(email)) {
+                alert('Please enter a valid email address.');
+                return;
+            }
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long.');
+                return;
+            }
+            // Demo signup - In production, this would connect to Firebase
+            const users = JSON.parse(localStorage.getItem('demoUsers')) || [];
+            
+            if (users.find(u => u.email === email)) {
+                alert('An account with this email already exists. Please login instead.');
+                return;
+            }
+            const newUser = {
+                id: Date.now(),
+                name: name,
+                email: email,
+                password: password, // In production, this would be hashed
+                createdAt: new Date().toISOString()
+            };
+            users.push(newUser);
+            localStorage.setItem('demoUsers', JSON.stringify(users));
+            currentUser = newUser;
+            localStorage.setItem('currentUser', JSON.stringify(newUser));
+            updateAuthUI();
+            closeAuthModal();
+            showSuccessMessage(`Welcome to PowerLift Pro, ${name}! 🚀 Your account has been created successfully.`);
+        }
+        function handleLogout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateAuthUI();
+            showSuccessMessage('You have been logged out successfully. See you next time! 👋');
+        }
+        function updateAuthUI() {
+    const userInfo = document.getElementById('userInfo');
+    const authButtons = document.getElementById('authButtons');
+    const userName = document.getElementById('userName');
+    const logoutButton = document.querySelector('#mobileMenuContent button[onclick="handleLogout()"]');
+    const loginButton = document.querySelector('#mobileMenuContent button[onclick="showAuthModal()"]');
+
+    if (currentUser) {
+        userInfo.classList.remove('hidden');
+        authButtons.classList.add('hidden');
+        userName.textContent = currentUser.name;
+        if (logoutButton) logoutButton.classList.remove('hidden');
+        if (loginButton) loginButton.classList.add('hidden');
+    } else {
+        userInfo.classList.add('hidden');
+        authButtons.classList.remove('hidden');
+        if (logoutButton) logoutButton.classList.add('hidden');
+        if (loginButton) loginButton.classList.remove('hidden');
+    }
+}
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+        function showSuccessMessage(message) {
+            // Create a temporary success message
+            const successDiv = document.createElement('div');
+            successDiv.className = 'fixed top-20 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform translate-x-full transition-transform duration-300';
+            successDiv.textContent = message;
+            document.body.appendChild(successDiv);
+            // Animate in
+            setTimeout(() => {
+                successDiv.classList.remove('translate-x-full');
+            }, 100);
+            // Remove after 4 seconds
+            setTimeout(() => {
+                successDiv.classList.add('translate-x-full');
+                setTimeout(() => {
+                    document.body.removeChild(successDiv);
+                }, 300);
+            }, 4000);
+        }
+        // Smooth scrolling function
+        function scrollToSection(sectionId) {
+            document.getElementById(sectionId).scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+        // Mobile menu toggle
+        document.getElementById('mobileMenu').addEventListener('click', function() {
+            const mobileMenuContent = document.getElementById('mobileMenuContent');
+            mobileMenuContent.classList.toggle('hidden');
+        });
+        // Add click handlers for mobile menu links
+        document.querySelectorAll('#mobileMenuContent a').forEach(link => {
+            link.addEventListener('click', function() {
+                document.getElementById('mobileMenuContent').classList.add('hidden');
+            });
+        });
+        // Calculate SBD Program
+        function calculateSBDProgram() {
+            const bodyWeight = parseFloat(document.getElementById('sbdBodyWeight').value);
+            const squatMax = parseFloat(document.getElementById('sbdSquatMax').value);
+            const benchMax = parseFloat(document.getElementById('sbdBenchMax').value);
+            const deadliftMax = parseFloat(document.getElementById('sbdDeadliftMax').value);
+            const experience = document.getElementById('sbdExperience').value;
+            const goal = document.getElementById('sbdGoal').value;
+            if (!bodyWeight || !squatMax || !benchMax || !deadliftMax) {
+                alert('Please fill in all your current stats before generating the program.');
+                return;
+            }
+            if (bodyWeight <= 0 || squatMax <= 0 || benchMax <= 0 || deadliftMax <= 0) {
+                alert('Please enter valid positive values for all stats.');
+                return;
+            }
+            // Store user stats globally
+            userStats = {
+                bodyWeight: bodyWeight,
+                squatMax: squatMax,
+                benchMax: benchMax,
+                deadliftMax: deadliftMax,
+                experience: experience,
+                goal: goal
+            };
+            // Calculate projected gains based on experience level
+            let squatGainPercent, benchGainPercent, deadliftGainPercent;
+            
+            switch(experience) {
+                case 'beginner':
+                    squatGainPercent = 0.20; // 20% gain for beginners
+                    benchGainPercent = 0.15; // 15% gain for beginners
+                    deadliftGainPercent = 0.25; // 25% gain for beginners
+                    break;
+                case 'intermediate':
+                    squatGainPercent = 0.12; // 12% gain for intermediate
+                    benchGainPercent = 0.10; // 10% gain for intermediate
+                    deadliftGainPercent = 0.15; // 15% gain for intermediate
+                    break;
+                case 'advanced':
+                    squatGainPercent = 0.08; // 8% gain for advanced
+                    benchGainPercent = 0.06; // 6% gain for advanced
+                    deadliftGainPercent = 0.10; // 10% gain for advanced
+                    break;
+            }
+            // Adjust gains based on goal
+            if (goal === 'powerlifting') {
+                squatGainPercent *= 1.1; // 10% bonus for competition focus
+                benchGainPercent *= 1.1;
+                deadliftGainPercent *= 1.1;
+            } else if (goal === 'general') {
+                squatGainPercent *= 0.8; // 20% reduction for general fitness
+                benchGainPercent *= 0.8;
+                deadliftGainPercent *= 0.8;
+            }
+            const squatGain = Math.round(squatMax * squatGainPercent);
+            const benchGain = Math.round(benchMax * benchGainPercent);
+            const deadliftGain = Math.round(deadliftMax * deadliftGainPercent);
+            const projectedSquat = squatMax + squatGain;
+            const projectedBench = benchMax + benchGain;
+            const projectedDeadlift = deadliftMax + deadliftGain;
+            const currentTotal = squatMax + benchMax + deadliftMax;
+            const projectedTotal = projectedSquat + projectedBench + projectedDeadlift;
+            const totalGain = projectedTotal - currentTotal;
+            // Store calculated program data
+            calculatedProgramData = {
+                userStats: userStats,
+                gains: {
+                    squatGain: squatGain,
+                    benchGain: benchGain,
+                    deadliftGain: deadliftGain,
+                    projectedSquat: projectedSquat,
+                    projectedBench: projectedBench,
+                    projectedDeadlift: projectedDeadlift,
+                    currentTotal: currentTotal,
+                    projectedTotal: projectedTotal,
+                    totalGain: totalGain
+                }
+            };
+            // Update display
+            updateSBDProgressDisplay(squatGain, benchGain, deadliftGain);
+            updateSBDSummary(bodyWeight, squatMax, benchMax, deadliftMax, projectedSquat, projectedBench, projectedDeadlift, currentTotal, projectedTotal, totalGain);
+            createSBDProgressChart(squatMax, benchMax, deadliftMax, projectedSquat, projectedBench, projectedDeadlift);
+            // Show results and full program button
+            document.getElementById('sbdProgramResults').classList.remove('hidden');
+            // Show success message
+            showSuccessMessage(`🎯 12-Week SBD Program generated! Projected total gain: +${totalGain}kg`);
+        }
+        // Update SBD progress display
+        function updateSBDProgressDisplay(squatGain, benchGain, deadliftGain) {
+            document.getElementById('sbdSquatProgress').textContent = `+${squatGain} kg`;
+            document.getElementById('sbdBenchProgress').textContent = `+${benchGain} kg`;
+            document.getElementById('sbdDeadliftProgress').textContent = `+${deadliftGain} kg`;
+            // Update progress bars with animation
+            setTimeout(() => {
+                document.getElementById('sbdSquatProgressBar').style.width = '85%';
+                document.getElementById('sbdBenchProgressBar').style.width = '75%';
+                document.getElementById('sbdDeadliftProgressBar').style.width = '90%';
+            }, 500);
+        }
+        // Update SBD summary
+        function updateSBDSummary(bodyWeight, squatMax, benchMax, deadliftMax, projectedSquat, projectedBench, projectedDeadlift, currentTotal, projectedTotal, totalGain) {
+            document.getElementById('currentBodyWeight').textContent = `${bodyWeight}kg`;
+            document.getElementById('currentSquatMax').textContent = `${squatMax}kg`;
+            document.getElementById('currentBenchMax').textContent = `${benchMax}kg`;
+            document.getElementById('currentDeadliftMax').textContent = `${deadliftMax}kg`;
+            document.getElementById('currentTotal').textContent = `${currentTotal}kg`;
+            
+            document.getElementById('projectedSquat').textContent = `${projectedSquat}kg`;
+            document.getElementById('projectedBench').textContent = `${projectedBench}kg`;
+            document.getElementById('projectedDeadlift').textContent = `${projectedDeadlift}kg`;
+            document.getElementById('projectedTotal').textContent = `${projectedTotal}kg`;
+            document.getElementById('totalGain').textContent = `+${totalGain}kg`;
+        }
+        // Create SBD progress chart
+        function createSBDProgressChart(squatMax, benchMax, deadliftMax, projectedSquat, projectedBench, projectedDeadlift) {
+            const ctx = document.getElementById('sbdProgressChart').getContext('2d');
+            
+            const weeks = Array.from({length: 13}, (_, i) => `Week ${i}`);
+            
+            // Calculate progressive increases for each week
+            const squatData = Array.from({length: 13}, (_, i) => {
+                return squatMax + ((projectedSquat - squatMax) * i / 12);
+            });
+            
+            const benchData = Array.from({length: 13}, (_, i) => {
+                return benchMax + ((projectedBench - benchMax) * i / 12);
+            });
+            
+            const deadliftData = Array.from({length: 13}, (_, i) => {
+                return deadliftMax + ((projectedDeadlift - deadliftMax) * i / 12);
+            });
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: weeks,
+                    datasets: [
+                        {
+                            label: 'Squat (kg)',
+                            data: squatData,
+                            borderColor: '#ef4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            tension: 0.4,
+                            fill: false
+                        },
+                        {
+                            label: 'Bench (kg)',
+                            data: benchData,
+                            borderColor: '#f97316',
+                            backgroundColor: 'rgba(249, 115, 22, 0.1)',
+                            tension: 0.4,
+                            fill: false
+                        },
+                        {
+                            label: 'Deadlift (kg)',
+                            data: deadliftData,
+                            borderColor: '#eab308',
+                            backgroundColor: 'rgba(234, 179, 8, 0.1)',
+                            tension: 0.4,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'white'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: 'white'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: 'white'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        // 1RM Calculation functions using Wendler formula only
+        function calculate1RM(weight, reps) {
+            return weight * reps * 0.0333 + weight;
+        }
+        function calculateSquat1RM() {
+            const weight = parseFloat(document.getElementById('squatWeight').value);
+            const reps = parseFloat(document.getElementById('squatReps').value);
+            
+            if (!weight || !reps) {
+                alert('Please enter both weight and reps before calculating.');
+                return;
+            }
+            
+            if (weight <= 0 || reps <= 0 || reps > 15) {
+                document.getElementById('squatResult').textContent = 'Invalid input';
+                return;
+            }
+            
+            const oneRM = Math.round(calculate1RM(weight, reps));
+            document.getElementById('squatResult').textContent = `${oneRM} kg`;
+            userStats.squatMax = oneRM;
+        }
+        function calculateBench1RM() {
+            const weight = parseFloat(document.getElementById('benchWeight').value);
+            const reps = parseFloat(document.getElementById('benchReps').value);
+            
+            if (!weight || !reps) {
+                alert('Please enter both weight and reps before calculating.');
+                return;
+            }
+            
+            if (weight <= 0 || reps <= 0 || reps > 15) {
+                document.getElementById('benchResult').textContent = 'Invalid input';
+                return;
+            }
+            
+            const oneRM = Math.round(calculate1RM(weight, reps));
+            document.getElementById('benchResult').textContent = `${oneRM} kg`;
+            userStats.benchMax = oneRM;
+        }
+        function calculateDeadlift1RM() {
+            const weight = parseFloat(document.getElementById('deadliftWeight').value);
+            const reps = parseFloat(document.getElementById('deadliftReps').value);
+            
+            if (!weight || !reps) {
+                alert('Please enter both weight and reps before calculating.');
+                return;
+            }
+            
+            if (weight <= 0 || reps <= 0 || reps > 15) {
+                document.getElementById('deadliftResult').textContent = 'Invalid input';
+                return;
+            }
+            
+            const oneRM = Math.round(calculate1RM(weight, reps));
+            document.getElementById('deadliftResult').textContent = `${oneRM} kg`;
+            userStats.deadliftMax = oneRM;
+        }
+        // Nutrition calculator
+        function calculateNutrition() {
+            const currentWeight = parseFloat(document.getElementById('currentWeight').value);
+            const targetWeight = parseFloat(document.getElementById('targetWeight').value);
+            const timeline = parseFloat(document.getElementById('timeline').value);
+            const goal = document.getElementById('nutritionGoal').value;
+            if (!currentWeight || !targetWeight || !timeline) {
+                alert('Please fill in all fields.');
+                return;
+            }
+            const weightChange = targetWeight - currentWeight;
+            const weeklyChange = weightChange / timeline;
+            // Check if goal is realistic
+            let maxWeeklyChange;
+            if (goal === 'loss') {
+                maxWeeklyChange = -1; // Max 1kg loss per week
+            } else if (goal === 'gain') {
+                maxWeeklyChange = 0.5; // Max 0.5kg gain per week
+            } else {
+                maxWeeklyChange = 0; // Maintenance
+            }
+            const isRealistic = Math.abs(weeklyChange) <= Math.abs(maxWeeklyChange);
+            if (!isRealistic) {
+                const maxRealistic = Math.round(maxWeeklyChange * timeline);
+                document.getElementById('maxRealistic').textContent = Math.abs(maxRealistic);
+                document.getElementById('nutritionWarning').classList.remove('hidden');
+                document.getElementById('nutritionResults').classList.add('hidden');
+                return;
+            }
+            // Hide warning and show results
+            document.getElementById('nutritionWarning').classList.add('hidden');
+            document.getElementById('nutritionResults').classList.remove('hidden');
+            // Calculate nutrition needs
+            const bmr = 88.362 + (13.397 * currentWeight) + (4.799 * 175) - (5.677 * 25); // Assuming height 175cm, age 25
+            const tdee = bmr * 1.6; // Active lifestyle multiplier
+            let dailyCalories;
+            if (goal === 'loss') {
+                dailyCalories = Math.round(tdee - 500); // 500 calorie deficit
+            } else if (goal === 'gain') {
+                dailyCalories = Math.round(tdee + 300); // 300 calorie surplus
+            } else {
+                dailyCalories = Math.round(tdee); // Maintenance
+            }
+            const protein = Math.round(currentWeight * 2.2); // 2.2g per kg bodyweight
+            const proteinCalories = protein * 4;
+            const fatCalories = dailyCalories * 0.25; // 25% from fats
+            const carbCalories = dailyCalories - proteinCalories - fatCalories;
+            const fats = Math.round(fatCalories / 9);
+            const carbs = Math.round(carbCalories / 4);
+            // Update display with animations
+            document.getElementById('dailyCalories').textContent = dailyCalories;
+            document.getElementById('proteinAmount').textContent = `${protein}g`;
+            document.getElementById('macroSplit').textContent = `${carbs}g / ${fats}g`;
+            // Animate progress bars
+            setTimeout(() => {
+                document.getElementById('proteinBar').style.width = '85%';
+                document.getElementById('carbBar').style.width = '60%';
+                document.getElementById('fatBar').style.width = '75%';
+            }, 500);
+            // Create weight timeline chart
+            createWeightChart(currentWeight, targetWeight, timeline);
+        }
+        // Create weight progression chart
+        function createWeightChart(currentWeight, targetWeight, timeline) {
+            const ctx = document.getElementById('weightChart').getContext('2d');
+            
+            const weeks = Array.from({length: timeline + 1}, (_, i) => `Week ${i}`);
+            const weightData = Array.from({length: timeline + 1}, (_, i) => {
+                return currentWeight + ((targetWeight - currentWeight) * i / timeline);
+            });
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: weeks,
+                    datasets: [{
+                        label: 'Weight (kg)',
+                        data: weightData,
+                        borderColor: '#10b981',
+                        backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: 'white'
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: 'white'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: 'white'
+                            },
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.1)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        // Add new record function
+        function addRecord() {
+            const athleteName = document.getElementById('athleteName').value.trim();
+            const category = document.getElementById('recordCategory').value;
+            const weightClass = document.getElementById('recordWeightClass').value;
+            const lift = document.getElementById('recordLift').value;
+            const weight = parseFloat(document.getElementById('recordWeight').value);
+            const recordLevel = document.getElementById('recordLevel').value;
+            const date = document.getElementById('recordDate').value;
+            // Validation
+            if (!athleteName || !category || !weightClass || !lift || !weight || !recordLevel || !date) {
+                alert('Please fill in all fields before adding the record.');
+                return;
+            }
+            if (weight <= 0) {
+                alert('Please enter a valid weight greater than 0.');
+                return;
+            }
+            // Create new record object
+            const newRecord = {
+                id: Date.now(), // Simple ID generation
+                athlete: athleteName,
+                category: category,
+                lift: lift,
+                weight: weight,
+                weightClass: weightClass,
+                recordLevel: recordLevel,
+                date: date
+            };
+            // Add to records array
+            powerliftingRecords.push(newRecord);
+            // Save to localStorage
+            localStorage.setItem('powerliftingRecords', JSON.stringify(powerliftingRecords));
+            // Clear form
+            clearRecordForm();
+            // Refresh display
+            displayRecords(powerliftingRecords);
+            // Show success message
+            showSuccessMessage(`✅ Record added successfully! ${athleteName} - ${weight}kg ${lift.charAt(0).toUpperCase() + lift.slice(1)} (${recordLevel} Record)`);
+        }
+        // Clear record form
+        function clearRecordForm() {
+            document.getElementById('athleteName').value = '';
+            document.getElementById('recordCategory').value = '';
+            document.getElementById('recordWeightClass').value = '';
+            document.getElementById('recordLift').value = '';
+            document.getElementById('recordWeight').value = '';
+            document.getElementById('recordLevel').value = '';
+            document.getElementById('recordDate').value = '';
+        }
+        // Delete record function with improved UX
+        function deleteRecord(recordId) {
+            const record = powerliftingRecords.find(r => r.id === recordId);
+            if (!record) return;
+            const confirmMessage = `Are you sure you want to delete this record?\n\n${record.athlete} - ${record.weight}kg ${record.lift.charAt(0).toUpperCase() + record.lift.slice(1)}\n${record.recordLevel} Record (${record.date})`;
+            
+            if (confirm(confirmMessage)) {
+                // Remove from array
+                powerliftingRecords = powerliftingRecords.filter(r => r.id !== recordId);
+                
+                // Update localStorage
+                localStorage.setItem('powerliftingRecords', JSON.stringify(powerliftingRecords));
+                
+                // Refresh display
+                displayRecords(powerliftingRecords);
+                
+                // Show success message
+                showSuccessMessage(`🗑️ Record deleted successfully! ${record.athlete}'s ${record.lift} record has been removed.`);
+            }
+        }
+        // Filter records
+        function filterRecords() {
+            const category = document.getElementById('categoryFilter').value;
+            const lift = document.getElementById('liftFilter').value;
+            const weightClass = document.getElementById('weightClassFilter').value;
+            const recordLevel = document.getElementById('recordLevelFilter').value;
+            let filteredRecords = powerliftingRecords.filter(record => {
+                // If specific lift and weight class are selected, show all categories for that combination
+                if (lift !== 'all' && weightClass !== 'all' && category === 'all') {
+                    const recordLevelMatch = recordLevel === 'all' || record.recordLevel === recordLevel;
+                    return record.lift === lift && record.weightClass === weightClass && recordLevelMatch;
+                }
+                
+                // If specific lift is selected but weight class is 'all', show all weight classes for that lift
+                if (lift !== 'all' && weightClass === 'all' && category === 'all') {
+                    const recordLevelMatch = recordLevel === 'all' || record.recordLevel === recordLevel;
+                    return record.lift === lift && recordLevelMatch;
+                }
+                
+                // If specific weight class is selected but lift is 'all', show all lifts for that weight class
+                if (lift === 'all' && weightClass !== 'all' && category === 'all') {
+                    const recordLevelMatch = recordLevel === 'all' || record.recordLevel === recordLevel;
+                    return record.weightClass === weightClass && recordLevelMatch;
+                }
+                
+                // Standard filtering when category is specifically selected
+                const categoryMatch = category === 'all' || record.category === category;
+                const liftMatch = lift === 'all' || record.lift === lift;
+                const weightClassMatch = weightClass === 'all' || record.weightClass === weightClass;
+                const recordLevelMatch = recordLevel === 'all' || record.recordLevel === recordLevel;
+                
+                return categoryMatch && liftMatch && weightClassMatch && recordLevelMatch;
+            });
+            
+            if (filteredRecords.length === 0) {
+                // Show message when no records found
+                const tableBody = document.getElementById('recordsTable');
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="px-4 py-8 text-center text-gray-400">
+                            <div class="text-xl mb-2">🔍 No records found</div>
+                            <div>Try adjusting your filters or add some records first</div>
+                        </td>
+                    </tr>
+                `;
+            } else {
+                // Sort records by category, then by lift for better organization
+                filteredRecords.sort((a, b) => {
+                    if (a.category !== b.category) {
+                        return a.category.localeCompare(b.category);
+                    }
+                    return a.lift.localeCompare(b.lift);
+                });
+                displayRecords(filteredRecords);
+            }
+        }
+        // Display records in table
+        function displayRecords(records) {
+            const tableBody = document.getElementById('recordsTable');
+            tableBody.innerHTML = '';
+            records.forEach(record => {
+                const row = document.createElement('tr');
+                row.className = 'record-row transition-all duration-300 hover:bg-gray-600';
+                
+                // Format category display
+                const categoryDisplay = record.category.split('-').map(word => 
+                    word.charAt(0).toUpperCase() + word.slice(1)
+                ).join(' ');
+                
+                // Format lift display
+                let liftDisplay = record.lift;
+                if (record.lift === 'bench-only') {
+                    liftDisplay = 'Bench Only';
+                } else {
+                    liftDisplay = record.lift.charAt(0).toUpperCase() + record.lift.slice(1);
+                }
+                // Record level badge color
+                let levelColor = 'bg-gray-500';
+                switch(record.recordLevel) {
+                    case 'India': levelColor = 'bg-orange-500'; break;
+                    case 'Asia': levelColor = 'bg-blue-500'; break;
+                    case 'Europe': levelColor = 'bg-purple-500'; break;
+                    case 'World': levelColor = 'bg-red-500'; break;
+                }
+                
+                row.innerHTML = `
+                    <td class="px-4 py-3 font-semibold">${record.athlete}</td>
+                    <td class="px-4 py-3 text-yellow-400">${categoryDisplay}</td>
+                    <td class="px-4 py-3 capitalize">${liftDisplay}</td>
+                    <td class="px-4 py-3 font-bold text-green-400">${record.weight} kg</td>
+                    <td class="px-4 py-3">${record.weightClass}kg</td>
+                    <td class="px-4 py-3">
+                        <span class="px-2 py-1 rounded text-xs font-semibold text-white ${levelColor}">
+                            ${record.recordLevel}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3">${record.date}</td>
+                    <td class="px-4 py-3">
+                        <button onclick="deleteRecord(${record.id})" class="delete-btn bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-xs font-semibold transition-all">
+                            Delete
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+        // Generate direct program without calculation step
+        function generateDirectProgram() {
+            const bodyWeight = parseFloat(document.getElementById('sbdBodyWeight').value);
+            const squatMax = parseFloat(document.getElementById('sbdSquatMax').value);
+            const benchMax = parseFloat(document.getElementById('sbdBenchMax').value);
+            const deadliftMax = parseFloat(document.getElementById('sbdDeadliftMax').value);
+            const experience = document.getElementById('sbdExperience').value;
+            const goal = document.getElementById('sbdGoal').value;
+            if (!bodyWeight || !squatMax || !benchMax || !deadliftMax) {
+                alert('Please fill in all your current stats before viewing the complete program.');
+                return;
+            }
+            if (bodyWeight <= 0 || squatMax <= 0 || benchMax <= 0 || deadliftMax <= 0) {
+                alert('Please enter valid positive values for all stats.');
+                return;
+            }
+            // Store user stats globally
+            userStats = {
+                bodyWeight: bodyWeight,
+                squatMax: squatMax,
+                benchMax: benchMax,
+                deadliftMax: deadliftMax,
+                experience: experience,
+                goal: goal
+            };
+            // Calculate projected gains
+            let squatGainPercent, benchGainPercent, deadliftGainPercent;
+            
+            switch(experience) {
+                case 'beginner':
+                    squatGainPercent = 0.20;
+                    benchGainPercent = 0.15;
+                    deadliftGainPercent = 0.25;
+                    break;
+                case 'intermediate':
+                    squatGainPercent = 0.12;
+                    benchGainPercent = 0.10;
+                    deadliftGainPercent = 0.15;
+                    break;
+                case 'advanced':
+                    squatGainPercent = 0.08;
+                    benchGainPercent = 0.06;
+                    deadliftGainPercent = 0.10;
+                    break;
+            }
+            // Adjust gains based on goal
+            if (goal === 'powerlifting') {
+                squatGainPercent *= 1.1;
+                benchGainPercent *= 1.1;
+                deadliftGainPercent *= 1.1;
+            } else if (goal === 'general') {
+                squatGainPercent *= 0.8;
+                benchGainPercent *= 0.8;
+                deadliftGainPercent *= 0.8;
+            }
+            const squatGain = Math.round(squatMax * squatGainPercent);
+            const benchGain = Math.round(benchMax * benchGainPercent);
+            const deadliftGain = Math.round(deadliftMax * deadliftGainPercent);
+            const projectedSquat = squatMax + squatGain;
+            const projectedBench = benchMax + benchGain;
+            const projectedDeadlift = deadliftMax + deadliftGain;
+            const currentTotal = squatMax + benchMax + deadliftMax;
+            const projectedTotal = projectedSquat + projectedBench + projectedDeadlift;
+            const totalGain = projectedTotal - currentTotal;
+            // Store calculated program data
+            calculatedProgramData = {
+                userStats: userStats,
+                gains: {
+                    squatGain: squatGain,
+                    benchGain: benchGain,
+                    deadliftGain: deadliftGain,
+                    projectedSquat: projectedSquat,
+                    projectedBench: projectedBench,
+                    projectedDeadlift: projectedDeadlift,
+                    currentTotal: currentTotal,
+                    projectedTotal: projectedTotal,
+                    totalGain: totalGain
+                }
+            };
+            // Go directly to full program
+            generateFullProgram();
+        }
+        // Generate full program from calculated data
+        function generateFullProgram() {
+            if (!calculatedProgramData) {
+                alert('Please calculate your program first before viewing the full program.');
+                return;
+            }
+            // Hide main content
+            document.querySelectorAll('body > section, body > header, body > footer').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Show program page
+            document.getElementById('fullProgramPage').classList.remove('hidden');
+            
+            // Update page title
+            const programTitle = document.getElementById('programPageTitle');
+            const experienceTitle = calculatedProgramData.userStats.experience.charAt(0).toUpperCase() + calculatedProgramData.userStats.experience.slice(1);
+            programTitle.textContent = `${experienceTitle} 12-Week SBD Program`;
+            
+            // Update current stats with user data
+            document.getElementById('currentSquat').textContent = `${calculatedProgramData.userStats.squatMax}kg`;
+            document.getElementById('currentBench').textContent = `${calculatedProgramData.userStats.benchMax}kg`;
+            document.getElementById('currentDeadlift').textContent = `${calculatedProgramData.userStats.deadliftMax}kg`;
+            document.getElementById('totalLifts').textContent = `${calculatedProgramData.gains.currentTotal}kg`;
+            
+            // Update program stats section with projected gains
+            updateProgramStatsDisplayForFullProgram(calculatedProgramData.gains);
+            
+            // Generate and display full program
+            const fullProgramHTML = generateDetailedProgramFromData(calculatedProgramData);
+            document.getElementById('fullProgramContent').innerHTML = fullProgramHTML;
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        // Show full program page (legacy function for compatibility)
+        function showFullProgram(level) {
+            // Hide main content
+            document.querySelector('body > *:not(#fullProgramPage)').style.display = 'none';
+            document.querySelectorAll('body > section, body > header, body > footer').forEach(el => {
+                el.style.display = 'none';
+            });
+            
+            // Show program page
+            document.getElementById('fullProgramPage').classList.remove('hidden');
+            
+            // Update page title
+            const programTitle = document.getElementById('programPageTitle');
+            programTitle.textContent = `${level.charAt(0).toUpperCase() + level.slice(1)} Program`;
+            
+            // Update current stats with user data
+            document.getElementById('currentSquat').textContent = `${userStats.squatMax}kg`;
+            document.getElementById('currentBench').textContent = `${userStats.benchMax}kg`;
+            document.getElementById('currentDeadlift').textContent = `${userStats.deadliftMax}kg`;
+            document.getElementById('totalLifts').textContent = `${userStats.squatMax + userStats.benchMax + userStats.deadliftMax}kg`;
+            
+            // Update program stats section with projected gains
+            const projectedGains = calculateProjectedGains(level, userStats);
+            updateProgramStatsDisplay(projectedGains);
+            
+            // Generate and display full program
+            const fullProgramHTML = generateDetailedProgram(level);
+            document.getElementById('fullProgramContent').innerHTML = fullProgramHTML;
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        // Update program stats display for full program page
+        function updateProgramStatsDisplayForFullProgram(gains) {
+            const programStats = document.getElementById('programStats');
+            programStats.innerHTML = `
+                <div class="stats-card rounded-2xl p-4 text-center shadow-xl">
+                    <div class="text-2xl font-bold text-yellow-400">${calculatedProgramData.userStats.squatMax}kg</div>
+                    <div class="text-sm text-gray-200">Current Squat</div>
+                    <div class="text-xs text-green-400 mt-1">→ ${gains.projectedSquat}kg (+${gains.squatGain}kg)</div>
+                </div>
+                <div class="stats-card rounded-2xl p-4 text-center shadow-xl">
+                    <div class="text-2xl font-bold text-yellow-400">${calculatedProgramData.userStats.benchMax}kg</div>
+                    <div class="text-sm text-gray-200">Current Bench</div>
+                    <div class="text-xs text-green-400 mt-1">→ ${gains.projectedBench}kg (+${gains.benchGain}kg)</div>
+                </div>
+                <div class="stats-card rounded-2xl p-4 text-center shadow-xl">
+                    <div class="text-2xl font-bold text-yellow-400">${calculatedProgramData.userStats.deadliftMax}kg</div>
+                    <div class="text-sm text-gray-200">Current Deadlift</div>
+                    <div class="text-xs text-green-400 mt-1">→ ${gains.projectedDeadlift}kg (+${gains.deadliftGain}kg)</div>
+                </div>
+                <div class="stats-card rounded-2xl p-4 text-center shadow-xl">
+                    <div class="text-2xl font-bold text-white">${gains.currentTotal}kg</div>
+                    <div class="text-sm text-gray-200">Current Total</div>
+                    <div class="text-xs text-green-400 mt-1">→ ${gains.projectedTotal}kg (+${gains.totalGain}kg)</div>
+                </div>
+            `;
+        }
+        // Back to main page
+        function backToMain() {
+            // Hide program page
+            document.getElementById('fullProgramPage').classList.add('hidden');
+            
+            // Show main content
+            document.querySelectorAll('body > section, body > header, body > footer').forEach(el => {
+                el.style.display = '';
+            });
+        }
+        // Generate detailed program from calculated data
+        function generateDetailedProgramFromData(programData) {
+            const experience = programData.userStats.experience;
+            const squatMax = programData.userStats.squatMax;
+            const benchMax = programData.userStats.benchMax;
+            const deadliftMax = programData.userStats.deadliftMax;
+            // Calculate actual weights based on user stats
+            function calculateWeight(percentage, lift) {
+                const maxes = {
+                    squat: squatMax,
+                    bench: benchMax,
+                    deadlift: deadliftMax
+                };
+                return Math.round(maxes[lift] * (percentage / 100));
+            }
+            // Generate program based on experience level
+            let programWeeks;
+            switch(experience) {
+                case 'beginner':
+                    programWeeks = generateBeginnerProgramWeeks();
+                    break;
+                case 'intermediate':
+                    programWeeks = generateIntermediateProgramWeeks();
+                    break;
+                case 'advanced':
+                    programWeeks = generateAdvancedProgramWeeks();
+                    break;
+                default:
+                    programWeeks = generateBeginnerProgramWeeks();
+            }
+            return generateProgramHTMLFromWeeks(programWeeks, calculateWeight, experience);
+        }
+        // Generate detailed program with all exercises (legacy function)
+        function generateDetailedProgram(level) {
+            // Calculate actual weights based on user stats
+            function calculateWeight(percentage, lift) {
+                const maxes = {
+                    squat: userStats.squatMax || 120,
+                    bench: userStats.benchMax || 80,
+                    deadlift: userStats.deadliftMax || 140
+                };
+                return Math.round(maxes[lift] * (percentage / 100));
+            }
+            const programs = {
+                beginner: {
+                    weeks: [
+                        { 
+                            week: 1, 
+                            squat: { sets: 3, reps: 8, percentage: 70 },
+                            bench: { sets: 3, reps: 8, percentage: 70 },
+                            deadlift: { sets: 3, reps: 5, percentage: 75 },
+                            focus: 'Form and technique foundation',
+                            accessories: {
+                                squat: ['Front Squats: 3x10', 'Bulgarian Split Squats: 3x12 each leg', 'Leg Press: 3x15'],
+                                bench: ['Incline Dumbbell Press: 3x10', 'Dips: 3x12', 'Close-Grip Bench: 3x8'],
+                                deadlift: ['Romanian Deadlifts: 3x10', 'Deficit Deadlifts: 3x8', 'Barbell Rows: 3x10']
+                            }
+                        }
+                        // Continue for all 12 weeks...
+                    ]
+                }
+                // Add expert and master programs similarly...
+            };
+            // For brevity, I'll create a comprehensive beginner program and similar structure for others
+            const fullPrograms = {
+                beginner: generateBeginnerProgram(),
+                expert: generateExpertProgram(),
+                master: generateMasterProgram()
+            };
+            return fullPrograms[level];
+        }
+        // Generate beginner program weeks
+        function generateBeginnerProgramWeeks() {
+            return [
+                { week: 1, squat: { sets: 3, reps: 8, percentage: 70 }, bench: { sets: 3, reps: 8, percentage: 70 }, deadlift: { sets: 3, reps: 5, percentage: 75 }, focus: 'Form and technique foundation' },
+                { week: 2, squat: { sets: 3, reps: 8, percentage: 72 }, bench: { sets: 3, reps: 8, percentage: 72 }, deadlift: { sets: 3, reps: 5, percentage: 77 }, focus: 'Building consistency' },
+                { week: 3, squat: { sets: 3, reps: 8, percentage: 74 }, bench: { sets: 3, reps: 8, percentage: 74 }, deadlift: { sets: 3, reps: 5, percentage: 79 }, focus: 'Progressive overload' },
+                { week: 4, squat: { sets: 3, reps: 8, percentage: 76 }, bench: { sets: 3, reps: 8, percentage: 76 }, deadlift: { sets: 3, reps: 5, percentage: 81 }, focus: 'Deload and recovery' },
+                { week: 5, squat: { sets: 4, reps: 6, percentage: 75 }, bench: { sets: 4, reps: 6, percentage: 75 }, deadlift: { sets: 4, reps: 4, percentage: 80 }, focus: 'Strength building phase' },
+                { week: 6, squat: { sets: 4, reps: 6, percentage: 77 }, bench: { sets: 4, reps: 6, percentage: 77 }, deadlift: { sets: 4, reps: 4, percentage: 82 }, focus: 'Intensity increase' },
+                { week: 7, squat: { sets: 4, reps: 6, percentage: 79 }, bench: { sets: 4, reps: 6, percentage: 79 }, deadlift: { sets: 4, reps: 4, percentage: 84 }, focus: 'Peak strength work' },
+                { week: 8, squat: { sets: 4, reps: 6, percentage: 81 }, bench: { sets: 4, reps: 6, percentage: 81 }, deadlift: { sets: 4, reps: 4, percentage: 86 }, focus: 'Recovery week' },
+                { week: 9, squat: { sets: 5, reps: 5, percentage: 80 }, bench: { sets: 5, reps: 5, percentage: 80 }, deadlift: { sets: 5, reps: 3, percentage: 85 }, focus: 'Power development' },
+                { week: 10, squat: { sets: 5, reps: 5, percentage: 82 }, bench: { sets: 5, reps: 5, percentage: 82 }, deadlift: { sets: 5, reps: 3, percentage: 87 }, focus: 'Strength peaking' },
+                { week: 11, squat: { sets: 5, reps: 5, percentage: 84 }, bench: { sets: 5, reps: 5, percentage: 84 }, deadlift: { sets: 5, reps: 3, percentage: 89 }, focus: 'Competition prep' },
+                { week: 12, squat: { sets: 5, reps: 5, percentage: 86 }, bench: { sets: 5, reps: 5, percentage: 86 }, deadlift: { sets: 5, reps: 3, percentage: 91 }, focus: 'Testing new maxes' }
+            ];
+        }
+        // Generate intermediate program weeks
+        function generateIntermediateProgramWeeks() {
+            return [
+                { week: 1, squat: { sets: 4, reps: 6, percentage: 75 }, bench: { sets: 4, reps: 6, percentage: 75 }, deadlift: { sets: 4, reps: 4, percentage: 80 }, focus: 'Technical refinement' },
+                { week: 2, squat: { sets: 4, reps: 6, percentage: 77 }, bench: { sets: 4, reps: 6, percentage: 77 }, deadlift: { sets: 4, reps: 4, percentage: 82 }, focus: 'Volume accumulation' },
+                { week: 3, squat: { sets: 4, reps: 6, percentage: 79 }, bench: { sets: 4, reps: 6, percentage: 79 }, deadlift: { sets: 4, reps: 4, percentage: 84 }, focus: 'Strength endurance' },
+                { week: 4, squat: { sets: 4, reps: 6, percentage: 81 }, bench: { sets: 4, reps: 6, percentage: 81 }, deadlift: { sets: 4, reps: 4, percentage: 86 }, focus: 'Recovery and adaptation' },
+                { week: 5, squat: { sets: 5, reps: 5, percentage: 80 }, bench: { sets: 5, reps: 5, percentage: 80 }, deadlift: { sets: 5, reps: 3, percentage: 85 }, focus: 'Intensity progression' },
+                { week: 6, squat: { sets: 5, reps: 5, percentage: 82 }, bench: { sets: 5, reps: 5, percentage: 82 }, deadlift: { sets: 5, reps: 3, percentage: 87 }, focus: 'Neural adaptation' },
+                { week: 7, squat: { sets: 5, reps: 5, percentage: 84 }, bench: { sets: 5, reps: 5, percentage: 84 }, deadlift: { sets: 5, reps: 3, percentage: 89 }, focus: 'Peak strength phase' },
+                { week: 8, squat: { sets: 5, reps: 5, percentage: 86 }, bench: { sets: 5, reps: 5, percentage: 86 }, deadlift: { sets: 5, reps: 3, percentage: 91 }, focus: 'Deload and recovery' },
+                { week: 9, squat: { sets: 6, reps: 3, percentage: 87 }, bench: { sets: 6, reps: 3, percentage: 87 }, deadlift: { sets: 6, reps: 2, percentage: 90 }, focus: 'Competition simulation' },
+                { week: 10, squat: { sets: 6, reps: 3, percentage: 89 }, bench: { sets: 6, reps: 3, percentage: 89 }, deadlift: { sets: 6, reps: 2, percentage: 92 }, focus: 'Peaking phase' },
+                { week: 11, squat: { sets: 6, reps: 3, percentage: 91 }, bench: { sets: 6, reps: 3, percentage: 91 }, deadlift: { sets: 6, reps: 2, percentage: 94 }, focus: 'Final preparations' },
+                { week: 12, squat: { sets: 6, reps: 3, percentage: 93 }, bench: { sets: 6, reps: 3, percentage: 93 }, deadlift: { sets: 6, reps: 2, percentage: 96 }, focus: 'Max testing week' }
+            ];
+        }
+        // Generate advanced program weeks
+        function generateAdvancedProgramWeeks() {
+            return [
+                { week: 1, squat: { sets: 5, reps: 5, percentage: 80 }, bench: { sets: 5, reps: 5, percentage: 80 }, deadlift: { sets: 5, reps: 3, percentage: 85 }, focus: 'Elite technique mastery' },
+                { week: 2, squat: { sets: 5, reps: 5, percentage: 82 }, bench: { sets: 5, reps: 5, percentage: 82 }, deadlift: { sets: 5, reps: 3, percentage: 87 }, focus: 'Competition specificity' },
+                { week: 3, squat: { sets: 5, reps: 5, percentage: 84 }, bench: { sets: 5, reps: 5, percentage: 84 }, deadlift: { sets: 5, reps: 3, percentage: 89 }, focus: 'Mental preparation' },
+                { week: 4, squat: { sets: 5, reps: 5, percentage: 86 }, bench: { sets: 5, reps: 5, percentage: 86 }, deadlift: { sets: 5, reps: 3, percentage: 91 }, focus: 'Recovery optimization' },
+                { week: 5, squat: { sets: 6, reps: 3, percentage: 87 }, bench: { sets: 6, reps: 3, percentage: 87 }, deadlift: { sets: 6, reps: 2, percentage: 90 }, focus: 'Power maximization' },
+                { week: 6, squat: { sets: 6, reps: 3, percentage: 89 }, bench: { sets: 6, reps: 3, percentage: 89 }, deadlift: { sets: 6, reps: 2, percentage: 92 }, focus: 'Neural efficiency' },
+                { week: 7, squat: { sets: 6, reps: 3, percentage: 91 }, bench: { sets: 6, reps: 3, percentage: 91 }, deadlift: { sets: 6, reps: 2, percentage: 94 }, focus: 'Competition timing' },
+                { week: 8, squat: { sets: 6, reps: 3, percentage: 93 }, bench: { sets: 6, reps: 3, percentage: 93 }, deadlift: { sets: 6, reps: 2, percentage: 96 }, focus: 'Peak performance' },
+                { week: 9, squat: { sets: 8, reps: 2, percentage: 92 }, bench: { sets: 8, reps: 2, percentage: 92 }, deadlift: { sets: 8, reps: 1, percentage: 95 }, focus: 'Competition simulation' },
+                { week: 10, squat: { sets: 8, reps: 2, percentage: 94 }, bench: { sets: 8, reps: 2, percentage: 94 }, deadlift: { sets: 8, reps: 1, percentage: 97 }, focus: 'Final peaking' },
+                { week: 11, squat: { sets: 8, reps: 2, percentage: 96 }, bench: { sets: 8, reps: 2, percentage: 96 }, deadlift: { sets: 8, reps: 1, percentage: 99 }, focus: 'Competition week prep' },
+                { week: 12, squat: { sets: 8, reps: 2, percentage: 98 }, bench: { sets: 8, reps: 2, percentage: 98 }, deadlift: { sets: 8, reps: 1, percentage: 101 }, focus: 'Record attempts' }
+            ];
+        }
+        function generateBeginnerProgram() {
+            const weeks = generateBeginnerProgramWeeks();
+            const accessories = {
+                squat: ['Front Squats: 3x10', 'Bulgarian Split Squats: 3x12 each leg', 'Leg Press: 3x15', 'Leg Curls: 3x12', 'Calf Raises: 3x20'],
+                bench: ['Incline Dumbbell Press: 3x10', 'Dips: 3x12', 'Close-Grip Bench: 3x8', 'Tricep Extensions: 3x12', 'Chest Flyes: 3x10'],
+                deadlift: ['Romanian Deadlifts: 3x10', 'Deficit Deadlifts: 3x8', 'Barbell Rows: 3x10', 'Good Mornings: 3x12', 'Hyperextensions: 3x15']
+            };
+            return generateProgramHTML(weeks, accessories, 'beginner');
+        }
+        function generateExpertProgram() {
+            const weeks = [
+                { week: 1, squat: { sets: 4, reps: 6, percentage: 75 }, bench: { sets: 4, reps: 6, percentage: 75 }, deadlift: { sets: 4, reps: 4, percentage: 80 }, focus: 'Technical refinement' },
+                { week: 2, squat: { sets: 4, reps: 6, percentage: 77 }, bench: { sets: 4, reps: 6, percentage: 77 }, deadlift: { sets: 4, reps: 4, percentage: 82 }, focus: 'Volume accumulation' },
+                { week: 3, squat: { sets: 4, reps: 6, percentage: 79 }, bench: { sets: 4, reps: 6, percentage: 79 }, deadlift: { sets: 4, reps: 4, percentage: 84 }, focus: 'Strength endurance' },
+                { week: 4, squat: { sets: 4, reps: 6, percentage: 81 }, bench: { sets: 4, reps: 6, percentage: 81 }, deadlift: { sets: 4, reps: 4, percentage: 86 }, focus: 'Recovery and adaptation' },
+                { week: 5, squat: { sets: 5, reps: 5, percentage: 80 }, bench: { sets: 5, reps: 5, percentage: 80 }, deadlift: { sets: 5, reps: 3, percentage: 85 }, focus: 'Intensity progression' },
+                { week: 6, squat: { sets: 5, reps: 5, percentage: 82 }, bench: { sets: 5, reps: 5, percentage: 82 }, deadlift: { sets: 5, reps: 3, percentage: 87 }, focus: 'Neural adaptation' },
+                { week: 7, squat: { sets: 5, reps: 5, percentage: 84 }, bench: { sets: 5, reps: 5, percentage: 84 }, deadlift: { sets: 5, reps: 3, percentage: 89 }, focus: 'Peak strength phase' },
+                { week: 8, squat: { sets: 5, reps: 5, percentage: 86 }, bench: { sets: 5, reps: 5, percentage: 86 }, deadlift: { sets: 5, reps: 3, percentage: 91 }, focus: 'Deload and recovery' },
+                { week: 9, squat: { sets: 6, reps: 3, percentage: 87 }, bench: { sets: 6, reps: 3, percentage: 87 }, deadlift: { sets: 6, reps: 2, percentage: 90 }, focus: 'Competition simulation' },
+                { week: 10, squat: { sets: 6, reps: 3, percentage: 89 }, bench: { sets: 6, reps: 3, percentage: 89 }, deadlift: { sets: 6, reps: 2, percentage: 92 }, focus: 'Peaking phase' },
+                { week: 11, squat: { sets: 6, reps: 3, percentage: 91 }, bench: { sets: 6, reps: 3, percentage: 91 }, deadlift: { sets: 6, reps: 2, percentage: 94 }, focus: 'Final preparations' },
+                { week: 12, squat: { sets: 6, reps: 3, percentage: 93 }, bench: { sets: 6, reps: 3, percentage: 93 }, deadlift: { sets: 6, reps: 2, percentage: 96 }, focus: 'Max testing week' }
+            ];
+            const accessories = {
+                squat: ['Pause Squats: 4x5', 'Box Squats: 4x8', 'Walking Lunges: 3x16', 'Leg Curls: 4x10', 'Single Leg Press: 3x12 each'],
+                bench: ['Pause Bench Press: 4x5', 'Floor Press: 4x6', 'Weighted Dips: 3x10', 'Board Press: 4x5', 'Tricep Work: 4x8'],
+                deadlift: ['Deficit Deadlifts: 4x6', 'Rack Pulls: 4x5', 'Good Mornings: 3x12', 'Stiff Leg Deadlifts: 4x8', 'Barbell Rows: 4x8']
+            };
+            return generateProgramHTML(weeks, accessories, 'expert');
+        }
+        function generateMasterProgram() {
+            const weeks = [
+                { week: 1, squat: { sets: 5, reps: 5, percentage: 80 }, bench: { sets: 5, reps: 5, percentage: 80 }, deadlift: { sets: 5, reps: 3, percentage: 85 }, focus: 'Elite technique mastery' },
+                { week: 2, squat: { sets: 5, reps: 5, percentage: 82 }, bench: { sets: 5, reps: 5, percentage: 82 }, deadlift: { sets: 5, reps: 3, percentage: 87 }, focus: 'Competition specificity' },
+                { week: 3, squat: { sets: 5, reps: 5, percentage: 84 }, bench: { sets: 5, reps: 5, percentage: 84 }, deadlift: { sets: 5, reps: 3, percentage: 89 }, focus: 'Mental preparation' },
+                { week: 4, squat: { sets: 5, reps: 5, percentage: 86 }, bench: { sets: 5, reps: 5, percentage: 86 }, deadlift: { sets: 5, reps: 3, percentage: 91 }, focus: 'Recovery optimization' },
+                { week: 5, squat: { sets: 6, reps: 3, percentage: 87 }, bench: { sets: 6, reps: 3, percentage: 87 }, deadlift: { sets: 6, reps: 2, percentage: 90 }, focus: 'Power maximization' },
+                { week: 6, squat: { sets: 6, reps: 3, percentage: 89 }, bench: { sets: 6, reps: 3, percentage: 89 }, deadlift: { sets: 6, reps: 2, percentage: 92 }, focus: 'Neural efficiency' },
+                { week: 7, squat: { sets: 6, reps: 3, percentage: 91 }, bench: { sets: 6, reps: 3, percentage: 91 }, deadlift: { sets: 6, reps: 2, percentage: 94 }, focus: 'Competition timing' },
+                { week: 8, squat: { sets: 6, reps: 3, percentage: 93 }, bench: { sets: 6, reps: 3, percentage: 93 }, deadlift: { sets: 6, reps: 2, percentage: 96 }, focus: 'Peak performance' },
+                { week: 9, squat: { sets: 8, reps: 2, percentage: 92 }, bench: { sets: 8, reps: 2, percentage: 92 }, deadlift: { sets: 8, reps: 1, percentage: 95 }, focus: 'Competition simulation' },
+                { week: 10, squat: { sets: 8, reps: 2, percentage: 94 }, bench: { sets: 8, reps: 2, percentage: 94 }, deadlift: { sets: 8, reps: 1, percentage: 97 }, focus: 'Final peaking' },
+                { week: 11, squat: { sets: 8, reps: 2, percentage: 96 }, bench: { sets: 8, reps: 2, percentage: 96 }, deadlift: { sets: 8, reps: 1, percentage: 99 }, focus: 'Competition week prep' },
+                { week: 12, squat: { sets: 8, reps: 2, percentage: 98 }, bench: { sets: 8, reps: 2, percentage: 98 }, deadlift: { sets: 8, reps: 1, percentage: 101 }, focus: 'Record attempts' }
+            ];
+            const accessories = {
+                squat: ['Competition Squats: 5x3', 'Pin Squats: 5x5', 'Single Leg Press: 4x12', 'Pause Squats: 4x3', 'Box Squats: 5x5'],
+                bench: ['Competition Bench: 5x3', 'Board Press: 5x5', 'Heavy Tricep Work: 4x8', 'Pause Bench: 4x3', 'Floor Press: 5x5'],
+                deadlift: ['Competition Deadlifts: 5x2', 'Block Pulls: 5x3', 'Speed Deadlifts: 8x1', 'Deficit Deadlifts: 4x3', 'Rack Pulls: 5x3']
+            };
+            return generateProgramHTML(weeks, accessories, 'master');
+        }
+        // Generate program HTML from weeks data
+        function generateProgramHTMLFromWeeks(weeks, calculateWeight, experience) {
+            const accessories = getAccessoriesForExperience(experience);
+            
+            let html = '<div class="space-y-8">';
+            weeks.forEach(week => {
+                const squatWeight = calculateWeight(week.squat.percentage, 'squat');
+                const benchWeight = calculateWeight(week.bench.percentage, 'bench');
+                const deadliftWeight = calculateWeight(week.deadlift.percentage, 'deadlift');
+                html += `
+                    <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-6 border-l-4 border-red-500 shadow-xl">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-2xl font-bold text-red-400">Week ${week.week}</h3>
+                            <div class="text-sm text-gray-400">${week.focus}</div>
+                        </div>
+                        
+                        <!-- Main Lifts -->
+                        <div class="grid md:grid-cols-3 gap-6 mb-6">
+                            <!-- Squat -->
+                            <div class="bg-gray-700 rounded-xl p-4 border border-gray-600">
+                                <h4 class="text-lg font-bold text-yellow-400 mb-3 flex items-center">
+                                    🏋️ Squat Day
+                                </h4>
+                                <div class="space-y-3">
+                                    <div class="bg-gray-600 rounded p-3">
+                                        <div class="font-semibold text-white">Main Set</div>
+                                        <div class="text-2xl font-bold text-green-400">${week.squat.sets} × ${week.squat.reps} @ ${squatWeight}kg</div>
+                                        <div class="text-sm text-gray-300">${week.squat.percentage}% of 1RM</div>
+                                        <div class="text-xs text-gray-400 mt-1">Rest: ${getRestTime(week.squat.reps, 'squat')}</div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="font-semibold text-yellow-400 text-sm">Accessory Work:</div>
+                                        ${accessories.squat.map(exercise => `<div class="text-sm text-gray-300">• ${exercise}</div>`).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Bench -->
+                            <div class="bg-gray-700 rounded-xl p-4 border border-gray-600">
+                                <h4 class="text-lg font-bold text-yellow-400 mb-3 flex items-center">
+                                    💪 Bench Day
+                                </h4>
+                                <div class="space-y-3">
+                                    <div class="bg-gray-600 rounded p-3">
+                                        <div class="font-semibold text-white">Main Set</div>
+                                        <div class="text-2xl font-bold text-green-400">${week.bench.sets} × ${week.bench.reps} @ ${benchWeight}kg</div>
+                                        <div class="text-sm text-gray-300">${week.bench.percentage}% of 1RM</div>
+                                        <div class="text-xs text-gray-400 mt-1">Rest: ${getRestTime(week.bench.reps, 'bench')}</div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="font-semibold text-yellow-400 text-sm">Accessory Work:</div>
+                                        ${accessories.bench.map(exercise => `<div class="text-sm text-gray-300">• ${exercise}</div>`).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Deadlift -->
+                            <div class="bg-gray-700 rounded-xl p-4 border border-gray-600">
+                                <h4 class="text-lg font-bold text-yellow-400 mb-3 flex items-center">
+                                    🔥 Deadlift Day
+                                </h4>
+                                <div class="space-y-3">
+                                    <div class="bg-gray-600 rounded p-3">
+                                        <div class="font-semibold text-white">Main Set</div>
+                                        <div class="text-2xl font-bold text-green-400">${week.deadlift.sets} × ${week.deadlift.reps} @ ${deadliftWeight}kg</div>
+                                        <div class="text-sm text-gray-300">${week.deadlift.percentage}% of 1RM</div>
+                                        <div class="text-xs text-gray-400 mt-1">Rest: ${getRestTime(week.deadlift.reps, 'deadlift')}</div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="font-semibold text-yellow-400 text-sm">Accessory Work:</div>
+                                        ${accessories.deadlift.map(exercise => `<div class="text-sm text-gray-300">• ${exercise}</div>`).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Weekly Notes -->
+                        <div class="bg-gray-700 rounded-xl p-4 border border-gray-600">
+                            <h5 class="font-semibold text-green-400 mb-2">📝 Week ${week.week} Focus: ${week.focus}</h5>
+                            <div class="text-sm text-gray-300">
+                                ${getWeeklyNotes(week.week, experience)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            return html;
+        }
+        // Get accessories based on experience level
+        function getAccessoriesForExperience(experience) {
+            const accessoryPrograms = {
+                beginner: {
+                    squat: ['Front Squats: 3x10', 'Bulgarian Split Squats: 3x12 each leg', 'Leg Press: 3x15', 'Leg Curls: 3x12', 'Calf Raises: 3x20'],
+                    bench: ['Incline Dumbbell Press: 3x10', 'Dips: 3x12', 'Close-Grip Bench: 3x8', 'Tricep Extensions: 3x12', 'Chest Flyes: 3x10'],
+                    deadlift: ['Romanian Deadlifts: 3x10', 'Deficit Deadlifts: 3x8', 'Barbell Rows: 3x10', 'Good Mornings: 3x12', 'Hyperextensions: 3x15']
+                },
+                intermediate: {
+                    squat: ['Pause Squats: 4x5', 'Box Squats: 4x8', 'Walking Lunges: 3x16', 'Leg Curls: 4x10', 'Single Leg Press: 3x12 each'],
+                    bench: ['Pause Bench Press: 4x5', 'Floor Press: 4x6', 'Weighted Dips: 3x10', 'Board Press: 4x5', 'Tricep Work: 4x8'],
+                    deadlift: ['Deficit Deadlifts: 4x6', 'Rack Pulls: 4x5', 'Good Mornings: 3x12', 'Stiff Leg Deadlifts: 4x8', 'Barbell Rows: 4x8']
+                },
+                advanced: {
+                    squat: ['Competition Squats: 5x3', 'Pin Squats: 5x5', 'Single Leg Press: 4x12', 'Pause Squats: 4x3', 'Box Squats: 5x5'],
+                    bench: ['Competition Bench: 5x3', 'Board Press: 5x5', 'Heavy Tricep Work: 4x8', 'Pause Bench: 4x3', 'Floor Press: 5x5'],
+                    deadlift: ['Competition Deadlifts: 5x2', 'Block Pulls: 5x3', 'Speed Deadlifts: 8x1', 'Deficit Deadlifts: 4x3', 'Rack Pulls: 5x3']
+                }
+            };
+            return accessoryPrograms[experience] || accessoryPrograms.beginner;
+        }
+        // Get appropriate rest time based on reps and lift
+        function getRestTime(reps, lift) {
+            if (reps <= 2) {
+                return lift === 'deadlift' ? '5-7 minutes' : '4-6 minutes';
+            } else if (reps <= 5) {
+                return lift === 'deadlift' ? '4-5 minutes' : '3-4 minutes';
+            } else {
+                return '2-3 minutes';
+            }
+        }
+        function generateProgramHTML(weeks, accessories, level) {
+            function calculateWeight(percentage, lift) {
+                const maxes = {
+                    squat: userStats.squatMax || 120,
+                    bench: userStats.benchMax || 80,
+                    deadlift: userStats.deadliftMax || 140
+                };
+                return Math.round(maxes[lift] * (percentage / 100));
+            }
+            let html = '<div class="space-y-8">';
+            weeks.forEach(week => {
+                const squatWeight = calculateWeight(week.squat.percentage, 'squat');
+                const benchWeight = calculateWeight(week.bench.percentage, 'bench');
+                const deadliftWeight = calculateWeight(week.deadlift.percentage, 'deadlift');
+                html += `
+                    <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-6 border-l-4 border-red-500 shadow-xl">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-2xl font-bold text-red-400">Week ${week.week}</h3>
+                            <div class="text-sm text-gray-400">${week.focus}</div>
+                        </div>
+                        
+                        <!-- Main Lifts -->
+                        <div class="grid md:grid-cols-3 gap-6 mb-6">
+                            <!-- Squat -->
+                            <div class="bg-gray-700 rounded-xl p-4 border border-gray-600">
+                                <h4 class="text-lg font-bold text-yellow-400 mb-3 flex items-center">
+                                    🏋️ Squat Day
+                                </h4>
+                                <div class="space-y-3">
+                                    <div class="bg-gray-600 rounded p-3">
+                                        <div class="font-semibold text-white">Main Set</div>
+                                        <div class="text-2xl font-bold text-green-400">${week.squat.sets} × ${week.squat.reps} @ ${squatWeight}kg</div>
+                                        <div class="text-sm text-gray-300">${week.squat.percentage}% of 1RM</div>
+                                        <div class="text-xs text-gray-400 mt-1">Rest: 3-4 minutes between sets</div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="font-semibold text-yellow-400 text-sm">Accessory Work:</div>
+                                        ${accessories.squat.map(exercise => `<div class="text-sm text-gray-300">• ${exercise}</div>`).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Bench -->
+                            <div class="bg-gray-700 rounded-xl p-4 border border-gray-600">
+                                <h4 class="text-lg font-bold text-yellow-400 mb-3 flex items-center">
+                                    💪 Bench Day
+                                </h4>
+                                <div class="space-y-3">
+                                    <div class="bg-gray-600 rounded p-3">
+                                        <div class="font-semibold text-white">Main Set</div>
+                                        <div class="text-2xl font-bold text-green-400">${week.bench.sets} × ${week.bench.reps} @ ${benchWeight}kg</div>
+                                        <div class="text-sm text-gray-300">${week.bench.percentage}% of 1RM</div>
+                                        <div class="text-xs text-gray-400 mt-1">Rest: 3-4 minutes between sets</div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="font-semibold text-yellow-400 text-sm">Accessory Work:</div>
+                                        ${accessories.bench.map(exercise => `<div class="text-sm text-gray-300">• ${exercise}</div>`).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Deadlift -->
+                            <div class="bg-gray-700 rounded-xl p-4 border border-gray-600">
+                                <h4 class="text-lg font-bold text-yellow-400 mb-3 flex items-center">
+                                    🔥 Deadlift Day
+                                </h4>
+                                <div class="space-y-3">
+                                    <div class="bg-gray-600 rounded p-3">
+                                        <div class="font-semibold text-white">Main Set</div>
+                                        <div class="text-2xl font-bold text-green-400">${week.deadlift.sets} × ${week.deadlift.reps} @ ${deadliftWeight}kg</div>
+                                        <div class="text-sm text-gray-300">${week.deadlift.percentage}% of 1RM</div>
+                                        <div class="text-xs text-gray-400 mt-1">Rest: 4-5 minutes between sets</div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        <div class="font-semibold text-yellow-400 text-sm">Accessory Work:</div>
+                                        ${accessories.deadlift.map(exercise => `<div class="text-sm text-gray-300">• ${exercise}</div>`).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Weekly Notes -->
+                        <div class="bg-gray-700 rounded-xl p-4 border border-gray-600">
+                            <h5 class="font-semibold text-green-400 mb-2">📝 Week ${week.week} Focus: ${week.focus}</h5>
+                            <div class="text-sm text-gray-300">
+                                ${getWeeklyNotes(week.week, level)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            html += '</div>';
+            return html;
+        }
+        function getWeeklyNotes(weekNum, level) {
+            const notes = {
+                1: "Focus on perfect form and technique. Don't rush the movements. Take your time to set up properly for each lift.",
+                2: "Continue building consistency. Your body is adapting to the training stimulus. Maintain good sleep and nutrition.",
+                3: "Progressive overload begins. You should start feeling stronger. Pay attention to your body's recovery signals.",
+                4: "Deload week - reduce intensity slightly to allow for recovery. This is crucial for long-term progress.",
+                5: "Strength building phase begins. Higher intensity, lower reps. Focus on explosive movement patterns.",
+                6: "Intensity increases. Your nervous system is adapting to heavier loads. Ensure adequate rest between sessions.",
+                7: "Peak strength work. You should be hitting personal records in training. Competition movements only.",
+                8: "Recovery week. Allow your body to supercompensate. Light accessory work and mobility focus.",
+                9: "Power development phase. Focus on speed and explosiveness. Competition timing practice.",
+                10: "Strength peaking continues. Your body is primed for maximum performance. Trust your training.",
+                11: "Competition preparation. Practice your competition routine. Mental preparation is key.",
+                12: "Testing week! Time to see your progress. Attempt new personal records with confidence."
+            };
+            return notes[weekNum] || "Follow the program consistently and trust the process.";
+        }
+        // Calculate all 1RMs at once
+        function calculateAll1RM() {
+            calculateSquat1RM();
+            calculateBench1RM();
+            calculateDeadlift1RM();
+            showSuccessMessage('🎯 All 1RMs calculated successfully!');
+        }
+        // Clear all 1RM inputs
+        function clearAll1RM() {
+            document.getElementById('squatWeight').value = '';
+            document.getElementById('squatReps').value = '';
+            document.getElementById('benchWeight').value = '';
+            document.getElementById('benchReps').value = '';
+            document.getElementById('deadliftWeight').value = '';
+            document.getElementById('deadliftReps').value = '';
+            document.getElementById('squatResult').textContent = '';
+            document.getElementById('benchResult').textContent = '';
+            document.getElementById('deadliftResult').textContent = '';
+            showSuccessMessage('🗑️ All fields cleared!');
+        }
+        // Wilks Score Calculator
+        function calculateWilks() {
+            const gender = document.getElementById('wilksGender').value;
+            const bodyWeight = parseFloat(document.getElementById('wilksBodyWeight').value);
+            const squat = parseFloat(document.getElementById('wilksSquat').value) || 0;
+            const bench = parseFloat(document.getElementById('wilksBench').value) || 0;
+            const deadlift = parseFloat(document.getElementById('wilksDeadlift').value) || 0;
+            if (!bodyWeight) {
+                alert('Please enter your body weight.');
+                return;
+            }
+            const total = squat + bench + deadlift;
+            // Wilks coefficients
+            let a, b, c, d, e, f;
+            if (gender === 'male') {
+                a = -216.0475144;
+                b = 16.2606339;
+                c = -0.002388645;
+                d = -0.00113732;
+                e = 7.01863e-06;
+                f = -1.291e-08;
+            } else {
+                a = 594.31747775582;
+                b = -27.23842536447;
+                c = 0.82112226871;
+                d = -0.00930733913;
+                e = 4.731582e-05;
+                f = -9.054e-08;
+            }
+            const wilksCoeff = 500 / (a + b * bodyWeight + c * bodyWeight ** 2 + d * bodyWeight ** 3 + e * bodyWeight ** 4 + f * bodyWeight ** 5);
+            const wilksScore = total * wilksCoeff;
+            // Determine rating
+            let rating, level;
+            if (wilksScore < 200) {
+                rating = 'Beginner';
+                level = 'Novice';
+            } else if (wilksScore < 300) {
+                rating = 'Intermediate';
+                level = 'Club';
+            } else if (wilksScore < 400) {
+                rating = 'Advanced';
+                level = 'Regional';
+            } else if (wilksScore < 500) {
+                rating = 'Elite';
+                level = 'National';
+            } else {
+                rating = 'World Class';
+                level = 'International';
+            }
+            // Display results
+            document.getElementById('totalResult').textContent = total + 'kg';
+            document.getElementById('wilksResult').textContent = wilksScore.toFixed(1);
+            document.getElementById('wilksRating').textContent = rating;
+            document.getElementById('competitiveLevel').textContent = level;
+            document.getElementById('wilksResults').classList.remove('hidden');
+            showSuccessMessage('🏆 Wilks score calculated successfully!');
+        }
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check for existing user session
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                updateAuthUI();
+            }
+            // Load initial records from localStorage
+            displayRecords(powerliftingRecords);
+            // Set today's date as default for record entry
+            document.getElementById('recordDate').value = new Date().toISOString().split('T')[0];
+            // Add event listeners for all navigation links
+            document.querySelectorAll('a[href^="#"]').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    scrollToSection(targetId);
+                });
+            });
+            // Show initial message if no records exist
+            if (powerliftingRecords.length === 0) {
+                const tableBody = document.getElementById('recordsTable');
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="px-4 py-8 text-center text-gray-400">
+                            <div class="text-xl mb-2">📝 No records yet</div>
+                            <div>Add your first powerlifting record using the form above!</div>
+                        </td>
+                    </tr>
+                `;
+            }
+            // Close modal when clicking outside
+            document.getElementById('authModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeAuthModal();
+                }
+            });
+            // Close SBD modal when clicking outside
+            document.getElementById('sbdDetailsModal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeSBDModal();
+                }
+            });
+            // Handle Enter key in auth forms
+            document.querySelectorAll('#loginForm input, #signupForm input').forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        if (this.closest('#loginForm')) {
+                            handleLogin();
+                        } else {
+                            handleSignup();
+                        }
+                    }
+                });
+            });
+            // Handle Enter key in SBD modal
+            document.querySelectorAll('#sbdDetailsModal input, #sbdDetailsModal select').forEach(input => {
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        generatePersonalizedProgram();
+                    }
+                });
+            });
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96a549f780124621',t:'MTc1NDM4NjM2NC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
