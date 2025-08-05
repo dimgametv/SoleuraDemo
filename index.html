@@ -28,6 +28,17 @@
         const database = firebase.database();
     </script>
     <style>
+      /* Hide scrollbar for Chrome, Safari, and Opera */
+.table-container::-webkit-scrollbar {
+    display: none;
+}
+
+/* Hide scrollbar for IE, Edge, and Firefox */
+.table-container {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
       /* Ensure the table container is scrollable horizontally */
 .table-container {
     width: 100%;
@@ -1226,7 +1237,7 @@ th, td {
             scrollToSection('sbdProgramCalculator');
             
             // Show success message
-            showSuccessMessage(`🎯 ${level.charAt(0).toUpperCase() + level.slice(1)} level pre-selected! Fill in your stats!`);
+            showSuccessMessage(`🎯 ${level.charAt(0).toUpperCase() + level.slice(1)} level! Fill in your details!`);
         }
         // SBD Details Modal Functions
         function requestSBDDetails(level) {
@@ -1256,7 +1267,7 @@ th, td {
             const experience = document.getElementById('modalExperience').value;
             // Validation
             if (!bodyWeight || !squatMax || !benchMax || !deadliftMax) {
-                alert('Please fill in all your current stats to generate your personalized program.');
+                alert('Fill in all your current stats first!');
                 return;
             }
             if (bodyWeight <= 0 || squatMax <= 0 || benchMax <= 0 || deadliftMax <= 0) {
@@ -1386,7 +1397,7 @@ th, td {
     const email = document.getElementById('loginEmail').value.trim();
     const password = document.getElementById('loginPassword').value;
     if (!email || !password) {
-        alert('Please fill in all fields.');
+        alert('Fill in all your current stats first!');
         return;
     }
     auth.signInWithEmailAndPassword(email, password)
@@ -1689,7 +1700,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const experience = document.getElementById('sbdExperience').value;
             const goal = document.getElementById('sbdGoal').value;
             if (!bodyWeight || !squatMax || !benchMax || !deadliftMax) {
-                alert('Please fill in all your current stats before generating the program.');
+                alert('Fill in all your current stats first!');
                 return;
             }
             if (bodyWeight <= 0 || squatMax <= 0 || benchMax <= 0 || deadliftMax <= 0) {
@@ -1882,7 +1893,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const reps = parseFloat(document.getElementById('squatReps').value);
             
             if (!weight || !reps) {
-                alert('Please enter both weight and reps before calculating.');
+                alert('Enter weight and reps!');
                 return;
             }
             
@@ -1900,7 +1911,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const reps = parseFloat(document.getElementById('benchReps').value);
             
             if (!weight || !reps) {
-                alert('Please enter both weight and reps before calculating.');
+                alert('Enter weight and reps!');
                 return;
             }
             
@@ -1918,7 +1929,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const reps = parseFloat(document.getElementById('deadliftReps').value);
             
             if (!weight || !reps) {
-                alert('Please enter both weight and reps before calculating.');
+                alert('Enter weight and reps!');
                 return;
             }
             
@@ -2178,7 +2189,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <tr>
                         <td colspan="8" class="px-4 py-8 text-center text-gray-400">
                             <div class="text-xl mb-2">🔍 No records found</div>
-                            <div>Try adjusting your filters or add some records first</div>
+                            <div>Adjust your filters or Refresh the webpage</div>
                         </td>
                     </tr>
                 `;
@@ -2336,7 +2347,7 @@ function closeEditModal() {
             const experience = document.getElementById('sbdExperience').value;
             const goal = document.getElementById('sbdGoal').value;
             if (!bodyWeight || !squatMax || !benchMax || !deadliftMax) {
-                alert('Please fill in all your current stats before viewing the complete program.');
+                alert('Fill in all your current stats first!');
                 return;
             }
             if (bodyWeight <= 0 || squatMax <= 0 || benchMax <= 0 || deadliftMax <= 0) {
@@ -2940,7 +2951,7 @@ function closeEditModal() {
             const bench = parseFloat(document.getElementById('wilksBench').value) || 0;
             const deadlift = parseFloat(document.getElementById('wilksDeadlift').value) || 0;
             if (!bodyWeight) {
-                alert('Please enter your body weight.');
+                alert('Fill in all your current stats first!');
                 return;
             }
             const total = squat + bench + deadlift;
