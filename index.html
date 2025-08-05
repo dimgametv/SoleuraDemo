@@ -641,7 +641,7 @@ th, td {
     <!-- 12-Week SBD Program Calculator Section -->
     <section id="sbdProgramCalculator" class="py-16 bg-gray-900">
         <div class="container mx-auto px-4">
-            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-orange-400">📅 12-WEEK SBD PLANNER</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 text-orange-400">📅 SPLIT PLANNER</h2>
             
             <div class="max-w-6xl mx-auto">
                 <div class="bg-gradient-to-br from-gray-800 to-gray-700 rounded-2xl p-6 mb-8 shadow-xl border border-gray-600">
@@ -1015,11 +1015,10 @@ th, td {
             <div class="container mx-auto px-4">
                 <div class="flex items-center justify-between mb-6">
                     <button onclick="backToMain()" class="bg-gray-700 hover:bg-gray-600 px-6 py-3 rounded-lg font-semibold transition-all flex items-center glow-button">
-                        ← Back to Programs
+                        ←
                     </button>
                     <div class="text-center">
-                        <h1 id="programPageTitle" class="text-3xl md:text-5xl font-bold text-red-400 mb-2">Beginner Program</h1>
-                        <p class="text-xl text-gray-300">Complete 12-Week SBD Training Plan</p>
+                        <h1 id="programPageTitle" class="text-3xl md:text-5xl font-bold text-red-400 mb-2"></h1>
                     </div>
                     <div class="w-32"></div> <!-- Spacer for centering -->
                 </div>
@@ -1635,7 +1634,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // Show results and full program button
             document.getElementById('sbdProgramResults').classList.remove('hidden');
             // Show success message
-            showSuccessMessage(`🎯 12-Week SBD Program generated! Projected total gain: +${totalGain}kg`);
+            showSuccessMessage(`🎯 Split Generated! Projected total gain: +${totalGain}kg`);
         }
         // Update SBD progress display
         function updateSBDProgressDisplay(squatGain, benchGain, deadliftGain) {
@@ -2303,7 +2302,6 @@ function closeEditModal() {
             // Update page title
             const programTitle = document.getElementById('programPageTitle');
             const experienceTitle = calculatedProgramData.userStats.experience.charAt(0).toUpperCase() + calculatedProgramData.userStats.experience.slice(1);
-            programTitle.textContent = `${experienceTitle} 12-Week SBD Program`;
             
             // Update current stats with user data
             document.getElementById('currentSquat').textContent = `${calculatedProgramData.userStats.squatMax}kg`;
