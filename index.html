@@ -397,7 +397,7 @@
                     
                     <div class="text-center">
                         <button onclick="goToSBDCalculator('intermediate')" class="bg-green-600 hover:bg-green-700 px-8 py-4 rounded-lg text-lg font-semibold transition-all transform hover:scale-105 glow-button">
-                            Create Expert SBD Program
+                            Create Intermediate SBD Program
                         </button>
                     </div>
                 </div>
@@ -462,7 +462,7 @@
                     
                     <div class="text-center">
                         <button onclick="goToSBDCalculator('advanced')" class="bg-green-600 hover:bg-green-700 px-8 py-4 rounded-lg text-lg font-semibold transition-all transform hover:scale-105 glow-button">
-                            Create Master SBD Program
+                            Create Advanced SBD Program
                         </button>
                     </div>
                 </div>
@@ -1125,7 +1125,7 @@
             }
             
             // Set experience level based on selected program
-            document.getElementById('modalExperience').value = level === 'master' ? 'advanced' : level === 'master' ? 'expert' : 'beginner';
+            document.getElementById('modalExperience').value = level === 'master' ? 'advanced' : level === 'expert' ? 'intermediate' : 'beginner';
             
             document.getElementById('sbdDetailsModal').classList.remove('hidden');
         }
