@@ -1337,11 +1337,22 @@
 }
 
         function handleLogout() {
-            currentUser = null;
-            localStorage.removeItem('currentUser');
-            updateAuthUI();
-            showSuccessMessage('You have been logged out successfully. See you next time! 👋');
-        }
+    // Clear the current user session
+    currentUser = null;
+    localStorage.removeItem('currentUser');
+
+    // Clear the user's data from localStorage
+    const users = JSON.parse(localStorage.getItem('demoUsers')) || [];
+    const updatedUsers = users.filter(user => user.email !== currentUser.email);
+    localStorage.setItem('demoUsers', JSON.stringify(updatedUsers));
+
+    // Update the UI to reflect the logout
+    updateAuthUI();
+
+    // Show success message
+    showSuccessMessage('You have been logged out successfully. See you next time! 👋');
+}
+
         function updateAuthUI() {
     const userInfo = document.getElementById('userInfo');
     const authButtons = document.getElementById('authButtons');
