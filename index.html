@@ -1296,6 +1296,10 @@
                         ...userData
                     };
                     localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
+                    // Load records from Firebase
+                    loadRecordsFromFirebase();
+
                     updateAuthUI();
                     closeAuthModal();
                     showSuccessMessage(`Welcome back, ${userData.name}! 🎉`);
@@ -1311,6 +1315,31 @@
             alert('Login failed: ' + errorMessage);
         });
 }
+
+function loadRecordsFromFirebase() {
+    database.ref('powerliftingRecords').once('value')
+        .then((snapshot) => {
+            const records = [];
+            snapshot.forEach(childSnapshot => {
+                records.push({
+                    id: childSnapshot.key,
+                    ...childSnapshot.val()
+                });
+            });
+
+            // Sort records by timestamp (newest first)
+            records.sort((a, b) => b.timestamp - a.timestamp);
+
+            // Store in local variable and localStorage
+            powerliftingRecords = records;
+            localStorage.setItem('powerliftingRecords', JSON.stringify(records));
+            displayRecords(records);
+        })
+        .catch((error) => {
+            console.error("Error loading records from Firebase:", error);
+        });
+}
+
 
 function handleSignup() {
     const name = document.getElementById('signupName').value.trim();
@@ -1367,12 +1396,19 @@ function handleLogout() {
     auth.signOut().then(() => {
         currentUser = null;
         localStorage.removeItem('currentUser');
+
+        // Clear records when logging out
+        powerliftingRecords = [];
+        localStorage.removeItem('powerliftingRecords');
+        displayRecords([]);
+
         updateAuthUI();
         showSuccessMessage('See you next time! 👋');
     }).catch((error) => {
         alert('Logout failed: ' + error.message);
     });
 }
+
 
 
 
@@ -1832,44 +1868,62 @@ function handleLogout() {
         }
         // Add new record function
         function addRecord() {
-            const athleteName = document.getElementById('athleteName').value.trim();
-            const category = document.getElementById('recordCategory').value;
-            const weightClass = document.getElementById('recordWeightClass').value;
-            const lift = document.getElementById('recordLift').value;
-            const weight = parseFloat(document.getElementById('recordWeight').value);
-            const recordLevel = document.getElementById('recordLevel').value;
-            const date = document.getElementById('recordDate').value;
-            // Validation
-            if (!athleteName || !category || !weightClass || !lift || !weight || !recordLevel || !date) {
-                alert('Please fill in all fields before adding the record.');
-                return;
-            }
-            if (weight <= 0) {
-                alert('Please enter a valid weight greater than 0.');
-                return;
-            }
-            // Create new record object
-            const newRecord = {
-                id: Date.now(), // Simple ID generation
-                athlete: athleteName,
-                category: category,
-                lift: lift,
-                weight: weight,
-                weightClass: weightClass,
-                recordLevel: recordLevel,
-                date: date
-            };
-            // Add to records array
-            powerliftingRecords.push(newRecord);
-            // Save to localStorage
-            localStorage.setItem('powerliftingRecords', JSON.stringify(powerliftingRecords));
-            // Clear form
-            clearRecordForm();
-            // Refresh display
-            displayRecords(powerliftingRecords);
-            // Show success message
-            showSuccessMessage(`✅ Record added successfully! ${athleteName} - ${weight}kg ${lift.charAt(0).toUpperCase() + lift.slice(1)} (${recordLevel} Record)`);
-        }
+    const athleteName = document.getElementById('athleteName').value.trim();
+    const category = document.getElementById('recordCategory').value;
+    const weightClass = document.getElementById('recordWeightClass').value;
+    const lift = document.getElementById('recordLift').value;
+    const weight = parseFloat(document.getElementById('recordWeight').value);
+    const recordLevel = document.getElementById('recordLevel').value;
+    const date = document.getElementById('recordDate').value;
+
+    // Validation
+    if (!athleteName || !category || !weightClass || !lift || !weight || !recordLevel || !date) {
+        alert('Please fill in all fields before adding the record.');
+        return;
+    }
+    if (weight <= 0) {
+        alert('Please enter a valid weight greater than 0.');
+        return;
+    }
+
+    // Create new record object
+    const newRecord = {
+        athlete: athleteName,
+        category: category,
+        lift: lift,
+        weight: weight,
+        weightClass: weightClass,
+        recordLevel: recordLevel,
+        date: date,
+        timestamp: Date.now() // Add timestamp for sorting
+    };
+
+    // Add to Firebase
+    if (currentUser) {
+        const recordsRef = database.ref('powerliftingRecords');
+        recordsRef.push(newRecord)
+            .then(() => {
+                // If successful, add to local array and update display
+                powerliftingRecords.push({ id: recordsRef.push().key, ...newRecord });
+                localStorage.setItem('powerliftingRecords', JSON.stringify(powerliftingRecords));
+                clearRecordForm();
+                displayRecords(powerliftingRecords);
+                showSuccessMessage(`✅ Record added successfully! ${athleteName} - ${weight}kg ${lift.charAt(0).toUpperCase() + lift.slice(1)} (${recordLevel} Record)`);
+            })
+            .catch((error) => {
+                console.error("Error adding record to Firebase:", error);
+                alert("Error adding record. Please try again.");
+            });
+    } else {
+        // If not logged in, just store locally
+        powerliftingRecords.push({ id: Date.now(), ...newRecord });
+        localStorage.setItem('powerliftingRecords', JSON.stringify(powerliftingRecords));
+        clearRecordForm();
+        displayRecords(powerliftingRecords);
+        showSuccessMessage(`✅ Record added locally! ${athleteName} - ${weight}kg ${lift.charAt(0).toUpperCase() + lift.slice(1)} (${recordLevel} Record)`);
+    }
+}
+
         // Clear record form
         function clearRecordForm() {
             document.getElementById('athleteName').value = '';
@@ -1882,24 +1936,36 @@ function handleLogout() {
         }
         // Delete record function with improved UX
         function deleteRecord(recordId) {
-            const record = powerliftingRecords.find(r => r.id === recordId);
-            if (!record) return;
-            const confirmMessage = `Are you sure you want to delete this record?\n\n${record.athlete} - ${record.weight}kg ${record.lift.charAt(0).toUpperCase() + record.lift.slice(1)}\n${record.recordLevel} Record (${record.date})`;
-            
-            if (confirm(confirmMessage)) {
-                // Remove from array
-                powerliftingRecords = powerliftingRecords.filter(r => r.id !== recordId);
-                
-                // Update localStorage
-                localStorage.setItem('powerliftingRecords', JSON.stringify(powerliftingRecords));
-                
-                // Refresh display
-                displayRecords(powerliftingRecords);
-                
-                // Show success message
-                showSuccessMessage(`🗑️ Record deleted successfully! ${record.athlete}'s ${record.lift} record has been removed.`);
-            }
+    const record = powerliftingRecords.find(r => r.id === recordId);
+    if (!record) return;
+
+    const confirmMessage = `Are you sure you want to delete this record?\n\n${record.athlete} - ${record.weight}kg ${record.lift.charAt(0).toUpperCase() + record.lift.slice(1)}\n${record.recordLevel} Record (${record.date})`;
+
+    if (confirm(confirmMessage)) {
+        // Remove from Firebase if logged in
+        if (currentUser) {
+            database.ref('powerliftingRecords').child(recordId).remove()
+                .then(() => {
+                    // If successful, remove from local array and update display
+                    powerliftingRecords = powerliftingRecords.filter(r => r.id !== recordId);
+                    localStorage.setItem('powerliftingRecords', JSON.stringify(powerliftingRecords));
+                    displayRecords(powerliftingRecords);
+                    showSuccessMessage(`🗑️ Record deleted successfully! ${record.athlete}'s ${record.lift} record has been removed.`);
+                })
+                .catch((error) => {
+                    console.error("Error deleting record from Firebase:", error);
+                    alert("Error deleting record. Please try again.");
+                });
+        } else {
+            // If not logged in, just remove locally
+            powerliftingRecords = powerliftingRecords.filter(r => r.id !== recordId);
+            localStorage.setItem('powerliftingRecords', JSON.stringify(powerliftingRecords));
+            displayRecords(powerliftingRecords);
+            showSuccessMessage(`🗑️ Record deleted locally! ${record.athlete}'s ${record.lift} record has been removed.`);
         }
+    }
+}
+
         // Filter records
         function filterRecords() {
             const category = document.getElementById('categoryFilter').value;
