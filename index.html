@@ -1619,7 +1619,7 @@ function showLoginPrompt() {
     promptDiv.innerHTML = `
         <div class="flex items-center">
             <div class="mr-2">🔒</div>
-            <div>Please <button onclick="showAuthModal()" class="underline font-semibold">log in</button> to view lifting records.</div>
+            <div>Please <button onclick="showAuthModal()" class="underline font-semibold">log in</button> to filter records.</div>
         </div>
     `;
     document.body.appendChild(promptDiv);
@@ -1637,6 +1637,7 @@ function showLoginPrompt() {
         }, 300);
     }, 5000);
 }
+
 
 // Add an event listener for the records section link
 document.addEventListener('DOMContentLoaded', function() {
@@ -2150,60 +2151,68 @@ document.addEventListener('DOMContentLoaded', function() {
 }
         // Filter records
         function filterRecords() {
-            const category = document.getElementById('categoryFilter').value;
-            const lift = document.getElementById('liftFilter').value;
-            const weightClass = document.getElementById('weightClassFilter').value;
-            const recordLevel = document.getElementById('recordLevelFilter').value;
-            let filteredRecords = powerliftingRecords.filter(record => {
-                // If specific lift and weight class are selected, show all categories for that combination
-                if (lift !== 'all' && weightClass !== 'all' && category === 'all') {
-                    const recordLevelMatch = recordLevel === 'all' || record.recordLevel === recordLevel;
-                    return record.lift === lift && record.weightClass === weightClass && recordLevelMatch;
-                }
-                
-                // If specific lift is selected but weight class is 'all', show all weight classes for that lift
-                if (lift !== 'all' && weightClass === 'all' && category === 'all') {
-                    const recordLevelMatch = recordLevel === 'all' || record.recordLevel === recordLevel;
-                    return record.lift === lift && recordLevelMatch;
-                }
-                
-                // If specific weight class is selected but lift is 'all', show all lifts for that weight class
-                if (lift === 'all' && weightClass !== 'all' && category === 'all') {
-                    const recordLevelMatch = recordLevel === 'all' || record.recordLevel === recordLevel;
-                    return record.weightClass === weightClass && recordLevelMatch;
-                }
-                
-                // Standard filtering when category is specifically selected
-                const categoryMatch = category === 'all' || record.category === category;
-                const liftMatch = lift === 'all' || record.lift === lift;
-                const weightClassMatch = weightClass === 'all' || record.weightClass === weightClass;
-                const recordLevelMatch = recordLevel === 'all' || record.recordLevel === recordLevel;
-                
-                return categoryMatch && liftMatch && weightClassMatch && recordLevelMatch;
-            });
-            
-            if (filteredRecords.length === 0) {
-                // Show message when no records found
-                const tableBody = document.getElementById('recordsTable');
-                tableBody.innerHTML = `
-                    <tr>
-                        <td colspan="8" class="px-4 py-8 text-center text-gray-400">
-                            <div class="text-xl mb-2">🔍 No records found</div>
-                            <div>Adjust your filters or Refresh the webpage</div>
-                        </td>
-                    </tr>
-                `;
-            } else {
-                // Sort records by category, then by lift for better organization
-                filteredRecords.sort((a, b) => {
-                    if (a.category !== b.category) {
-                        return a.category.localeCompare(b.category);
-                    }
-                    return a.lift.localeCompare(b.lift);
-                });
-                displayRecords(filteredRecords);
-            }
+    // Check if the user is logged in
+    if (!currentUser) {
+        showLoginPrompt();
+        return;
+    }
+
+    const category = document.getElementById('categoryFilter').value;
+    const lift = document.getElementById('liftFilter').value;
+    const weightClass = document.getElementById('weightClassFilter').value;
+    const recordLevel = document.getElementById('recordLevelFilter').value;
+
+    let filteredRecords = powerliftingRecords.filter(record => {
+        // If specific lift and weight class are selected, show all categories for that combination
+        if (lift !== 'all' && weightClass !== 'all' && category === 'all') {
+            const recordLevelMatch = recordLevel === 'all' || record.recordLevel === recordLevel;
+            return record.lift === lift && record.weightClass === weightClass && recordLevelMatch;
         }
+
+        // If specific lift is selected but weight class is 'all', show all weight classes for that lift
+        if (lift !== 'all' && weightClass === 'all' && category === 'all') {
+            const recordLevelMatch = recordLevel === 'all' || record.recordLevel === recordLevel;
+            return record.lift === lift && recordLevelMatch;
+        }
+
+        // If specific weight class is selected but lift is 'all', show all lifts for that weight class
+        if (lift === 'all' && weightClass !== 'all' && category === 'all') {
+            const recordLevelMatch = recordLevel === 'all' || record.recordLevel === recordLevel;
+            return record.weightClass === weightClass && recordLevelMatch;
+        }
+
+        // Standard filtering when category is specifically selected
+        const categoryMatch = category === 'all' || record.category === category;
+        const liftMatch = lift === 'all' || record.lift === lift;
+        const weightClassMatch = weightClass === 'all' || record.weightClass === weightClass;
+        const recordLevelMatch = recordLevel === 'all' || record.recordLevel === recordLevel;
+
+        return categoryMatch && liftMatch && weightClassMatch && recordLevelMatch;
+    });
+
+    if (filteredRecords.length === 0) {
+        // Show message when no records found
+        const tableBody = document.getElementById('recordsTable');
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="8" class="px-4 py-8 text-center text-gray-400">
+                    <div class="text-xl mb-2">🔍 No records found</div>
+                    <div>Adjust your filters or Refresh the webpage</div>
+                </td>
+            </tr>
+        `;
+    } else {
+        // Sort records by category, then by lift for better organization
+        filteredRecords.sort((a, b) => {
+            if (a.category !== b.category) {
+                return a.category.localeCompare(b.category);
+            }
+            return a.lift.localeCompare(b.lift);
+        });
+        displayRecords(filteredRecords);
+    }
+}
+
         // Display records in table
         function displayRecords(records) {
     const tableBody = document.getElementById('recordsTable');
