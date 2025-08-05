@@ -156,8 +156,8 @@ th, td {
         </div>
         <div class="space-y-4">
             <div>
-                <label class="block text-sm font-medium mb-2 text-gray-300">Athlete Name</label>
-                <input type="text" id="editAthleteName" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="Enter athlete name">
+                <label class="block text-sm font-medium mb-2 text-gray-300">Lifter Name</label>
+                <input type="text" id="editAthleteName" class="w-full p-3 bg-gray-700 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="Enter lifter name">
             </div>
             <div>
                 <label class="block text-sm font-medium mb-2 text-gray-300">Category</label>
@@ -385,7 +385,7 @@ th, td {
             <p class="text-xl md:text-2xl mb-8 text-gray-100 drop-shadow">Structured 12-Week Programs • Progress Tracking • Nutrition Planning</p>
             <div class="flex flex-col md:flex-row gap-4 justify-center">
                 <button onclick="scrollToSection('programs')" class="bg-white text-gray-900 hover:bg-gray-100 px-8 py-4 rounded-lg text-lg font-semibold transition-all transform hover:scale-105 shadow-lg">
-                    Start Training Program
+                    Make Me Strong
                 </button>
                 <button onclick="scrollToSection('oneRMCalculator')" class="bg-gray-900 bg-opacity-50 hover:bg-opacity-70 px-8 py-4 rounded-lg text-lg font-semibold transition-all transform hover:scale-105 shadow-lg backdrop-blur">
                     Calculate 1RM
@@ -990,8 +990,8 @@ th, td {
                 <h3 class="text-xl font-bold mb-4 text-red-400">➕ Add New Record</h3>
                 <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
                     <div>
-                        <label class="block text-sm font-medium mb-2 text-gray-300">Athlete Name</label>
-                        <input type="text" id="athleteName" class="w-full p-3 bg-gray-800 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="Enter athlete name">
+                        <label class="block text-sm font-medium mb-2 text-gray-300">Lifter Name</label>
+                        <input type="text" id="athleteName" class="w-full p-3 bg-gray-800 rounded-lg text-white border border-gray-600 focus:border-red-500 focus:outline-none transition-colors" placeholder="Enter lifter name">
                     </div>
                     <div>
                         <label class="block text-sm font-medium mb-2 text-gray-300">Category</label>
@@ -1121,14 +1121,14 @@ th, td {
                     <table class="w-full">
                         <thead class="bg-gray-800">
                             <tr>
-                                <th class="px-4 py-3 text-left text-yellow-400">Athlete Name</th>
-                                <th class="px-4 py-3 text-left text-yellow-400">Category</th>
+                                <th class="px-4 py-3 text-left text-yellow-400">Lifter Name</th>
+                                <th class="px-4 py-3 text-left text-yellow-400">Lifter Class</th>
                                 <th class="px-4 py-3 text-left text-yellow-400">Lift Type</th>
                                 <th class="px-4 py-3 text-left text-yellow-400">Good Lift</th>
                                 <th class="px-4 py-3 text-left text-yellow-400">Weight Class</th>
                                 <th class="px-4 py-3 text-left text-yellow-400">Record Level</th>
                                 <th class="px-4 py-3 text-left text-yellow-400">Record Date</th>
-                                <th class="px-4 py-3 text-left text-yellow-400">Actions</th>
+                                <th class="px-4 py-3 text-left text-yellow-400">Prime Action</th>
                             </tr>
                         </thead>
                         <tbody id="recordsTable">
@@ -2162,6 +2162,17 @@ function updateWeightClassFilter() {
             case 'Europe': levelColor = 'bg-purple-500'; break;
             case 'World': levelColor = 'bg-red-500'; break;
         }
+        // Check if the current user is heysharvi@gmail.com
+        const isAdmin = currentUser && currentUser.email === 'heysharvi@gmail.com';
+        // Only show edit and delete buttons if the user is heysharvi@gmail.com
+        const actionButtons = isAdmin ? `
+            <button onclick="editRecord('${record.id}')" class="edit-btn bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-xs font-semibold transition-all">
+                Edit
+            </button>
+            <button onclick="deleteRecord('${record.id}')" class="delete-btn bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-xs font-semibold transition-all">
+                Delete
+            </button>
+        ` : 'Unavailable';
         row.innerHTML = `
             <td class="px-4 py-3 font-semibold">${record.athlete}</td>
             <td class="px-4 py-3 text-yellow-400">${categoryDisplay}</td>
@@ -2175,17 +2186,13 @@ function updateWeightClassFilter() {
             </td>
             <td class="px-4 py-3">${record.date}</td>
             <td class="px-4 py-3">
-                <button onclick="editRecord('${record.id}')" class="edit-btn bg-blue-600 hover:bg-blue-700 px-3 py-1 rounded text-xs font-semibold transition-all">
-                    Edit
-                </button>
-                <button onclick="deleteRecord('${record.id}')" class="delete-btn bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-xs font-semibold transition-all">
-                    Delete
-                </button>
+                ${actionButtons}
             </td>
         `;
         tableBody.appendChild(row);
     });
 }
+
 function editRecord(recordId) {
     const record = powerliftingRecords.find(r => r.id === recordId);
     if (!record) return;
