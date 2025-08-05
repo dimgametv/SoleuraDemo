@@ -1255,29 +1255,34 @@
             document.getElementById('authTitle').textContent = 'Join PowerLift Pro';
         }
         function handleLogin() {
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            if (!email || !password) {
-                alert('Please fill in all fields.');
-                return;
-            }
-            if (!isValidEmail(email)) {
-                alert('Please enter a valid email address.');
-                return;
-            }
-            // Demo login - In production, this would connect to Firebase
-            const users = JSON.parse(localStorage.getItem('demoUsers')) || [];
-            const user = users.find(u => u.email === email && u.password === password);
-            if (user) {
-                currentUser = user;
-                localStorage.setItem('currentUser', JSON.stringify(user));
-                updateAuthUI();
-                closeAuthModal();
-                showSuccessMessage(`Welcome back, ${user.name}! 🎉`);
-            } else {
-                alert('Invalid email or password. Please try again or sign up for a new account.');
-            }
-        }
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    if (!email || !password) {
+        alert('Please fill in all fields.');
+        return;
+    }
+
+    if (!isValidEmail(email)) {
+        alert('Please enter a valid email address.');
+        return;
+    }
+
+    // Demo login - In production, this would connect to Firebase
+    const users = JSON.parse(localStorage.getItem('demoUsers')) || [];
+    const user = users.find(u => u.email === email && u.password === password);
+
+    if (user) {
+        currentUser = user;
+        localStorage.setItem('currentUser', JSON.stringify(user));
+        updateAuthUI();
+        closeAuthModal();
+        showSuccessMessage(`Welcome back, ${user.name}! 🎉`);
+    } else {
+        alert('Invalid email or password. Please try again or sign up for a new account.');
+    }
+}
+
         function handleSignup() {
     console.log("handleSignup function called"); // Debugging statement
 
@@ -1363,6 +1368,7 @@
     const authButtons = document.getElementById('authButtons');
     const logoutButton = document.querySelector('#mobileMenuContent button[onclick="handleLogout()"]');
     const loginButton = document.querySelector('#mobileMenuContent button[onclick="showAuthModal()"]');
+    const addRecordSection = document.getElementById('addRecordSection');
 
     if (currentUser) {
         if (userInfo) {
@@ -1377,8 +1383,15 @@
         if (loginButton) {
             loginButton.classList.add('hidden');
         }
-        if (addRecordSection) {
-            addRecordSection.style.display = 'block';
+        // Check if the logged-in user's email is heysharvi@gmail.com
+        if (currentUser.email === 'heysharvi@gmail.com') {
+            if (addRecordSection) {
+                addRecordSection.style.display = 'block';
+            }
+        } else {
+            if (addRecordSection) {
+                addRecordSection.style.display = 'none';
+            }
         }
     } else {
         if (userInfo) {
@@ -1398,6 +1411,7 @@
         }
     }
 }
+
 
 
         function isValidEmail(email) {
