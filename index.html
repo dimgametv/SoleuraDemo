@@ -28,6 +28,41 @@
         const database = firebase.database();
     </script>
     <style>
+      /* Ensure the table container is scrollable horizontally */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Table cell styling */
+th, td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
+/* Ensure text is not upside down or incorrectly oriented */
+th, td {
+    transform: rotate(0deg); /* Ensure text is not rotated */
+    display: table-cell; /* Ensure proper cell display */
+}
+
+/* Responsive adjustments for smaller screens */
+@media screen and (max-width: 768px) {
+    th, td {
+        padding: 4px 8px;
+        font-size: 12px; /* Smaller font size for mobile */
+    }
+}
+
         .gradient-bg {
             background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #475569 75%, #64748b 100%);
         }
