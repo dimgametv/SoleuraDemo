@@ -2227,7 +2227,7 @@ function updateRecord() {
                 localStorage.setItem('powerliftingRecords', JSON.stringify(powerliftingRecords));
                 closeEditModal();
                 displayRecords(powerliftingRecords);
-                showSuccessMessage(`✅ Record updated successfully! ${athleteName} - ${weight}kg ${lift.charAt(0).toUpperCase() + lift.slice(1)} (${recordLevel} Record)`);
+                showSuccessMessage(`✅ Record Updated! ${athleteName} - ${weight}kg ${lift.charAt(0).toUpperCase() + lift.slice(1)} (${recordLevel} Record)`);
             })
             .catch((error) => {
                 console.error("Error updating record in Firebase:", error);
