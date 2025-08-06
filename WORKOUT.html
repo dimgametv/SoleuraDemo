@@ -6,6 +6,27 @@
     <title>PowerLift Pro - Master Your SBD</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyD622Vu-OiFgIVc9n2TbE51Qpka7_vKXRQ",
+            authDomain: "prepssc-d65cd.firebaseapp.com",
+            databaseURL: "https://prepssc-d65cd-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "prepssc-d65cd",
+            storageBucket: "prepssc-d65cd.appspot.com",
+            messagingSenderId: "431061951062",
+            appId: "1:431061951062:web:e574c6935192ba6ea4d1f7"
+        };
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const database = firebase.database();
+    </script>
     <style>
 
       /* Ensure the table container is scrollable horizontally */
@@ -1489,11 +1510,7 @@ th, td {
         // Global variables
         let currentUser = null;
         let workoutHistory = [];
-        let records = [
-            {name: "Rahul Bhansali", ageCategory: "open", lifterCategory: "open-men-equipped", weightClass: "83kg", lift: "squat", weight: 280, level: "india"},
-            {name: "Priya Sharma", ageCategory: "open", lifterCategory: "open-women-classic", weightClass: "63kg", lift: "bench", weight: 120, level: "asia"},
-            {name: "Arjun Singh", ageCategory: "junior", lifterCategory: "junior-men-classic", weightClass: "93kg", lift: "deadlift", weight: 320, level: "world"}
-        ];
+        let records = [];
         let editingRecordIndex = -1;
 
         // Weight class data
@@ -1717,83 +1734,80 @@ window.addEventListener('resize', updateCalculatorTitle);
         }
 
         function login() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-            
-            if (email && password) {
-                currentUser = { email, name: email.split('@')[0] };
-                
-                // Update desktop buttons
-                document.getElementById('loginBtn').style.display = 'none';
-                document.getElementById('logoutBtn').style.display = 'block';
-                
-                // Update mobile buttons
-                document.getElementById('mobileLoginBtn').style.display = 'none';
-                document.getElementById('mobileLogoutBtn').style.display = 'block';
-                
-                closeModal('loginModal');
-                showSuccessMessage('Login successful!');
-                
-                // Clear form
-                document.getElementById('loginEmail').value = '';
-                document.getElementById('loginPassword').value = '';
-                showLoginForm(); // Reset to login form
-            } else {
-                showSuccessMessage('Please fill in all fields!');
-            }
-        }
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    if (email && password) {
+      auth.signInWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          // Signed in
+          currentUser = userCredential.user;
+          updateAuthUI();
+          closeModal('loginModal');
+          showSuccessMessage('Login successful!');
+
+          // Clear form
+          document.getElementById('loginEmail').value = '';
+          document.getElementById('loginPassword').value = '';
+          showLoginForm();
+        })
+        .catch((error) => {
+          showSuccessMessage('Login failed: ' + error.message);
+        });
+    } else {
+      showSuccessMessage('Please fill in all fields!');
+    }
+  }
 
         function signup() {
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const number = document.getElementById('signupNumber').value;
-            const experience = document.getElementById('signupExperience').value;
-            const password = document.getElementById('signupPassword').value;
-            
-            // Validation
-            if (!name || !email || !number || !experience || !password) {
-                showSuccessMessage('Please fill in all fields!');
-                return;
-            }
-            
-            if (password.length < 6) {
-                showSuccessMessage('Password must be at least 6 characters!');
-                return;
-            }
-            
-            // Create user account
-            currentUser = {
-                name,
-                email,
-                number,
-                experience,
-                gender: '',
-                age: '',
-                height: '',
-                weight: '',
-                squat: 0,
-                bench: 0,
-                deadlift: 0
-            };
-            
-            // Update desktop buttons
-            document.getElementById('loginBtn').style.display = 'none';
-            document.getElementById('logoutBtn').style.display = 'block';
-            
-            // Update mobile buttons
-            document.getElementById('mobileLoginBtn').style.display = 'none';
-            document.getElementById('mobileLogoutBtn').style.display = 'block';
-            
+    const name = document.getElementById('signupName').value;
+    const email = document.getElementById('signupEmail').value;
+    const number = document.getElementById('signupNumber').value;
+    const experience = document.getElementById('signupExperience').value;
+    const password = document.getElementById('signupPassword').value;
+
+    if (!name || !email || !number || !experience || !password) {
+      showSuccessMessage('Please fill in all fields!');
+      return;
+    }
+
+    if (password.length < 6) {
+      showSuccessMessage('Password must be at least 6 characters!');
+      return;
+    }
+
+    auth.createUserWithEmailAndPassword(email, password)
+      .then((userCredential) => {
+        // Signed up
+        const user = userCredential.user;
+        const userData = {
+          name: name,
+          email: email,
+          number: number,
+          experience: experience,
+          uid: user.uid,
+          joinDate: new Date().toISOString()
+        };
+
+        database.ref('users/' + user.uid).set(userData)
+          .then(() => {
+            currentUser = userData;
+            updateAuthUI();
             closeModal('loginModal');
             showSuccessMessage('Account created successfully! Complete your profile for better experience.');
-            
+
             // Clear form
             clearSignupForm();
-            showLoginForm(); // Reset to login form
-            
-            // Populate profile with user data
-            populateProfile();
-        }
+            showLoginForm();
+          })
+          .catch((error) => {
+            showSuccessMessage('Signup failed: ' + error.message);
+          });
+      })
+      .catch((error) => {
+        showSuccessMessage('Signup failed: ' + error.message);
+      });
+  }
 
         function clearSignupForm() {
             document.getElementById('signupName').value = '';
@@ -1804,24 +1818,14 @@ window.addEventListener('resize', updateCalculatorTitle);
         }
 
         function logout() {
-            currentUser = null;
-            
-            // Update desktop buttons
-            document.getElementById('loginBtn').style.display = 'block';
-            document.getElementById('logoutBtn').style.display = 'none';
-            
-            // Update mobile buttons
-            document.getElementById('mobileLoginBtn').style.display = 'block';
-            document.getElementById('mobileLogoutBtn').style.display = 'none';
-            
-            // Hide profile section when logging out
-            document.getElementById('profile').style.display = 'none';
-            
-            // Clear any form data
-            showLoginForm();
-            
-            showSuccessMessage('Logged out successfully!');
-        }
+    auth.signOut().then(() => {
+      currentUser = null;
+      updateAuthUI();
+      showSuccessMessage('Logged out successfully!');
+    }).catch((error) => {
+      showSuccessMessage('Logout failed: ' + error.message);
+    });
+  }
 
         function calculate1RM(lift) {
     const weight = parseFloat(document.getElementById(`${lift}Weight`).value);
@@ -2259,23 +2263,44 @@ window.addEventListener('resize', updateCalculatorTitle);
 
         // Records Management
         function addRecord() {
-            const name = document.getElementById('lifterName').value;
-            const ageCategory = document.getElementById('ageCategory').value;
-            const lifterCategory = document.getElementById('lifterCategory').value;
-            const weightClass = document.getElementById('weightClass').value;
-            const lift = document.getElementById('liftType').value;
-            const weight = parseFloat(document.getElementById('weightLifted').value);
-            const level = document.getElementById('recordLevel').value;
-            
-            if (name && ageCategory && lifterCategory && weightClass && lift && weight && level) {
-                records.push({name, ageCategory, lifterCategory, weightClass, lift, weight, level});
-                displayRecords();
-                clearRecordForm();
-                showSuccessMessage('Record added successfully!');
-            } else {
-                showSuccessMessage('Please fill in all fields!');
-            }
-        }
+    const name = document.getElementById('lifterName').value;
+    const ageCategory = document.getElementById('ageCategory').value;
+    const lifterCategory = document.getElementById('lifterCategory').value;
+    const weightClass = document.getElementById('weightClass').value;
+    const lift = document.getElementById('liftType').value;
+    const weight = parseFloat(document.getElementById('weightLifted').value);
+    const level = document.getElementById('recordLevel').value;
+
+    if (name && ageCategory && lifterCategory && weightClass && lift && weight && level) {
+      const newRecord = {
+        name,
+        ageCategory,
+        lifterCategory,
+        weightClass,
+        lift,
+        weight,
+        level,
+        timestamp: Date.now()
+      };
+
+      if (currentUser) {
+        database.ref('powerliftingRecords').push(newRecord)
+          .then(() => {
+            showSuccessMessage('Record added successfully!');
+            clearRecordForm();
+          })
+          .catch((error) => {
+            showSuccessMessage('Error adding record: ' + error.message);
+          });
+      } else {
+        records.push(newRecord);
+        showSuccessMessage('Record added locally!');
+        clearRecordForm();
+      }
+    } else {
+      showSuccessMessage('Please fill in all fields!');
+    }
+  }
 
         function displayRecords(filteredRecords = null) {
             const tbody = document.getElementById('recordsTableBody');
@@ -2301,6 +2326,39 @@ window.addEventListener('resize', updateCalculatorTitle);
                 `;
             });
         }
+
+        function updateAuthUI() {
+    const loginBtn = document.getElementById('loginBtn');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const mobileLoginBtn = document.getElementById('mobileLoginBtn');
+    const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
+
+    if (currentUser) {
+      loginBtn.style.display = 'none';
+      logoutBtn.style.display = 'block';
+      mobileLoginBtn.style.display = 'none';
+      mobileLogoutBtn.style.display = 'block';
+    } else {
+      loginBtn.style.display = 'block';
+      logoutBtn.style.display = 'none';
+      mobileLoginBtn.style.display = 'block';
+      mobileLogoutBtn.style.display = 'none';
+    }
+  }
+
+  function loadRecordsFromFirebase() {
+    database.ref('powerliftingRecords').once('value')
+      .then((snapshot) => {
+        const recordsData = snapshot.val();
+        if (recordsData) {
+          records = Object.values(recordsData);
+          displayRecords();
+        }
+      })
+      .catch((error) => {
+        console.error("Error loading records from Firebase:", error);
+      });
+  }
 
         function filterRecords() {
             const nameFilter = document.getElementById('filterName').value.toLowerCase();
@@ -2462,15 +2520,17 @@ window.addEventListener('resize', updateCalculatorTitle);
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-            displayRecords();
-            updateFilterWeightClasses();
-            
-            // Add event listener for lifter category filter to update weight classes
-            document.getElementById('filterLifterCategory').addEventListener('change', function() {
-                updateFilterWeightClasses();
-                filterRecords();
-            });
-        });
+    loadRecordsFromFirebase();
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        currentUser = user;
+        updateAuthUI();
+      } else {
+        currentUser = null;
+        updateAuthUI();
+      }
+    });
+  });
 
         // Close modals when clicking outside
         window.onclick = function(event) {
