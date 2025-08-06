@@ -1660,6 +1660,10 @@ function updateSBD() {
                             document.getElementById('loginEmail').value = '';
                             document.getElementById('loginPassword').value = '';
                             showLoginForm();
+                            // Refresh the page after 2 seconds
+                            setTimeout(() => {
+                                window.location.reload();
+                            }, 3000);
                         } else {
                             showSuccessMessage('User data not found!');
                         }
@@ -1675,6 +1679,7 @@ function updateSBD() {
         showSuccessMessage('Please fill in all fields!');
     }
 }
+
 
 
         function signup() {
@@ -1870,7 +1875,7 @@ function updateSBD() {
                 document.getElementById('program').style.display = 'block';
                 closeModal('sbdModal');
                 showSection('program');
-                showSuccessMessage('Program generated successfully!');
+                showSuccessMessage('Split Generated!');
             }
         }
         function getAdminEmail() {
@@ -1903,25 +1908,35 @@ function updateSBD() {
             return { min: 80, max: 95 };
         }
         function generateWeekDays(week) {
-            let daysHTML = '';
-            for (let day = 1; day <= 6; day++) {
-                const dayId = `week${week}day${day}`;
-                daysHTML += `
-                    <div class="day-item">
-                        <div class="day-header">
-                            <strong>Day ${day} - ${getDayFocus(day)}</strong>
-                            <button class="completed-btn" onclick="markCompleted('${dayId}')" id="${dayId}Btn">
-                                Complete
-                            </button>
-                        </div>
-                        <div class="exercise-list">
-                            ${generateDayExercises(day, week)}
-                        </div>
-                    </div>
-                `;
-            }
-            return daysHTML;
-        }
+    let daysHTML = '';
+    for (let day = 1; day <= 6; day++) {
+        const dayId = `week${week}day${day}`;
+        const dayFocus = getDayFocus(day);
+        const dayExercises = generateDayExercises(day, week);
+
+        // Check if the user is logged in
+        const isLoggedIn = currentUser !== null;
+
+        // Only show the "Complete" button if the user is logged in
+        const completeButton = isLoggedIn ?
+            `<button class="completed-btn" onclick="markCompleted('${dayId}')" id="${dayId}Btn">Complete</button>` :
+            '';
+
+        daysHTML += `
+            <div class="day-item">
+                <div class="day-header">
+                    <strong>Day ${day} - ${dayFocus}</strong>
+                    ${completeButton}
+                </div>
+                <div class="exercise-list">
+                    ${dayExercises}
+                </div>
+            </div>
+        `;
+    }
+    return daysHTML;
+}
+
         function getDayFocus(day) {
             const focuses = {
                 1: "Squat Focus",
