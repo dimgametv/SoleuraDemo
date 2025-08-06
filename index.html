@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -215,15 +216,32 @@ th, td {
             position: relative;
         }
         .hero-content h1 {
-            font-size: clamp(48px, 8vw, 96px);
-            font-weight: 900;
-            margin-bottom: 16px;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: -2px;
-        }
+    font-size: clamp(60px, 10vw, 120px); /* Increased font size */
+    font-weight: 900;
+    margin-bottom: 16px;
+    background: linear-gradient(90deg, #ff7e5f, #feb47b, #ffcc33, #a8ff78, #7afec6, #60f2ff, #a6c1ff); /* Bright and colorful gradient */
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent; /* Ensures the text color is transparent to show the gradient */
+    letter-spacing: -3px; /* Increased letter spacing for a more stylish look */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Added text shadow for depth */
+    font-family: 'Arial', sans-serif; /* You can change the font family to something more stylish if you prefer */
+    text-align: center; /* Center the text */
+    line-height: 0.9; /* Adjust line height to reduce space */
+}
+
+.master-text {
+    display: block; /* Ensure each span is on a new line */
+    font-size: 1.5em; /* Make MASTER larger */
+}
+
+.sbd-text {
+    display: block; /* Ensure each span is on a new line */
+    font-size: 1em; /* Make YOUR SBD slightly smaller */
+    margin-top: -40px; /* Adjust margin to remove space */
+}
+
+
         .hero-content p {
             font-size: 18px;
             color: var(--text-secondary);
@@ -829,15 +847,23 @@ th, td {
     </header>
     <!-- Hero Section -->
     <section id="hero" class="hero section active">
-        <div class="hero-content">
-            <h1>MASTER YOUR SBD</h1>
-            <p>Structured 12-Week Programs • Progress Tracking • Nutrition Planning</p>
-            <div class="hero-buttons">
-                <button class="btn btn-primary btn-hero" onclick="handleStartTraining()">Start Training</button>
-                <button class="btn btn-secondary btn-hero" onclick="showSection('calculator')">Calculate 1RM</button>
-            </div>
+    <div class="hero-content">
+        <h1>
+            <span class="master-text">MASTER</span><br>
+            <span class="sbd-text">YOUR SBD</span>
+        </h1>
+        <p class="hero-subtitle">
+            <span class="first-line">Structured 12-Week Programs</span><br>
+            <span class="second-line">• Progress Tracking • Nutrition Planning</span>
+        </p>
+        <div class="hero-buttons">
+            <button class="btn btn-primary btn-hero" onclick="handleStartTraining()">Start Training</button>
+            <button class="btn btn-secondary btn-hero" onclick="showSection('calculator')">Calculate 1RM</button>
         </div>
-    </section>
+    </div>
+</section>
+
+
     <!-- Training Programs Section -->
     <section id="programs" class="section">
         <h2 class="section-title">Training Programs</h2>
