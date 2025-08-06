@@ -216,19 +216,26 @@ th, td {
             position: relative;
         }
         .hero-content h1 {
-    font-size: clamp(60px, 10vw, 120px); /* Increased font size */
+    font-size: clamp(60px, 10vw, 120px);
     font-weight: 900;
     margin-bottom: 16px;
-    background: linear-gradient(90deg, #ff7e5f, #feb47b, #ffcc33, #a8ff78, #7afec6, #60f2ff, #a6c1ff); /* Bright and colorful gradient */
+    background: linear-gradient(90deg, #ff7e5f, #feb47b, #ffcc33, #a8ff78, #7afec6, #60f2ff, #a6c1ff);
     -webkit-background-clip: text;
     background-clip: text;
-    color: transparent; /* Ensures the text color is transparent to show the gradient */
-    letter-spacing: -3px; /* Increased letter spacing for a more stylish look */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Added text shadow for depth */
-    font-family: 'Arial', sans-serif; /* You can change the font family to something more stylish if you prefer */
-    text-align: center; /* Center the text */
-    line-height: 0.9; /* Adjust line height to reduce space */
+    color: transparent;
+    letter-spacing: -3px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); /* Reduced text shadow */
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    line-height: 0.9;
+    -webkit-font-smoothing: antialiased; /* Font smoothing for better rendering */
+    -moz-osx-font-smoothing: grayscale;
 }
+
+[data-theme="light"] .hero-content h1 {
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow for light theme */
+}
+
 
 .master-text {
     display: block; /* Ensure each span is on a new line */
