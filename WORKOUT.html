@@ -423,6 +423,7 @@ th, td {
                 grid-template-columns: 1fr;
             }
         }
+        
 
         .calculator-card {
             background: var(--card-bg);
@@ -786,6 +787,11 @@ th, td {
             .nav-container {
                 padding: 0 16px;
             }
+
+            .calculator-card:nth-child(2),
+            .calculator-card:nth-child(3) {
+            display: none;
+    }
         }
 
         /* Utility Classes */
@@ -1615,6 +1621,20 @@ th, td {
             document.getElementById('profileDeadlift').value = currentUser.deadlift || '';
         }
 
+        function updateCalculatorTitle() {
+    const calculatorTitle = document.querySelector('.calculator-card h3');
+    if (window.innerWidth <= 768) {
+        calculatorTitle.innerHTML = '<i class="fas fa-user-ninja"></i> SBD 1RM';
+    } else {
+        calculatorTitle.innerHTML = '<i class="fas fa-user-ninja"></i> Squat 1RM';
+    }
+}
+
+// Call the function on load and on resize
+window.addEventListener('load', updateCalculatorTitle);
+window.addEventListener('resize', updateCalculatorTitle);
+
+
         function updateProfile() {
             if (!currentUser) {
                 showSuccessMessage('Please login first!');
@@ -1803,19 +1823,24 @@ th, td {
             showSuccessMessage('Logged out successfully!');
         }
 
-        // 1RM Calculator
         function calculate1RM(lift) {
-            const weight = parseFloat(document.getElementById(`${lift}Weight`).value);
-            const reps = parseInt(document.getElementById(`${lift}Reps`).value);
-            
-            if (weight && reps) {
-                // Epley formula: 1RM = weight × (1 + reps/30)
-                const oneRM = Math.round(weight * (1 + reps / 30));
-                
-                document.getElementById(`${lift}Result`).style.display = 'block';
-                document.getElementById(`${lift}RM`).textContent = oneRM;
-            }
+    const weight = parseFloat(document.getElementById(`${lift}Weight`).value);
+    const reps = parseInt(document.getElementById(`${lift}Reps`).value);
+
+    if (weight && reps) {
+        // Epley formula: 1RM = weight × (1 + reps/30)
+        const oneRM = Math.round(weight * (1 + reps / 30));
+
+        document.getElementById(`${lift}Result`).style.display = 'block';
+        if (window.innerWidth <= 768) {
+            document.getElementById(`${lift}Result`).innerHTML = `<h4>Your SBD 1RM: <span id="${lift}RM"></span> kg</h4>`;
+        } else {
+            document.getElementById(`${lift}Result`).innerHTML = `<h4>Your ${lift.charAt(0).toUpperCase() + lift.slice(1)} 1RM: <span id="${lift}RM"></span> kg</h4>`;
         }
+        document.getElementById(`${lift}RM`).textContent = oneRM;
+    }
+}
+
 
         // Nutrition Calculator
         function calculateNutrition() {
