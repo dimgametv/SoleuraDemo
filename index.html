@@ -446,6 +446,10 @@ th, td {
             border-color: var(--accent-color);
             box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
         }
+        .full-width {
+    grid-column: 1 / -1; /* This makes the card span the full width of the grid */
+}
+
         .result-display {
             background: rgba(0, 255, 136, 0.1);
             border: 1px solid var(--accent-color);
@@ -1206,9 +1210,9 @@ th, td {
                     <label>Lifting Experience</label>
                     <select id="profileExperience">
                         <option value="">Select experience level</option>
-                        <option value="beginner">Beginner (0-2 years)</option>
-                        <option value="intermediate">Intermediate (2-5 years)</option>
-                        <option value="advanced">Advanced (5+ years)</option>
+                        <option value="beginner">Novice (1 year)</option>
+                        <option value="intermediate">Expert (1-3 years)</option>
+                        <option value="advanced">Master (3+ years)</option>
                     </select>
                 </div>
             </div>
@@ -1280,9 +1284,9 @@ th, td {
                     <label>Lifting Experience</label>
                     <select id="signupExperience">
                         <option value="">Select experience level</option>
-                        <option value="beginner">Beginner (0-2 years)</option>
-                        <option value="intermediate">Intermediate (2-5 years)</option>
-                        <option value="advanced">Advanced (5+ years)</option>
+                        <option value="beginner">Novice (1 year)</option>
+                        <option value="intermediate">Expert (1-3 years)</option>
+                        <option value="advanced">Master (3+ years)</option>
                     </select>
                 </div>
                 <div class="input-group">
@@ -1316,9 +1320,9 @@ th, td {
             <div class="input-group">
                 <label>Training Experience</label>
                 <select id="experience">
-                    <option value="beginner">Beginner (0-2 years)</option>
-                    <option value="intermediate">Intermediate (2-5 years)</option>
-                    <option value="advanced">Advanced (5+ years)</option>
+                    <option value="beginner">Novice (1 year)</option>
+                    <option value="intermediate">Expert (1-3 years)</option>
+                    <option value="advanced">Master (3+ years)</option>
                 </select>
             </div>
             <button class="btn btn-primary" onclick="generateProgram()" style="width: 100%; margin-top: 16px;">Generate Program</button>
@@ -1504,6 +1508,36 @@ th, td {
                 }
             }
         }
+        function fetchUserProfile(uid) {
+    const userRef = database.ref('users/' + uid);
+    userRef.once('value')
+        .then((snapshot) => {
+            const userData = snapshot.val();
+            if (userData) {
+                currentUser = userData;
+                populateProfile(userData);
+            } else {
+                console.log("No user data available");
+            }
+        })
+        .catch((error) => {
+            console.error("Error fetching user data:", error);
+        });
+}
+function populateProfile(userData) {
+    document.getElementById('profileName').value = userData.name || '';
+    document.getElementById('profileEmail').value = userData.email || '';
+    document.getElementById('profileNumber').value = userData.number || '';
+    document.getElementById('profileGender').value = userData.gender || '';
+    document.getElementById('profileAge').value = userData.age || '';
+    document.getElementById('profileHeight').value = userData.height || '';
+    document.getElementById('profileWeight').value = userData.weight || '';
+    document.getElementById('profileExperience').value = userData.experience || '';
+    document.getElementById('profileSquat').value = userData.squat || '';
+    document.getElementById('profileBench').value = userData.bench || '';
+    document.getElementById('profileDeadlift').value = userData.deadlift || '';
+}
+
         // Profile Management
         function populateProfile() {
     if (!currentUser) {
@@ -1877,7 +1911,7 @@ function updateSBD() {
     if (!currentUser) {
         // Display only the first week for non-logged-in users
         const weekCard = document.createElement('div');
-        weekCard.className = 'week-card';
+        weekCard.className = 'week-card full-width'; // Add full-width class
         weekCard.innerHTML = `
             <div class="week-title">Week 1 - Foundation Phase</div>
             ${generateWeekDays(1)}
@@ -1899,6 +1933,7 @@ function updateSBD() {
         }
     }
 }
+
 
         function getWeekPhase(week) {
             if (week <= 4) return "Foundation Phase";
@@ -2264,44 +2299,23 @@ function updateSBD() {
     const logoutBtn = document.getElementById('logoutBtn');
     const mobileLoginBtn = document.getElementById('mobileLoginBtn');
     const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
-    const addRecordSection = document.querySelector('.records-section');
     const accountTab = document.getElementById('accountTab');
+
     if (currentUser) {
         loginBtn.style.display = 'none';
         logoutBtn.style.display = 'block';
         mobileLoginBtn.style.display = 'none';
         mobileLogoutBtn.style.display = 'block';
-        // Check if the current user's email is the admin email
-        if (currentUser.email === getAdminEmail()) {
-            // Show the "Add New Record" section
-            if (addRecordSection) {
-                addRecordSection.style.display = 'block';
-            }
-        } else {
-            // Hide the "Add New Record" section
-            if (addRecordSection) {
-                addRecordSection.style.display = 'none';
-            }
-        }
-        // Show the "Your Account" tab
-        if (accountTab) {
-            accountTab.style.display = 'block';
-        }
+        accountTab.style.display = 'block';
     } else {
         loginBtn.style.display = 'block';
         logoutBtn.style.display = 'none';
         mobileLoginBtn.style.display = 'block';
         mobileLogoutBtn.style.display = 'none';
-        // Hide the "Add New Record" section if no user is logged in
-        if (addRecordSection) {
-            addRecordSection.style.display = 'none';
-        }
-        // Hide the "Your Account" tab
-        if (accountTab) {
-            accountTab.style.display = 'none';
-        }
+        accountTab.style.display = 'none';
     }
 }
+
   function loadRecordsFromFirebase() {
     database.ref('powerliftingRecords').on('value', (snapshot) => {
         const recordsData = snapshot.val();
@@ -2497,17 +2511,18 @@ function deleteRecord(index) {
         }
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
-    loadRecordsFromFirebase();
     auth.onAuthStateChanged((user) => {
         if (user) {
             currentUser = user;
             updateAuthUI();
+            fetchUserProfile(user.uid);
         } else {
             currentUser = null;
             updateAuthUI();
         }
     });
 });
+
         // Close modals when clicking outside
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
