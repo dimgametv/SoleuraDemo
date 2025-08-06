@@ -778,8 +778,9 @@ th, td {
                 <ul class="nav-links" id="navLinks">
                     <li><a onclick="showSection('hero'); closeMobileMenu()">Home</a></li>
                     <li><a onclick="showSection('calculator'); closeMobileMenu()">1RM Checker</a></li>
-                    <li><a onclick="showSection('profile'); closeMobileMenu()">Your Account</a></li>
+                    <li id="accountTab"><a onclick="showSection('profile'); closeMobileMenu()">Your Account</a></li>
                     <li><a onclick="showSection('records'); closeMobileMenu()">Lifting Records</a></li>
+                    
                     
                 </ul>
             </nav>
@@ -1668,7 +1669,7 @@ function updateSBD() {
                     });
             })
             .catch((error) => {
-                showSuccessMessage('Login failed: ' + error.message);
+                showSuccessMessage('Invalid Credentials!');
             });
     } else {
         showSuccessMessage('Please fill in all fields!');
@@ -1720,7 +1721,7 @@ function updateSBD() {
                     currentUser = userData;
                     updateAuthUI();
                     closeModal('loginModal');
-                    showSuccessMessage('Account created successfully! Complete your profile for a better experience.');
+                    showSuccessMessage('Signup Successful!');
                     // Clear form
                     clearSignupForm();
                     showLoginForm();
@@ -1746,12 +1747,13 @@ function updateSBD() {
         currentUser = null;
         // Clear user data from local storage
         localStorage.removeItem('currentUser');
-        updateAuthUI();
-        showSuccessMessage('Logged out successfully!');
+        // Refresh the page to reflect the logged-out state
+        window.location.reload();
     }).catch((error) => {
         showSuccessMessage('Logout failed: ' + error.message);
     });
 }
+
 
         function calculate1RM(lift) {
     const weight = parseFloat(document.getElementById(`${lift}Weight`).value);
@@ -2256,6 +2258,7 @@ function updateSBD() {
     const mobileLoginBtn = document.getElementById('mobileLoginBtn');
     const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
     const addRecordSection = document.querySelector('.records-section');
+    const accountTab = document.getElementById('accountTab');
 
     if (currentUser) {
         loginBtn.style.display = 'none';
@@ -2266,10 +2269,19 @@ function updateSBD() {
         // Check if the current user's email is the admin email
         if (currentUser.email === getAdminEmail()) {
             // Show the "Add New Record" section
-            addRecordSection.style.display = 'block';
+            if (addRecordSection) {
+                addRecordSection.style.display = 'block';
+            }
         } else {
             // Hide the "Add New Record" section
-            addRecordSection.style.display = 'none';
+            if (addRecordSection) {
+                addRecordSection.style.display = 'none';
+            }
+        }
+
+        // Show the "Your Account" tab
+        if (accountTab) {
+            accountTab.style.display = 'block';
         }
     } else {
         loginBtn.style.display = 'block';
@@ -2281,8 +2293,14 @@ function updateSBD() {
         if (addRecordSection) {
             addRecordSection.style.display = 'none';
         }
+
+        // Hide the "Your Account" tab
+        if (accountTab) {
+            accountTab.style.display = 'none';
+        }
     }
 }
+
 
 
   function loadRecordsFromFirebase() {
@@ -2482,15 +2500,16 @@ function deleteRecord(index) {
         document.addEventListener('DOMContentLoaded', function() {
     loadRecordsFromFirebase();
     auth.onAuthStateChanged((user) => {
-      if (user) {
-        currentUser = user;
-        updateAuthUI();
-      } else {
-        currentUser = null;
-        updateAuthUI();
-      }
+        if (user) {
+            currentUser = user;
+            updateAuthUI();
+        } else {
+            currentUser = null;
+            updateAuthUI();
+        }
     });
-  });
+});
+
         // Close modals when clicking outside
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
