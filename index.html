@@ -1958,10 +1958,13 @@ function updateSBD() {
         // Check if the day is marked as completed in workout history
         const isCompleted = workoutHistory.some(workout => workout.workout === dayId);
 
-        // Determine button text and state based on completion status
-        const completeButton = isCompleted ?
-            `<button class="completed-btn completed" disabled>Done</button>` :
-            `<button class="completed-btn" onclick="markCompleted('${dayId}')" id="${dayId}Btn">Complete</button>`;
+        // Determine button text and state based on completion status and login status
+        let completeButton = '';
+        if (currentUser) {
+            completeButton = isCompleted ?
+                `<button class="completed-btn completed" disabled>Done</button>` :
+                `<button class="completed-btn" onclick="markCompleted('${dayId}')" id="${dayId}Btn">Complete</button>`;
+        }
 
         daysHTML += `
             <div class="day-item">
@@ -1977,6 +1980,7 @@ function updateSBD() {
     }
     return daysHTML;
 }
+
 
         function getDayFocus(day) {
             const focuses = {
