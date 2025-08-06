@@ -1490,7 +1490,15 @@ th, td {
         }
         // Profile Management
         function populateProfile() {
-    if (!currentUser) return;
+    if (!currentUser) {
+        // Retrieve user data from local storage
+        const storedUser = localStorage.getItem('currentUser');
+        if (storedUser) {
+            currentUser = JSON.parse(storedUser);
+        } else {
+            return;
+        }
+    }
 
     document.getElementById('profileName').value = currentUser.name || '';
     document.getElementById('profileEmail').value = currentUser.email || '';
@@ -1504,6 +1512,7 @@ th, td {
     document.getElementById('profileBench').value = currentUser.bench || '';
     document.getElementById('profileDeadlift').value = currentUser.deadlift || '';
 }
+
 
         function updateCalculatorTitle() {
     const calculatorTitle = document.querySelector('.calculator-card h3');
@@ -1553,6 +1562,9 @@ window.addEventListener('resize', updateCalculatorTitle);
         currentUser.weight = parseInt(weight);
         currentUser.experience = experience;
 
+        // Update user data in local storage
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
         showSuccessMessage('Profile updated successfully!');
     })
     .catch((error) => {
@@ -1560,7 +1572,7 @@ window.addEventListener('resize', updateCalculatorTitle);
     });
 }
 
-        function updateSBD() {
+function updateSBD() {
     if (!currentUser) {
         showSuccessMessage('Please login first!');
         return;
@@ -1588,6 +1600,9 @@ window.addEventListener('resize', updateCalculatorTitle);
         currentUser.bench = parseInt(bench);
         currentUser.deadlift = parseInt(deadlift);
 
+        // Update user data in local storage
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+
         // Update global program variables if they exist
         if (userProgram.squat > 0) {
             userProgram.squat = parseInt(squat);
@@ -1601,6 +1616,7 @@ window.addEventListener('resize', updateCalculatorTitle);
         showSuccessMessage('Error updating SBD records: ' + error.message);
     });
 }
+
 
         // Modal functions
         function openModal(modalId) {
@@ -1623,26 +1639,43 @@ window.addEventListener('resize', updateCalculatorTitle);
         function login() {
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
+
     if (email && password) {
-      auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-          // Signed in
-          currentUser = userCredential.user;
-          updateAuthUI();
-          closeModal('loginModal');
-          showSuccessMessage('Login successful!');
-          // Clear form
-          document.getElementById('loginEmail').value = '';
-          document.getElementById('loginPassword').value = '';
-          showLoginForm();
-        })
-        .catch((error) => {
-          showSuccessMessage('Login failed: ' + error.message);
-        });
+        auth.signInWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+                // Signed in
+                const user = userCredential.user;
+                // Fetch user data from Firebase Realtime Database
+                database.ref('users/' + user.uid).once('value')
+                    .then((snapshot) => {
+                        const userData = snapshot.val();
+                        if (userData) {
+                            currentUser = userData;
+                            // Store user data in local storage
+                            localStorage.setItem('currentUser', JSON.stringify(userData));
+                            updateAuthUI();
+                            closeModal('loginModal');
+                            showSuccessMessage('Login successful!');
+                            // Clear form
+                            document.getElementById('loginEmail').value = '';
+                            document.getElementById('loginPassword').value = '';
+                            showLoginForm();
+                        } else {
+                            showSuccessMessage('User data not found!');
+                        }
+                    })
+                    .catch((error) => {
+                        showSuccessMessage('Error fetching user data: ' + error.message);
+                    });
+            })
+            .catch((error) => {
+                showSuccessMessage('Login failed: ' + error.message);
+            });
     } else {
-      showSuccessMessage('Please fill in all fields!');
+        showSuccessMessage('Please fill in all fields!');
     }
-  }
+}
+
         function signup() {
     const name = document.getElementById('signupName').value;
     const email = document.getElementById('signupEmail').value;
@@ -1710,13 +1743,16 @@ window.addEventListener('resize', updateCalculatorTitle);
         }
         function logout() {
     auth.signOut().then(() => {
-      currentUser = null;
-      updateAuthUI();
-      showSuccessMessage('Logged out successfully!');
+        currentUser = null;
+        // Clear user data from local storage
+        localStorage.removeItem('currentUser');
+        updateAuthUI();
+        showSuccessMessage('Logged out successfully!');
     }).catch((error) => {
-      showSuccessMessage('Logout failed: ' + error.message);
+        showSuccessMessage('Logout failed: ' + error.message);
     });
-  }
+}
+
         function calculate1RM(lift) {
     const weight = parseFloat(document.getElementById(`${lift}Weight`).value);
     const reps = parseInt(document.getElementById(`${lift}Reps`).value);
