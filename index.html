@@ -1514,6 +1514,7 @@ th, td {
             return;
         }
     }
+
     document.getElementById('profileName').value = currentUser.name || '';
     document.getElementById('profileEmail').value = currentUser.email || '';
     document.getElementById('profileNumber').value = currentUser.number || '';
@@ -1525,7 +1526,24 @@ th, td {
     document.getElementById('profileSquat').value = currentUser.squat || '';
     document.getElementById('profileBench').value = currentUser.bench || '';
     document.getElementById('profileDeadlift').value = currentUser.deadlift || '';
+
+    // Fetch workout history from Firebase
+    if (currentUser) {
+        const userRef = database.ref('users/' + currentUser.uid + '/workoutHistory');
+        userRef.once('value')
+            .then((snapshot) => {
+                const historyData = snapshot.val();
+                if (historyData) {
+                    workoutHistory = Object.values(historyData);
+                    displayWorkoutHistory();
+                }
+            })
+            .catch((error) => {
+                showSuccessMessage('Error fetching workout history: ' + error.message);
+            });
+    }
 }
+
         function updateCalculatorTitle() {
     const calculatorTitle = document.querySelector('.calculator-card h3');
     if (window.innerWidth <= 768) {
@@ -1854,13 +1872,36 @@ function updateSBD() {
         // Store user data
         userProgram = { squat, bench, deadlift, experience };
 
-        // Show the program section
-        document.getElementById('program').style.display = 'block';
-        closeModal('sbdModal');
-        showSection('program');
-        showSuccessMessage('Program generated successfully!');
+        // Fetch workout history from Firebase
+        if (currentUser) {
+            const userRef = database.ref('users/' + currentUser.uid + '/workoutHistory');
+            userRef.once('value')
+                .then((snapshot) => {
+                    const historyData = snapshot.val();
+                    if (historyData) {
+                        workoutHistory = Object.values(historyData);
+                    }
+                    // Show the program section
+                    document.getElementById('program').style.display = 'block';
+                    closeModal('sbdModal');
+                    showSection('program');
+                    generateProgramDisplay(); // Generate the program display after fetching workout history
+                    showSuccessMessage('Program generated successfully!');
+                })
+                .catch((error) => {
+                    showSuccessMessage('Error fetching workout history: ' + error.message);
+                });
+        } else {
+            // If the user is not logged in, show the program section without fetching history
+            document.getElementById('program').style.display = 'block';
+            closeModal('sbdModal');
+            showSection('program');
+            generateProgramDisplay();
+            showSuccessMessage('Program generated successfully!');
+        }
     }
 }
+
 
         function getAdminEmail() {
     const emailParts = ['hey', 'sharvi', '@', 'gmail', '.com'];
@@ -1896,6 +1937,7 @@ function updateSBD() {
     }
 }
 
+
         function getWeekPhase(week) {
             if (week <= 4) return "Foundation Phase";
             if (week <= 8) return "Strength Phase";
@@ -1912,12 +1954,15 @@ function updateSBD() {
         const dayId = `week${week}day${day}`;
         const dayFocus = getDayFocus(day);
         const dayExercises = generateDayExercises(day, week);
-        // Check if the user is logged in
-        const isLoggedIn = currentUser !== null;
-        // Only show the "Complete" button if the user is logged in
-        const completeButton = isLoggedIn ?
-            `<button class="completed-btn" onclick="markCompleted('${dayId}')" id="${dayId}Btn">Complete</button>` :
-            '';
+
+        // Check if the day is marked as completed in workout history
+        const isCompleted = workoutHistory.some(workout => workout.workout === dayId);
+
+        // Determine button text and state based on completion status
+        const completeButton = isCompleted ?
+            `<button class="completed-btn completed" disabled>Done</button>` :
+            `<button class="completed-btn" onclick="markCompleted('${dayId}')" id="${dayId}Btn">Complete</button>`;
+
         daysHTML += `
             <div class="day-item">
                 <div class="day-header">
@@ -1932,6 +1977,7 @@ function updateSBD() {
     }
     return daysHTML;
 }
+
         function getDayFocus(day) {
             const focuses = {
                 1: "Squat Focus",
@@ -2095,21 +2141,35 @@ function updateSBD() {
             return exercises;
         }
         function markCompleted(dayId) {
-            const btn = document.getElementById(dayId + 'Btn');
-            btn.textContent = 'Done';
-            btn.classList.add('completed');
-            btn.disabled = true;
-            
-            // Add to workout history
-            const workoutData = {
-                date: new Date().toLocaleDateString(),
-                workout: dayId,
-                exercises: generateDayExercises(parseInt(dayId.slice(-1)))
-            };
-            workoutHistory.push(workoutData);
-            
-            showSuccessMessage('Workout completed!');
-        }
+    const btn = document.getElementById(dayId + 'Btn');
+    btn.textContent = 'Done';
+    btn.classList.add('completed');
+    btn.disabled = true;
+
+    // Add to workout history
+    const workoutData = {
+        date: new Date().toISOString(), // Use ISO string for consistency
+        workout: dayId,
+        exercises: generateDayExercises(parseInt(dayId.slice(-1)))
+    };
+
+    if (currentUser) {
+        // Store the workout data in Firebase under the user's profile
+        const userRef = database.ref('users/' + currentUser.uid + '/workoutHistory');
+        userRef.push(workoutData)
+            .then(() => {
+                showSuccessMessage('Workout completed and saved!');
+            })
+            .catch((error) => {
+                showSuccessMessage('Error saving workout: ' + error.message);
+            });
+    } else {
+        // If the user is not logged in, store locally
+        workoutHistory.push(workoutData);
+        showSuccessMessage('Workout completed!');
+    }
+}
+
         // Category management functions
         function updateLifterCategories() {
             const ageCategory = document.getElementById('ageCategory').value;
@@ -2459,25 +2519,26 @@ function deleteRecord(index) {
         }
         // Profile Management
         function displayWorkoutHistory() {
-            const historyDiv = document.getElementById('workoutHistory');
-            
-            if (workoutHistory.length === 0) {
-                historyDiv.innerHTML = '<p>Complete workouts to see your progress here!</p>';
-                return;
-            }
-            
-            let historyHTML = '<h4 style="margin-bottom: 16px;">Completed Workouts:</h4>';
-            workoutHistory.forEach(workout => {
-                historyHTML += `
-                    <div class="day-item">
-                        <strong>${workout.date} - ${workout.workout}</strong>
-                        <p style="margin-top: 8px;">${workout.exercises}</p>
-                    </div>
-                `;
-            });
-            
-            historyDiv.innerHTML = historyHTML;
-        }
+    const historyDiv = document.getElementById('workoutHistory');
+
+    if (!workoutHistory || workoutHistory.length === 0) {
+        historyDiv.innerHTML = '<p>Complete workouts to see your progress here!</p>';
+        return;
+    }
+
+    let historyHTML = '<h4 style="margin-bottom: 16px;">Completed Workouts:</h4>';
+    workoutHistory.forEach(workout => {
+        historyHTML += `
+            <div class="day-item">
+                <strong>${new Date(workout.date).toLocaleDateString()} - ${workout.workout}</strong>
+                <p style="margin-top: 8px;">${workout.exercises}</p>
+            </div>
+        `;
+    });
+
+    historyDiv.innerHTML = historyHTML;
+}
+
         // Success Message
         function showSuccessMessage(message) {
             const successDiv = document.createElement('div');
