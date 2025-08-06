@@ -1,0 +1,2366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PowerLift Pro - Master Your SBD</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            zoom: 1;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        :root {
+            --primary-bg: #0a0a0a;
+            --secondary-bg: #111111;
+            --accent-color: #00ff88;
+            --accent-hover: #00cc6a;
+            --text-primary: #ffffff;
+            --text-secondary: #888888;
+            --text-muted: #555555;
+            --card-bg: #1a1a1a;
+            --border-color: #333333;
+            --gradient-primary: linear-gradient(135deg, #00ff88, #00cc6a);
+            --gradient-dark: linear-gradient(135deg, #1a1a1a, #0a0a0a);
+        }
+
+        [data-theme="light"] {
+            --primary-bg: #ffffff;
+            --secondary-bg: #f8f9fa;
+            --accent-color: #007bff;
+            --accent-hover: #0056b3;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --text-muted: #adb5bd;
+            --card-bg: #ffffff;
+            --border-color: #e9ecef;
+            --gradient-primary: linear-gradient(135deg, #007bff, #0056b3);
+            --gradient-dark: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        [data-theme="light"] .header {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+            height: 64px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--accent-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .mobile-header-right {
+            display: none;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.3);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--card-bg);
+            color: var(--text-primary);
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 16px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--card-bg);
+            color: var(--accent-color);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: var(--gradient-dark);
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 900;
+            margin-bottom: 16px;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: -2px;
+        }
+
+        .hero-content p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-hero {
+            padding: 16px 32px;
+            font-size: 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Sections */
+        .section {
+            padding: 80px 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: clamp(32px, 5vw, 48px);
+            font-weight: 800;
+            margin-bottom: 48px;
+            color: var(--text-primary);
+            letter-spacing: -1px;
+        }
+
+        /* Cards */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 32px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-color);
+        }
+
+        .card-icon {
+            font-size: 32px;
+            color: var(--accent-color);
+            margin-bottom: 16px;
+        }
+
+        .card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+            font-size: 14px;
+        }
+
+        .card ul {
+            list-style: none;
+        }
+
+        .card li {
+            color: var(--text-secondary);
+            font-size: 14px;
+            margin-bottom: 8px;
+            padding-left: 16px;
+            position: relative;
+        }
+
+        .card li::before {
+            content: '→';
+            position: absolute;
+            left: 0;
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        /* Program Grid */
+        .program-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .week-card {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
+
+        .week-title {
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--accent-color);
+            font-size: 16px;
+        }
+
+        .day-item {
+            background: rgba(255, 255, 255, 0.02);
+            margin-bottom: 12px;
+            padding: 16px;
+            border-radius: 6px;
+            border-left: 2px solid var(--accent-color);
+        }
+
+        [data-theme="light"] .day-item {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .day-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .day-header strong {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .completed-btn {
+            background: var(--accent-color);
+            color: var(--primary-bg);
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .completed-btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .completed-btn.completed {
+            background: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        .exercise-list {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Calculator Grid */
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+        }
+
+        /* Nutrition & Wilks Combined Grid */
+        .nutrition-wilks-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 768px) {
+            .nutrition-wilks-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .calculator-card {
+            background: var(--card-bg);
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .calculator-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--secondary-bg);
+            color: var(--text-primary);
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
+        }
+
+        .result-display {
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .result-display h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--accent-color);
+        }
+
+        .result-display p {
+            margin: 8px 0;
+            font-size: 14px;
+        }
+
+        /* Records Section */
+        .records-section {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 24px;
+            border: 1px solid var(--border-color);
+        }
+
+        .records-section h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 14px;
+        }
+
+        th {
+            background: var(--secondary-bg);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        td {
+            color: var(--text-secondary);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            margin: 5% auto;
+            padding: 32px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 480px;
+            border: 1px solid var(--border-color);
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 16px;
+            top: 16px;
+            color: var(--text-secondary);
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .close:hover {
+            color: var(--accent-color);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal h2 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: var(--text-primary);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--secondary-bg);
+            padding: 48px 24px;
+            text-align: center;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .footer .logo {
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+
+        .footer p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 20px;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--card-bg);
+            color: var(--accent-color);
+        }
+
+        /* Success Animation */
+        .success-message {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            background: var(--accent-color);
+            color: var(--primary-bg);
+            padding: 16px 24px;
+            border-radius: 8px;
+            z-index: 3000;
+            font-weight: 600;
+            font-size: 14px;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 64px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 64px);
+                background: var(--primary-bg);
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                padding-top: 48px;
+                transition: left 0.3s ease;
+                z-index: 999;
+                border-top: 1px solid var(--border-color);
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 16px 0;
+            }
+            
+            .nav-links a {
+                font-size: 18px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .mobile-header-right {
+                display: flex;
+            }
+
+            .auth-buttons {
+                display: none;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .calculator-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .program-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section {
+                padding: 48px 16px;
+            }
+            
+            .nav-container {
+                padding: 0 16px;
+            }
+        }
+
+        /* Utility Classes */
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-24 {
+            margin-bottom: 24px;
+        }
+
+        .grid-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Remove extra spacing from specific elements */
+        .section:first-of-type {
+            padding-top: 64px;
+        }
+
+        .hero {
+            margin-top: 0;
+        }
+
+        /* Compact spacing for mobile */
+        @media (max-width: 768px) {
+            .card {
+                padding: 24px;
+            }
+            
+            .calculator-card {
+                padding: 24px;
+            }
+            
+            .records-section {
+                padding: 24px;
+            }
+            
+            .modal-content {
+                padding: 24px;
+                margin: 10% auto;
+            }
+        }
+    </style>
+</head>
+<body data-theme="dark">
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <!-- Desktop Logo -->
+            <div class="logo">
+                <i class="fas fa-dumbbell"></i>
+                PowerLift Pro
+            </div>
+            
+            <!-- Navigation -->
+            <nav>
+                <ul class="nav-links" id="navLinks">
+                    <li><a onclick="showSection('hero'); closeMobileMenu()">Home</a></li>
+                    <li><a onclick="showSection('calculator'); closeMobileMenu()">1RM Checker</a></li>
+                    <li><a onclick="showSection('profile'); closeMobileMenu()">Your Account</a></li>
+                    <li><a onclick="showSection('records'); closeMobileMenu()">Lifting Records</a></li>
+                    
+                </ul>
+            </nav>
+            
+            <!-- Desktop Auth Buttons & Mobile Right Section -->
+            <div class="auth-buttons">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon" id="theme-icon"></i>
+                </button>
+                <button class="btn btn-secondary" onclick="openModal('loginModal')" id="loginBtn">Login</button>
+                <button class="btn btn-primary" onclick="logout()" id="logoutBtn" style="display: none;">Logout</button>
+            </div>
+
+            <!-- Mobile Right Section -->
+            <div class="mobile-header-right">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon" id="mobile-theme-icon"></i>
+                </button>
+                <button class="btn btn-secondary" onclick="openModal('loginModal')" id="mobileLoginBtn">Login</button>
+                <button class="btn btn-primary" onclick="logout()" id="mobileLogoutBtn" style="display: none;">Logout</button>
+                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero section active">
+        <div class="hero-content">
+            <h1>MASTER YOUR SBD</h1>
+            <p>Structured 12-Week Programs • Progress Tracking • Nutrition Planning</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary btn-hero" onclick="openModal('sbdModal')">Start Training</button>
+                <button class="btn btn-secondary btn-hero" onclick="showSection('calculator')">Calculate 1RM</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Training Programs Section -->
+    <section id="programs" class="section">
+        <h2 class="section-title">Training Programs</h2>
+        <div class="cards-grid">
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-user-ninja"></i>
+                </div>
+                <h3>Squat Specialist</h3>
+                <p>High-frequency squat program with progressive overload and targeted accessory work.</p>
+                <ul>
+                    <li>High-frequency squatting</li>
+                    <li>Pause squats & variations</li>
+                    <li>Leg press & lunges</li>
+                    <li>Core strengthening</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-hand-rock"></i>
+                </div>
+                <h3>Bench Dominator</h3>
+                <p>Upper body focused program targeting bench press strength and muscle development.</p>
+                <ul>
+                    <li>Competition bench technique</li>
+                    <li>Close-grip & incline work</li>
+                    <li>Tricep & shoulder accessories</li>
+                    <li>Upper back development</li>
+                </ul>
+            </div>
+            <div class="card">
+                <div class="card-icon">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <h3>Deadlift Beast</h3>
+                <p>Posterior chain emphasis with conventional and sumo deadlift variations.</p>
+                <ul>
+                    <li>Deficit & rack pulls</li>
+                    <li>Romanian deadlifts</li>
+                    <li>Hamstring & glute work</li>
+                    <li>Grip strength training</li>
+                </ul>
+            </div>
+        </div>
+        <div class="text-center">
+            <button class="btn btn-primary btn-hero" onclick="openModal('sbdModal')">Get Your Program</button>
+        </div>
+    </section>
+
+    <!-- 12-Week Program Section -->
+    <section id="program" class="section" style="display: none;">
+        <h2 class="section-title">12-Week Program</h2>
+        <div class="program-grid" id="programGrid">
+            <!-- Program will be generated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- 1RM Calculator Section -->
+    <section id="calculator" class="section">
+        <h2 class="section-title">1RM Calculator</h2>
+        <div class="calculator-grid">
+            <div class="calculator-card">
+                <h3><i class="fas fa-user-ninja"></i> Squat 1RM</h3>
+                <div class="input-group">
+                    <label>Weight Lifted (kg)</label>
+                    <input type="number" id="squatWeight" placeholder="Enter weight">
+                </div>
+                <div class="input-group">
+                    <label>Reps Performed</label>
+                    <input type="number" id="squatReps" placeholder="Enter reps">
+                </div>
+                <button class="btn btn-primary" onclick="calculate1RM('squat')">Calculate</button>
+                <div class="result-display" id="squatResult" style="display: none;">
+                    <h4>Your Squat 1RM: <span id="squatRM"></span> kg</h4>
+                </div>
+            </div>
+
+            <div class="calculator-card">
+                <h3><i class="fas fa-hand-rock"></i> Bench 1RM</h3>
+                <div class="input-group">
+                    <label>Weight Lifted (kg)</label>
+                    <input type="number" id="benchWeight" placeholder="Enter weight">
+                </div>
+                <div class="input-group">
+                    <label>Reps Performed</label>
+                    <input type="number" id="benchReps" placeholder="Enter reps">
+                </div>
+                <button class="btn btn-primary" onclick="calculate1RM('bench')">Calculate</button>
+                <div class="result-display" id="benchResult" style="display: none;">
+                    <h4>Your Bench 1RM: <span id="benchRM"></span> kg</h4>
+                </div>
+            </div>
+
+            <div class="calculator-card">
+                <h3><i class="fas fa-fire"></i> Deadlift 1RM</h3>
+                <div class="input-group">
+                    <label>Weight Lifted (kg)</label>
+                    <input type="number" id="deadliftWeight" placeholder="Enter weight">
+                </div>
+                <div class="input-group">
+                    <label>Reps Performed</label>
+                    <input type="number" id="deadliftReps" placeholder="Enter reps">
+                </div>
+                <button class="btn btn-primary" onclick="calculate1RM('deadlift')">Calculate</button>
+                <div class="result-display" id="deadliftResult" style="display: none;">
+                    <h4>Your Deadlift 1RM: <span id="deadliftRM"></span> kg</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Nutrition & Wilks Combined Section -->
+    <section id="nutrition" class="section">
+        <h2 class="section-title">Nutrition & Performance</h2>
+        <div class="nutrition-wilks-grid">
+            <!-- Nutrition Calculator -->
+            <div class="calculator-card">
+                <h3><i class="fas fa-utensils"></i> Nutrition Planner</h3>
+                <div class="input-group">
+                    <label>Current Weight (kg)</label>
+                    <input type="number" id="currentWeight" placeholder="Enter current weight">
+                </div>
+                <div class="input-group">
+                    <label>Target Weight (kg)</label>
+                    <input type="number" id="targetWeight" placeholder="Enter target weight">
+                </div>
+                <div class="input-group">
+                    <label>Timeline (weeks)</label>
+                    <input type="number" id="timeline" placeholder="Enter timeline">
+                </div>
+                <div class="input-group">
+                    <label>Goal</label>
+                    <select id="goal">
+                        <option value="cut">Cut (Fat Loss)</option>
+                        <option value="bulk">Bulk (Muscle Gain)</option>
+                        <option value="maintain">Maintain</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" onclick="calculateNutrition()">Calculate Plan</button>
+                <div class="result-display" id="nutritionResult" style="display: none;">
+                    <h4>Your Nutrition Plan</h4>
+                    <p>Daily Calories: <span id="calories"></span></p>
+                    <p>Protein: <span id="protein"></span>g</p>
+                    <p>Carbs: <span id="carbs"></span>g</p>
+                    <p>Fats: <span id="fats"></span>g</p>
+                </div>
+            </div>
+
+            <!-- Wilks Score Calculator -->
+            <div class="calculator-card">
+                <h3><i class="fas fa-trophy"></i> Wilks Score</h3>
+                <div class="input-group">
+                    <label>Gender</label>
+                    <select id="gender">
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Body Weight (kg)</label>
+                    <input type="number" id="bodyWeight" placeholder="Enter body weight">
+                </div>
+                <div class="input-group">
+                    <label>Squat (kg)</label>
+                    <input type="number" id="wilksSquat" placeholder="Enter squat">
+                </div>
+                <div class="input-group">
+                    <label>Bench Press (kg)</label>
+                    <input type="number" id="wilksBench" placeholder="Enter bench">
+                </div>
+                <div class="input-group">
+                    <label>Deadlift (kg)</label>
+                    <input type="number" id="wilksDeadlift" placeholder="Enter deadlift">
+                </div>
+                <button class="btn btn-primary" onclick="calculateWilks()">Calculate Wilks</button>
+                <div class="result-display" id="wilksResult" style="display: none;">
+                    <h4>Your Wilks Score</h4>
+                    <p>Total: <span id="total"></span> kg</p>
+                    <p>Wilks Score: <span id="wilksScore"></span></p>
+                    <p>Rating: <span id="rating"></span></p>
+                    <p>Level: <span id="level"></span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wilks Score Calculator (Hidden - for navigation compatibility) -->
+    <section id="wilks" style="display: none;"></section>
+
+    <!-- Records Section -->
+    <section id="records" class="section">
+        <h2 class="section-title">Records</h2>
+        
+        <!-- Add Record Form -->
+        <div class="records-section">
+            <h3>Add New Record</h3>
+            <div class="grid-form">
+                <div class="input-group">
+                    <label>Lifter Name</label>
+                    <input type="text" id="lifterName" placeholder="Enter name">
+                </div>
+                <div class="input-group">
+                    <label>Age Category</label>
+                    <select id="ageCategory" onchange="updateLifterCategories()">
+                        <option value="">Select age category</option>
+                        <option value="sub-junior">Sub Junior</option>
+                        <option value="junior">Junior</option>
+                        <option value="open">Open</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Lifter Category</label>
+                    <select id="lifterCategory" onchange="updateWeightClasses()">
+                        <option value="">Select lifter category</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Weight Class</label>
+                    <select id="weightClass">
+                        <option value="">Select weight class</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Lift Type</label>
+                    <select id="liftType">
+                        <option value="">Select lift type</option>
+                        <option value="squat">Squat</option>
+                        <option value="bench">Bench</option>
+                        <option value="deadlift">Deadlift</option>
+                        <option value="total">Total</option>
+                        <option value="single-bench">Single Bench</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Weight Lifted (kg)</label>
+                    <input type="number" id="weightLifted" placeholder="Enter weight" step="0.5">
+                </div>
+                <div class="input-group">
+                    <label>Record Level</label>
+                    <select id="recordLevel">
+                        <option value="">Select record level</option>
+                        <option value="india">India</option>
+                        <option value="asia">Asia</option>
+                        <option value="europe">Europe</option>
+                        <option value="world">World</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="addRecord()">Add Record</button>
+        </div>
+
+        <!-- Records Table -->
+        <div class="records-section">
+            <h3>Current Records</h3>
+            
+            <!-- Filters -->
+            <div class="grid-form mb-24">
+                <div class="input-group">
+                    <label>Filter by Age Category</label>
+                    <select id="filterAgeCategory" onchange="filterRecords()">
+                        <option value="">All Age Categories</option>
+                        <option value="sub-junior">Sub Junior</option>
+                        <option value="junior">Junior</option>
+                        <option value="open">Open</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Filter by Lifter Category</label>
+                    <select id="filterLifterCategory" onchange="filterRecords()">
+                        <option value="">All Lifter Categories</option>
+                        <option value="open-men-equipped">Open Men Equipped</option>
+                        <option value="open-men-classic">Open Men Classic</option>
+                        <option value="sub-junior-men-equipped">Sub Junior Men Equipped</option>
+                        <option value="sub-junior-men-classic">Sub Junior Men Classic</option>
+                        <option value="junior-men-equipped">Junior Men Equipped</option>
+                        <option value="junior-men-classic">Junior Men Classic</option>
+                        <option value="open-women-equipped">Open Women Equipped</option>
+                        <option value="open-women-classic">Open Women Classic</option>
+                        <option value="sub-junior-women-equipped">Sub Junior Women Equipped</option>
+                        <option value="sub-junior-women-classic">Sub Junior Women Classic</option>
+                        <option value="junior-women-equipped">Junior Women Equipped</option>
+                        <option value="junior-women-classic">Junior Women Classic</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Filter by Weight Class</label>
+                    <select id="filterWeightClass" onchange="filterRecords()">
+                        <option value="">All Weight Classes</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Filter by Lift Type</label>
+                    <select id="filterLiftType" onchange="filterRecords()">
+                        <option value="">All Lift Types</option>
+                        <option value="squat">Squat</option>
+                        <option value="bench">Bench</option>
+                        <option value="deadlift">Deadlift</option>
+                        <option value="total">Total</option>
+                        <option value="single-bench">Single Bench</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Filter by Record Level</label>
+                    <select id="filterRecordLevel" onchange="filterRecords()">
+                        <option value="">All Record Levels</option>
+                        <option value="india">India</option>
+                        <option value="asia">Asia</option>
+                        <option value="europe">Europe</option>
+                        <option value="world">World</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Search by Name</label>
+                    <input type="text" id="filterName" placeholder="Enter lifter name" oninput="filterRecords()">
+                </div>
+            </div>
+            
+            <div class="table-container">
+                <table id="recordsTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Age Category</th>
+                            <th>Lifter Category</th>
+                            <th>Weight Class</th>
+                            <th>Lift</th>
+                            <th>Weight (kg)</th>
+                            <th>Level</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsTableBody">
+                        <!-- Records will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile Section -->
+    <section id="profile" class="section" style="display: none;">
+        <h2 class="section-title">Profile</h2>
+        
+        <!-- User Profile Information -->
+        <div class="records-section">
+            <h3>Personal Information</h3>
+            <div class="grid-form">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="profileName" placeholder="Enter full name">
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="profileEmail" placeholder="Enter email" readonly style="background: var(--text-muted); opacity: 0.6;">
+                </div>
+                <div class="input-group">
+                    <label>Mobile Number</label>
+                    <input type="tel" id="profileNumber" placeholder="Enter mobile number" readonly style="background: var(--text-muted); opacity: 0.6;">
+                </div>
+                <div class="input-group">
+                    <label>Gender</label>
+                    <select id="profileGender">
+                        <option value="">Select gender</option>
+                        <option value="male">Male</option>
+                        <option value="female">Female</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Age</label>
+                    <input type="number" id="profileAge" placeholder="Enter age" min="16" max="80">
+                </div>
+                <div class="input-group">
+                    <label>Height (cm)</label>
+                    <input type="number" id="profileHeight" placeholder="Enter height in cm" min="140" max="220">
+                </div>
+                <div class="input-group">
+                    <label>Weight (kg)</label>
+                    <input type="number" id="profileWeight" placeholder="Enter weight in kg" min="40" max="200">
+                </div>
+                <div class="input-group">
+                    <label>Lifting Experience</label>
+                    <select id="profileExperience">
+                        <option value="">Select experience level</option>
+                        <option value="beginner">Beginner (0-2 years)</option>
+                        <option value="intermediate">Intermediate (2-5 years)</option>
+                        <option value="advanced">Advanced (5+ years)</option>
+                    </select>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="updateProfile()">Update Profile</button>
+        </div>
+
+        <!-- SBD 1RM Information -->
+        <div class="records-section">
+            <h3>Current 1RM Records</h3>
+            <div class="grid-form">
+                <div class="input-group">
+                    <label>Squat 1RM (kg)</label>
+                    <input type="number" id="profileSquat" placeholder="Enter squat 1RM">
+                </div>
+                <div class="input-group">
+                    <label>Bench Press 1RM (kg)</label>
+                    <input type="number" id="profileBench" placeholder="Enter bench 1RM">
+                </div>
+                <div class="input-group">
+                    <label>Deadlift 1RM (kg)</label>
+                    <input type="number" id="profileDeadlift" placeholder="Enter deadlift 1RM">
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="updateSBD()">Update SBD Records</button>
+        </div>
+
+        <!-- Workout History -->
+        <div class="records-section">
+            <h3>Workout History</h3>
+            <div id="workoutHistory">
+                <p>Complete workouts to see your progress here!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2 id="modalTitle">Login</h2>
+            
+            <!-- Login Form -->
+            <div id="loginForm">
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" placeholder="Enter email">
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password">
+                </div>
+                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                    <button class="btn btn-primary" onclick="login()">Login</button>
+                    <button class="btn btn-secondary" onclick="showSignupForm()">Sign Up</button>
+                </div>
+            </div>
+
+            <!-- Signup Form -->
+            <div id="signupForm" style="display: none;">
+                <div class="input-group">
+                    <label>Full Name</label>
+                    <input type="text" id="signupName" placeholder="Enter full name">
+                </div>
+                <div class="input-group">
+                    <label>Email</label>
+                    <input type="email" id="signupEmail" placeholder="Enter email">
+                </div>
+                <div class="input-group">
+                    <label>Mobile Number</label>
+                    <input type="tel" id="signupNumber" placeholder="Enter mobile number">
+                </div>
+                <div class="input-group">
+                    <label>Lifting Experience</label>
+                    <select id="signupExperience">
+                        <option value="">Select experience level</option>
+                        <option value="beginner">Beginner (0-2 years)</option>
+                        <option value="intermediate">Intermediate (2-5 years)</option>
+                        <option value="advanced">Advanced (5+ years)</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Password</label>
+                    <input type="password" id="signupPassword" placeholder="Enter password">
+                </div>
+                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                    <button class="btn btn-primary" onclick="signup()">Create Account</button>
+                    <button class="btn btn-secondary" onclick="showLoginForm()">Back to Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SBD Modal -->
+    <div id="sbdModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('sbdModal')">&times;</span>
+            <h2>Enter Your SBD Details</h2>
+            <div class="input-group">
+                <label>Current Squat 1RM (kg)</label>
+                <input type="number" id="currentSquat" placeholder="Enter squat">
+            </div>
+            <div class="input-group">
+                <label>Current Bench 1RM (kg)</label>
+                <input type="number" id="currentBench" placeholder="Enter bench">
+            </div>
+            <div class="input-group">
+                <label>Current Deadlift 1RM (kg)</label>
+                <input type="number" id="currentDeadlift" placeholder="Enter deadlift">
+            </div>
+            <div class="input-group">
+                <label>Training Experience</label>
+                <select id="experience">
+                    <option value="beginner">Beginner (0-2 years)</option>
+                    <option value="intermediate">Intermediate (2-5 years)</option>
+                    <option value="advanced">Advanced (5+ years)</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="generateProgram()" style="width: 100%; margin-top: 16px;">Generate Program</button>
+        </div>
+    </div>
+
+    <!-- Edit Record Modal -->
+    <div id="editRecordModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('editRecordModal')">&times;</span>
+            <h2>Edit Record</h2>
+            <div class="input-group">
+                <label>Lifter Name</label>
+                <input type="text" id="editLifterName" placeholder="Enter name">
+            </div>
+            <div class="input-group">
+                <label>Age Category</label>
+                <select id="editAgeCategory" onchange="updateEditLifterCategories()">
+                    <option value="">Select age category</option>
+                    <option value="sub-junior">Sub Junior</option>
+                    <option value="junior">Junior</option>
+                    <option value="open">Open</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Lifter Category</label>
+                <select id="editLifterCategory" onchange="updateEditWeightClasses()">
+                    <option value="">Select lifter category</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Weight Class</label>
+                <select id="editWeightClass">
+                    <option value="">Select weight class</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Lift Type</label>
+                <select id="editLiftType">
+                    <option value="">Select lift type</option>
+                    <option value="squat">Squat</option>
+                    <option value="bench">Bench</option>
+                    <option value="deadlift">Deadlift</option>
+                    <option value="total">Total</option>
+                    <option value="single-bench">Single Bench</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label>Weight Lifted (kg)</label>
+                <input type="number" id="editWeightLifted" placeholder="Enter weight" step="0.5">
+            </div>
+            <div class="input-group">
+                <label>Record Level</label>
+                <select id="editRecordLevel">
+                    <option value="">Select record level</option>
+                    <option value="india">India</option>
+                    <option value="asia">Asia</option>
+                    <option value="europe">Europe</option>
+                    <option value="world">World</option>
+                </select>
+            </div>
+            <button class="btn btn-primary" onclick="updateRecord()" style="width: 100%; margin-top: 16px;">Update Record</button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="logo">
+            <i class="fas fa-dumbbell"></i>
+            PowerLift Pro
+        </div>
+        <p>Your complete powerlifting training companion</p>
+    </footer>
+
+    <script>
+        // Disable right-click and F12
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.addEventListener('keydown', e => {
+            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
+                e.preventDefault();
+            }
+        });
+
+        // Global variables
+        let currentUser = null;
+        let workoutHistory = [];
+        let records = [
+            {name: "Rahul Bhansali", ageCategory: "open", lifterCategory: "open-men-equipped", weightClass: "83kg", lift: "squat", weight: 280, level: "india"},
+            {name: "Priya Sharma", ageCategory: "open", lifterCategory: "open-women-classic", weightClass: "63kg", lift: "bench", weight: 120, level: "asia"},
+            {name: "Arjun Singh", ageCategory: "junior", lifterCategory: "junior-men-classic", weightClass: "93kg", lift: "deadlift", weight: 320, level: "world"}
+        ];
+        let editingRecordIndex = -1;
+
+        // Weight class data
+        const weightClasses = {
+            men: ['53kg', '59kg', '66kg', '74kg', '83kg', '93kg', '105kg', '120kg', '120+kg'],
+            women: ['47kg', '52kg', '57kg', '63kg', '69kg', '72kg', '76kg', '84kg', '84+kg']
+        };
+
+        const lifterCategories = {
+            'sub-junior': [
+                'sub-junior-men-equipped',
+                'sub-junior-men-classic',
+                'sub-junior-women-equipped',
+                'sub-junior-women-classic'
+            ],
+            'junior': [
+                'junior-men-equipped',
+                'junior-men-classic',
+                'junior-women-equipped',
+                'junior-women-classic'
+            ],
+            'open': [
+                'open-men-equipped',
+                'open-men-classic',
+                'open-women-equipped',
+                'open-women-classic'
+            ]
+        };
+
+        const categoryLabels = {
+            'open-men-equipped': 'Open Men Equipped',
+            'open-men-classic': 'Open Men Classic',
+            'sub-junior-men-equipped': 'Sub Junior Men Equipped',
+            'sub-junior-men-classic': 'Sub Junior Men Classic',
+            'junior-men-equipped': 'Junior Men Equipped',
+            'junior-men-classic': 'Junior Men Classic',
+            'open-women-equipped': 'Open Women Equipped',
+            'open-women-classic': 'Open Women Classic',
+            'sub-junior-women-equipped': 'Sub Junior Women Equipped',
+            'sub-junior-women-classic': 'Sub Junior Women Classic',
+            'junior-women-equipped': 'Junior Women Equipped',
+            'junior-women-classic': 'Junior Women Classic'
+        };
+
+        // Theme toggle
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('theme-icon');
+            const mobileThemeIcon = document.getElementById('mobile-theme-icon');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.setAttribute('data-theme', 'light');
+                themeIcon.className = 'fas fa-sun';
+                mobileThemeIcon.className = 'fas fa-sun';
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.className = 'fas fa-moon';
+                mobileThemeIcon.className = 'fas fa-moon';
+            }
+        }
+
+        // Mobile menu functions
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        function closeMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.remove('active');
+        }
+
+        // Navigation
+        function showSection(sectionId) {
+            // Handle wilks navigation by redirecting to nutrition section
+            if (sectionId === 'wilks') {
+                sectionId = 'nutrition';
+            }
+            
+            const section = document.getElementById(sectionId);
+            if (section) {
+                // Check if profile section and user not logged in
+                if (sectionId === 'profile' && !currentUser) {
+                    showSuccessMessage('Please login to view your profile!');
+                    return;
+                }
+                
+                // Check if program section is hidden and show message
+                if (sectionId === 'program' && section.style.display === 'none') {
+                    showSuccessMessage('Please generate your program first!');
+                    return;
+                }
+                
+                // Show profile section only when clicked
+                if (sectionId === 'profile') {
+                    section.style.display = 'block';
+                    populateProfile();
+                    displayWorkoutHistory();
+                }
+                
+                section.scrollIntoView({ behavior: 'smooth' });
+                
+                if (sectionId === 'program') {
+                    generateProgramDisplay();
+                } else if (sectionId === 'records') {
+                    displayRecords();
+                }
+            }
+        }
+
+        // Profile Management
+        function populateProfile() {
+            if (!currentUser) return;
+            
+            document.getElementById('profileName').value = currentUser.name || '';
+            document.getElementById('profileEmail').value = currentUser.email || '';
+            document.getElementById('profileNumber').value = currentUser.number || '';
+            document.getElementById('profileGender').value = currentUser.gender || '';
+            document.getElementById('profileAge').value = currentUser.age || '';
+            document.getElementById('profileHeight').value = currentUser.height || '';
+            document.getElementById('profileWeight').value = currentUser.weight || '';
+            document.getElementById('profileExperience').value = currentUser.experience || '';
+            document.getElementById('profileSquat').value = currentUser.squat || '';
+            document.getElementById('profileBench').value = currentUser.bench || '';
+            document.getElementById('profileDeadlift').value = currentUser.deadlift || '';
+        }
+
+        function updateProfile() {
+            if (!currentUser) {
+                showSuccessMessage('Please login first!');
+                return;
+            }
+            
+            const name = document.getElementById('profileName').value;
+            const gender = document.getElementById('profileGender').value;
+            const age = document.getElementById('profileAge').value;
+            const height = document.getElementById('profileHeight').value;
+            const weight = document.getElementById('profileWeight').value;
+            const experience = document.getElementById('profileExperience').value;
+            
+            if (!name || !gender || !age || !height || !weight || !experience) {
+                showSuccessMessage('Please fill in all fields!');
+                return;
+            }
+            
+            // Update user data (email and number are readonly)
+            currentUser.name = name;
+            currentUser.gender = gender;
+            currentUser.age = parseInt(age);
+            currentUser.height = parseInt(height);
+            currentUser.weight = parseInt(weight);
+            currentUser.experience = experience;
+            
+            showSuccessMessage('Profile updated successfully!');
+        }
+
+        function updateSBD() {
+            if (!currentUser) {
+                showSuccessMessage('Please login first!');
+                return;
+            }
+            
+            const squat = document.getElementById('profileSquat').value;
+            const bench = document.getElementById('profileBench').value;
+            const deadlift = document.getElementById('profileDeadlift').value;
+            
+            if (!squat || !bench || !deadlift) {
+                showSuccessMessage('Please fill in all SBD values!');
+                return;
+            }
+            
+            // Update SBD records
+            currentUser.squat = parseInt(squat);
+            currentUser.bench = parseInt(bench);
+            currentUser.deadlift = parseInt(deadlift);
+            
+            // Update global program variables if they exist
+            if (userProgram.squat > 0) {
+                userProgram.squat = parseInt(squat);
+                userProgram.bench = parseInt(bench);
+                userProgram.deadlift = parseInt(deadlift);
+            }
+            
+            showSuccessMessage('SBD records updated successfully!');
+        }
+
+        // Modal functions
+        function openModal(modalId) {
+            document.getElementById(modalId).style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Authentication
+        function showLoginForm() {
+            document.getElementById('modalTitle').textContent = 'Login';
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('signupForm').style.display = 'none';
+        }
+
+        function showSignupForm() {
+            document.getElementById('modalTitle').textContent = 'Sign Up';
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('signupForm').style.display = 'block';
+        }
+
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (email && password) {
+                currentUser = { email, name: email.split('@')[0] };
+                
+                // Update desktop buttons
+                document.getElementById('loginBtn').style.display = 'none';
+                document.getElementById('logoutBtn').style.display = 'block';
+                
+                // Update mobile buttons
+                document.getElementById('mobileLoginBtn').style.display = 'none';
+                document.getElementById('mobileLogoutBtn').style.display = 'block';
+                
+                closeModal('loginModal');
+                showSuccessMessage('Login successful!');
+                
+                // Clear form
+                document.getElementById('loginEmail').value = '';
+                document.getElementById('loginPassword').value = '';
+                showLoginForm(); // Reset to login form
+            } else {
+                showSuccessMessage('Please fill in all fields!');
+            }
+        }
+
+        function signup() {
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const number = document.getElementById('signupNumber').value;
+            const experience = document.getElementById('signupExperience').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            // Validation
+            if (!name || !email || !number || !experience || !password) {
+                showSuccessMessage('Please fill in all fields!');
+                return;
+            }
+            
+            if (password.length < 6) {
+                showSuccessMessage('Password must be at least 6 characters!');
+                return;
+            }
+            
+            // Create user account
+            currentUser = {
+                name,
+                email,
+                number,
+                experience,
+                gender: '',
+                age: '',
+                height: '',
+                weight: '',
+                squat: 0,
+                bench: 0,
+                deadlift: 0
+            };
+            
+            // Update desktop buttons
+            document.getElementById('loginBtn').style.display = 'none';
+            document.getElementById('logoutBtn').style.display = 'block';
+            
+            // Update mobile buttons
+            document.getElementById('mobileLoginBtn').style.display = 'none';
+            document.getElementById('mobileLogoutBtn').style.display = 'block';
+            
+            closeModal('loginModal');
+            showSuccessMessage('Account created successfully! Complete your profile for better experience.');
+            
+            // Clear form
+            clearSignupForm();
+            showLoginForm(); // Reset to login form
+            
+            // Populate profile with user data
+            populateProfile();
+        }
+
+        function clearSignupForm() {
+            document.getElementById('signupName').value = '';
+            document.getElementById('signupEmail').value = '';
+            document.getElementById('signupNumber').value = '';
+            document.getElementById('signupExperience').value = '';
+            document.getElementById('signupPassword').value = '';
+        }
+
+        function logout() {
+            currentUser = null;
+            
+            // Update desktop buttons
+            document.getElementById('loginBtn').style.display = 'block';
+            document.getElementById('logoutBtn').style.display = 'none';
+            
+            // Update mobile buttons
+            document.getElementById('mobileLoginBtn').style.display = 'block';
+            document.getElementById('mobileLogoutBtn').style.display = 'none';
+            
+            // Hide profile section when logging out
+            document.getElementById('profile').style.display = 'none';
+            
+            // Clear any form data
+            showLoginForm();
+            
+            showSuccessMessage('Logged out successfully!');
+        }
+
+        // 1RM Calculator
+        function calculate1RM(lift) {
+            const weight = parseFloat(document.getElementById(`${lift}Weight`).value);
+            const reps = parseInt(document.getElementById(`${lift}Reps`).value);
+            
+            if (weight && reps) {
+                // Epley formula: 1RM = weight × (1 + reps/30)
+                const oneRM = Math.round(weight * (1 + reps / 30));
+                
+                document.getElementById(`${lift}Result`).style.display = 'block';
+                document.getElementById(`${lift}RM`).textContent = oneRM;
+            }
+        }
+
+        // Nutrition Calculator
+        function calculateNutrition() {
+            const currentWeight = parseFloat(document.getElementById('currentWeight').value);
+            const targetWeight = parseFloat(document.getElementById('targetWeight').value);
+            const timeline = parseInt(document.getElementById('timeline').value);
+            const goal = document.getElementById('goal').value;
+            
+            if (currentWeight && targetWeight && timeline) {
+                let calories, protein, carbs, fats;
+                
+                // Basic calculations based on goal
+                if (goal === 'cut') {
+                    calories = Math.round(currentWeight * 24);
+                    protein = Math.round(currentWeight * 2.2);
+                    fats = Math.round(currentWeight * 0.8);
+                    carbs = Math.round((calories - (protein * 4) - (fats * 9)) / 4);
+                } else if (goal === 'bulk') {
+                    calories = Math.round(currentWeight * 35);
+                    protein = Math.round(currentWeight * 2.0);
+                    fats = Math.round(currentWeight * 1.0);
+                    carbs = Math.round((calories - (protein * 4) - (fats * 9)) / 4);
+                } else {
+                    calories = Math.round(currentWeight * 30);
+                    protein = Math.round(currentWeight * 2.0);
+                    fats = Math.round(currentWeight * 0.9);
+                    carbs = Math.round((calories - (protein * 4) - (fats * 9)) / 4);
+                }
+                
+                document.getElementById('nutritionResult').style.display = 'block';
+                document.getElementById('calories').textContent = calories;
+                document.getElementById('protein').textContent = protein;
+                document.getElementById('carbs').textContent = carbs;
+                document.getElementById('fats').textContent = fats;
+            }
+        }
+
+        // Wilks Calculator
+        function calculateWilks() {
+            const gender = document.getElementById('gender').value;
+            const bodyWeight = parseFloat(document.getElementById('bodyWeight').value);
+            const squat = parseFloat(document.getElementById('wilksSquat').value) || 0;
+            const bench = parseFloat(document.getElementById('wilksBench').value) || 0;
+            const deadlift = parseFloat(document.getElementById('wilksDeadlift').value) || 0;
+            
+            if (bodyWeight && (squat || bench || deadlift)) {
+                const total = squat + bench + deadlift;
+                
+                // Simplified Wilks coefficient calculation
+                let coefficient;
+                if (gender === 'male') {
+                    coefficient = 500 / (bodyWeight * bodyWeight * 0.000001 + bodyWeight * 0.01 + 1);
+                } else {
+                    coefficient = 500 / (bodyWeight * bodyWeight * 0.0000015 + bodyWeight * 0.012 + 1);
+                }
+                
+                const wilksScore = Math.round(total * coefficient);
+                
+                let rating, level;
+                if (wilksScore < 300) {
+                    rating = "Beginner";
+                    level = "Local";
+                } else if (wilksScore < 400) {
+                    rating = "Intermediate";
+                    level = "Regional";
+                } else if (wilksScore < 500) {
+                    rating = "Advanced";
+                    level = "National";
+                } else {
+                    rating = "Elite";
+                    level = "International";
+                }
+                
+                document.getElementById('wilksResult').style.display = 'block';
+                document.getElementById('total').textContent = total;
+                document.getElementById('wilksScore').textContent = wilksScore;
+                document.getElementById('rating').textContent = rating;
+                document.getElementById('level').textContent = level;
+            }
+        }
+
+        // Global program variables
+        let userProgram = {
+            squat: 0,
+            bench: 0,
+            deadlift: 0,
+            experience: 'beginner'
+        };
+
+        // Program Generation
+        function generateProgram() {
+            const squat = parseFloat(document.getElementById('currentSquat').value);
+            const bench = parseFloat(document.getElementById('currentBench').value);
+            const deadlift = parseFloat(document.getElementById('currentDeadlift').value);
+            const experience = document.getElementById('experience').value;
+            
+            if (squat && bench && deadlift) {
+                // Store user data
+                userProgram = { squat, bench, deadlift, experience };
+                
+                // Show the program section
+                document.getElementById('program').style.display = 'block';
+                closeModal('sbdModal');
+                showSection('program');
+                showSuccessMessage('Program generated successfully!');
+            }
+        }
+
+        function generateProgramDisplay() {
+            const programGrid = document.getElementById('programGrid');
+            programGrid.innerHTML = '';
+            
+            for (let week = 1; week <= 12; week++) {
+                const weekCard = document.createElement('div');
+                weekCard.className = 'week-card';
+                weekCard.innerHTML = `
+                    <div class="week-title">Week ${week} - ${getWeekPhase(week)}</div>
+                    ${generateWeekDays(week)}
+                `;
+                programGrid.appendChild(weekCard);
+            }
+        }
+
+        function getWeekPhase(week) {
+            if (week <= 4) return "Foundation Phase";
+            if (week <= 8) return "Strength Phase";
+            return "Peak Phase";
+        }
+
+        function getIntensityRange(week) {
+            if (week <= 4) return { min: 60, max: 75 };
+            if (week <= 8) return { min: 70, max: 85 };
+            return { min: 80, max: 95 };
+        }
+
+        function generateWeekDays(week) {
+            let daysHTML = '';
+            for (let day = 1; day <= 6; day++) {
+                const dayId = `week${week}day${day}`;
+                daysHTML += `
+                    <div class="day-item">
+                        <div class="day-header">
+                            <strong>Day ${day} - ${getDayFocus(day)}</strong>
+                            <button class="completed-btn" onclick="markCompleted('${dayId}')" id="${dayId}Btn">
+                                Complete
+                            </button>
+                        </div>
+                        <div class="exercise-list">
+                            ${generateDayExercises(day, week)}
+                        </div>
+                    </div>
+                `;
+            }
+            return daysHTML;
+        }
+
+        function getDayFocus(day) {
+            const focuses = {
+                1: "Squat Focus",
+                2: "Bench Focus", 
+                3: "Deadlift Focus",
+                4: "Squat Volume",
+                5: "Bench Volume",
+                6: "Recovery/Accessories"
+            };
+            return focuses[day];
+        }
+
+        function calculateWeight(oneRM, percentage) {
+            return Math.round((oneRM * percentage / 100) / 2.5) * 2.5; // Round to nearest 2.5kg
+        }
+
+        function getExperienceModifier(experience) {
+            const modifiers = {
+                'beginner': { sets: 1, reps: 2, intensity: -5 },
+                'intermediate': { sets: 0, reps: 0, intensity: 0 },
+                'advanced': { sets: 1, reps: -2, intensity: 5 }
+            };
+            return modifiers[experience] || modifiers['intermediate'];
+        }
+
+        function generateDayExercises(day, week) {
+            const intensity = getIntensityRange(week);
+            const modifier = getExperienceModifier(userProgram.experience);
+            
+            let exercises = '';
+            
+            switch(day) {
+                case 1: // Squat Focus
+                    const squatPercent = intensity.min + 10 + modifier.intensity;
+                    const squatWeight = calculateWeight(userProgram.squat, squatPercent);
+                    const squatSets = 4 + modifier.sets;
+                    const squatReps = 5 + modifier.reps;
+                    
+                    exercises = `
+                        <strong>Main Lift:</strong><br>
+                        • Back Squat: ${squatSets}×${squatReps} @ ${squatPercent}% (${squatWeight}kg)<br><br>
+                        
+                        <strong>Secondary Lift:</strong><br>
+                        • Bench Press: 3×8 @ ${intensity.min}% (${calculateWeight(userProgram.bench, intensity.min)}kg)<br><br>
+                        
+                        <strong>Accessories:</strong><br>
+                        • Romanian Deadlifts: 3×10 @ ${calculateWeight(userProgram.deadlift, 60)}kg<br>
+                        • Bulgarian Split Squats: 3×12 each leg @ bodyweight<br>
+                        • Leg Curls: 3×15 @ 40kg<br>
+                        • Walking Lunges: 3×20 steps @ 20kg<br>
+                        • Calf Raises: 4×20 @ 80kg<br>
+                        • Plank: 3×60 seconds
+                    `;
+                    break;
+                    
+                case 2: // Bench Focus
+                    const benchPercent = intensity.min + 10 + modifier.intensity;
+                    const benchWeight = calculateWeight(userProgram.bench, benchPercent);
+                    const benchSets = 4 + modifier.sets;
+                    const benchReps = 5 + modifier.reps;
+                    
+                    exercises = `
+                        <strong>Main Lift:</strong><br>
+                        • Bench Press: ${benchSets}×${benchReps} @ ${benchPercent}% (${benchWeight}kg)<br><br>
+                        
+                        <strong>Secondary Lift:</strong><br>
+                        • Squat: 3×8 @ ${intensity.min}% (${calculateWeight(userProgram.squat, intensity.min)}kg)<br><br>
+                        
+                        <strong>Accessories:</strong><br>
+                        • Incline Dumbbell Press: 3×10 @ 35kg each<br>
+                        • Barbell Rows: 4×8 @ ${calculateWeight(userProgram.bench, 80)}kg<br>
+                        • Close-Grip Bench: 3×12 @ ${calculateWeight(userProgram.bench, 70)}kg<br>
+                        • Tricep Dips: 3×15 @ bodyweight<br>
+                        • Face Pulls: 4×20 @ 30kg<br>
+                        • Overhead Press: 3×10 @ ${calculateWeight(userProgram.bench, 60)}kg
+                    `;
+                    break;
+                    
+                case 3: // Deadlift Focus
+                    const deadliftPercent = intensity.min + 10 + modifier.intensity;
+                    const deadliftWeight = calculateWeight(userProgram.deadlift, deadliftPercent);
+                    const deadliftSets = 3 + modifier.sets;
+                    const deadliftReps = 5 + modifier.reps;
+                    
+                    exercises = `
+                        <strong>Main Lift:</strong><br>
+                        • Deadlift: ${deadliftSets}×${deadliftReps} @ ${deadliftPercent}% (${deadliftWeight}kg)<br><br>
+                        
+                        <strong>Secondary Lift:</strong><br>
+                        • Bench Press: 3×8 @ ${intensity.min}% (${calculateWeight(userProgram.bench, intensity.min)}kg)<br><br>
+                        
+                        <strong>Accessories:</strong><br>
+                        • Deficit Deadlifts: 3×8 @ ${calculateWeight(userProgram.deadlift, 70)}kg<br>
+                        • Barbell Hip Thrusts: 4×12 @ ${calculateWeight(userProgram.deadlift, 60)}kg<br>
+                        • Stiff Leg Deadlifts: 3×12 @ ${calculateWeight(userProgram.deadlift, 50)}kg<br>
+                        • Lat Pulldowns: 4×12 @ 60kg<br>
+                        • Hyperextensions: 3×15 @ 20kg<br>
+                        • Farmer's Walks: 3×40m @ 40kg each hand
+                    `;
+                    break;
+                    
+                case 4: // Squat Volume
+                    const squatVolPercent = intensity.min + modifier.intensity;
+                    const squatVolWeight = calculateWeight(userProgram.squat, squatVolPercent);
+                    
+                    exercises = `
+                        <strong>Main Lift:</strong><br>
+                        • Back Squat: 5×8 @ ${squatVolPercent}% (${squatVolWeight}kg)<br><br>
+                        
+                        <strong>Secondary Lift:</strong><br>
+                        • Deadlift: 3×5 @ ${intensity.min + 5}% (${calculateWeight(userProgram.deadlift, intensity.min + 5)}kg)<br><br>
+                        
+                        <strong>Accessories:</strong><br>
+                        • Front Squats: 3×10 @ ${calculateWeight(userProgram.squat, 60)}kg<br>
+                        • Leg Press: 4×15 @ 200kg<br>
+                        • Leg Extensions: 3×20 @ 50kg<br>
+                        • Goblet Squats: 3×15 @ 25kg<br>
+                        • Box Step-ups: 3×12 each leg @ 20kg<br>
+                        • Abs Circuit: 3 rounds (Crunches, Russian Twists, Leg Raises)
+                    `;
+                    break;
+                    
+                case 5: // Bench Volume
+                    const benchVolPercent = intensity.min + modifier.intensity;
+                    const benchVolWeight = calculateWeight(userProgram.bench, benchVolPercent);
+                    
+                    exercises = `
+                        <strong>Main Lift:</strong><br>
+                        • Bench Press: 5×8 @ ${benchVolPercent}% (${benchVolWeight}kg)<br><br>
+                        
+                        <strong>Secondary Lift:</strong><br>
+                        • Squat: 3×5 @ ${intensity.min + 5}% (${calculateWeight(userProgram.squat, intensity.min + 5)}kg)<br><br>
+                        
+                        <strong>Accessories:</strong><br>
+                        • Dumbbell Bench Press: 4×12 @ 30kg each<br>
+                        • Seated Cable Rows: 4×12 @ 70kg<br>
+                        • Dumbbell Flyes: 3×15 @ 20kg each<br>
+                        • Tricep Pushdowns: 4×15 @ 40kg<br>
+                        • Lateral Raises: 4×20 @ 12kg each<br>
+                        • Push-ups: 3×max reps
+                    `;
+                    break;
+                    
+                case 6: // Recovery/Accessories
+                    exercises = `
+                        <strong>Recovery Day:</strong><br><br>
+                        
+                        <strong>Light Movement:</strong><br>
+                        • Bodyweight Squats: 3×20<br>
+                        • Push-ups: 3×15<br>
+                        • Glute Bridges: 3×20<br><br>
+                        
+                        <strong>Mobility & Accessories:</strong><br>
+                        • Band Pull-aparts: 4×25<br>
+                        • Foam Rolling: 15 minutes<br>
+                        • Hip Flexor Stretches: 3×30 seconds each<br>
+                        • Shoulder Dislocations: 3×15<br>
+                        • Cat-Cow Stretches: 3×15<br>
+                        • Light Cardio: 20-30 minutes walking
+                    `;
+                    break;
+            }
+            
+            return exercises;
+        }
+
+        function markCompleted(dayId) {
+            const btn = document.getElementById(dayId + 'Btn');
+            btn.textContent = 'Done';
+            btn.classList.add('completed');
+            btn.disabled = true;
+            
+            // Add to workout history
+            const workoutData = {
+                date: new Date().toLocaleDateString(),
+                workout: dayId,
+                exercises: generateDayExercises(parseInt(dayId.slice(-1)))
+            };
+            workoutHistory.push(workoutData);
+            
+            showSuccessMessage('Workout completed!');
+        }
+
+        // Category management functions
+        function updateLifterCategories() {
+            const ageCategory = document.getElementById('ageCategory').value;
+            const lifterCategorySelect = document.getElementById('lifterCategory');
+            
+            lifterCategorySelect.innerHTML = '<option value="">Select lifter category</option>';
+            
+            if (ageCategory && lifterCategories[ageCategory]) {
+                lifterCategories[ageCategory].forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = categoryLabels[category];
+                    lifterCategorySelect.appendChild(option);
+                });
+            }
+            
+            // Clear weight class when lifter category changes
+            document.getElementById('weightClass').innerHTML = '<option value="">Select weight class</option>';
+        }
+
+        function updateWeightClasses() {
+            const lifterCategory = document.getElementById('lifterCategory').value;
+            const weightClassSelect = document.getElementById('weightClass');
+            
+            weightClassSelect.innerHTML = '<option value="">Select weight class</option>';
+            
+            if (lifterCategory) {
+                const isWomen = lifterCategory.includes('women');
+                const classes = isWomen ? weightClasses.women : weightClasses.men;
+                
+                classes.forEach(weightClass => {
+                    const option = document.createElement('option');
+                    option.value = weightClass;
+                    option.textContent = weightClass;
+                    weightClassSelect.appendChild(option);
+                });
+            }
+        }
+
+        function updateEditLifterCategories() {
+            const ageCategory = document.getElementById('editAgeCategory').value;
+            const lifterCategorySelect = document.getElementById('editLifterCategory');
+            
+            lifterCategorySelect.innerHTML = '<option value="">Select lifter category</option>';
+            
+            if (ageCategory && lifterCategories[ageCategory]) {
+                lifterCategories[ageCategory].forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category;
+                    option.textContent = categoryLabels[category];
+                    lifterCategorySelect.appendChild(option);
+                });
+            }
+            
+            // Clear weight class when lifter category changes
+            document.getElementById('editWeightClass').innerHTML = '<option value="">Select weight class</option>';
+        }
+
+        function updateEditWeightClasses() {
+            const lifterCategory = document.getElementById('editLifterCategory').value;
+            const weightClassSelect = document.getElementById('editWeightClass');
+            
+            weightClassSelect.innerHTML = '<option value="">Select weight class</option>';
+            
+            if (lifterCategory) {
+                const isWomen = lifterCategory.includes('women');
+                const classes = isWomen ? weightClasses.women : weightClasses.men;
+                
+                classes.forEach(weightClass => {
+                    const option = document.createElement('option');
+                    option.value = weightClass;
+                    option.textContent = weightClass;
+                    weightClassSelect.appendChild(option);
+                });
+            }
+        }
+
+        // Records Management
+        function addRecord() {
+            const name = document.getElementById('lifterName').value;
+            const ageCategory = document.getElementById('ageCategory').value;
+            const lifterCategory = document.getElementById('lifterCategory').value;
+            const weightClass = document.getElementById('weightClass').value;
+            const lift = document.getElementById('liftType').value;
+            const weight = parseFloat(document.getElementById('weightLifted').value);
+            const level = document.getElementById('recordLevel').value;
+            
+            if (name && ageCategory && lifterCategory && weightClass && lift && weight && level) {
+                records.push({name, ageCategory, lifterCategory, weightClass, lift, weight, level});
+                displayRecords();
+                clearRecordForm();
+                showSuccessMessage('Record added successfully!');
+            } else {
+                showSuccessMessage('Please fill in all fields!');
+            }
+        }
+
+        function displayRecords(filteredRecords = null) {
+            const tbody = document.getElementById('recordsTableBody');
+            tbody.innerHTML = '';
+            
+            const recordsToShow = filteredRecords || records;
+            
+            recordsToShow.forEach((record, index) => {
+                const originalIndex = filteredRecords ? records.indexOf(record) : index;
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${record.name}</td>
+                    <td>${record.ageCategory ? record.ageCategory.charAt(0).toUpperCase() + record.ageCategory.slice(1).replace('-', ' ') : 'N/A'}</td>
+                    <td>${categoryLabels[record.lifterCategory] || record.lifterCategory}</td>
+                    <td>${record.weightClass}</td>
+                    <td>${record.lift ? record.lift.charAt(0).toUpperCase() + record.lift.slice(1).replace('-', ' ') : 'N/A'}</td>
+                    <td>${record.weight}</td>
+                    <td>${record.level ? record.level.charAt(0).toUpperCase() + record.level.slice(1) : 'N/A'}</td>
+                    <td>
+                        <button class="btn btn-secondary" onclick="editRecord(${originalIndex})" style="padding: 4px 8px; font-size: 12px; margin-right: 4px;">Edit</button>
+                        <button class="btn btn-secondary" onclick="deleteRecord(${originalIndex})" style="padding: 4px 8px; font-size: 12px;">Delete</button>
+                    </td>
+                `;
+            });
+        }
+
+        function filterRecords() {
+            const nameFilter = document.getElementById('filterName').value.toLowerCase();
+            const ageCategoryFilter = document.getElementById('filterAgeCategory').value;
+            const lifterCategoryFilter = document.getElementById('filterLifterCategory').value;
+            const weightClassFilter = document.getElementById('filterWeightClass').value;
+            const liftTypeFilter = document.getElementById('filterLiftType').value;
+            const recordLevelFilter = document.getElementById('filterRecordLevel').value;
+            
+            const filteredRecords = records.filter(record => {
+                return (!nameFilter || record.name.toLowerCase().includes(nameFilter)) &&
+                       (!ageCategoryFilter || record.ageCategory === ageCategoryFilter) &&
+                       (!lifterCategoryFilter || record.lifterCategory === lifterCategoryFilter) &&
+                       (!weightClassFilter || record.weightClass === weightClassFilter) &&
+                       (!liftTypeFilter || record.lift === liftTypeFilter) &&
+                       (!recordLevelFilter || record.level === recordLevelFilter);
+            });
+            
+            displayRecords(filteredRecords);
+            updateFilterWeightClasses();
+        }
+
+        function updateFilterWeightClasses() {
+            const lifterCategoryFilter = document.getElementById('filterLifterCategory').value;
+            const weightClassSelect = document.getElementById('filterWeightClass');
+            
+            // Store current selection
+            const currentSelection = weightClassSelect.value;
+            
+            // Clear and add default option
+            weightClassSelect.innerHTML = '<option value="">All Weight Classes</option>';
+            
+            if (lifterCategoryFilter) {
+                const isWomen = lifterCategoryFilter.includes('women');
+                const classes = isWomen ? weightClasses.women : weightClasses.men;
+                
+                classes.forEach(weightClass => {
+                    const option = document.createElement('option');
+                    option.value = weightClass;
+                    option.textContent = weightClass;
+                    weightClassSelect.appendChild(option);
+                });
+                
+                // Restore selection if still valid
+                if (currentSelection && classes.includes(currentSelection)) {
+                    weightClassSelect.value = currentSelection;
+                }
+            } else {
+                // Add all weight classes when no specific category is selected
+                const allClasses = [...new Set([...weightClasses.men, ...weightClasses.women])].sort();
+                allClasses.forEach(weightClass => {
+                    const option = document.createElement('option');
+                    option.value = weightClass;
+                    option.textContent = weightClass;
+                    weightClassSelect.appendChild(option);
+                });
+                
+                // Restore selection
+                weightClassSelect.value = currentSelection;
+            }
+        }
+
+        function editRecord(index) {
+            editingRecordIndex = index;
+            const record = records[index];
+            
+            // Populate edit form
+            document.getElementById('editLifterName').value = record.name;
+            document.getElementById('editAgeCategory').value = record.ageCategory;
+            
+            // Update lifter categories based on age category
+            updateEditLifterCategories();
+            document.getElementById('editLifterCategory').value = record.lifterCategory;
+            
+            // Update weight classes based on lifter category
+            updateEditWeightClasses();
+            document.getElementById('editWeightClass').value = record.weightClass;
+            
+            document.getElementById('editLiftType').value = record.lift;
+            document.getElementById('editWeightLifted').value = record.weight;
+            document.getElementById('editRecordLevel').value = record.level;
+            
+            openModal('editRecordModal');
+        }
+
+        function updateRecord() {
+            if (editingRecordIndex === -1) return;
+            
+            const name = document.getElementById('editLifterName').value;
+            const ageCategory = document.getElementById('editAgeCategory').value;
+            const lifterCategory = document.getElementById('editLifterCategory').value;
+            const weightClass = document.getElementById('editWeightClass').value;
+            const lift = document.getElementById('editLiftType').value;
+            const weight = parseFloat(document.getElementById('editWeightLifted').value);
+            const level = document.getElementById('editRecordLevel').value;
+            
+            if (name && ageCategory && lifterCategory && weightClass && lift && weight && level) {
+                records[editingRecordIndex] = {name, ageCategory, lifterCategory, weightClass, lift, weight, level};
+                displayRecords();
+                closeModal('editRecordModal');
+                editingRecordIndex = -1;
+                showSuccessMessage('Record updated successfully!');
+            } else {
+                showSuccessMessage('Please fill in all fields!');
+            }
+        }
+
+        function deleteRecord(index) {
+            records.splice(index, 1);
+            displayRecords();
+            showSuccessMessage('Record deleted!');
+        }
+
+        function clearRecordForm() {
+            document.getElementById('lifterName').value = '';
+            document.getElementById('ageCategory').value = '';
+            document.getElementById('lifterCategory').innerHTML = '<option value="">Select lifter category</option>';
+            document.getElementById('weightClass').innerHTML = '<option value="">Select weight class</option>';
+            document.getElementById('liftType').value = '';
+            document.getElementById('weightLifted').value = '';
+            document.getElementById('recordLevel').value = '';
+        }
+
+        // Profile Management
+        function displayWorkoutHistory() {
+            const historyDiv = document.getElementById('workoutHistory');
+            
+            if (workoutHistory.length === 0) {
+                historyDiv.innerHTML = '<p>Complete workouts to see your progress here!</p>';
+                return;
+            }
+            
+            let historyHTML = '<h4 style="margin-bottom: 16px;">Completed Workouts:</h4>';
+            workoutHistory.forEach(workout => {
+                historyHTML += `
+                    <div class="day-item">
+                        <strong>${workout.date} - ${workout.workout}</strong>
+                        <p style="margin-top: 8px;">${workout.exercises}</p>
+                    </div>
+                `;
+            });
+            
+            historyDiv.innerHTML = historyHTML;
+        }
+
+        // Success Message
+        function showSuccessMessage(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'success-message';
+            successDiv.textContent = message;
+            document.body.appendChild(successDiv);
+            
+            setTimeout(() => {
+                if (document.body.contains(successDiv)) {
+                    document.body.removeChild(successDiv);
+                }
+            }, 3000);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            displayRecords();
+            updateFilterWeightClasses();
+            
+            // Add event listener for lifter category filter to update weight classes
+            document.getElementById('filterLifterCategory').addEventListener('change', function() {
+                updateFilterWeightClasses();
+                filterRecords();
+            });
+        });
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                event.target.style.display = 'none';
+            }
+        }
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96ae5291538e59b8',t:'MTc1NDQ4MTA4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
