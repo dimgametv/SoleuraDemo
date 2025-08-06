@@ -2272,35 +2272,39 @@ window.addEventListener('resize', updateCalculatorTitle);
     const level = document.getElementById('recordLevel').value;
 
     if (name && ageCategory && lifterCategory && weightClass && lift && weight && level) {
-      const newRecord = {
-        name,
-        ageCategory,
-        lifterCategory,
-        weightClass,
-        lift,
-        weight,
-        level,
-        timestamp: Date.now()
-      };
+        const newRecord = {
+            name,
+            ageCategory,
+            lifterCategory,
+            weightClass,
+            lift,
+            weight,
+            level,
+            timestamp: Date.now()
+        };
 
-      if (currentUser) {
-        database.ref('powerliftingRecords').push(newRecord)
-          .then(() => {
-            showSuccessMessage('Record added successfully!');
+        if (currentUser) {
+            database.ref('powerliftingRecords').push(newRecord)
+                .then((snapshot) => {
+                    // Store the unique ID in the record
+                    newRecord.id = snapshot.key;
+                    records.push(newRecord);
+                    showSuccessMessage('Record added successfully!');
+                    clearRecordForm();
+                })
+                .catch((error) => {
+                    showSuccessMessage('Error adding record: ' + error.message);
+                });
+        } else {
+            records.push(newRecord);
+            showSuccessMessage('Record added locally!');
             clearRecordForm();
-          })
-          .catch((error) => {
-            showSuccessMessage('Error adding record: ' + error.message);
-          });
-      } else {
-        records.push(newRecord);
-        showSuccessMessage('Record added locally!');
-        clearRecordForm();
-      }
+        }
     } else {
-      showSuccessMessage('Please fill in all fields!');
+        showSuccessMessage('Please fill in all fields!');
     }
-  }
+}
+
 
         function displayRecords(filteredRecords = null) {
             const tbody = document.getElementById('recordsTableBody');
@@ -2347,18 +2351,19 @@ window.addEventListener('resize', updateCalculatorTitle);
   }
 
   function loadRecordsFromFirebase() {
-    database.ref('powerliftingRecords').once('value')
-      .then((snapshot) => {
+    database.ref('powerliftingRecords').on('value', (snapshot) => {
         const recordsData = snapshot.val();
         if (recordsData) {
-          records = Object.values(recordsData);
-          displayRecords();
+            records = Object.entries(recordsData).map(([id, record]) => ({
+                id,
+                ...record
+            }));
+            displayRecords();
         }
-      })
-      .catch((error) => {
-        console.error("Error loading records from Firebase:", error);
-      });
-  }
+    });
+}
+
+
 
         function filterRecords() {
             const nameFilter = document.getElementById('filterName').value.toLowerCase();
@@ -2445,32 +2450,62 @@ window.addEventListener('resize', updateCalculatorTitle);
         }
 
         function updateRecord() {
-            if (editingRecordIndex === -1) return;
-            
-            const name = document.getElementById('editLifterName').value;
-            const ageCategory = document.getElementById('editAgeCategory').value;
-            const lifterCategory = document.getElementById('editLifterCategory').value;
-            const weightClass = document.getElementById('editWeightClass').value;
-            const lift = document.getElementById('editLiftType').value;
-            const weight = parseFloat(document.getElementById('editWeightLifted').value);
-            const level = document.getElementById('editRecordLevel').value;
-            
-            if (name && ageCategory && lifterCategory && weightClass && lift && weight && level) {
-                records[editingRecordIndex] = {name, ageCategory, lifterCategory, weightClass, lift, weight, level};
-                displayRecords();
-                closeModal('editRecordModal');
-                editingRecordIndex = -1;
-                showSuccessMessage('Record updated successfully!');
-            } else {
-                showSuccessMessage('Please fill in all fields!');
-            }
-        }
+    if (editingRecordIndex === -1) return;
+    const name = document.getElementById('editLifterName').value;
+    const ageCategory = document.getElementById('editAgeCategory').value;
+    const lifterCategory = document.getElementById('editLifterCategory').value;
+    const weightClass = document.getElementById('editWeightClass').value;
+    const lift = document.getElementById('editLiftType').value;
+    const weight = parseFloat(document.getElementById('editWeightLifted').value);
+    const level = document.getElementById('editRecordLevel').value;
 
-        function deleteRecord(index) {
-            records.splice(index, 1);
-            displayRecords();
-            showSuccessMessage('Record deleted!');
+    if (name && ageCategory && lifterCategory && weightClass && lift && weight && level) {
+        const record = {
+            name,
+            ageCategory,
+            lifterCategory,
+            weightClass,
+            lift,
+            weight,
+            level,
+            timestamp: Date.now()
+        };
+
+        const recordId = records[editingRecordIndex].id;
+        if (currentUser && recordId) {
+            database.ref('powerliftingRecords/' + recordId).update(record)
+                .then(() => {
+                    showSuccessMessage('Record updated successfully!');
+                    closeModal('editRecordModal');
+                    editingRecordIndex = -1;
+                })
+                .catch((error) => {
+                    showSuccessMessage('Error updating record: ' + error.message);
+                });
+        } else {
+            showSuccessMessage('Please login to update records!');
         }
+    } else {
+        showSuccessMessage('Please fill in all fields!');
+    }
+}
+
+function deleteRecord(index) {
+    const recordId = records[index].id;
+    if (currentUser && recordId) {
+        database.ref('powerliftingRecords/' + recordId).remove()
+            .then(() => {
+                showSuccessMessage('Record deleted successfully!');
+            })
+            .catch((error) => {
+                showSuccessMessage('Error deleting record: ' + error.message);
+            });
+    } else {
+        showSuccessMessage('Please login to delete records!');
+    }
+}
+
+
 
         function clearRecordForm() {
             document.getElementById('lifterName').value = '';
