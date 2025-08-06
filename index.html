@@ -833,7 +833,7 @@ th, td {
             <h1>MASTER YOUR SBD</h1>
             <p>Structured 12-Week Programs • Progress Tracking • Nutrition Planning</p>
             <div class="hero-buttons">
-                <button class="btn btn-primary btn-hero" onclick="openModal('sbdModal')">Start Training</button>
+                <button class="btn btn-primary btn-hero" onclick="handleStartTraining()">Start Training</button>
                 <button class="btn btn-secondary btn-hero" onclick="showSection('calculator')">Calculate 1RM</button>
             </div>
         </div>
@@ -2193,6 +2193,16 @@ function updateSBD() {
             // Clear weight class when lifter category changes
             document.getElementById('weightClass').innerHTML = '<option value="">Select weight class</option>';
         }
+        function handleStartTraining() {
+    if (!currentUser) {
+        // If no user is logged in, open the login modal
+        openModal('loginModal');
+    } else {
+        // If a user is logged in, proceed with the usual function
+        openModal('sbdModal');
+    }
+}
+
         function updateWeightClasses() {
             const lifterCategory = document.getElementById('lifterCategory').value;
             const weightClassSelect = document.getElementById('weightClass');
