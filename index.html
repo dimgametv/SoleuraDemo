@@ -28,6 +28,20 @@
         const database = firebase.database();
     </script>
     <style>
+      .locked-message {
+    background: rgba(255, 255, 0, 0.1);
+    border: 1px solid gold;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    text-align: center;
+    color: gold;
+}
+
+.locked-message p {
+    margin: 0;
+    font-size: 14px;
+}
       /* Ensure the table container is scrollable horizontally */
 .table-container {
     width: 100%;
@@ -162,6 +176,7 @@ th, td {
             color: white;
             border: none;
         }
+        
         .btn-primary:hover {
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(0, 255, 136, 0.3);
@@ -1862,6 +1877,9 @@ function updateSBD() {
         weekCard.innerHTML = `
             <div class="week-title">Week 1 - Foundation Phase</div>
             ${generateWeekDays(1)}
+            <div class="locked-message">
+                <p>Please login to unlock the full split!</p>
+            </div>
         `;
         programGrid.appendChild(weekCard);
     } else {
