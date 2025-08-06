@@ -231,12 +231,17 @@ th, td {
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
+        .full-width {
+    grid-column: 1 / -1; /* This makes the element span all columns */
+}
+
         /* Sections */
         .section {
-            padding: 80px 24px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+    padding: 40px 24px; /* Adjust the padding as needed */
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
         .section-title {
             text-align: center;
             font-size: clamp(32px, 5vw, 48px);
@@ -247,11 +252,12 @@ th, td {
         }
         /* Cards */
         .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-            margin-bottom: 48px;
-        }
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    margin-bottom: 20px; /* Adjust the margin-bottom as needed */
+}
+
         .card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -861,9 +867,7 @@ th, td {
                 </ul>
             </div>
         </div>
-        <div class="text-center">
-            <button class="btn btn-primary btn-hero" onclick="openModal('sbdModal')">Get Your Program</button>
-        </div>
+        
     </section>
     <!-- 12-Week Program Section -->
     <section id="program" class="section" style="display: none;">
@@ -1454,41 +1458,36 @@ th, td {
         }
         // Navigation
         function showSection(sectionId) {
-            // Handle wilks navigation by redirecting to nutrition section
-            if (sectionId === 'wilks') {
-                sectionId = 'nutrition';
-            }
-            
-            const section = document.getElementById(sectionId);
-            if (section) {
-                // Check if profile section and user not logged in
-                if (sectionId === 'profile' && !currentUser) {
-                    showSuccessMessage('Please login to view your profile!');
-                    return;
-                }
-                
-                // Check if program section is hidden and show message
-                if (sectionId === 'program' && section.style.display === 'none') {
-                    showSuccessMessage('Please generate your program first!');
-                    return;
-                }
-                
-                // Show profile section only when clicked
-                if (sectionId === 'profile') {
-                    section.style.display = 'block';
-                    populateProfile();
-                    displayWorkoutHistory();
-                }
-                
-                section.scrollIntoView({ behavior: 'smooth' });
-                
-                if (sectionId === 'program') {
-                    generateProgramDisplay();
-                } else if (sectionId === 'records') {
-                    displayRecords();
-                }
-            }
+    // Handle wilks navigation by redirecting to nutrition section
+    if (sectionId === 'wilks') {
+        sectionId = 'nutrition';
+    }
+
+    const section = document.getElementById(sectionId);
+    if (section) {
+        // Check if profile section and user not logged in
+        if (sectionId === 'profile' && !currentUser) {
+            showSuccessMessage('Please login to view your profile!');
+            return;
         }
+
+        // Show profile section only when clicked
+        if (sectionId === 'profile') {
+            section.style.display = 'block';
+            populateProfile();
+            displayWorkoutHistory();
+        }
+
+        section.scrollIntoView({ behavior: 'smooth' });
+
+        if (sectionId === 'program') {
+            generateProgramDisplay();
+        } else if (sectionId === 'records') {
+            displayRecords();
+        }
+    }
+}
+
         // Profile Management
         function populateProfile() {
     if (!currentUser) {
@@ -1831,40 +1830,54 @@ function updateSBD() {
         };
         // Program Generation
         function generateProgram() {
-            const squat = parseFloat(document.getElementById('currentSquat').value);
-            const bench = parseFloat(document.getElementById('currentBench').value);
-            const deadlift = parseFloat(document.getElementById('currentDeadlift').value);
-            const experience = document.getElementById('experience').value;
-            
-            if (squat && bench && deadlift) {
-                // Store user data
-                userProgram = { squat, bench, deadlift, experience };
-                
-                // Show the program section
-                document.getElementById('program').style.display = 'block';
-                closeModal('sbdModal');
-                showSection('program');
-                showSuccessMessage('Program generated successfully!');
-            }
-        }
+    const squat = parseFloat(document.getElementById('currentSquat').value);
+    const bench = parseFloat(document.getElementById('currentBench').value);
+    const deadlift = parseFloat(document.getElementById('currentDeadlift').value);
+    const experience = document.getElementById('experience').value;
+
+    if (squat && bench && deadlift) {
+        // Store user data
+        userProgram = { squat, bench, deadlift, experience };
+
+        // Show the program section
+        document.getElementById('program').style.display = 'block';
+        closeModal('sbdModal');
+        showSection('program');
+        showSuccessMessage('Program generated successfully!');
+    }
+}
+
         function getAdminEmail() {
     const emailParts = ['hey', 'sharvi', '@', 'gmail', '.com'];
     return emailParts[0] + emailParts[1] + emailParts[2] + emailParts[3] + emailParts[4];
 }
         function generateProgramDisplay() {
-            const programGrid = document.getElementById('programGrid');
-            programGrid.innerHTML = '';
-            
-            for (let week = 1; week <= 12; week++) {
-                const weekCard = document.createElement('div');
-                weekCard.className = 'week-card';
-                weekCard.innerHTML = `
-                    <div class="week-title">Week ${week} - ${getWeekPhase(week)}</div>
-                    ${generateWeekDays(week)}
-                `;
-                programGrid.appendChild(weekCard);
-            }
+    const programGrid = document.getElementById('programGrid');
+    programGrid.innerHTML = '';
+
+    if (!currentUser) {
+        // If user is not logged in, show only the first week and make it full width
+        const weekCard = document.createElement('div');
+        weekCard.className = 'week-card full-width';
+        weekCard.innerHTML = `
+            <div class="week-title">Week 1 - Foundation Phase</div>
+            ${generateWeekDays(1)}
+        `;
+        programGrid.appendChild(weekCard);
+    } else {
+        // If user is logged in, show all weeks
+        for (let week = 1; week <= 12; week++) {
+            const weekCard = document.createElement('div');
+            weekCard.className = 'week-card';
+            weekCard.innerHTML = `
+                <div class="week-title">Week ${week} - ${getWeekPhase(week)}</div>
+                ${generateWeekDays(week)}
+            `;
+            programGrid.appendChild(weekCard);
         }
+    }
+}
+
         function getWeekPhase(week) {
             if (week <= 4) return "Foundation Phase";
             if (week <= 8) return "Strength Phase";
