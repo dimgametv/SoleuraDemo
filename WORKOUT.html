@@ -7,6 +7,26 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
+
+      /* Ensure the table container is scrollable horizontally */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+/* Table styling */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+/* Table cell styling */
+th, td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    white-space: nowrap; /* Prevent text from wrapping */
+}
+
         * {
             margin: 0;
             padding: 0;
@@ -513,29 +533,101 @@
             color: var(--text-secondary);
         }
 
-        /* Modal */
         .modal {
-            display: none;
-            position: fixed;
-            z-index: 2000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-        }
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(8px);
+    overflow: hidden; /* Prevent scrolling */
+}
 
-        .modal-content {
-            background: var(--card-bg);
-            margin: 5% auto;
-            padding: 32px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 480px;
-            border: 1px solid var(--border-color);
-            position: relative;
-        }
+.modal-content {
+    background: var(--card-bg);
+    margin: 5% auto;
+    padding: 20px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 480px;
+    max-height: 90vh; /* Limit the height to 90% of the viewport height */
+    overflow-y: auto; /* Allow scrolling within the modal content if necessary */
+    border: 1px solid var(--border-color);
+    position: relative;
+}
+
+/* Adjust input groups to be more compact */
+.modal-content .input-group {
+    margin-bottom: 15px;
+}
+
+.modal-content .input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.modal-content .input-group input,
+.modal-content .input-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background: var(--secondary-bg);
+    color: var(--text-primary);
+    font-size: 14px;
+}
+
+/* Adjust button styles to be more compact */
+.modal-content .btn {
+    padding: 10px 16px;
+    font-size: 14px;
+}
+
+/* Ensure the close button is accessible */
+.modal-content .close {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: var(--text-secondary);
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+}
+
+/* Media query for smaller screens */
+@media (max-width: 768px) {
+    .modal-content {
+        padding: 15px;
+        margin: 10% auto;
+        max-height: 80vh; /* Limit the height further on smaller screens */
+    }
+
+    .modal-content .input-group {
+        margin-bottom: 10px;
+    }
+
+    .modal-content .input-group input,
+    .modal-content .input-group select {
+        padding: 8px 12px;
+    }
+
+    .modal-content .btn {
+        padding: 8px 16px;
+    }
+}
+
 
         .close {
             position: absolute;
