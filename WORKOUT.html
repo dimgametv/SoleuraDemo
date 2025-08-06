@@ -868,11 +868,11 @@
                 <h3><i class="fas fa-user-ninja"></i> Squat 1RM</h3>
                 <div class="input-group">
                     <label>Weight Lifted (kg)</label>
-                    <input type="number" id="squatWeight" placeholder="Enter weight">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="squatWeight" placeholder="Enter weight">
                 </div>
                 <div class="input-group">
                     <label>Reps Performed</label>
-                    <input type="number" id="squatReps" placeholder="Enter reps">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="squatReps" placeholder="Enter reps">
                 </div>
                 <button class="btn btn-primary" onclick="calculate1RM('squat')">Calculate</button>
                 <div class="result-display" id="squatResult" style="display: none;">
@@ -884,11 +884,11 @@
                 <h3><i class="fas fa-hand-rock"></i> Bench 1RM</h3>
                 <div class="input-group">
                     <label>Weight Lifted (kg)</label>
-                    <input type="number" id="benchWeight" placeholder="Enter weight">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="benchWeight" placeholder="Enter weight">
                 </div>
                 <div class="input-group">
                     <label>Reps Performed</label>
-                    <input type="number" id="benchReps" placeholder="Enter reps">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="benchReps" placeholder="Enter reps">
                 </div>
                 <button class="btn btn-primary" onclick="calculate1RM('bench')">Calculate</button>
                 <div class="result-display" id="benchResult" style="display: none;">
@@ -900,11 +900,11 @@
                 <h3><i class="fas fa-fire"></i> Deadlift 1RM</h3>
                 <div class="input-group">
                     <label>Weight Lifted (kg)</label>
-                    <input type="number" id="deadliftWeight" placeholder="Enter weight">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="deadliftWeight" placeholder="Enter weight">
                 </div>
                 <div class="input-group">
                     <label>Reps Performed</label>
-                    <input type="number" id="deadliftReps" placeholder="Enter reps">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="deadliftReps" placeholder="Enter reps">
                 </div>
                 <button class="btn btn-primary" onclick="calculate1RM('deadlift')">Calculate</button>
                 <div class="result-display" id="deadliftResult" style="display: none;">
@@ -923,15 +923,15 @@
                 <h3><i class="fas fa-utensils"></i> Nutrition Planner</h3>
                 <div class="input-group">
                     <label>Current Weight (kg)</label>
-                    <input type="number" id="currentWeight" placeholder="Enter current weight">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="currentWeight" placeholder="Enter current weight">
                 </div>
                 <div class="input-group">
                     <label>Target Weight (kg)</label>
-                    <input type="number" id="targetWeight" placeholder="Enter target weight">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="targetWeight" placeholder="Enter target weight">
                 </div>
                 <div class="input-group">
                     <label>Timeline (weeks)</label>
-                    <input type="number" id="timeline" placeholder="Enter timeline">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="timeline" placeholder="Enter timeline">
                 </div>
                 <div class="input-group">
                     <label>Goal</label>
@@ -963,19 +963,19 @@
                 </div>
                 <div class="input-group">
                     <label>Body Weight (kg)</label>
-                    <input type="number" id="bodyWeight" placeholder="Enter body weight">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="bodyWeight" placeholder="Enter body weight">
                 </div>
                 <div class="input-group">
                     <label>Squat (kg)</label>
-                    <input type="number" id="wilksSquat" placeholder="Enter squat">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="wilksSquat" placeholder="Enter squat">
                 </div>
                 <div class="input-group">
                     <label>Bench Press (kg)</label>
-                    <input type="number" id="wilksBench" placeholder="Enter bench">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="wilksBench" placeholder="Enter bench">
                 </div>
                 <div class="input-group">
                     <label>Deadlift (kg)</label>
-                    <input type="number" id="wilksDeadlift" placeholder="Enter deadlift">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="wilksDeadlift" placeholder="Enter deadlift">
                 </div>
                 <button class="btn btn-primary" onclick="calculateWilks()">Calculate Wilks</button>
                 <div class="result-display" id="wilksResult" style="display: none;">
@@ -1038,7 +1038,7 @@
                 </div>
                 <div class="input-group">
                     <label>Weight Lifted (kg)</label>
-                    <input type="number" id="weightLifted" placeholder="Enter weight" step="0.5">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="weightLifted" placeholder="Enter weight" step="0.5">
                 </div>
                 <div class="input-group">
                     <label>Record Level</label>
@@ -1173,15 +1173,15 @@
                 </div>
                 <div class="input-group">
                     <label>Age</label>
-                    <input type="number" id="profileAge" placeholder="Enter age" min="16" max="80">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="profileAge" placeholder="Enter age" min="16" max="80">
                 </div>
                 <div class="input-group">
                     <label>Height (cm)</label>
-                    <input type="number" id="profileHeight" placeholder="Enter height in cm" min="140" max="220">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="profileHeight" placeholder="Enter height in cm" min="140" max="220">
                 </div>
                 <div class="input-group">
                     <label>Weight (kg)</label>
-                    <input type="number" id="profileWeight" placeholder="Enter weight in kg" min="40" max="200">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="profileWeight" placeholder="Enter weight in kg" min="40" max="200">
                 </div>
                 <div class="input-group">
                     <label>Lifting Experience</label>
@@ -1202,15 +1202,15 @@
             <div class="grid-form">
                 <div class="input-group">
                     <label>Squat 1RM (kg)</label>
-                    <input type="number" id="profileSquat" placeholder="Enter squat 1RM">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="profileSquat" placeholder="Enter squat 1RM">
                 </div>
                 <div class="input-group">
                     <label>Bench Press 1RM (kg)</label>
-                    <input type="number" id="profileBench" placeholder="Enter bench 1RM">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="profileBench" placeholder="Enter bench 1RM">
                 </div>
                 <div class="input-group">
                     <label>Deadlift 1RM (kg)</label>
-                    <input type="number" id="profileDeadlift" placeholder="Enter deadlift 1RM">
+                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="profileDeadlift" placeholder="Enter deadlift 1RM">
                 </div>
             </div>
             <button class="btn btn-primary" onclick="updateSBD()">Update SBD Records</button>
@@ -1289,15 +1289,15 @@
             <h2>Enter Your SBD Details</h2>
             <div class="input-group">
                 <label>Current Squat 1RM (kg)</label>
-                <input type="number" id="currentSquat" placeholder="Enter squat">
+                <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="currentSquat" placeholder="Enter squat">
             </div>
             <div class="input-group">
                 <label>Current Bench 1RM (kg)</label>
-                <input type="number" id="currentBench" placeholder="Enter bench">
+                <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="currentBench" placeholder="Enter bench">
             </div>
             <div class="input-group">
                 <label>Current Deadlift 1RM (kg)</label>
-                <input type="number" id="currentDeadlift" placeholder="Enter deadlift">
+                <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="currentDeadlift" placeholder="Enter deadlift">
             </div>
             <div class="input-group">
                 <label>Training Experience</label>
@@ -1354,7 +1354,7 @@
             </div>
             <div class="input-group">
                 <label>Weight Lifted (kg)</label>
-                <input type="number" id="editWeightLifted" placeholder="Enter weight" step="0.5">
+                <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="editWeightLifted" placeholder="Enter weight" step="0.5">
             </div>
             <div class="input-group">
                 <label>Record Level</label>
