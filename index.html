@@ -28,6 +28,21 @@
         const database = firebase.database();
     </script>
     <style>
+  .locked-message {
+    background: rgba(255, 255, 0, 0.1);
+    border: 1px solid gold;
+    border-radius: 8px;
+    padding: 20px;
+    margin-top: 20px;
+    text-align: center;
+    color: gold;
+}
+
+.locked-message p {
+    margin: 0;
+    font-size: 14px;
+}
+
       /* Ensure the table container is scrollable horizontally */
 .table-container {
     width: 100%;
@@ -1500,7 +1515,6 @@ th, td {
             return;
         }
     }
-
     document.getElementById('profileName').value = currentUser.name || '';
     document.getElementById('profileEmail').value = currentUser.email || '';
     document.getElementById('profileNumber').value = currentUser.number || '';
@@ -1513,8 +1527,6 @@ th, td {
     document.getElementById('profileBench').value = currentUser.bench || '';
     document.getElementById('profileDeadlift').value = currentUser.deadlift || '';
 }
-
-
         function updateCalculatorTitle() {
     const calculatorTitle = document.querySelector('.calculator-card h3');
     if (window.innerWidth <= 768) {
@@ -1531,19 +1543,16 @@ window.addEventListener('resize', updateCalculatorTitle);
         showSuccessMessage('Please login first!');
         return;
     }
-
     const name = document.getElementById('profileName').value;
     const gender = document.getElementById('profileGender').value;
     const age = document.getElementById('profileAge').value;
     const height = document.getElementById('profileHeight').value;
     const weight = document.getElementById('profileWeight').value;
     const experience = document.getElementById('profileExperience').value;
-
     if (!name || !gender || !age || !height || !weight || !experience) {
         showSuccessMessage('Please fill in all fields!');
         return;
     }
-
     // Update user data in Firebase Realtime Database
     const userRef = database.ref('users/' + currentUser.uid);
     userRef.update({
@@ -1562,32 +1571,26 @@ window.addEventListener('resize', updateCalculatorTitle);
         currentUser.height = parseInt(height);
         currentUser.weight = parseInt(weight);
         currentUser.experience = experience;
-
         // Update user data in local storage
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
-
         showSuccessMessage('Profile updated successfully!');
     })
     .catch((error) => {
         showSuccessMessage('Error updating profile: ' + error.message);
     });
 }
-
 function updateSBD() {
     if (!currentUser) {
         showSuccessMessage('Please login first!');
         return;
     }
-
     const squat = document.getElementById('profileSquat').value;
     const bench = document.getElementById('profileBench').value;
     const deadlift = document.getElementById('profileDeadlift').value;
-
     if (!squat || !bench || !deadlift) {
         showSuccessMessage('Please fill in all SBD values!');
         return;
     }
-
     // Update SBD records in Firebase Realtime Database
     const userRef = database.ref('users/' + currentUser.uid);
     userRef.update({
@@ -1600,25 +1603,20 @@ function updateSBD() {
         currentUser.squat = parseInt(squat);
         currentUser.bench = parseInt(bench);
         currentUser.deadlift = parseInt(deadlift);
-
         // Update user data in local storage
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
-
         // Update global program variables if they exist
         if (userProgram.squat > 0) {
             userProgram.squat = parseInt(squat);
             userProgram.bench = parseInt(bench);
             userProgram.deadlift = parseInt(deadlift);
         }
-
         showSuccessMessage('SBD records updated successfully!');
     })
     .catch((error) => {
         showSuccessMessage('Error updating SBD records: ' + error.message);
     });
 }
-
-
         // Modal functions
         function openModal(modalId) {
             document.getElementById(modalId).style.display = 'block';
@@ -1679,26 +1677,20 @@ function updateSBD() {
         showSuccessMessage('Please fill in all fields!');
     }
 }
-
-
-
         function signup() {
     const name = document.getElementById('signupName').value;
     const email = document.getElementById('signupEmail').value;
     const number = document.getElementById('signupNumber').value;
     const experience = document.getElementById('signupExperience').value;
     const password = document.getElementById('signupPassword').value;
-
     if (!name || !email || !number || !experience || !password) {
         showSuccessMessage('Please fill in all fields!');
         return;
     }
-
     if (password.length < 6) {
         showSuccessMessage('Password must be at least 6 characters!');
         return;
     }
-
     auth.createUserWithEmailAndPassword(email, password)
         .then((userCredential) => {
             // Signed up
@@ -1719,7 +1711,6 @@ function updateSBD() {
                 bench: '',
                 deadlift: ''
             };
-
             // Save user data to Firebase Realtime Database
             database.ref('users/' + user.uid).set(userData)
                 .then(() => {
@@ -1739,7 +1730,6 @@ function updateSBD() {
             showSuccessMessage('Signup failed: ' + error.message);
         });
 }
-
         function clearSignupForm() {
             document.getElementById('signupName').value = '';
             document.getElementById('signupEmail').value = '';
@@ -1758,8 +1748,6 @@ function updateSBD() {
         showSuccessMessage('Logout failed: ' + error.message);
     });
 }
-
-
         function calculate1RM(lift) {
     const weight = parseFloat(document.getElementById(`${lift}Weight`).value);
     const reps = parseInt(document.getElementById(`${lift}Reps`).value);
@@ -1882,21 +1870,36 @@ function updateSBD() {
     const emailParts = ['hey', 'sharvi', '@', 'gmail', '.com'];
     return emailParts[0] + emailParts[1] + emailParts[2] + emailParts[3] + emailParts[4];
 }
-
         function generateProgramDisplay() {
-            const programGrid = document.getElementById('programGrid');
-            programGrid.innerHTML = '';
-            
-            for (let week = 1; week <= 12; week++) {
-                const weekCard = document.createElement('div');
-                weekCard.className = 'week-card';
-                weekCard.innerHTML = `
-                    <div class="week-title">Week ${week} - ${getWeekPhase(week)}</div>
-                    ${generateWeekDays(week)}
-                `;
-                programGrid.appendChild(weekCard);
-            }
+    const programGrid = document.getElementById('programGrid');
+    programGrid.innerHTML = '';
+
+    if (!currentUser) {
+        // Display only the first week for non-logged-in users
+        const weekCard = document.createElement('div');
+        weekCard.className = 'week-card';
+        weekCard.innerHTML = `
+            <div class="week-title">Week 1 - Foundation Phase</div>
+            ${generateWeekDays(1)}
+            <div class="locked-message">
+                <p>Please login to unlock the full split!</p>
+            </div>
+        `;
+        programGrid.appendChild(weekCard);
+    } else {
+        // Display the full 12-week program for logged-in users
+        for (let week = 1; week <= 12; week++) {
+            const weekCard = document.createElement('div');
+            weekCard.className = 'week-card';
+            weekCard.innerHTML = `
+                <div class="week-title">Week ${week} - ${getWeekPhase(week)}</div>
+                ${generateWeekDays(week)}
+            `;
+            programGrid.appendChild(weekCard);
         }
+    }
+}
+
         function getWeekPhase(week) {
             if (week <= 4) return "Foundation Phase";
             if (week <= 8) return "Strength Phase";
@@ -1913,15 +1916,12 @@ function updateSBD() {
         const dayId = `week${week}day${day}`;
         const dayFocus = getDayFocus(day);
         const dayExercises = generateDayExercises(day, week);
-
         // Check if the user is logged in
         const isLoggedIn = currentUser !== null;
-
         // Only show the "Complete" button if the user is logged in
         const completeButton = isLoggedIn ?
             `<button class="completed-btn" onclick="markCompleted('${dayId}')" id="${dayId}Btn">Complete</button>` :
             '';
-
         daysHTML += `
             <div class="day-item">
                 <div class="day-header">
@@ -1936,7 +1936,6 @@ function updateSBD() {
     }
     return daysHTML;
 }
-
         function getDayFocus(day) {
             const focuses = {
                 1: "Squat Focus",
@@ -2232,16 +2231,12 @@ function updateSBD() {
         function displayRecords(filteredRecords = null) {
     const tbody = document.getElementById('recordsTableBody');
     tbody.innerHTML = '';
-
     const recordsToShow = filteredRecords || records;
-
     recordsToShow.forEach((record, index) => {
         const originalIndex = filteredRecords ? records.indexOf(record) : index;
         const row = tbody.insertRow();
-
         // Check if the current user is the admin
         const isAdmin = currentUser && currentUser.email === getAdminEmail();
-
         // Only show edit and delete buttons if the user is the admin
         const actionButtons = isAdmin ? `
             <button class="btn btn-secondary" onclick="editRecord(${originalIndex})" style="padding: 4px 8px; font-size: 12px; margin-right: 4px;">Edit</button>
@@ -2250,7 +2245,6 @@ function updateSBD() {
             <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px; margin-right: 4px; opacity: 0.5; cursor: not-allowed;" disabled>Edit</button>
             <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px; opacity: 0.5; cursor: not-allowed;" disabled>Delete</button>
         `;
-
         row.innerHTML = `
             <td>${record.name}</td>
             <td>${record.ageCategory ? record.ageCategory.charAt(0).toUpperCase() + record.ageCategory.slice(1).replace('-', ' ') : 'N/A'}</td>
@@ -2265,8 +2259,6 @@ function updateSBD() {
         `;
     });
 }
-
-
         function updateAuthUI() {
     const loginBtn = document.getElementById('loginBtn');
     const logoutBtn = document.getElementById('logoutBtn');
@@ -2274,13 +2266,11 @@ function updateSBD() {
     const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
     const addRecordSection = document.querySelector('.records-section');
     const accountTab = document.getElementById('accountTab');
-
     if (currentUser) {
         loginBtn.style.display = 'none';
         logoutBtn.style.display = 'block';
         mobileLoginBtn.style.display = 'none';
         mobileLogoutBtn.style.display = 'block';
-
         // Check if the current user's email is the admin email
         if (currentUser.email === getAdminEmail()) {
             // Show the "Add New Record" section
@@ -2293,7 +2283,6 @@ function updateSBD() {
                 addRecordSection.style.display = 'none';
             }
         }
-
         // Show the "Your Account" tab
         if (accountTab) {
             accountTab.style.display = 'block';
@@ -2303,21 +2292,16 @@ function updateSBD() {
         logoutBtn.style.display = 'none';
         mobileLoginBtn.style.display = 'block';
         mobileLogoutBtn.style.display = 'none';
-
         // Hide the "Add New Record" section if no user is logged in
         if (addRecordSection) {
             addRecordSection.style.display = 'none';
         }
-
         // Hide the "Your Account" tab
         if (accountTab) {
             accountTab.style.display = 'none';
         }
     }
 }
-
-
-
   function loadRecordsFromFirebase() {
     database.ref('powerliftingRecords').on('value', (snapshot) => {
         const recordsData = snapshot.val();
@@ -2524,7 +2508,6 @@ function deleteRecord(index) {
         }
     });
 });
-
         // Close modals when clicking outside
         window.onclick = function(event) {
             if (event.target.classList.contains('modal')) {
