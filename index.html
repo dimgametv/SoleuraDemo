@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -38,7 +37,6 @@
     text-align: center;
     color: gold;
 }
-
 .locked-message p {
     margin: 0;
     font-size: 14px;
@@ -231,24 +229,18 @@ th, td {
     -webkit-font-smoothing: antialiased; /* Font smoothing for better rendering */
     -moz-osx-font-smoothing: grayscale;
 }
-
 [data-theme="light"] .hero-content h1 {
     text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow for light theme */
 }
-
-
 .master-text {
     display: block; /* Ensure each span is on a new line */
     font-size: 1.5em; /* Make MASTER larger */
 }
-
 .sbd-text {
     display: block; /* Ensure each span is on a new line */
     font-size: 1em; /* Make YOUR SBD slightly smaller */
     margin-top: -40px; /* Adjust margin to remove space */
 }
-
-
         .hero-content p {
             font-size: 18px;
             color: var(--text-secondary);
@@ -274,14 +266,12 @@ th, td {
         .full-width {
     grid-column: 1 / -1; /* This makes the element span all columns */
 }
-
         /* Sections */
         .section {
     padding: 40px 24px; /* Adjust the padding as needed */
     max-width: 1400px;
     margin: 0 auto;
 }
-
         .section-title {
             text-align: center;
             font-size: clamp(32px, 5vw, 48px);
@@ -297,7 +287,6 @@ th, td {
     gap: 24px;
     margin-bottom: 20px; /* Adjust the margin-bottom as needed */
 }
-
         .card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -869,8 +858,6 @@ th, td {
         </div>
     </div>
 </section>
-
-
     <!-- Training Programs Section -->
     <section id="programs" class="section">
         <h2 class="section-title">Training Programs</h2>
@@ -1510,7 +1497,11 @@ th, td {
     if (sectionId === 'wilks') {
         sectionId = 'nutrition';
     }
-
+    // Hide the Profile section if it's not the one being shown
+    const profileSection = document.getElementById('profile');
+    if (profileSection && sectionId !== 'profile') {
+        profileSection.style.display = 'none';
+    }
     const section = document.getElementById(sectionId);
     if (section) {
         // Check if profile section and user not logged in
@@ -1518,24 +1509,23 @@ th, td {
             showSuccessMessage('Please login to view your profile!');
             return;
         }
-
-        // Show profile section only when clicked
-        if (sectionId === 'profile') {
-            section.style.display = 'block';
-            populateProfile();
-            displayWorkoutHistory();
-        }
-
-        section.scrollIntoView({ behavior: 'smooth' });
-
+        // Show the selected section
+        section.style.display = 'block';
+        // Additional logic for specific sections
         if (sectionId === 'program') {
             generateProgramDisplay();
         } else if (sectionId === 'records') {
             displayRecords();
+        } else if (sectionId === 'profile') {
+            populateProfile();
+            displayWorkoutHistory();
         }
     }
+    // Scroll to the section
+    if (section) {
+        section.scrollIntoView({ behavior: 'smooth' });
+    }
 }
-
         // Profile Management
         function populateProfile() {
     if (!currentUser) {
@@ -1547,7 +1537,6 @@ th, td {
             return;
         }
     }
-
     document.getElementById('profileName').value = currentUser.name || '';
     document.getElementById('profileEmail').value = currentUser.email || '';
     document.getElementById('profileNumber').value = currentUser.number || '';
@@ -1559,7 +1548,6 @@ th, td {
     document.getElementById('profileSquat').value = currentUser.squat || '';
     document.getElementById('profileBench').value = currentUser.bench || '';
     document.getElementById('profileDeadlift').value = currentUser.deadlift || '';
-
     // Fetch workout history from Firebase
     if (currentUser) {
         const userRef = database.ref('users/' + currentUser.uid + '/workoutHistory');
@@ -1576,7 +1564,6 @@ th, td {
             });
     }
 }
-
         function updateCalculatorTitle() {
     const calculatorTitle = document.querySelector('.calculator-card h3');
     if (window.innerWidth <= 768) {
@@ -1900,11 +1887,9 @@ function updateSBD() {
     const bench = parseFloat(document.getElementById('currentBench').value);
     const deadlift = parseFloat(document.getElementById('currentDeadlift').value);
     const experience = document.getElementById('experience').value;
-
     if (squat && bench && deadlift) {
         // Store user data
         userProgram = { squat, bench, deadlift, experience };
-
         // Fetch workout history from Firebase
         if (currentUser) {
             const userRef = database.ref('users/' + currentUser.uid + '/workoutHistory');
@@ -1934,8 +1919,6 @@ function updateSBD() {
         }
     }
 }
-
-
         function getAdminEmail() {
     const emailParts = ['hey', 'sharvi', '@', 'gmail', '.com'];
     return emailParts[0] + emailParts[1] + emailParts[2] + emailParts[3] + emailParts[4];
@@ -1943,7 +1926,6 @@ function updateSBD() {
         function generateProgramDisplay() {
     const programGrid = document.getElementById('programGrid');
     programGrid.innerHTML = '';
-
     if (!currentUser) {
         // If user is not logged in, show only the first week and make it full width
         const weekCard = document.createElement('div');
@@ -1969,8 +1951,6 @@ function updateSBD() {
         }
     }
 }
-
-
         function getWeekPhase(week) {
             if (week <= 4) return "Foundation Phase";
             if (week <= 8) return "Strength Phase";
@@ -1987,10 +1967,8 @@ function updateSBD() {
         const dayId = `week${week}day${day}`;
         const dayFocus = getDayFocus(day);
         const dayExercises = generateDayExercises(day, week);
-
         // Check if the day is marked as completed in workout history
         const isCompleted = workoutHistory.some(workout => workout.workout === dayId);
-
         // Determine button text and state based on completion status and login status
         let completeButton = '';
         if (currentUser) {
@@ -1998,7 +1976,6 @@ function updateSBD() {
                 `<button class="completed-btn completed" disabled>Done</button>` :
                 `<button class="completed-btn" onclick="markCompleted('${dayId}')" id="${dayId}Btn">Complete</button>`;
         }
-
         daysHTML += `
             <div class="day-item">
                 <div class="day-header">
@@ -2013,8 +1990,6 @@ function updateSBD() {
     }
     return daysHTML;
 }
-
-
         function getDayFocus(day) {
             const focuses = {
                 1: "Squat Focus",
@@ -2182,14 +2157,12 @@ function updateSBD() {
     btn.textContent = 'Done';
     btn.classList.add('completed');
     btn.disabled = true;
-
     // Add to workout history
     const workoutData = {
         date: new Date().toISOString(), // Use ISO string for consistency
         workout: dayId,
         exercises: generateDayExercises(parseInt(dayId.slice(-1)))
     };
-
     if (currentUser) {
         // Store the workout data in Firebase under the user's profile
         const userRef = database.ref('users/' + currentUser.uid + '/workoutHistory');
@@ -2206,7 +2179,6 @@ function updateSBD() {
         showSuccessMessage('Workout completed!');
     }
 }
-
         // Category management functions
         function updateLifterCategories() {
             const ageCategory = document.getElementById('ageCategory').value;
@@ -2235,7 +2207,6 @@ function updateSBD() {
         openModal('sbdModal');
     }
 }
-
         function updateWeightClasses() {
             const lifterCategory = document.getElementById('lifterCategory').value;
             const weightClassSelect = document.getElementById('weightClass');
@@ -2567,12 +2538,10 @@ function deleteRecord(index) {
         // Profile Management
         function displayWorkoutHistory() {
     const historyDiv = document.getElementById('workoutHistory');
-
     if (!workoutHistory || workoutHistory.length === 0) {
         historyDiv.innerHTML = '<p>Complete workouts to see your progress here!</p>';
         return;
     }
-
     let historyHTML = '<h4 style="margin-bottom: 16px;">Completed Workouts:</h4>';
     workoutHistory.forEach(workout => {
         historyHTML += `
@@ -2582,10 +2551,8 @@ function deleteRecord(index) {
             </div>
         `;
     });
-
     historyDiv.innerHTML = historyHTML;
 }
-
         // Success Message
         function showSuccessMessage(message) {
             const successDiv = document.createElement('div');
