@@ -1,0 +1,2320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MuscleFit Pro - Personalized Training</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:wght@300;400;500;600;700;800&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            --bg-primary: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            --bg-secondary: rgba(255, 255, 255, 0.1);
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
+            --glass-bg: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+        
+        [data-theme="light"] {
+            --bg-primary: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
+            --bg-secondary: rgba(0, 0, 0, 0.05);
+            --text-primary: #000000;
+            --text-secondary: #000000;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            font-family: 'Exo 2', sans-serif;
+        }
+        
+        .font-display {
+            font-family: 'Orbitron', monospace;
+        }
+        
+        .font-heading {
+            font-family: 'Rajdhani', sans-serif;
+        }
+        
+        body {
+            background: var(--bg-primary);
+            background-size: 200% 200%;
+            animation: gradientShift 8s ease infinite;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            transition: all 0.3s ease;
+        }
+        
+
+        
+        .auth-modal {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            border: 1px solid var(--glass-border);
+        }
+        
+        .option-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+        }
+        
+        .option-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        
+        .option-card.selected {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255,255,255,0.8);
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .exercise-card {
+            transition: all 0.3s ease;
+        }
+        
+        .exercise-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .shuffle-btn {
+            transition: all 0.2s ease;
+        }
+        
+        .shuffle-btn:hover {
+            transform: rotate(180deg);
+        }
+        
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.6s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        .progress-bar {
+            transition: width 0.5s ease;
+        }
+        
+        .workout-day {
+            transition: all 0.3s ease;
+        }
+        
+        .workout-day:hover {
+            transform: translateX(10px);
+        }
+    </style>
+</head>
+<body class="min-h-screen" data-theme="dark">
+    <!-- Navigation -->
+    <nav class="glass-card fixed top-0 left-0 right-0 z-50 px-6 py-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="font-display text-2xl font-bold" style="color: var(--text-primary)">
+                🏋️‍♂️ MuscleFit Pro
+            </div>
+            
+            <!-- Auth Buttons -->
+            <div id="authButtons" class="flex items-center gap-4">
+                <button onclick="toggleTheme()" class="glass-card p-2 rounded-xl hover:scale-105 transition-all" style="color: var(--text-primary)" title="Toggle Theme">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <button onclick="showAuthModal('login')" class="glass-card px-4 py-2 rounded-xl font-medium hover:scale-105 transition-all" style="color: var(--text-primary)">
+                    Login
+                </button>
+            </div>
+            
+            <!-- User Menu (Hidden by default) -->
+            <div id="userMenu" class="flex items-center gap-4" style="display: none;">
+                <button onclick="toggleTheme()" class="glass-card p-2 rounded-xl hover:scale-105 transition-all" style="color: var(--text-primary)" title="Toggle Theme">
+                    <span id="themeIconUser">🌙</span>
+                </button>
+                <button onclick="showDashboard()" class="glass-card p-2 rounded-xl hover:scale-105 transition-all" style="color: var(--text-primary)" title="Profile & Dashboard">
+                    👤
+                </button>
+                <button onclick="logout()" class="bg-red-500 px-4 py-2 rounded-xl text-white font-medium hover:scale-105 transition-all">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8 pt-24">
+        <!-- Header -->
+        <div class="text-center mb-12">
+            <h1 class="font-display text-5xl md:text-7xl font-bold mb-4" style="color: var(--text-primary)">🏋️‍♂️ MuscleFit Pro</h1>
+            <p class="text-xl font-heading" style="color: var(--text-secondary)">Your Personalized Fitness Journey Starts Here</p>
+        </div>
+
+        <!-- Setup Phase -->
+        <div id="setupPhase" class="max-w-4xl mx-auto">
+            <!-- Progress Bar -->
+            <div class="glass-card rounded-2xl p-6 mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="text-white font-medium">Setup Progress</span>
+                    <span class="text-white/80 text-sm" id="progressText">Step 1 of 4</span>
+                </div>
+                <div class="w-full bg-white/20 rounded-full h-3">
+                    <div class="progress-bar bg-gradient-to-r from-green-400 to-blue-500 h-3 rounded-full" id="progressBar" style="width: 25%"></div>
+                </div>
+            </div>
+
+            <!-- Step 1: Goal Selection -->
+            <div id="step1" class="glass-card rounded-3xl p-8 mb-8 slide-in">
+                <h2 class="text-3xl font-bold text-white mb-6 text-center">🎯 What's Your Primary Training Goal?</h2>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="option-card glass-card rounded-2xl p-6 text-center" data-goal="powerlifting">
+                        <div class="text-4xl mb-4">🏋️‍♂️</div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Powerlifting</h3>
+                        <p class="text-white/80 text-sm">Build maximum strength in squat, bench press, and deadlift</p>
+                        <div class="mt-3 text-white/60 text-xs">
+                            <div>• Low reps (1-5)</div>
+                            <div>• Heavy weights</div>
+                            <div>• Strength focus</div>
+                        </div>
+                    </div>
+                    <div class="option-card glass-card rounded-2xl p-6 text-center" data-goal="bodybuilding">
+                        <div class="text-4xl mb-4">💪</div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Bodybuilding</h3>
+                        <p class="text-white/80 text-sm">Build muscle mass and achieve aesthetic physique development</p>
+                        <div class="mt-3 text-white/60 text-xs">
+                            <div>• Moderate reps (6-12)</div>
+                            <div>• Hypertrophy focus</div>
+                            <div>• Muscle isolation</div>
+                        </div>
+                    </div>
+                    <div class="option-card glass-card rounded-2xl p-6 text-center" data-goal="general-fitness">
+                        <div class="text-4xl mb-4">⚡</div>
+                        <h3 class="text-xl font-semibold text-white mb-3">General Fitness</h3>
+                        <p class="text-white/80 text-sm">Improve overall health, endurance, and functional movement. Perfect for weight loss too!</p>
+                        <div class="mt-3 text-white/60 text-xs">
+                            <div>• Mixed rep ranges</div>
+                            <div>• Functional movements</div>
+                            <div>• Weight loss friendly</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Timeframe Selection -->
+            <div id="step2" class="glass-card rounded-3xl p-8 mb-8 slide-in" style="display: none;">
+                <h2 class="text-3xl font-bold text-white mb-6 text-center">⏰ What's Your Realistic Timeframe?</h2>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="option-card glass-card rounded-2xl p-6 text-center" data-timeframe="4-weeks">
+                        <div class="text-3xl mb-3">🚀</div>
+                        <h3 class="text-lg font-semibold text-white mb-2">4 Weeks</h3>
+                        <p class="text-white/80 text-xs">Quick Start</p>
+                    </div>
+                    <div class="option-card glass-card rounded-2xl p-6 text-center" data-timeframe="8-weeks">
+                        <div class="text-3xl mb-3">📈</div>
+                        <h3 class="text-lg font-semibold text-white mb-2">8 Weeks</h3>
+                        <p class="text-white/80 text-xs">Solid Progress</p>
+                    </div>
+                    <div class="option-card glass-card rounded-2xl p-6 text-center" data-timeframe="12-weeks">
+                        <div class="text-3xl mb-3">🎯</div>
+                        <h3 class="text-lg font-semibold text-white mb-2">12 Weeks</h3>
+                        <p class="text-white/80 text-xs">Transformation</p>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Step 3: Fitness Level -->
+            <div id="step3" class="glass-card rounded-3xl p-8 mb-8 slide-in" style="display: none;">
+                <h2 class="text-3xl font-bold text-white mb-6 text-center">💪 What's Your Current Fitness Level?</h2>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="option-card glass-card rounded-2xl p-6 text-center" data-level="beginner">
+                        <div class="text-4xl mb-4">🌱</div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Beginner</h3>
+                        <p class="text-white/80 text-sm">New to exercise or returning after a long break</p>
+                        <div class="mt-4 text-white/70 text-xs">
+                            <div>• 2-3 workouts/week</div>
+                            <div>• Basic movements</div>
+                            <div>• Lower intensity</div>
+                        </div>
+                    </div>
+                    <div class="option-card glass-card rounded-2xl p-6 text-center" data-level="intermediate">
+                        <div class="text-4xl mb-4">🔥</div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Intermediate</h3>
+                        <p class="text-white/80 text-sm">Regular exercise for 6+ months, comfortable with basics</p>
+                        <div class="mt-4 text-white/70 text-xs">
+                            <div>• 4-5 workouts/week</div>
+                            <div>• Compound movements</div>
+                            <div>• Moderate intensity</div>
+                        </div>
+                    </div>
+                    <div class="option-card glass-card rounded-2xl p-6 text-center" data-level="advanced">
+                        <div class="text-4xl mb-4">⚡</div>
+                        <h3 class="text-xl font-semibold text-white mb-3">Advanced</h3>
+                        <p class="text-white/80 text-sm">2+ years experience, strong foundation in all movements</p>
+                        <div class="mt-4 text-white/70 text-xs">
+                            <div>• 5-6 workouts/week</div>
+                            <div>• Complex movements</div>
+                            <div>• High intensity</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: Goal-Specific Options -->
+            <div id="step4" class="glass-card rounded-3xl p-8 mb-8 slide-in" style="display: none;">
+                <!-- Powerlifting Options -->
+                <div id="powerliftingOptions" style="display: none;">
+                    <h2 class="text-3xl font-bold text-white mb-6 text-center">🏋️‍♂️ Powerlifting Specifics</h2>
+                    
+                    <!-- Weight Category -->
+                    <div class="mb-8">
+                        <h3 class="text-xl font-semibold text-white mb-4 text-center">Target Weight Category</h3>
+                        <div class="grid md:grid-cols-4 gap-4">
+                            <div class="option-card glass-card rounded-xl p-4 text-center" data-weight-category="59kg">
+                                <div class="text-2xl mb-2">🪶</div>
+                                <div class="text-white font-medium">59kg</div>
+                                <div class="text-white/70 text-xs">130 lbs</div>
+                            </div>
+                            <div class="option-card glass-card rounded-xl p-4 text-center" data-weight-category="66kg">
+                                <div class="text-2xl mb-2">⚖️</div>
+                                <div class="text-white font-medium">66kg</div>
+                                <div class="text-white/70 text-xs">145 lbs</div>
+                            </div>
+                            <div class="option-card glass-card rounded-xl p-4 text-center" data-weight-category="74kg">
+                                <div class="text-2xl mb-2">💪</div>
+                                <div class="text-white font-medium">74kg</div>
+                                <div class="text-white/70 text-xs">163 lbs</div>
+                            </div>
+                            <div class="option-card glass-card rounded-xl p-4 text-center" data-weight-category="83kg">
+                                <div class="text-2xl mb-2">🏋️</div>
+                                <div class="text-white font-medium">83kg</div>
+                                <div class="text-white/70 text-xs">183 lbs</div>
+                            </div>
+                            <div class="option-card glass-card rounded-xl p-4 text-center" data-weight-category="93kg">
+                                <div class="text-2xl mb-2">🦍</div>
+                                <div class="text-white font-medium">93kg</div>
+                                <div class="text-white/70 text-xs">205 lbs</div>
+                            </div>
+                            <div class="option-card glass-card rounded-xl p-4 text-center" data-weight-category="105kg">
+                                <div class="text-2xl mb-2">🐻</div>
+                                <div class="text-white font-medium">105kg</div>
+                                <div class="text-white/70 text-xs">231 lbs</div>
+                            </div>
+                            <div class="option-card glass-card rounded-xl p-4 text-center" data-weight-category="120kg">
+                                <div class="text-2xl mb-2">🦏</div>
+                                <div class="text-white font-medium">120kg</div>
+                                <div class="text-white/70 text-xs">264 lbs</div>
+                            </div>
+                            <div class="option-card glass-card rounded-xl p-4 text-center" data-weight-category="120kg+">
+                                <div class="text-2xl mb-2">🐘</div>
+                                <div class="text-white font-medium">120kg+</div>
+                                <div class="text-white/70 text-xs">264+ lbs</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Deadlift Style -->
+                    <div id="deadliftStyleSection" style="display: none;">
+                        <h3 class="text-xl font-semibold text-white mb-4 text-center">Preferred Deadlift Style</h3>
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="option-card glass-card rounded-2xl p-6 text-center" data-deadlift-style="conventional">
+                                <div class="text-4xl mb-4">🏋️‍♂️</div>
+                                <h4 class="text-lg font-semibold text-white mb-3">Conventional</h4>
+                                <p class="text-white/80 text-sm">Narrow stance, hands outside legs. Better for longer arms and flexible hips.</p>
+                            </div>
+                            <div class="option-card glass-card rounded-2xl p-6 text-center" data-deadlift-style="sumo">
+                                <div class="text-4xl mb-4">🤸‍♂️</div>
+                                <h4 class="text-lg font-semibold text-white mb-3">Sumo</h4>
+                                <p class="text-white/80 text-sm">Wide stance, hands inside legs. Better for shorter torso and strong quads.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- 1RM Input Section -->
+                    <div id="oneRMSection" style="display: none;">
+                        <h3 class="text-xl font-semibold text-white mb-6 text-center">Enter Your Current 1RM (One Rep Max)</h3>
+                        <div class="grid md:grid-cols-3 gap-6">
+                            <div class="glass-card rounded-2xl p-6">
+                                <h4 class="text-lg font-semibold text-white mb-4 text-center flex items-center justify-center">
+                                    🏋️‍♂️ Squat 1RM
+                                </h4>
+                                <div class="flex items-center justify-center gap-4">
+                                    <input type="number" id="squatOneRM" placeholder="150" 
+                                           class="bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white text-center text-xl w-24 focus:outline-none focus:border-white/50">
+                                    <span class="text-white">kg</span>
+                                </div>
+                                <div class="text-white/60 text-xs text-center mt-2">
+                                    Your maximum squat for 1 rep
+                                </div>
+                            </div>
+                            
+                            <div class="glass-card rounded-2xl p-6">
+                                <h4 class="text-lg font-semibold text-white mb-4 text-center flex items-center justify-center">
+                                    💪 Bench 1RM
+                                </h4>
+                                <div class="flex items-center justify-center gap-4">
+                                    <input type="number" id="benchOneRM" placeholder="100" 
+                                           class="bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white text-center text-xl w-24 focus:outline-none focus:border-white/50">
+                                    <span class="text-white">kg</span>
+                                </div>
+                                <div class="text-white/60 text-xs text-center mt-2">
+                                    Your maximum bench press for 1 rep
+                                </div>
+                            </div>
+                            
+                            <div class="glass-card rounded-2xl p-6">
+                                <h4 class="text-lg font-semibold text-white mb-4 text-center flex items-center justify-center">
+                                    🔥 Deadlift 1RM
+                                </h4>
+                                <div class="flex items-center justify-center gap-4">
+                                    <input type="number" id="deadliftOneRM" placeholder="180" 
+                                           class="bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white text-center text-xl w-24 focus:outline-none focus:border-white/50">
+                                    <span class="text-white">kg</span>
+                                </div>
+                                <div class="text-white/60 text-xs text-center mt-2">
+                                    Your maximum deadlift for 1 rep
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-6">
+                            <button id="confirm1RM" class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-8 py-3 rounded-xl text-lg font-semibold hover:from-green-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105" style="display: none;">
+                                ✅ Confirm 1RM Values
+                            </button>
+                        </div>
+                        
+                        <div class="glass-card rounded-xl p-4 mt-4">
+                            <h5 class="text-white font-semibold mb-2 text-center">💡 Don't Know Your 1RM?</h5>
+                            <div class="text-white/80 text-sm text-center">
+                                Use a weight you can lift for 3-5 reps with perfect form. The program will calculate appropriate percentages for your training.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- General Fitness & Bodybuilding Options -->
+                <div id="generalOptions" style="display: none;">
+                    <h2 class="text-3xl font-bold text-white mb-6 text-center">⚖️ Body Weight Goals</h2>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div class="glass-card rounded-2xl p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4 text-center">Current Weight</h3>
+                            <div class="flex items-center justify-center gap-4">
+                                <input type="number" id="currentWeight" placeholder="70" 
+                                       class="bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white text-center text-xl w-24 focus:outline-none focus:border-white/50">
+                                <select id="weightUnit" class="bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-white/50">
+                                    <option value="kg" class="bg-gray-800">kg</option>
+                                    <option value="lbs" class="bg-gray-800">lbs</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="glass-card rounded-2xl p-6">
+                            <h3 class="text-xl font-semibold text-white mb-4 text-center">Weight Goal</h3>
+                            <div class="grid grid-cols-3 gap-3">
+                                <div class="option-card glass-card rounded-xl p-4 text-center cursor-pointer" data-weight-goal="lose">
+                                    <div class="text-2xl mb-2">📉</div>
+                                    <div class="text-white text-sm font-medium">Lose Weight</div>
+                                </div>
+                                <div class="option-card glass-card rounded-xl p-4 text-center cursor-pointer" data-weight-goal="maintain">
+                                    <div class="text-2xl mb-2">⚖️</div>
+                                    <div class="text-white text-sm font-medium">Maintain</div>
+                                </div>
+                                <div class="option-card glass-card rounded-xl p-4 text-center cursor-pointer" data-weight-goal="gain">
+                                    <div class="text-2xl mb-2">📈</div>
+                                    <div class="text-white text-sm font-medium">Gain Weight</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="targetWeightSection" class="mt-6 glass-card rounded-2xl p-6" style="display: none;">
+                        <h3 class="text-xl font-semibold text-white mb-4 text-center">Target Weight</h3>
+                        <div class="flex items-center justify-center gap-4">
+                            <input type="number" id="targetWeight" placeholder="65" 
+                                   class="bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white text-center text-xl w-24 focus:outline-none focus:border-white/50">
+                            <span class="text-white" id="targetWeightUnit">kg</span>
+                        </div>
+                        <div class="mt-4 text-center">
+                            <div class="text-white/80 text-sm" id="weightDifference"></div>
+                            <div class="text-red-400 text-xs mt-2" id="weightWarning" style="display: none;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Generate Plan Button -->
+            <div id="generateButton" class="text-center" style="display: none;">
+                <button id="createPlan" class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-12 py-4 rounded-2xl text-xl font-bold hover:from-green-600 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-2xl">
+                    🚀 Create My Personalized Plan
+                </button>
+            </div>
+        </div>
+
+        <!-- Workout Plan Phase -->
+        <div id="workoutPhase" class="max-w-6xl mx-auto" style="display: none;">
+            <!-- Plan Header -->
+            <div id="planHeader" class="glass-card rounded-3xl p-8 mb-8 text-center">
+                <!-- Will be populated by JavaScript -->
+            </div>
+
+            <!-- Weekly Schedule -->
+            <div id="weeklySchedule" class="grid lg:grid-cols-2 gap-8">
+                <!-- Will be populated by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Dashboard Phase -->
+        <div id="dashboardPhase" class="max-w-6xl mx-auto" style="display: none;">
+            <!-- Dashboard content will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Authentication Modal -->
+    <div id="authModal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center" style="display: none;">
+        <div class="auth-modal rounded-3xl p-8 max-w-md w-full mx-4">
+            <div class="text-center mb-6">
+                <h2 id="authTitle" class="font-display text-3xl font-bold mb-2" style="color: var(--text-primary)">Welcome Back</h2>
+                <p id="authSubtitle" class="font-heading" style="color: var(--text-secondary)">Sign in to your account</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-2" style="color: var(--text-primary)">Email</label>
+                    <input type="email" id="loginEmail" required class="w-full px-4 py-3 rounded-xl glass-card border-0 focus:outline-none focus:ring-2 focus:ring-blue-500" style="color: var(--text-primary); background: var(--glass-bg);" placeholder="your@email.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2" style="color: var(--text-primary)">Password</label>
+                    <input type="password" id="loginPassword" required class="w-full px-4 py-3 rounded-xl glass-card border-0 focus:outline-none focus:ring-2 focus:ring-blue-500" style="color: var(--text-primary); background: var(--glass-bg);" placeholder="••••••••">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 rounded-xl font-semibold hover:scale-105 transition-all">
+                    Sign In
+                </button>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signupForm" class="space-y-4" style="display: none;">
+                <div>
+                    <label class="block text-sm font-medium mb-2" style="color: var(--text-primary)">Full Name</label>
+                    <input type="text" id="signupName" required class="w-full px-4 py-3 rounded-xl glass-card border-0 focus:outline-none focus:ring-2 focus:ring-blue-500" style="color: var(--text-primary); background: var(--glass-bg);" placeholder="John Doe">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2" style="color: var(--text-primary)">Email</label>
+                    <input type="email" id="signupEmail" required class="w-full px-4 py-3 rounded-xl glass-card border-0 focus:outline-none focus:ring-2 focus:ring-blue-500" style="color: var(--text-primary); background: var(--glass-bg);" placeholder="your@email.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-2" style="color: var(--text-primary)">Password</label>
+                    <input type="password" id="signupPassword" required class="w-full px-4 py-3 rounded-xl glass-card border-0 focus:outline-none focus:ring-2 focus:ring-blue-500" style="color: var(--text-primary); background: var(--glass-bg);" placeholder="••••••••">
+                </div>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-green-500 to-blue-600 text-white py-3 rounded-xl font-semibold hover:scale-105 transition-all">
+                    Create Account
+                </button>
+            </form>
+
+            <div class="mt-6 text-center">
+                <button id="authSwitch" class="font-medium hover:underline" style="color: var(--text-secondary)">
+                    Don't have an account? Sign up
+                </button>
+            </div>
+
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 w-8 h-8 rounded-full glass-card flex items-center justify-center hover:scale-110 transition-all" style="color: var(--text-primary)">
+                ✕
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Authentication state
+        let currentUser = null;
+        let isAuthenticated = false;
+        
+        // User data storage
+        let userData = {
+            users: JSON.parse(localStorage.getItem('muscleFitUsers') || '{}'),
+            workoutHistory: JSON.parse(localStorage.getItem('workoutHistory') || '{}'),
+            weeklyReports: JSON.parse(localStorage.getItem('weeklyReports') || '{}')
+        };
+
+        // User selections
+        let userPlan = {
+            goal: '',
+            timeframe: '',
+            level: '',
+            currentWeight: '',
+            weightUnit: 'kg',
+            weightGoal: '',
+            targetWeight: '',
+            weightCategory: '',
+            deadliftStyle: '',
+            squatOneRM: '',
+            benchOneRM: '',
+            deadliftOneRM: ''
+        };
+
+        // Theme management
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            const themeIconUser = document.getElementById('themeIconUser');
+            
+            if (body.getAttribute('data-theme') === 'dark') {
+                body.setAttribute('data-theme', 'light');
+                themeIcon.textContent = '☀️';
+                if (themeIconUser) themeIconUser.textContent = '☀️';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '🌙';
+                if (themeIconUser) themeIconUser.textContent = '🌙';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Initialize theme
+        function initTheme() {
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            const body = document.body;
+            const themeIcon = document.getElementById('themeIcon');
+            const themeIconUser = document.getElementById('themeIconUser');
+            
+            body.setAttribute('data-theme', savedTheme);
+            if (savedTheme === 'light') {
+                themeIcon.textContent = '☀️';
+                if (themeIconUser) themeIconUser.textContent = '☀️';
+            } else {
+                themeIcon.textContent = '🌙';
+                if (themeIconUser) themeIconUser.textContent = '🌙';
+            }
+        }
+
+        // Authentication functions
+        function showAuthModal(type) {
+            const modal = document.getElementById('authModal');
+            const title = document.getElementById('authTitle');
+            const subtitle = document.getElementById('authSubtitle');
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+            const authSwitch = document.getElementById('authSwitch');
+            
+            modal.style.display = 'flex';
+            
+            // Clear previous form data
+            document.getElementById('loginEmail').value = '';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('signupName').value = '';
+            document.getElementById('signupEmail').value = '';
+            document.getElementById('signupPassword').value = '';
+            
+            if (type === 'login') {
+                title.textContent = 'Welcome Back';
+                subtitle.textContent = 'Sign in to your account';
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                authSwitch.textContent = "Don't have an account? Sign up";
+                authSwitch.onclick = () => showAuthModal('signup');
+            } else {
+                title.textContent = 'Join MuscleFit Pro';
+                subtitle.textContent = 'Create your account';
+                loginForm.style.display = 'none';
+                signupForm.style.display = 'block';
+                authSwitch.textContent = 'Already have an account? Sign in';
+                authSwitch.onclick = () => showAuthModal('login');
+            }
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').style.display = 'none';
+        }
+
+        function login(email, password) {
+            // Basic validation
+            if (!email || !password) {
+                showNotification('Please fill in all fields', 'error');
+                return false;
+            }
+            
+            const users = userData.users;
+            const user = users[email.toLowerCase()];
+            
+            if (user && user.password === password) {
+                currentUser = user;
+                isAuthenticated = true;
+                
+                // Save login state
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                localStorage.setItem('isAuthenticated', 'true');
+                
+                updateAuthUI();
+                closeAuthModal();
+                showNotification(`Welcome back, ${user.name}!`, 'success');
+                return true;
+            } else {
+                showNotification('Invalid email or password', 'error');
+                return false;
+            }
+        }
+
+        function signup(name, email, password) {
+            // Basic validation
+            if (!name || !email || !password) {
+                showNotification('Please fill in all fields', 'error');
+                return false;
+            }
+            
+            if (password.length < 6) {
+                showNotification('Password must be at least 6 characters', 'error');
+                return false;
+            }
+            
+            const emailLower = email.toLowerCase();
+            
+            if (userData.users[emailLower]) {
+                showNotification('Account already exists with this email', 'error');
+                return false;
+            }
+            
+            const newUser = {
+                name: name.trim(),
+                email: emailLower,
+                password,
+                joinDate: new Date().toISOString(),
+                workoutPlans: [],
+                weeklyReports: []
+            };
+            
+            userData.users[emailLower] = newUser;
+            localStorage.setItem('muscleFitUsers', JSON.stringify(userData.users));
+            
+            currentUser = newUser;
+            isAuthenticated = true;
+            
+            // Save login state
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            localStorage.setItem('isAuthenticated', 'true');
+            
+            updateAuthUI();
+            closeAuthModal();
+            showNotification(`Account created successfully! Welcome, ${name}!`, 'success');
+            return true;
+        }
+
+        function logout() {
+            currentUser = null;
+            isAuthenticated = false;
+            
+            // Clear login state
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('isAuthenticated');
+            
+            updateAuthUI();
+            showMainContent();
+            resetUserPlan();
+            showNotification('Logged out successfully', 'success');
+        }
+
+        function updateAuthUI() {
+            const authButtons = document.getElementById('authButtons');
+            const userMenu = document.getElementById('userMenu');
+            
+            if (isAuthenticated && currentUser) {
+                authButtons.style.display = 'none';
+                userMenu.style.display = 'flex';
+            } else {
+                authButtons.style.display = 'flex';
+                userMenu.style.display = 'none';
+            }
+        }
+
+        // Check for existing login on page load
+        function checkExistingLogin() {
+            const savedUser = localStorage.getItem('currentUser');
+            const savedAuth = localStorage.getItem('isAuthenticated');
+            
+            if (savedUser && savedAuth === 'true') {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    isAuthenticated = true;
+                    updateAuthUI();
+                } catch (e) {
+                    // Clear corrupted data
+                    localStorage.removeItem('currentUser');
+                    localStorage.removeItem('isAuthenticated');
+                }
+            }
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            // Remove existing notifications
+            const existing = document.querySelector('.notification');
+            if (existing) existing.remove();
+            
+            const notification = document.createElement('div');
+            notification.className = `notification fixed top-20 right-4 z-50 px-6 py-4 rounded-xl text-white font-semibold shadow-2xl transform translate-x-full transition-all duration-300`;
+            
+            if (type === 'success') {
+                notification.classList.add('bg-green-500');
+                notification.innerHTML = `✅ ${message}`;
+            } else if (type === 'error') {
+                notification.classList.add('bg-red-500');
+                notification.innerHTML = `❌ ${message}`;
+            } else {
+                notification.classList.add('bg-blue-500');
+                notification.innerHTML = `ℹ️ ${message}`;
+            }
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Auto remove
+            setTimeout(() => {
+                notification.style.transform = 'translateX(full)';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        function resetUserPlan() {
+            userPlan = {
+                goal: '',
+                timeframe: '',
+                level: '',
+                currentWeight: '',
+                weightUnit: 'kg',
+                weightGoal: '',
+                targetWeight: '',
+                weightCategory: '',
+                deadliftStyle: '',
+                squatOneRM: '',
+                benchOneRM: '',
+                deadliftOneRM: ''
+            };
+            
+            currentStep = 1;
+            updateProgress();
+            
+            // Reset all form selections
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Reset form inputs
+            document.getElementById('currentWeight').value = '';
+            document.getElementById('targetWeight').value = '';
+            document.getElementById('squatOneRM').value = '';
+            document.getElementById('benchOneRM').value = '';
+            document.getElementById('deadliftOneRM').value = '';
+            
+            // Hide all steps except first
+            for (let i = 2; i <= 4; i++) {
+                document.getElementById(`step${i}`).style.display = 'none';
+            }
+            document.getElementById('step1').style.display = 'block';
+            document.getElementById('generateButton').style.display = 'none';
+        }
+
+        // Dashboard functions
+        function showDashboard() {
+            hideAllPhases();
+            document.getElementById('dashboardPhase').style.display = 'block';
+            generateDashboard();
+        }
+
+        function showMainContent() {
+            hideAllPhases();
+            document.getElementById('setupPhase').style.display = 'block';
+        }
+
+        function hideAllPhases() {
+            document.getElementById('setupPhase').style.display = 'none';
+            document.getElementById('workoutPhase').style.display = 'none';
+            document.getElementById('dashboardPhase').style.display = 'none';
+        }
+
+        function generateDashboard() {
+            const dashboardPhase = document.getElementById('dashboardPhase');
+            const userWorkouts = userData.workoutHistory[currentUser.email] || [];
+            const userReports = userData.weeklyReports[currentUser.email] || [];
+            
+            dashboardPhase.innerHTML = `
+                <div class="slide-in">
+                    <!-- Dashboard Header -->
+                    <div class="glass-card rounded-3xl p-8 mb-8 text-center">
+                        <h2 class="font-display text-4xl font-bold mb-4" style="color: var(--text-primary)">
+                            🏆 Your Fitness Dashboard
+                        </h2>
+                        <p class="font-heading text-lg" style="color: var(--text-secondary)">
+                            Track your progress and achieve your goals
+                        </p>
+                    </div>
+
+                    <!-- Stats Overview -->
+                    <div class="grid md:grid-cols-4 gap-6 mb-8">
+                        <div class="glass-card rounded-2xl p-6 text-center">
+                            <div class="text-3xl mb-2">🏋️‍♂️</div>
+                            <div class="text-2xl font-bold font-display" style="color: var(--text-primary)">${userWorkouts.length}</div>
+                            <div class="text-sm font-heading" style="color: var(--text-secondary)">Workouts Completed</div>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 text-center">
+                            <div class="text-3xl mb-2">📅</div>
+                            <div class="text-2xl font-bold font-display" style="color: var(--text-primary)">${Math.floor(userWorkouts.length / 7)}</div>
+                            <div class="text-sm font-heading" style="color: var(--text-secondary)">Weeks Active</div>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 text-center">
+                            <div class="text-3xl mb-2">🔥</div>
+                            <div class="text-2xl font-bold font-display" style="color: var(--text-primary)">${calculateStreak()}</div>
+                            <div class="text-sm font-heading" style="color: var(--text-secondary)">Day Streak</div>
+                        </div>
+                        <div class="glass-card rounded-2xl p-6 text-center">
+                            <div class="text-3xl mb-2">🎯</div>
+                            <div class="text-2xl font-bold font-display" style="color: var(--text-primary)">${userPlan.goal || 'Not Set'}</div>
+                            <div class="text-sm font-heading" style="color: var(--text-secondary)">Current Goal</div>
+                        </div>
+                    </div>
+
+                    <!-- Weekly Progress -->
+                    <div class="glass-card rounded-3xl p-8 mb-8">
+                        <h3 class="font-heading text-2xl font-bold mb-6" style="color: var(--text-primary)">📊 Weekly Progress Reports</h3>
+                        <div id="weeklyReportsContainer">
+                            ${generateWeeklyReports()}
+                        </div>
+                        <div class="text-center mt-6">
+                            <button onclick="generateWeeklyReport()" class="bg-gradient-to-r from-green-500 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 transition-all">
+                                📝 Generate This Week's Report
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Workout History -->
+                    <div class="glass-card rounded-3xl p-8 mb-8">
+                        <h3 class="font-heading text-2xl font-bold mb-6" style="color: var(--text-primary)">📋 Recent Workouts</h3>
+                        <div class="space-y-4">
+                            ${generateWorkoutHistory()}
+                        </div>
+                        <div class="text-center mt-6">
+                            <button onclick="logWorkout()" class="bg-gradient-to-r from-purple-500 to-pink-600 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 transition-all">
+                                ➕ Log New Workout
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Goal Progress -->
+                    <div class="glass-card rounded-3xl p-8">
+                        <h3 class="font-heading text-2xl font-bold mb-6" style="color: var(--text-primary)">🎯 Goal Progress</h3>
+                        ${generateGoalProgress()}
+                        <div class="text-center mt-6">
+                            <button onclick="showMainContent()" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold hover:scale-105 transition-all">
+                                🔄 Create New Plan
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function calculateStreak() {
+            const userWorkouts = userData.workoutHistory[currentUser.email] || [];
+            if (userWorkouts.length === 0) return 0;
+            
+            // Simple streak calculation (consecutive days with workouts)
+            let streak = 0;
+            const today = new Date();
+            
+            for (let i = 0; i < 30; i++) {
+                const checkDate = new Date(today);
+                checkDate.setDate(today.getDate() - i);
+                const dateStr = checkDate.toDateString();
+                
+                const hasWorkout = userWorkouts.some(workout => 
+                    new Date(workout.date).toDateString() === dateStr
+                );
+                
+                if (hasWorkout) {
+                    streak++;
+                } else if (i > 0) {
+                    break;
+                }
+            }
+            
+            return streak;
+        }
+
+        function generateWeeklyReports() {
+            const userReports = userData.weeklyReports[currentUser.email] || [];
+            
+            if (userReports.length === 0) {
+                return `
+                    <div class="text-center py-8">
+                        <div class="text-4xl mb-4">📊</div>
+                        <p style="color: var(--text-secondary)">No weekly reports yet. Complete some workouts to generate your first report!</p>
+                    </div>
+                `;
+            }
+            
+            return userReports.slice(-4).reverse().map(report => `
+                <div class="glass-card rounded-2xl p-6 mb-4">
+                    <div class="flex justify-between items-center mb-4">
+                        <h4 class="font-heading text-lg font-semibold" style="color: var(--text-primary)">
+                            Week of ${new Date(report.weekStart).toLocaleDateString()}
+                        </h4>
+                        <div class="text-2xl">${getGoalEmoji(report.goal)}</div>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div class="text-center">
+                            <div class="text-xl font-bold font-display" style="color: var(--text-primary)">${report.workoutsCompleted}</div>
+                            <div class="text-sm" style="color: var(--text-secondary)">Workouts</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xl font-bold font-display" style="color: var(--text-primary)">${report.totalSets}</div>
+                            <div class="text-sm" style="color: var(--text-secondary)">Total Sets</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-xl font-bold font-display" style="color: var(--text-primary)">${report.progressScore}%</div>
+                            <div class="text-sm" style="color: var(--text-secondary)">Progress</div>
+                        </div>
+                    </div>
+                    <div class="mt-4 p-3 glass-card rounded-xl">
+                        <p class="text-sm" style="color: var(--text-secondary)">${report.notes}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function generateWorkoutHistory() {
+            const userWorkouts = userData.workoutHistory[currentUser.email] || [];
+            
+            if (userWorkouts.length === 0) {
+                return `
+                    <div class="text-center py-8">
+                        <div class="text-4xl mb-4">🏋️‍♂️</div>
+                        <p style="color: var(--text-secondary)">No workouts logged yet. Start your fitness journey today!</p>
+                    </div>
+                `;
+            }
+            
+            return userWorkouts.slice(-5).reverse().map(workout => `
+                <div class="glass-card rounded-2xl p-4 flex justify-between items-center">
+                    <div>
+                        <h4 class="font-semibold" style="color: var(--text-primary)">${workout.type}</h4>
+                        <p class="text-sm" style="color: var(--text-secondary)">${new Date(workout.date).toLocaleDateString()}</p>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-lg font-bold font-display" style="color: var(--text-primary)">${workout.duration}min</div>
+                        <div class="text-sm" style="color: var(--text-secondary)">${workout.exercises} exercises</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function generateGoalProgress() {
+            if (!userPlan.goal) {
+                return `
+                    <div class="text-center py-8">
+                        <div class="text-4xl mb-4">🎯</div>
+                        <p style="color: var(--text-secondary)">Set up your first workout plan to track goal progress!</p>
+                    </div>
+                `;
+            }
+            
+            const progress = calculateGoalProgress();
+            
+            return `
+                <div class="space-y-6">
+                    <div class="text-center">
+                        <div class="text-6xl mb-4">${getGoalEmoji(userPlan.goal)}</div>
+                        <h4 class="font-heading text-xl font-semibold mb-2" style="color: var(--text-primary)">
+                            ${userPlan.goal.charAt(0).toUpperCase() + userPlan.goal.slice(1)} Goal
+                        </h4>
+                        <div class="w-full glass-card rounded-full h-4 mb-2">
+                            <div class="bg-gradient-to-r from-green-400 to-blue-500 h-4 rounded-full transition-all duration-500" style="width: ${progress}%"></div>
+                        </div>
+                        <p class="text-sm" style="color: var(--text-secondary)">${progress}% Complete</p>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="glass-card rounded-xl p-4 text-center">
+                            <div class="text-lg font-bold font-display" style="color: var(--text-primary)">${userPlan.timeframe || 'Not Set'}</div>
+                            <div class="text-sm" style="color: var(--text-secondary)">Timeframe</div>
+                        </div>
+                        <div class="glass-card rounded-xl p-4 text-center">
+                            <div class="text-lg font-bold font-display" style="color: var(--text-primary)">${userPlan.level || 'Not Set'}</div>
+                            <div class="text-sm" style="color: var(--text-secondary)">Level</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function calculateGoalProgress() {
+            const userWorkouts = userData.workoutHistory[currentUser.email] || [];
+            const timeframeWeeks = {
+                '4-weeks': 4,
+                '8-weeks': 8,
+                '12-weeks': 12
+            };
+            
+            const targetWeeks = timeframeWeeks[userPlan.timeframe] || 8;
+            const currentWeeks = Math.floor(userWorkouts.length / 7);
+            
+            return Math.min(Math.round((currentWeeks / targetWeeks) * 100), 100);
+        }
+
+        function getGoalEmoji(goal) {
+            const emojiMap = {
+                'powerlifting': '🏋️‍♂️',
+                'bodybuilding': '💪',
+                'general-fitness': '⚡'
+            };
+            return emojiMap[goal] || '🎯';
+        }
+
+        function generateWeeklyReport() {
+            if (!currentUser) {
+                showNotification('Please log in to generate reports', 'error');
+                return;
+            }
+            
+            const userWorkouts = userData.workoutHistory[currentUser.email] || [];
+            const thisWeekWorkouts = userWorkouts.filter(workout => {
+                const workoutDate = new Date(workout.date);
+                const weekAgo = new Date();
+                weekAgo.setDate(weekAgo.getDate() - 7);
+                return workoutDate >= weekAgo;
+            });
+            
+            const report = {
+                weekStart: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString(),
+                goal: userPlan.goal || 'General Fitness',
+                workoutsCompleted: thisWeekWorkouts.length,
+                totalSets: thisWeekWorkouts.reduce((sum, w) => sum + (w.sets || 0), 0),
+                progressScore: Math.min(Math.round((thisWeekWorkouts.length / 6) * 100), 100),
+                notes: `Great work this week! You completed ${thisWeekWorkouts.length} workouts${userPlan.goal ? ` focusing on ${userPlan.goal}` : ''}.`
+            };
+            
+            if (!userData.weeklyReports[currentUser.email]) {
+                userData.weeklyReports[currentUser.email] = [];
+            }
+            
+            userData.weeklyReports[currentUser.email].push(report);
+            localStorage.setItem('weeklyReports', JSON.stringify(userData.weeklyReports));
+            
+            showNotification('Weekly report generated successfully!', 'success');
+            
+            // Refresh dashboard
+            generateDashboard();
+        }
+
+        function logWorkout() {
+            if (!currentUser) {
+                showNotification('Please log in to log workouts', 'error');
+                return;
+            }
+            
+            const workoutTypes = ['Heavy Squat', 'Heavy Bench', 'Heavy Deadlift', 'Speed Work', 'Accessory', 'Cardio', 'Upper Body', 'Lower Body', 'Full Body', 'HIIT'];
+            const randomType = workoutTypes[Math.floor(Math.random() * workoutTypes.length)];
+            
+            const workout = {
+                date: new Date().toISOString(),
+                type: randomType,
+                duration: Math.floor(Math.random() * 60) + 30,
+                exercises: Math.floor(Math.random() * 8) + 4,
+                sets: Math.floor(Math.random() * 20) + 10
+            };
+            
+            if (!userData.workoutHistory[currentUser.email]) {
+                userData.workoutHistory[currentUser.email] = [];
+            }
+            
+            userData.workoutHistory[currentUser.email].push(workout);
+            localStorage.setItem('workoutHistory', JSON.stringify(userData.workoutHistory));
+            
+            showNotification(`${randomType} workout logged successfully!`, 'success');
+            
+            // Refresh dashboard
+            generateDashboard();
+        }
+
+        // Form handlers and app initialization
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize app
+            initTheme();
+            checkExistingLogin();
+            updateAuthUI();
+            
+            // Initialize all event handlers
+            initializeOptionHandlers();
+            initializeInputHandlers();
+            
+            // Login form handler
+            document.getElementById('loginForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value.trim();
+                const password = document.getElementById('loginPassword').value;
+                
+                login(email, password);
+            });
+
+            // Signup form handler
+            document.getElementById('signupForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const name = document.getElementById('signupName').value.trim();
+                const email = document.getElementById('signupEmail').value.trim();
+                const password = document.getElementById('signupPassword').value;
+                
+                signup(name, email, password);
+            });
+            
+            // Close modal when clicking outside
+            document.getElementById('authModal').addEventListener('click', (e) => {
+                if (e.target.id === 'authModal') {
+                    closeAuthModal();
+                }
+            });
+            
+            // ESC key to close modal
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeAuthModal();
+                }
+            });
+        });
+
+        // Exercise database organized by training goals
+        const exerciseDatabase = {
+            powerlifting: {
+                beginner: [
+                    { name: "Bodyweight Squats", sets: "3", reps: "8-12", description: "Learn squat movement pattern" },
+                    { name: "Push-ups", sets: "3", reps: "5-10", description: "Build pressing strength foundation" },
+                    { name: "Assisted Deadlifts", sets: "3", reps: "5-8", description: "Practice deadlift form with light weight" },
+                    { name: "Plank", sets: "3", reps: "20-30 sec", description: "Core stability for compound lifts" },
+                    { name: "Glute Bridges", sets: "3", reps: "10-15", description: "Hip hinge pattern development" }
+                ],
+                intermediate: [
+                    { name: "Back Squats", sets: "4", reps: "3-5", description: "Primary squat strength development" },
+                    { name: "Bench Press", sets: "4", reps: "3-5", description: "Primary pressing strength" },
+                    { name: "Conventional Deadlifts", sets: "3", reps: "1-5", description: "Primary pulling strength" },
+                    { name: "Overhead Press", sets: "3", reps: "5-8", description: "Accessory pressing movement" },
+                    { name: "Barbell Rows", sets: "3", reps: "5-8", description: "Back strength for deadlifts" }
+                ],
+                advanced: [
+                    { name: "Competition Squats", sets: "5", reps: "1-3", description: "Heavy squat singles and doubles" },
+                    { name: "Competition Bench", sets: "5", reps: "1-3", description: "Heavy bench press singles" },
+                    { name: "Competition Deadlifts", sets: "4", reps: "1-2", description: "Heavy deadlift singles" },
+                    { name: "Pause Bench Press", sets: "4", reps: "2-4", description: "Competition-style bench training" },
+                    { name: "Deficit Deadlifts", sets: "3", reps: "3-5", description: "Deadlift strength from deficit" }
+                ]
+            },
+            bodybuilding: {
+                beginner: [
+                    { name: "Push-ups", sets: "3", reps: "8-12", description: "Chest muscle development" },
+                    { name: "Bodyweight Squats", sets: "3", reps: "12-15", description: "Leg muscle building" },
+                    { name: "Assisted Pull-ups", sets: "3", reps: "5-10", description: "Back muscle development" },
+                    { name: "Dumbbell Curls", sets: "3", reps: "10-15", description: "Bicep isolation" },
+                    { name: "Tricep Dips", sets: "3", reps: "8-12", description: "Tricep muscle building" }
+                ],
+                intermediate: [
+                    { name: "Dumbbell Bench Press", sets: "4", reps: "8-12", description: "Chest hypertrophy focus" },
+                    { name: "Goblet Squats", sets: "4", reps: "10-15", description: "Leg muscle development" },
+                    { name: "Lat Pulldowns", sets: "4", reps: "10-12", description: "Back width development" },
+                    { name: "Lateral Raises", sets: "3", reps: "12-15", description: "Shoulder width building" },
+                    { name: "Romanian Deadlifts", sets: "3", reps: "10-12", description: "Hamstring and glute focus" }
+                ],
+                advanced: [
+                    { name: "Incline Barbell Press", sets: "4", reps: "6-10", description: "Upper chest development" },
+                    { name: "Bulgarian Split Squats", sets: "4", reps: "8-12", description: "Unilateral leg development" },
+                    { name: "Weighted Pull-ups", sets: "4", reps: "6-10", description: "Back thickness and width" },
+                    { name: "Arnold Press", sets: "4", reps: "8-12", description: "Complete shoulder development" },
+                    { name: "Walking Lunges", sets: "3", reps: "12-15", description: "Leg definition and shape" }
+                ]
+            },
+            'weight-loss': {
+                beginner: [
+                    { name: "Marching in Place", sets: "3", reps: "30 sec", description: "Low-impact cardio warm-up" },
+                    { name: "Wall Push-ups", sets: "3", reps: "10-15", description: "Upper body strength with cardio" },
+                    { name: "Bodyweight Squats", sets: "3", reps: "15-20", description: "Lower body fat burning" },
+                    { name: "Modified Burpees", sets: "3", reps: "5-10", description: "Full body calorie burner" },
+                    { name: "Plank Hold", sets: "3", reps: "15-30 sec", description: "Core stability and strength" }
+                ],
+                intermediate: [
+                    { name: "Jump Squats", sets: "4", reps: "15-20", description: "Explosive lower body cardio" },
+                    { name: "Push-up to T", sets: "4", reps: "10-15", description: "Upper body with core rotation" },
+                    { name: "Burpees", sets: "4", reps: "8-15", description: "Full body high-intensity exercise" },
+                    { name: "Mountain Climbers", sets: "4", reps: "20-30", description: "Cardio with core engagement" },
+                    { name: "High Knees", sets: "4", reps: "30 sec", description: "Cardio and leg activation" }
+                ],
+                advanced: [
+                    { name: "Burpee Box Jumps", sets: "5", reps: "10-15", description: "Advanced full body cardio" },
+                    { name: "Thrusters", sets: "5", reps: "12-20", description: "Full body compound movement" },
+                    { name: "Battle Ropes", sets: "5", reps: "30 sec", description: "High-intensity upper body cardio" },
+                    { name: "Kettlebell Swings", sets: "4", reps: "20-30", description: "Explosive hip drive cardio" },
+                    { name: "Sprint Intervals", sets: "6", reps: "20 sec", description: "Maximum intensity cardio bursts" }
+                ]
+            },
+            'general-fitness': {
+                beginner: [
+                    { name: "Bodyweight Squats", sets: "3", reps: "12-20", description: "Functional lower body strength and calorie burn" },
+                    { name: "Wall Push-ups", sets: "3", reps: "10-15", description: "Upper body strength building" },
+                    { name: "Marching in Place", sets: "3", reps: "30 sec", description: "Low-impact cardio warm-up" },
+                    { name: "Modified Burpees", sets: "3", reps: "5-10", description: "Full body calorie burner" },
+                    { name: "Plank Hold", sets: "3", reps: "15-30 sec", description: "Core stability and strength" }
+                ],
+                intermediate: [
+                    { name: "Jump Squats", sets: "4", reps: "15-20", description: "Explosive lower body and cardio" },
+                    { name: "Push-ups", sets: "4", reps: "10-15", description: "Upper body strength and endurance" },
+                    { name: "Burpees", sets: "4", reps: "8-15", description: "Full body high-intensity exercise" },
+                    { name: "Mountain Climbers", sets: "4", reps: "20-30", description: "Cardio with core engagement" },
+                    { name: "High Knees", sets: "4", reps: "30 sec", description: "Cardio and leg activation" }
+                ],
+                advanced: [
+                    { name: "Burpee Box Jumps", sets: "5", reps: "10-15", description: "Advanced full body cardio" },
+                    { name: "Thrusters", sets: "5", reps: "12-20", description: "Full body compound movement" },
+                    { name: "Kettlebell Swings", sets: "4", reps: "20-30", description: "Explosive hip drive and cardio" },
+                    { name: "Sprint Intervals", sets: "6", reps: "20 sec", description: "Maximum intensity cardio bursts" },
+                    { name: "Turkish Get-ups", sets: "3", reps: "5-8", description: "Full body functional movement" }
+                ]
+            }
+        };
+
+
+
+        // Workout plans based on goals and levels
+        const workoutPlans = {
+            'powerlifting': {
+                beginner: {
+                    frequency: 6,
+                    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                    split: ['Heavy Squat', 'Heavy Bench', 'Heavy Deadlift', 'Speed Squat', 'Speed Bench', 'Speed Deadlift'],
+                    restDays: ['Sunday']
+                },
+                intermediate: {
+                    frequency: 6,
+                    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                    split: ['Heavy Squat', 'Heavy Bench', 'Heavy Deadlift', 'Speed Squat', 'Speed Bench', 'Speed Deadlift'],
+                    restDays: ['Sunday']
+                },
+                advanced: {
+                    frequency: 6,
+                    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                    split: ['Heavy Squat', 'Heavy Bench', 'Heavy Deadlift', 'Speed Squat', 'Speed Bench', 'Speed Deadlift'],
+                    restDays: ['Sunday']
+                }
+            },
+            'bodybuilding': {
+                beginner: {
+                    frequency: 3,
+                    days: ['Monday', 'Wednesday', 'Friday'],
+                    split: ['Full Body Hypertrophy', 'Full Body Hypertrophy', 'Full Body Hypertrophy'],
+                    restDays: ['Tuesday', 'Thursday', 'Saturday', 'Sunday']
+                },
+                intermediate: {
+                    frequency: 4,
+                    days: ['Monday', 'Tuesday', 'Thursday', 'Friday'],
+                    split: ['Upper Body', 'Lower Body', 'Push Focus', 'Pull Focus'],
+                    restDays: ['Wednesday', 'Saturday', 'Sunday']
+                },
+                advanced: {
+                    frequency: 5,
+                    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                    split: ['Chest & Triceps', 'Back & Biceps', 'Legs & Glutes', 'Shoulders & Abs', 'Arms & Core'],
+                    restDays: ['Saturday', 'Sunday']
+                }
+            },
+            'general-fitness': {
+                beginner: {
+                    frequency: 4,
+                    days: ['Monday', 'Tuesday', 'Thursday', 'Friday'],
+                    split: ['Full Body Circuit', 'Cardio & Core', 'Full Body Circuit', 'Cardio & Core'],
+                    restDays: ['Wednesday', 'Saturday', 'Sunday']
+                },
+                intermediate: {
+                    frequency: 5,
+                    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+                    split: ['HIIT Circuit', 'Upper Body', 'Cardio & Core', 'Lower Body', 'Full Body HIIT'],
+                    restDays: ['Saturday', 'Sunday']
+                },
+                advanced: {
+                    frequency: 6,
+                    days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+                    split: ['HIIT Upper', 'HIIT Lower', 'Cardio & Core', 'HIIT Upper', 'HIIT Lower', 'Full Body Circuit'],
+                    restDays: ['Sunday']
+                }
+            }
+        };
+
+        // Step navigation
+        let currentStep = 1;
+        const totalSteps = 4;
+
+        // Option selection handlers - Initialize after DOM is loaded
+        function initializeOptionHandlers() {
+            document.querySelectorAll('.option-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    const step = e.currentTarget.closest('[id^="step"]').id;
+                    
+                    // Handle different sections within step4
+                    let sectionCards;
+                    if (step === 'step4') {
+                        // Find the specific section this card belongs to
+                        const section = e.currentTarget.closest('[id$="Section"], #powerliftingOptions, #generalOptions');
+                        if (section) {
+                            sectionCards = section.querySelectorAll('.option-card');
+                        } else {
+                            sectionCards = document.querySelectorAll(`#${step} .option-card`);
+                        }
+                    } else {
+                        sectionCards = document.querySelectorAll(`#${step} .option-card`);
+                    }
+                    
+                    // Remove selected class from cards in this section only
+                    sectionCards.forEach(c => c.classList.remove('selected'));
+                    
+                    // Add selected class to clicked card
+                    e.currentTarget.classList.add('selected');
+                    
+                    // Store selection
+                    if (step === 'step1') {
+                        // Check if user is logged in before allowing goal selection
+                        if (!isAuthenticated) {
+                            showAuthModal('login');
+                            showNotification('Please log in to create a workout plan', 'info');
+                            return;
+                        }
+                        userPlan.goal = e.currentTarget.getAttribute('data-goal');
+                    } else if (step === 'step2') {
+                        userPlan.timeframe = e.currentTarget.getAttribute('data-timeframe');
+                    } else if (step === 'step3') {
+                        userPlan.level = e.currentTarget.getAttribute('data-level');
+                    } else if (step === 'step4') {
+                        const weightGoal = e.currentTarget.getAttribute('data-weight-goal');
+                        const weightCategory = e.currentTarget.getAttribute('data-weight-category');
+                        const deadliftStyle = e.currentTarget.getAttribute('data-deadlift-style');
+                        
+                        if (weightGoal) {
+                            userPlan.weightGoal = weightGoal;
+                            if (weightGoal !== 'maintain') {
+                                document.getElementById('targetWeightSection').style.display = 'block';
+                            } else {
+                                document.getElementById('targetWeightSection').style.display = 'none';
+                                setTimeout(() => {
+                                    nextStep();
+                                }, 500);
+                            }
+                        } else if (weightCategory) {
+                            userPlan.weightCategory = weightCategory;
+                            document.getElementById('deadliftStyleSection').style.display = 'block';
+                        } else if (deadliftStyle) {
+                            userPlan.deadliftStyle = deadliftStyle;
+                            document.getElementById('oneRMSection').style.display = 'block';
+                        }
+                    }
+                    
+                    // Auto-advance to next step (except for step 4 weight goal selection)
+                    if (step !== 'step4' || e.currentTarget.getAttribute('data-weight-goal') === 'maintain' || e.currentTarget.getAttribute('data-deadlift-style')) {
+                        setTimeout(() => {
+                            nextStep();
+                        }, 500);
+                    }
+                    
+                    // Show appropriate step 4 content based on goal
+                    if (step === 'step3') {
+                        setTimeout(() => {
+                            if (userPlan.goal === 'powerlifting') {
+                                document.getElementById('powerliftingOptions').style.display = 'block';
+                                document.getElementById('generalOptions').style.display = 'none';
+                            } else {
+                                document.getElementById('powerliftingOptions').style.display = 'none';
+                                document.getElementById('generalOptions').style.display = 'block';
+                            }
+                        }, 600);
+                    }
+                });
+            });
+        }
+
+        // Initialize input handlers
+        function initializeInputHandlers() {
+            // Weight input handlers
+            const currentWeightInput = document.getElementById('currentWeight');
+            const targetWeightInput = document.getElementById('targetWeight');
+            const weightUnitSelect = document.getElementById('weightUnit');
+            
+            if (currentWeightInput) {
+                currentWeightInput.addEventListener('input', updateWeightCalculation);
+            }
+            if (targetWeightInput) {
+                targetWeightInput.addEventListener('input', updateWeightCalculation);
+            }
+            if (weightUnitSelect) {
+                weightUnitSelect.addEventListener('change', (e) => {
+                    userPlan.weightUnit = e.target.value;
+                    const targetWeightUnit = document.getElementById('targetWeightUnit');
+                    if (targetWeightUnit) {
+                        targetWeightUnit.textContent = e.target.value;
+                    }
+                    updateWeightCalculation();
+                });
+            }
+
+            // 1RM input handlers
+            const squatInput = document.getElementById('squatOneRM');
+            const benchInput = document.getElementById('benchOneRM');
+            const deadliftInput = document.getElementById('deadliftOneRM');
+            const confirmButton = document.getElementById('confirm1RM');
+            
+            if (squatInput) squatInput.addEventListener('input', validate1RM);
+            if (benchInput) benchInput.addEventListener('input', validate1RM);
+            if (deadliftInput) deadliftInput.addEventListener('input', validate1RM);
+            
+            if (confirmButton) {
+                confirmButton.addEventListener('click', () => {
+                    userPlan.squatOneRM = parseFloat(document.getElementById('squatOneRM').value);
+                    userPlan.benchOneRM = parseFloat(document.getElementById('benchOneRM').value);
+                    userPlan.deadliftOneRM = parseFloat(document.getElementById('deadliftOneRM').value);
+                    
+                    // Add visual feedback
+                    const button = document.getElementById('confirm1RM');
+                    button.textContent = '✅ Confirmed!';
+                    button.style.background = 'linear-gradient(to right, #10b981, #059669)';
+                    
+                    setTimeout(() => {
+                        nextStep();
+                    }, 800);
+                });
+            }
+            
+            // Generate plan button handler
+            const createPlanButton = document.getElementById('createPlan');
+            if (createPlanButton) {
+                createPlanButton.addEventListener('click', () => {
+                    if (!isAuthenticated) {
+                        showAuthModal('login');
+                        showNotification('Please log in to create your workout plan', 'info');
+                        return;
+                    }
+                    generateWorkoutPlan();
+                });
+            }
+        }
+
+        function validate1RM() {
+            const squatRM = document.getElementById('squatOneRM').value;
+            const benchRM = document.getElementById('benchOneRM').value;
+            const deadliftRM = document.getElementById('deadliftOneRM').value;
+            
+            const confirmButton = document.getElementById('confirm1RM');
+            
+            if (squatRM && benchRM && deadliftRM && 
+                parseFloat(squatRM) > 0 && parseFloat(benchRM) > 0 && parseFloat(deadliftRM) > 0) {
+                confirmButton.style.display = 'block';
+            } else {
+                confirmButton.style.display = 'none';
+            }
+        }
+
+        function updateWeightCalculation() {
+            const currentWeight = parseFloat(document.getElementById('currentWeight').value);
+            const targetWeight = parseFloat(document.getElementById('targetWeight').value);
+            
+            userPlan.currentWeight = currentWeight;
+            userPlan.targetWeight = targetWeight;
+            
+            if (currentWeight && targetWeight) {
+                const difference = Math.abs(targetWeight - currentWeight);
+                const direction = targetWeight > currentWeight ? 'gain' : 'lose';
+                const unit = userPlan.weightUnit;
+                
+                // Calculate realistic weight change limits based on timeframe
+                const timeframeWeeks = {
+                    '4-weeks': 4,
+                    '8-weeks': 8,
+                    '12-weeks': 12
+                };
+                
+                const weeks = timeframeWeeks[userPlan.timeframe];
+                const maxWeightLoss = weeks * 1; // 1kg per week max safe loss
+                const maxWeightGain = weeks * 0.5; // 0.5kg per week max realistic gain
+                
+                let isRealistic = true;
+                let warningMessage = '';
+                
+                if (direction === 'lose' && difference > maxWeightLoss) {
+                    isRealistic = false;
+                    warningMessage = `Losing ${difference.toFixed(1)}${unit} in ${weeks} weeks is unrealistic. Max recommended: ${maxWeightLoss}${unit}`;
+                } else if (direction === 'gain' && difference > maxWeightGain) {
+                    isRealistic = false;
+                    warningMessage = `Gaining ${difference.toFixed(1)}${unit} in ${weeks} weeks is unrealistic. Max recommended: ${maxWeightGain}${unit}`;
+                }
+                
+                document.getElementById('weightDifference').textContent = 
+                    `Goal: ${direction} ${difference.toFixed(1)} ${unit}`;
+                
+                const warningElement = document.getElementById('weightWarning');
+                if (!isRealistic) {
+                    warningElement.textContent = warningMessage;
+                    warningElement.style.display = 'block';
+                } else {
+                    warningElement.style.display = 'none';
+                    // Auto-advance only if realistic
+                    setTimeout(() => {
+                        nextStep();
+                    }, 1000);
+                }
+            }
+        }
+
+        function nextStep() {
+            if (currentStep < totalSteps) {
+                // Hide current step
+                document.getElementById(`step${currentStep}`).style.display = 'none';
+                
+                currentStep++;
+                
+                // Show next step
+                document.getElementById(`step${currentStep}`).style.display = 'block';
+                
+                // Update progress
+                updateProgress();
+            } else if (currentStep === totalSteps && userPlan.level) {
+                // Show generate button
+                document.getElementById('generateButton').style.display = 'block';
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            const progress = (currentStep / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressText').textContent = `Step ${currentStep} of ${totalSteps}`;
+            
+            if (currentStep > totalSteps) {
+                document.getElementById('progressText').textContent = 'Setup Complete!';
+            }
+        }
+
+        // Generate workout plan function
+        function generateWorkoutPlan() {
+            // Validate required fields
+            if (!userPlan.goal || !userPlan.timeframe || !userPlan.level) {
+                showNotification('Please complete all setup steps', 'error');
+                return;
+            }
+            
+            // Save user's workout plan
+            if (currentUser) {
+                if (!currentUser.workoutPlans) {
+                    currentUser.workoutPlans = [];
+                }
+                
+                const planData = {
+                    ...userPlan,
+                    createdDate: new Date().toISOString(),
+                    id: Date.now()
+                };
+                
+                currentUser.workoutPlans.push(planData);
+                userData.users[currentUser.email] = currentUser;
+                localStorage.setItem('muscleFitUsers', JSON.stringify(userData.users));
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            }
+            
+            // Hide setup phase
+            document.getElementById('setupPhase').style.display = 'none';
+            
+            // Show workout phase
+            document.getElementById('workoutPhase').style.display = 'block';
+            
+            // Generate plan header
+            generatePlanHeader();
+            
+            // Generate weekly schedule
+            generateWeeklySchedule();
+            
+            showNotification('Your personalized workout plan is ready!', 'success');
+        }
+
+        function generateWorkoutPlan() {
+            // Hide setup phase
+            document.getElementById('setupPhase').style.display = 'none';
+            
+            // Show workout phase
+            document.getElementById('workoutPhase').style.display = 'block';
+            
+            // Generate plan header
+            generatePlanHeader();
+            
+            // Generate weekly schedule
+            generateWeeklySchedule();
+        }
+
+        function generatePlanHeader() {
+            const goalNames = {
+                'powerlifting': 'Powerlifting',
+                'bodybuilding': 'Bodybuilding',
+                'general-fitness': 'General Fitness'
+            };
+            
+            const levelNames = {
+                'beginner': 'Beginner',
+                'intermediate': 'Intermediate',
+                'advanced': 'Advanced'
+            };
+            
+            const timeframeNames = {
+                '4-weeks': '4 Week',
+                '8-weeks': '8 Week',
+                '12-weeks': '12 Week'
+            };
+            
+            const plan = workoutPlans[userPlan.goal][userPlan.level];
+            
+            // Different info based on goal type
+            let weightInfo = '';
+            let targetWeightInfo = '';
+            
+            if (userPlan.goal === 'powerlifting') {
+                weightInfo = userPlan.weightCategory ? 
+                    `<div class="glass-card rounded-xl p-4">
+                        <div class="text-2xl mb-2">🏆</div>
+                        <div class="text-white font-semibold">${userPlan.weightCategory}</div>
+                        <div class="text-white/70 text-sm">Weight Category</div>
+                    </div>` : '';
+                
+                targetWeightInfo = userPlan.deadliftStyle ? 
+                    `<div class="glass-card rounded-xl p-4">
+                        <div class="text-2xl mb-2">${userPlan.deadliftStyle === 'sumo' ? '🤸‍♂️' : '🏋️‍♂️'}</div>
+                        <div class="text-white font-semibold">${userPlan.deadliftStyle.charAt(0).toUpperCase() + userPlan.deadliftStyle.slice(1)}</div>
+                        <div class="text-white/70 text-sm">Deadlift Style</div>
+                    </div>` : '';
+            } else {
+                weightInfo = userPlan.currentWeight ? 
+                    `<div class="glass-card rounded-xl p-4">
+                        <div class="text-2xl mb-2">⚖️</div>
+                        <div class="text-white font-semibold">${userPlan.currentWeight} ${userPlan.weightUnit}</div>
+                        <div class="text-white/70 text-sm">Current Weight</div>
+                    </div>` : '';
+                
+                targetWeightInfo = userPlan.targetWeight && userPlan.weightGoal !== 'maintain' ? 
+                    `<div class="glass-card rounded-xl p-4">
+                        <div class="text-2xl mb-2">${userPlan.weightGoal === 'gain' ? '📈' : '📉'}</div>
+                        <div class="text-white font-semibold">${userPlan.targetWeight} ${userPlan.weightUnit}</div>
+                        <div class="text-white/70 text-sm">Target Weight</div>
+                    </div>` : '';
+            }
+
+            document.getElementById('planHeader').innerHTML = `
+                <div class="slide-in">
+                    <h2 class="text-4xl font-bold text-white mb-4">🎯 Your Personalized Plan</h2>
+                    <div class="grid md:grid-cols-${(weightInfo && targetWeightInfo) ? '4' : '2'} gap-4 mb-6">
+                        <div class="glass-card rounded-xl p-4">
+                            <div class="text-2xl mb-2">🎯</div>
+                            <div class="text-white font-semibold">${goalNames[userPlan.goal]}</div>
+                            <div class="text-white/70 text-sm">Primary Goal</div>
+                        </div>
+                        <div class="glass-card rounded-xl p-4">
+                            <div class="text-2xl mb-2">⏰</div>
+                            <div class="text-white font-semibold">${timeframeNames[userPlan.timeframe]}</div>
+                            <div class="text-white/70 text-sm">Timeframe</div>
+                        </div>
+                        ${weightInfo}
+                        ${targetWeightInfo}
+                    </div>
+                    <p class="text-white/90 text-lg">Your customized ${userPlan.goal === 'powerlifting' ? '6-day powerlifting' : plan.frequency + '-day'} workout plan designed specifically for ${goalNames[userPlan.goal].toLowerCase()}${userPlan.goal !== 'powerlifting' ? ' at the ' + levelNames[userPlan.level].toLowerCase() + ' level' : ''}.</p>
+                </div>
+            `;
+        }
+
+        function generateWeeklySchedule() {
+            const plan = workoutPlans[userPlan.goal][userPlan.level];
+            let scheduleHTML = '';
+            
+            // Workout days
+            plan.days.forEach((day, index) => {
+                const workoutType = plan.split[index];
+                const exercises = getExercisesForWorkout(workoutType);
+                
+                scheduleHTML += `
+                    <div class="glass-card rounded-3xl p-6 mb-6 slide-in workout-day" style="animation-delay: ${index * 0.1}s">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="text-2xl font-bold text-white">${day} - ${workoutType}</h3>
+                            <div class="text-3xl">${getWorkoutEmoji(workoutType)}</div>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            ${exercises.map((exercise, exerciseIndex) => `
+                                <div class="exercise-card glass-card rounded-2xl p-4 fade-in" style="animation-delay: ${(index * 0.1) + (exerciseIndex * 0.05)}s">
+                                    <div class="flex-1">
+                                        <h4 class="text-lg font-semibold text-white mb-2">${exercise.name}</h4>
+                                        <p class="text-white/70 text-sm mb-3">${exercise.description}</p>
+                                        <div class="flex gap-3 text-sm flex-wrap">
+                                            <span class="bg-white/10 px-3 py-1 rounded-lg text-white">
+                                                <strong>Sets:</strong> ${exercise.sets}
+                                            </span>
+                                            <span class="bg-white/10 px-3 py-1 rounded-lg text-white">
+                                                <strong>Reps:</strong> ${exercise.reps}
+                                            </span>
+                                            ${exercise.weight1RM ? `
+                                                <span class="bg-gradient-to-r from-blue-500 to-purple-600 px-3 py-1 rounded-lg text-white font-semibold">
+                                                    <strong>Weight:</strong> ${exercise.weight1RM}
+                                                </span>
+                                            ` : ''}
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        
+                        <div class="mt-6 glass-card rounded-xl p-4">
+                            <h5 class="text-white font-semibold mb-2 flex items-center">
+                                💡 ${workoutType} Tips
+                            </h5>
+                            <div class="text-white/80 text-sm">
+                                ${getWorkoutTips(workoutType, userPlan.level)}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            // Rest days
+            if (plan.restDays.length > 0) {
+                scheduleHTML += `
+                    <div class="glass-card rounded-3xl p-6 mb-6 slide-in" style="animation-delay: ${plan.days.length * 0.1}s">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-2xl font-bold text-white">Rest Days</h3>
+                            <div class="text-3xl">😴</div>
+                        </div>
+                        <div class="text-white/90 mb-4">
+                            <strong>Days:</strong> ${plan.restDays.join(', ')}
+                        </div>
+                        <div class="glass-card rounded-xl p-4">
+                            <h5 class="text-white font-semibold mb-2">🧘‍♂️ Active Recovery Options</h5>
+                            <ul class="text-white/80 text-sm space-y-1">
+                                <li>• Light walking or gentle yoga</li>
+                                <li>• Stretching and mobility work</li>
+                                <li>• Foam rolling and self-massage</li>
+                                <li>• Complete rest if feeling fatigued</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('weeklySchedule').innerHTML = scheduleHTML;
+            
+            // Add weekly progression overview
+            addWeeklyProgression();
+        }
+
+        function getExercisesForWorkout(workoutType) {
+            const goal = userPlan.goal;
+            const level = userPlan.level;
+            let exercises = [];
+            
+            // Get exercises based on the specific goal
+            const goalExercises = exerciseDatabase[goal][level];
+            
+            // Powerlifting-specific exercises with 1RM percentages
+            if (goal === 'powerlifting') {
+                switch (workoutType) {
+                    case 'Heavy Squat':
+                        if (level === 'beginner') {
+                            exercises = [
+                                { name: "Competition Squat", sets: "4", reps: "3-5", weight1RM: calculateWeight(userPlan.squatOneRM, 80), description: "Primary squat strength development" },
+                                { name: "Pause Squats", sets: "3", reps: "5", weight1RM: calculateWeight(userPlan.squatOneRM, 70), description: "3-second pause at bottom" },
+                                { name: "Goblet Squats", sets: "3", reps: "10-12", description: "Movement pattern reinforcement" },
+                                { name: "Leg Press", sets: "3", reps: "12-15", description: "Quad development" },
+                                { name: "Plank", sets: "3", reps: "30-45 sec", description: "Core stability" }
+                            ];
+                        } else if (level === 'intermediate') {
+                            exercises = [
+                                { name: "Competition Squat", sets: "5", reps: "2-4", weight1RM: calculateWeight(userPlan.squatOneRM, 85), description: "Heavy squat doubles and triples" },
+                                { name: "Pause Squats", sets: "4", reps: "3-5", weight1RM: calculateWeight(userPlan.squatOneRM, 75), description: "Competition-style pause work" },
+                                { name: "Front Squats", sets: "3", reps: "5-8", weight1RM: calculateWeight(userPlan.squatOneRM, 75), description: "Quad-dominant accessory" },
+                                { name: "Bulgarian Split Squats", sets: "3", reps: "8-12", description: "Unilateral leg strength" },
+                                { name: "Leg Curls", sets: "3", reps: "12-15", description: "Hamstring development" }
+                            ];
+                        } else {
+                            exercises = [
+                                { name: "Competition Squat", sets: "6", reps: "1-3", weight1RM: calculateWeight(userPlan.squatOneRM, 90), description: "Heavy singles and doubles" },
+                                { name: "Pause Squats", sets: "4", reps: "2-4", weight1RM: calculateWeight(userPlan.squatOneRM, 80), description: "Competition pause timing" },
+                                { name: "Pin Squats", sets: "3", reps: "3-5", weight1RM: calculateWeight(userPlan.squatOneRM, 85), description: "Sticking point work" },
+                                { name: "Front Squats", sets: "3", reps: "5-8", weight1RM: calculateWeight(userPlan.squatOneRM, 80), description: "Quad strength accessory" },
+                                { name: "Walking Lunges", sets: "3", reps: "10-12", description: "Unilateral stability" }
+                            ];
+                        }
+                        break;
+                    case 'Speed Squat':
+                        exercises = [
+                            { name: "Speed Squats", sets: "8", reps: "3", weight1RM: calculateWeight(userPlan.squatOneRM, 55), description: "Explosive concentric movement" },
+                            { name: "Box Squats", sets: "6", reps: "3", weight1RM: calculateWeight(userPlan.squatOneRM, 60), description: "Pause and explode technique" },
+                            { name: "Jump Squats", sets: "4", reps: "5", description: "Plyometric power development" },
+                            { name: "Goblet Squats", sets: "3", reps: "12-15", description: "Recovery movement pattern" },
+                            { name: "Leg Curls", sets: "3", reps: "15-20", description: "Hamstring recovery work" }
+                        ];
+                        break;
+                    case 'Heavy Bench':
+                        if (level === 'beginner') {
+                            exercises = [
+                                { name: "Competition Bench Press", sets: "4", reps: "3-5", weight1RM: calculateWeight(userPlan.benchOneRM, 80), description: "Primary bench strength" },
+                                { name: "Pause Bench Press", sets: "3", reps: "5", weight1RM: calculateWeight(userPlan.benchOneRM, 70), description: "2-second pause practice" },
+                                { name: "Incline Dumbbell Press", sets: "3", reps: "8-12", description: "Upper chest development" },
+                                { name: "Tricep Dips", sets: "3", reps: "8-12", description: "Lockout strength" },
+                                { name: "Face Pulls", sets: "3", reps: "15-20", description: "Rear delt health" }
+                            ];
+                        } else if (level === 'intermediate') {
+                            exercises = [
+                                { name: "Competition Bench Press", sets: "5", reps: "2-4", weight1RM: calculateWeight(userPlan.benchOneRM, 85), description: "Heavy bench doubles/triples" },
+                                { name: "Pause Bench Press", sets: "4", reps: "3-5", weight1RM: calculateWeight(userPlan.benchOneRM, 75), description: "Competition pause work" },
+                                { name: "Close Grip Bench", sets: "3", reps: "5-8", weight1RM: calculateWeight(userPlan.benchOneRM, 80), description: "Tricep-focused variation" },
+                                { name: "Incline Barbell Press", sets: "3", reps: "6-10", description: "Upper chest strength" },
+                                { name: "Barbell Rows", sets: "3", reps: "8-12", description: "Back strength balance" }
+                            ];
+                        } else {
+                            exercises = [
+                                { name: "Competition Bench Press", sets: "6", reps: "1-3", weight1RM: calculateWeight(userPlan.benchOneRM, 90), description: "Heavy singles with commands" },
+                                { name: "Pause Bench Press", sets: "4", reps: "2-4", weight1RM: calculateWeight(userPlan.benchOneRM, 80), description: "Competition timing practice" },
+                                { name: "Floor Press", sets: "3", reps: "3-5", weight1RM: calculateWeight(userPlan.benchOneRM, 85), description: "Lockout strength focus" },
+                                { name: "Close Grip Bench", sets: "3", reps: "5-8", weight1RM: calculateWeight(userPlan.benchOneRM, 80), description: "Tricep strength accessory" },
+                                { name: "Weighted Dips", sets: "3", reps: "8-12", description: "Pressing power development" }
+                            ];
+                        }
+                        break;
+                    case 'Speed Bench':
+                        exercises = [
+                            { name: "Speed Bench Press", sets: "8", reps: "3", weight1RM: calculateWeight(userPlan.benchOneRM, 55), description: "Explosive press off chest" },
+                            { name: "Band-Assisted Bench", sets: "6", reps: "5", weight1RM: calculateWeight(userPlan.benchOneRM, 50), description: "Accommodating resistance" },
+                            { name: "Push-ups", sets: "4", reps: "15-20", description: "High-rep endurance" },
+                            { name: "Dumbbell Flyes", sets: "3", reps: "12-15", description: "Chest mobility work" },
+                            { name: "Band Pull-Aparts", sets: "3", reps: "20-25", description: "Rear delt activation" }
+                        ];
+                        break;
+                    case 'Heavy Deadlift':
+                        if (level === 'beginner') {
+                            exercises = [
+                                { name: `Competition ${userPlan.deadliftStyle || 'Conventional'} Deadlift`, sets: "4", reps: "2-4", weight1RM: calculateWeight(userPlan.deadliftOneRM, 80), description: "Primary deadlift strength" },
+                                { name: "Romanian Deadlifts", sets: "3", reps: "6-8", weight1RM: calculateWeight(userPlan.deadliftOneRM, 70), description: "Hip hinge pattern" },
+                                { name: "Barbell Rows", sets: "3", reps: "8-12", description: "Back strength support" },
+                                { name: "Glute Bridges", sets: "3", reps: "12-15", description: "Hip extension strength" },
+                                { name: "Plank", sets: "3", reps: "30-45 sec", description: "Core stability" }
+                            ];
+                        } else if (level === 'intermediate') {
+                            exercises = [
+                                { name: `Competition ${userPlan.deadliftStyle || 'Conventional'} Deadlift`, sets: "5", reps: "1-3", weight1RM: calculateWeight(userPlan.deadliftOneRM, 85), description: "Heavy deadlift singles/doubles" },
+                                { name: "Deficit Deadlifts", sets: "3", reps: "3-5", weight1RM: calculateWeight(userPlan.deadliftOneRM, 75), description: "Increased ROM strength" },
+                                { name: "Romanian Deadlifts", sets: "3", reps: "6-8", weight1RM: calculateWeight(userPlan.deadliftOneRM, 75), description: "Hamstring/glute focus" },
+                                { name: "Barbell Rows", sets: "3", reps: "8-12", description: "Lockout strength support" },
+                                { name: "Rack Pulls", sets: "3", reps: "5-8", weight1RM: calculateWeight(userPlan.deadliftOneRM, 90), description: "Lockout overload" }
+                            ];
+                        } else {
+                            exercises = [
+                                { name: `Competition ${userPlan.deadliftStyle || 'Conventional'} Deadlift`, sets: "6", reps: "1-2", weight1RM: calculateWeight(userPlan.deadliftOneRM, 90), description: "Maximum strength singles" },
+                                { name: "Deficit Deadlifts", sets: "4", reps: "2-4", weight1RM: calculateWeight(userPlan.deadliftOneRM, 80), description: "Off-floor strength" },
+                                { name: "Block Pulls", sets: "3", reps: "3-5", weight1RM: calculateWeight(userPlan.deadliftOneRM, 95), description: "Lockout overload work" },
+                                { name: "Romanian Deadlifts", sets: "3", reps: "6-8", weight1RM: calculateWeight(userPlan.deadliftOneRM, 80), description: "Posterior chain strength" },
+                                { name: "Good Mornings", sets: "3", reps: "8-12", description: "Erector spinae strength" }
+                            ];
+                        }
+                        break;
+                    case 'Speed Deadlift':
+                        exercises = [
+                            { name: `Speed ${userPlan.deadliftStyle || 'Conventional'} Deadlifts`, sets: "8", reps: "2", weight1RM: calculateWeight(userPlan.deadliftOneRM, 55), description: "Explosive pull from floor" },
+                            { name: "Kettlebell Swings", sets: "5", reps: "15", description: "Hip hinge power" },
+                            { name: "Good Mornings", sets: "4", reps: "10-12", description: "Posterior chain activation" },
+                            { name: "Hyperextensions", sets: "3", reps: "15-20", description: "Lower back endurance" },
+                            { name: "Glute Bridges", sets: "3", reps: "15-20", description: "Hip extension recovery" }
+                        ];
+                        break;
+                }
+            } else {
+                // Non-powerlifting exercises (existing logic)
+                switch (workoutType) {
+                    case 'Full Body Hypertrophy':
+                    case 'Full Body':
+                        exercises = goalExercises.slice(0, 5);
+                        break;
+                    case 'Upper Body':
+                    case 'Push Focus':
+                        exercises = goalExercises.filter(ex => 
+                            ex.name.toLowerCase().includes('press') || 
+                            ex.name.toLowerCase().includes('push') ||
+                            ex.name.toLowerCase().includes('curl') ||
+                            ex.name.toLowerCase().includes('raise')
+                        ).slice(0, 5);
+                        break;
+                    case 'Lower Body':
+                    case 'Legs & Glutes':
+                        exercises = goalExercises.filter(ex => 
+                            ex.name.toLowerCase().includes('squat') || 
+                            ex.name.toLowerCase().includes('lunge') ||
+                            ex.name.toLowerCase().includes('deadlift')
+                        ).slice(0, 5);
+                        break;
+                    case 'HIIT Circuit':
+                    case 'Cardio & Core':
+                        exercises = goalExercises.slice(0, 5);
+                        break;
+                    default:
+                        exercises = goalExercises.slice(0, 5);
+                }
+            }
+            
+            // Ensure we have at least 4 exercises
+            if (exercises.length < 4) {
+                exercises.push(...goalExercises.slice(exercises.length, 5));
+            }
+            
+            return exercises.slice(0, 5);
+        }
+
+        function getWorkoutEmoji(workoutType) {
+            const emojiMap = {
+                'Full Body': '🏋️‍♂️',
+                'Full Body Circuit': '🔥',
+                'Full Body HIIT': '⚡',
+                'Upper Body': '💪',
+                'Lower Body': '🦵',
+                'Lower Body & Cardio': '🏃‍♂️',
+                'Chest & Triceps': '💪',
+                'Back & Biceps': '🏔️',
+                'Legs': '🦵',
+                'Shoulders': '🔥',
+                'Arms': '💪',
+                'Cardio & Core': '❤️',
+                'Core & Flexibility': '🧘‍♂️',
+                'HIIT Circuit': '⚡',
+                'HIIT Upper': '🔥',
+                'HIIT Lower': '⚡',
+                'Strength Upper': '💪',
+                'Strength Lower': '🦵',
+                'HIIT & Flexibility': '⚡'
+            };
+            return emojiMap[workoutType] || '🏋️‍♂️';
+        }
+
+        function getWorkoutTips(workoutType, level) {
+            const tips = {
+                'Full Body': 'Focus on compound movements. Rest 48-72 hours between sessions.',
+                'Upper Body': 'Maintain proper form. Balance pushing and pulling exercises.',
+                'Lower Body': 'Engage your core throughout. Focus on full range of motion.',
+                'Cardio & Core': 'Keep intensity moderate. Focus on breathing and form.',
+                'HIIT Circuit': 'Work at maximum effort during intervals. Rest completely between sets.',
+                'Chest & Triceps': 'Warm up shoulders thoroughly. Control the negative portion.',
+                'Back & Biceps': 'Squeeze shoulder blades together. Avoid using momentum.',
+                'Legs': 'Keep knees aligned with toes. Go as deep as mobility allows.',
+                'Shoulders': 'Start with lighter weights. Focus on control over speed.',
+                'Arms': 'Isolate the target muscle. Use full range of motion.',
+                'Heavy Squat': 'Focus on maximum strength. Rest 3-5 minutes between sets. Perfect form is crucial.',
+                'Heavy Bench': 'Competition commands: Start, Press, Rack. Practice pause timing consistently.',
+                'Heavy Deadlift': getDeadliftTips(),
+                'Speed Squat': 'Use 50-60% 1RM. Focus on explosive concentric. Rest 60-90 seconds between sets.',
+                'Speed Bench': 'Explosive press off chest. Use 50-60% 1RM. Focus on bar speed, not weight.',
+                'Speed Deadlift': getSpeedDeadliftTips()
+            };
+            
+            let baseTip = tips[workoutType] || 'Focus on proper form and progressive overload.';
+            
+            if (level === 'beginner') {
+                baseTip += ' Start light and focus on learning proper form.';
+            } else if (level === 'advanced') {
+                baseTip += ' Challenge yourself with progressive overload.';
+            }
+            
+            return baseTip;
+        }
+        
+        function getDeadliftTips() {
+            if (userPlan.deadliftStyle === 'sumo') {
+                return 'Sumo: Wide stance, toes out 30°. Drive knees out, chest up. Shorter range of motion but requires good hip mobility.';
+            } else if (userPlan.deadliftStyle === 'conventional') {
+                return 'Conventional: Feet hip-width, hands outside legs. Hinge at hips, keep bar close. Longer range but more natural for most.';
+            }
+            return 'Focus on hip hinge pattern. Keep the bar close to your body throughout the movement.';
+        }
+        
+        function getSpeedDeadliftTips() {
+            if (userPlan.deadliftStyle === 'sumo') {
+                return 'Speed Sumo: 50-60% 1RM. Explosive hip drive, fast lockout. Focus on speed off floor, not grinding through sticking points.';
+            } else if (userPlan.deadliftStyle === 'conventional') {
+                return 'Speed Conventional: 50-60% 1RM. Fast pull off floor, explosive hip extension. Emphasize speed through entire range of motion.';
+            }
+            return 'Speed work: Use 50-60% 1RM. Focus on explosive movement and bar speed. Rest 60-90 seconds between sets.';
+        }
+
+
+
+        function addWeeklyProgression() {
+            const timeframeWeeks = {
+                '4-weeks': 4,
+                '8-weeks': 8,
+                '12-weeks': 12
+            };
+            
+            const weeks = timeframeWeeks[userPlan.timeframe];
+            let progressionHTML = `
+                <div class="glass-card rounded-3xl p-8 mb-6 slide-in col-span-full">
+                    <h3 class="text-3xl font-bold text-white mb-6 text-center">📅 ${weeks}-Week Detailed Progression Plan</h3>
+            `;
+            
+            // Add detailed weekly breakdown
+            for (let week = 1; week <= weeks; week++) {
+                const weekData = getDetailedWeekData(week, weeks);
+                progressionHTML += `
+                    <div class="glass-card rounded-2xl p-6 mb-4">
+                        <div class="flex items-center justify-between mb-4">
+                            <h4 class="text-xl font-bold text-white">Week ${week} - ${weekData.focus}</h4>
+                            <div class="text-2xl">${weekData.emoji}</div>
+                        </div>
+                        
+                        ${userPlan.goal === 'powerlifting' ? `
+                            <div class="grid md:grid-cols-3 gap-4 mb-4">
+                                <div class="glass-card rounded-xl p-4">
+                                    <h5 class="text-white font-semibold mb-2 flex items-center">
+                                        🏋️‍♂️ Heavy Days
+                                    </h5>
+                                    <div class="space-y-2 text-sm text-white/80">
+                                        <div><strong>Squat:</strong> ${weekData.heavy.squat.sets} sets × ${weekData.heavy.squat.reps} reps @ ${weekData.heavy.squat.weight}</div>
+                                        <div><strong>Bench:</strong> ${weekData.heavy.bench.sets} sets × ${weekData.heavy.bench.reps} reps @ ${weekData.heavy.bench.weight}</div>
+                                        <div><strong>Deadlift:</strong> ${weekData.heavy.deadlift.sets} sets × ${weekData.heavy.deadlift.reps} reps @ ${weekData.heavy.deadlift.weight}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="glass-card rounded-xl p-4">
+                                    <h5 class="text-white font-semibold mb-2 flex items-center">
+                                        ⚡ Speed Days
+                                    </h5>
+                                    <div class="space-y-2 text-sm text-white/80">
+                                        <div><strong>Squat:</strong> ${weekData.speed.squat.sets} sets × ${weekData.speed.squat.reps} reps @ ${weekData.speed.squat.weight}</div>
+                                        <div><strong>Bench:</strong> ${weekData.speed.bench.sets} sets × ${weekData.speed.bench.reps} reps @ ${weekData.speed.bench.weight}</div>
+                                        <div><strong>Deadlift:</strong> ${weekData.speed.deadlift.sets} sets × ${weekData.speed.deadlift.reps} reps @ ${weekData.speed.deadlift.weight}</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="glass-card rounded-xl p-4">
+                                    <h5 class="text-white font-semibold mb-2 flex items-center">
+                                        🎯 Focus Areas
+                                    </h5>
+                                    <div class="space-y-1 text-sm text-white/80">
+                                        ${weekData.focusAreas.map(area => `<div>• ${area}</div>`).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        ` : `
+                            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                <div class="glass-card rounded-xl p-4">
+                                    <h5 class="text-white font-semibold mb-2">📊 Training Volume</h5>
+                                    <div class="text-white/80 text-sm">${weekData.volume}</div>
+                                </div>
+                                <div class="glass-card rounded-xl p-4">
+                                    <h5 class="text-white font-semibold mb-2">🎯 Key Focus</h5>
+                                    <div class="text-white/80 text-sm">${weekData.keyFocus}</div>
+                                </div>
+                            </div>
+                        `}
+                        
+                        <div class="glass-card rounded-xl p-4">
+                            <h5 class="text-white font-semibold mb-2">💡 Week ${week} Tips</h5>
+                            <div class="text-white/80 text-sm">${weekData.tips}</div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            progressionHTML += `
+                    <div class="glass-card rounded-xl p-6 mt-6">
+                        <h5 class="text-white font-semibold mb-4 text-center">📈 Overall Progression Strategy</h5>
+                        <div class="text-white/80 text-sm leading-relaxed">
+                            ${getProgressionStrategy()}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('weeklySchedule').innerHTML += progressionHTML;
+        }
+        
+        function getDetailedWeekData(week, totalWeeks) {
+            const percentage = week / totalWeeks;
+            const level = userPlan.level;
+            
+            if (userPlan.goal === 'powerlifting') {
+                // Powerlifting progression with specific percentages
+                let baseIntensity, speedIntensity, focus, emoji, focusAreas, tips;
+                
+                if (percentage <= 0.3) {
+                    // Foundation weeks
+                    focus = 'Foundation Building';
+                    emoji = '🌱';
+                    baseIntensity = level === 'beginner' ? 70 : level === 'intermediate' ? 75 : 80;
+                    speedIntensity = 50;
+                    focusAreas = ['Perfect technique', 'Movement patterns', 'Base strength'];
+                    tips = 'Focus on form over weight. Master the competition commands and timing.';
+                } else if (percentage <= 0.7) {
+                    // Building weeks
+                    focus = 'Strength Building';
+                    emoji = '🔥';
+                    baseIntensity = level === 'beginner' ? 80 : level === 'intermediate' ? 85 : 90;
+                    speedIntensity = 55;
+                    focusAreas = ['Progressive overload', 'Competition prep', 'Accessory work'];
+                    tips = 'Increase weight gradually. Practice competition timing and commands consistently.';
+                } else {
+                    // Peaking weeks
+                    focus = 'Competition Peaking';
+                    emoji = '🏆';
+                    baseIntensity = level === 'beginner' ? 85 : level === 'intermediate' ? 90 : 95;
+                    speedIntensity = 60;
+                    focusAreas = ['Max strength', 'Competition simulation', 'Mental preparation'];
+                    tips = 'Practice opener, second, and third attempts. Focus on competition day routine.';
+                }
+                
+                // Calculate sets based on week and level, keep reps consistent
+                const heavySets = level === 'beginner' ? Math.min(4 + Math.floor(week/3), 5) : level === 'intermediate' ? Math.min(5 + Math.floor(week/4), 6) : Math.min(6 + Math.floor(week/4), 7);
+                const heavyReps = level === 'beginner' ? '5' : level === 'intermediate' ? '3' : '2';
+                const speedSets = Math.min(8 + Math.floor(week/3), 10);
+                const speedReps = '3';
+                
+                return {
+                    focus,
+                    emoji,
+                    heavy: {
+                        squat: { 
+                            sets: Math.min(heavySets, level === 'advanced' ? 8 : 6), 
+                            reps: heavyReps, 
+                            weight: calculateWeight(userPlan.squatOneRM, baseIntensity + 5)
+                        },
+                        bench: { 
+                            sets: Math.min(heavySets, level === 'advanced' ? 8 : 6), 
+                            reps: heavyReps, 
+                            weight: calculateWeight(userPlan.benchOneRM, baseIntensity + 5)
+                        },
+                        deadlift: { 
+                            sets: Math.min(heavySets - 1, level === 'advanced' ? 7 : 5), 
+                            reps: level === 'beginner' ? '3' : level === 'intermediate' ? '2' : '1', 
+                            weight: calculateWeight(userPlan.deadliftOneRM, baseIntensity + 10)
+                        }
+                    },
+                    speed: {
+                        squat: { 
+                            sets: Math.min(speedSets, 12), 
+                            reps: speedReps, 
+                            weight: calculateWeight(userPlan.squatOneRM, speedIntensity + 5)
+                        },
+                        bench: { 
+                            sets: Math.min(speedSets, 12), 
+                            reps: speedReps, 
+                            weight: calculateWeight(userPlan.benchOneRM, speedIntensity + 5)
+                        },
+                        deadlift: { 
+                            sets: Math.min(speedSets, 10), 
+                            reps: '2', 
+                            weight: calculateWeight(userPlan.deadliftOneRM, speedIntensity + 5)
+                        }
+                    },
+                    focusAreas,
+                    tips
+                };
+            } else {
+                // Non-powerlifting goals
+                let focus, emoji, volume, keyFocus, tips;
+                
+                if (percentage <= 0.3) {
+                    focus = 'Base Building';
+                    emoji = '🌱';
+                    volume = 'Moderate volume, focus on form and consistency';
+                    keyFocus = 'Movement patterns and habit formation';
+                    tips = 'Start conservatively. Focus on consistency over intensity.';
+                } else if (percentage <= 0.7) {
+                    focus = 'Progressive Overload';
+                    emoji = '🔥';
+                    volume = 'Increased volume and intensity for maximum adaptation';
+                    keyFocus = 'Challenge yourself with heavier weights or more reps';
+                    tips = 'Push your limits while maintaining good form. Track your progress.';
+                } else {
+                    focus = 'Peak Performance';
+                    emoji = '🏆';
+                    volume = 'High intensity with strategic recovery periods';
+                    keyFocus = 'Maximum results and performance testing';
+                    tips = 'Give your all while listening to your body. Celebrate your progress!';
+                }
+                
+                return { focus, emoji, volume, keyFocus, tips };
+            }
+        }
+        
+        function getWeekIntensity(week, totalWeeks) {
+            const percentage = week / totalWeeks;
+            
+            if (userPlan.goal === 'powerlifting') {
+                if (percentage <= 0.3) return { focus: 'Foundation', description: 'Form & technique focus' };
+                if (percentage <= 0.7) return { focus: 'Building', description: 'Progressive overload' };
+                return { focus: 'Peaking', description: 'Competition prep' };
+            } else if (userPlan.goal === 'bodybuilding') {
+                if (percentage <= 0.25) return { focus: 'Adaptation', description: 'Volume introduction' };
+                if (percentage <= 0.75) return { focus: 'Growth', description: 'Maximum hypertrophy' };
+                return { focus: 'Definition', description: 'Muscle refinement' };
+            } else {
+                if (percentage <= 0.3) return { focus: 'Base Building', description: 'Conditioning foundation' };
+                if (percentage <= 0.7) return { focus: 'Intensification', description: 'Increased challenge' };
+                return { focus: 'Peak Fitness', description: 'Maximum results' };
+            }
+        }
+        
+        function getWeekEmoji(week, totalWeeks) {
+            const percentage = week / totalWeeks;
+            if (percentage <= 0.3) return '🌱';
+            if (percentage <= 0.7) return '🔥';
+            return '🏆';
+        }
+        
+        function calculateWeight(oneRM, percentage) {
+            if (!oneRM || !percentage) return '';
+            const weight = Math.round((oneRM * percentage / 100) * 2) / 2; // Round to nearest 0.5kg
+            return `${weight}kg (${percentage}%)`;
+        }
+
+        function getProgressionStrategy() {
+            if (userPlan.goal === 'powerlifting') {
+                return 'Start with technique mastery, gradually increase weight while maintaining perfect form. Peak with competition-style training in final weeks.';
+            } else if (userPlan.goal === 'bodybuilding') {
+                return 'Progressive volume increase for maximum muscle growth. Focus on mind-muscle connection and consistent progressive overload.';
+            } else {
+                return 'Build cardiovascular base first, then increase intensity. Combine strength and endurance for complete fitness transformation.';
+            }
+        }
+
+        // Initialize progress
+        updateProgress();
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96c13023d368545e',t:'MTc1NDY3ODkwNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
