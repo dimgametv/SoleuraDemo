@@ -2,2589 +2,1445 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PowerLift Pro - Master Your SBD</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>SSC Test Series - Prepare for Success</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
-    <script>
-        // Firebase Configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyD622Vu-OiFgIVc9n2TbE51Qpka7_vKXRQ",
-            authDomain: "prepssc-d65cd.firebaseapp.com",
-            databaseURL: "https://prepssc-d65cd-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "prepssc-d65cd",
-            storageBucket: "prepssc-d65cd.appspot.com",
-            messagingSenderId: "431061951062",
-            appId: "1:431061951062:web:e574c6935192ba6ea4d1f7"
-        };
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const database = firebase.database();
-    </script>
     <style>
-      .locked-message {
-    background: rgba(255, 255, 0, 0.1);
-    border: 1px solid gold;
-    border-radius: 8px;
-    padding: 20px;
-    margin-top: 20px;
-    text-align: center;
-    color: gold;
-}
-.locked-message p {
-    margin: 0;
-    font-size: 14px;
-}
-      /* Ensure the table container is scrollable horizontally */
-.table-container {
-    width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-}
-/* Table styling */
-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-/* Table cell styling */
-th, td {
-    padding: 8px 12px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-    white-space: nowrap; /* Prevent text from wrapping */
-}
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { 
+            font-family: 'Inter', sans-serif; 
+            /* Hide scrollbar for Chrome, Safari and Opera */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* Internet Explorer 10+ */
+        }
+        body::-webkit-scrollbar {
+            display: none; /* Chrome, Safari and Opera */
+        }
+        
+        /* Hide scrollbars for all elements */
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* Internet Explorer 10+ */
         }
-        body {
-            zoom: 1;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
+        *::-webkit-scrollbar {
+            display: none; /* Chrome, Safari and Opera */
         }
-        :root {
-            --primary-bg: #0a0a0a;
-            --secondary-bg: #111111;
-            --accent-color: #00ff88;
-            --accent-hover: #00cc6a;
-            --text-primary: #ffffff;
-            --text-secondary: #888888;
-            --text-muted: #555555;
-            --card-bg: #1a1a1a;
-            --border-color: #333333;
-            --gradient-primary: linear-gradient(135deg, #00ff88, #00cc6a);
-            --gradient-dark: linear-gradient(135deg, #1a1a1a, #0a0a0a);
-        }
-        [data-theme="light"] {
-            --primary-bg: #ffffff;
-            --secondary-bg: #f8f9fa;
-            --accent-color: #007bff;
-            --accent-hover: #0056b3;
-            --text-primary: #212529;
-            --text-secondary: #6c757d;
-            --text-muted: #adb5bd;
-            --card-bg: #ffffff;
-            --border-color: #e9ecef;
-            --gradient-primary: linear-gradient(135deg, #007bff, #0056b3);
-            --gradient-dark: linear-gradient(135deg, #f8f9fa, #e9ecef);
-        }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--primary-bg);
-            color: var(--text-primary);
-            line-height: 1.5;
-            overflow-x: hidden;
-        }
-        /* Header */
-        .header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(10, 10, 10, 0.95);
-            backdrop-filter: blur(20px);
-            z-index: 1000;
-            border-bottom: 1px solid var(--border-color);
-        }
-        [data-theme="light"] .header {
-            background: rgba(255, 255, 255, 0.95);
-        }
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 24px;
-            height: 64px;
-        }
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 20px;
-            font-weight: 800;
-            color: var(--accent-color);
-        }
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            list-style: none;
-        }
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 14px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-        }
-        .nav-links a:hover {
-            color: var(--accent-color);
-        }
-        .auth-buttons {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-        }
-        .mobile-header-right {
+        .slide-up { transform: translateY(100%); transition: transform 0.3s ease-in-out; }
+        .slide-up.active { transform: translateY(0); }
+        /* Question panel on right side */
+        .question-panel { 
             display: none;
-            align-items: center;
-            gap: 12px;
         }
-        .btn {
-            padding: 8px 16px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 500;
-            font-size: 14px;
-            font-family: inherit;
-        }
-        .btn-primary {
-            background: var(--gradient-primary);
-            color: white;
-            border: none;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(0, 255, 136, 0.3);
-        }
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-secondary);
-            border: 1px solid var(--border-color);
-        }
-        .btn-secondary:hover {
-            background: var(--card-bg);
-            color: var(--text-primary);
-        }
-        .theme-toggle {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 16px;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 6px;
-            transition: all 0.2s ease;
-        }
-        .theme-toggle:hover {
-            background: var(--card-bg);
-            color: var(--accent-color);
-        }
-        /* Hero Section */
-        .hero {
-            height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            background: var(--gradient-dark);
-            position: relative;
-        }
-        .hero-content h1 {
-    font-size: clamp(60px, 10vw, 120px);
-    font-weight: 900;
-    margin-bottom: 16px;
-    background: linear-gradient(90deg, #ff7e5f, #feb47b, #ffcc33, #a8ff78, #7afec6, #60f2ff, #a6c1ff);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    letter-spacing: -3px;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1); /* Reduced text shadow */
-    font-family: 'Arial', sans-serif;
-    text-align: center;
-    line-height: 0.9;
-    -webkit-font-smoothing: antialiased; /* Font smoothing for better rendering */
-    -moz-osx-font-smoothing: grayscale;
-}
-[data-theme="light"] .hero-content h1 {
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow for light theme */
-}
-.master-text {
-    display: block; /* Ensure each span is on a new line */
-    font-size: 1.5em; /* Make MASTER larger */
-}
-.sbd-text {
-    display: block; /* Ensure each span is on a new line */
-    font-size: 1em; /* Make YOUR SBD slightly smaller */
-    margin-top: -40px; /* Adjust margin to remove space */
-}
-        .hero-content p {
-            font-size: 18px;
-            color: var(--text-secondary);
-            margin-bottom: 32px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .hero-buttons {
-            display: flex;
-            gap: 16px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        .btn-hero {
-            padding: 16px 32px;
-            font-size: 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-        .full-width {
-    grid-column: 1 / -1; /* This makes the element span all columns */
-}
-        /* Sections */
-        .section {
-    padding: 40px 24px; /* Adjust the padding as needed */
-    max-width: 1400px;
-    margin: 0 auto;
-}
-        .section-title {
-            text-align: center;
-            font-size: clamp(32px, 5vw, 48px);
-            font-weight: 800;
-            margin-bottom: 48px;
-            color: var(--text-primary);
-            letter-spacing: -1px;
-        }
-        /* Cards */
-        .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 24px;
-    margin-bottom: 20px; /* Adjust the margin-bottom as needed */
-}
-        .card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 32px;
-            border: 1px solid var(--border-color);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--gradient-primary);
-            transform: scaleX(0);
-            transition: transform 0.3s ease;
-        }
-        .card:hover::before {
-            transform: scaleX(1);
-        }
-        .card:hover {
-            transform: translateY(-4px);
-            border-color: var(--accent-color);
-        }
-        .card-icon {
-            font-size: 32px;
-            color: var(--accent-color);
-            margin-bottom: 16px;
-        }
-        .card h3 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            color: var(--text-primary);
-        }
-        .card p {
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-            font-size: 14px;
-        }
-        .card ul {
-            list-style: none;
-        }
-        .card li {
-            color: var(--text-secondary);
-            font-size: 14px;
-            margin-bottom: 8px;
-            padding-left: 16px;
-            position: relative;
-        }
-        .card li::before {
-            content: '→';
-            position: absolute;
-            left: 0;
-            color: var(--accent-color);
-            font-weight: bold;
-        }
-        /* Program Grid */
-        .program-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
-            margin-bottom: 32px;
-        }
-        .week-card {
-            background: var(--card-bg);
-            border-radius: 8px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-        }
-        .week-title {
-            font-weight: 700;
-            margin-bottom: 16px;
-            color: var(--accent-color);
-            font-size: 16px;
-        }
-        .day-item {
-            background: rgba(255, 255, 255, 0.02);
-            margin-bottom: 12px;
-            padding: 16px;
-            border-radius: 6px;
-            border-left: 2px solid var(--accent-color);
-        }
-        [data-theme="light"] .day-item {
-            background: rgba(0, 0, 0, 0.02);
-        }
-        .day-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-        .day-header strong {
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .completed-btn {
-            background: var(--accent-color);
-            color: var(--primary-bg);
-            border: none;
-            padding: 6px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-        .completed-btn:hover {
-            background: var(--accent-hover);
-        }
-        .completed-btn.completed {
-            background: var(--text-muted);
-            cursor: not-allowed;
-        }
-        .exercise-list {
-            font-size: 13px;
-            color: var(--text-secondary);
-        }
-        /* Calculator Grid */
-        .calculator-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 24px;
-        }
-        /* Nutrition & Wilks Combined Grid */
-        .nutrition-wilks-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-        @media (max-width: 768px) {
-            .nutrition-wilks-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-        
-        .calculator-card {
-            background: var(--card-bg);
-            padding: 32px;
-            border-radius: 12px;
-            border: 1px solid var(--border-color);
-        }
-        .calculator-card h3 {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .input-group {
-            margin-bottom: 20px;
-        }
-        .input-group label {
+        .question-panel.active { 
             display: block;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-            font-weight: 500;
-            font-size: 14px;
         }
-        .input-group input, .input-group select {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--secondary-bg);
-            color: var(--text-primary);
-            font-size: 14px;
-            transition: all 0.2s ease;
+        
+        @media (min-width: 768px) {
+            .test-layout {
+                display: grid;
+                grid-template-columns: 1fr 300px;
+                gap: 20px;
+            }
+            
+            .question-panel {
+                display: block !important;
+                position: sticky;
+                top: 20px;
+                height: fit-content;
+            }
         }
-        .input-group input:focus, .input-group select:focus {
-            outline: none;
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 3px rgba(0, 255, 136, 0.1);
-        }
-        .result-display {
-            background: rgba(0, 255, 136, 0.1);
-            border: 1px solid var(--accent-color);
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 20px;
-            text-align: center;
-        }
-        .result-display h4 {
-            font-size: 16px;
-            font-weight: 600;
-            color: var(--accent-color);
-        }
-        .result-display p {
-            margin: 8px 0;
-            font-size: 14px;
-        }
-        /* Records Section */
-        .records-section {
-            background: var(--card-bg);
-            border-radius: 12px;
-            padding: 32px;
-            margin-bottom: 24px;
-            border: 1px solid var(--border-color);
-        }
-        .records-section h3 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            color: var(--text-primary);
-        }
-        .table-container {
-            overflow-x: auto;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 16px;
-        }
-        th, td {
-            padding: 12px 16px;
-            text-align: left;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 14px;
-        }
-        th {
-            background: var(--secondary-bg);
-            color: var(--text-primary);
-            font-weight: 600;
-        }
-        td {
-            color: var(--text-secondary);
-        }
-        .modal {
-    display: none;
-    position: fixed;
-    z-index: 2000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    backdrop-filter: blur(8px);
-    overflow: hidden; /* Prevent scrolling */
-}
-.modal-content {
-    background: var(--card-bg);
-    margin: 5% auto;
-    padding: 20px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 480px;
-    max-height: 90vh; /* Limit the height to 90% of the viewport height */
-    overflow-y: auto; /* Allow scrolling within the modal content if necessary */
-    border: 1px solid var(--border-color);
-    position: relative;
-}
-/* Adjust input groups to be more compact */
-.modal-content .input-group {
-    margin-bottom: 15px;
-}
-.modal-content .input-group label {
-    display: block;
-    margin-bottom: 5px;
-    color: var(--text-primary);
-    font-weight: 500;
-    font-size: 14px;
-}
-.modal-content .input-group input,
-.modal-content .input-group select {
-    width: 100%;
-    padding: 10px 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    background: var(--secondary-bg);
-    color: var(--text-primary);
-    font-size: 14px;
-}
-/* Adjust button styles to be more compact */
-.modal-content .btn {
-    padding: 10px 16px;
-    font-size: 14px;
-}
-/* Ensure the close button is accessible */
-.modal-content .close {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    color: var(--text-secondary);
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-}
-/* Media query for smaller screens */
-@media (max-width: 768px) {
-    .modal-content {
-        padding: 15px;
-        margin: 10% auto;
-        max-height: 80vh; /* Limit the height further on smaller screens */
-    }
-    .modal-content .input-group {
-        margin-bottom: 10px;
-    }
-    .modal-content .input-group input,
-    .modal-content .input-group select {
-        padding: 8px 12px;
-    }
-    .modal-content .btn {
-        padding: 8px 16px;
-    }
-}
-        .close {
+        
+        .mark-icon {
             position: absolute;
-            right: 16px;
-            top: 16px;
-            color: var(--text-secondary);
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-            width: 32px;
-            height: 32px;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            background: orange;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 6px;
-            transition: all 0.2s ease;
+            font-size: 12px;
+            color: white;
+            font-weight: bold;
         }
-        .close:hover {
-            color: var(--accent-color);
-            background: rgba(255, 255, 255, 0.1);
-        }
-        .modal h2 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 24px;
-            color: var(--text-primary);
-        }
-        /* Footer */
-        .footer {
-            background: var(--secondary-bg);
-            padding: 48px 24px;
-            text-align: center;
-            border-top: 1px solid var(--border-color);
-        }
-        .footer .logo {
-            justify-content: center;
-            margin-bottom: 8px;
-        }
-        .footer p {
-            color: var(--text-secondary);
-            font-size: 14px;
-        }
-        /* Mobile Menu */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--text-primary);
-            font-size: 20px;
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 6px;
-            transition: all 0.2s ease;
-        }
-        .mobile-menu-btn:hover {
-            background: var(--card-bg);
-            color: var(--accent-color);
-        }
-        /* Success Animation */
-        .success-message {
-            position: fixed;
-            top: 24px;
-            right: 24px;
-            background: var(--accent-color);
-            color: var(--primary-bg);
-            padding: 16px 24px;
-            border-radius: 8px;
-            z-index: 3000;
-            font-weight: 600;
-            font-size: 14px;
-            animation: slideIn 0.3s ease-out;
-        }
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-        /* Responsive */
+        
         @media (max-width: 768px) {
-            .nav-links {
-                position: fixed;
-                top: 64px;
-                left: -100%;
-                width: 100%;
-                height: calc(100vh - 64px);
-                background: var(--primary-bg);
-                flex-direction: column;
-                justify-content: flex-start;
-                align-items: center;
-                padding-top: 48px;
-                transition: left 0.3s ease;
-                z-index: 999;
-                border-top: 1px solid var(--border-color);
+            .mark-icon {
+                width: 16px;
+                height: 16px;
+                font-size: 10px;
             }
-            
-            .nav-links.active {
-                left: 0;
-            }
-            
-            .nav-links li {
-                margin: 16px 0;
-            }
-            
-            .nav-links a {
-                font-size: 18px;
-            }
-            
-            .mobile-menu-btn {
-                display: block;
-            }
-            .mobile-header-right {
-                display: flex;
-            }
-            .auth-buttons {
-                display: none;
-            }
-            
-            .hero-buttons {
-                flex-direction: column;
-                align-items: center;
-            }
-            
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .calculator-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .program-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .section {
-                padding: 48px 16px;
-            }
-            
-            .nav-container {
-                padding: 0 16px;
-            }
-            .calculator-card:nth-child(2),
-            .calculator-card:nth-child(3) {
-            display: none;
-    }
         }
-        /* Utility Classes */
-        .text-center {
-            text-align: center;
-        }
-        .mb-24 {
-            margin-bottom: 24px;
-        }
-        .grid-form {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-        /* Smooth scrolling */
-        html {
-            scroll-behavior: smooth;
-        }
-        /* Remove extra spacing from specific elements */
-        .section:first-of-type {
-            padding-top: 64px;
-        }
-        .hero {
-            margin-top: 0;
-        }
-        /* Compact spacing for mobile */
-        @media (max-width: 768px) {
-            .card {
-                padding: 24px;
-            }
-            
-            .calculator-card {
-                padding: 24px;
-            }
-            
-            .records-section {
-                padding: 24px;
-            }
-            
-            .modal-content {
-                padding: 24px;
-                margin: 10% auto;
-            }
+        
+        /* Hide header during test */
+        .test-active header {
+            display: none !important;
         }
     </style>
 </head>
-<body data-theme="dark">
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
     <!-- Header -->
-    <header class="header">
-        <div class="nav-container">
-            <!-- Desktop Logo -->
-            <div class="logo">
-                <i class="fas fa-dumbbell"></i>
-                PowerLift Pro
-            </div>
-            
-            <!-- Navigation -->
-            <nav>
-                <ul class="nav-links" id="navLinks">
-                    <li><a onclick="showSection('hero'); closeMobileMenu()">Home</a></li>
-                    <li><a onclick="showSection('calculator'); closeMobileMenu()">1RM Checker</a></li>
-                    <li><a onclick="showSection('records'); closeMobileMenu()">Records Holders</a></li>
-                    <li id="accountTab"><a onclick="showSection('profile'); closeMobileMenu()">Manage Account</a></li>
-                    
-                    
-                </ul>
-            </nav>
-            
-            <!-- Desktop Auth Buttons & Mobile Right Section -->
-            <div class="auth-buttons">
-                <button class="theme-toggle" onclick="toggleTheme()">
-                    <i class="fas fa-moon" id="theme-icon"></i>
-                </button>
-                <button class="btn btn-secondary" onclick="openModal('loginModal')" id="loginBtn">Login</button>
-                <button class="btn btn-primary" onclick="logout()" id="logoutBtn" style="display: none;">Logout</button>
-            </div>
-            <!-- Mobile Right Section -->
-            <div class="mobile-header-right">
-                <button class="theme-toggle" onclick="toggleTheme()">
-                    <i class="fas fa-moon" id="mobile-theme-icon"></i>
-                </button>
-                <button class="btn btn-secondary" onclick="openModal('loginModal')" id="mobileLoginBtn">Login</button>
-                <button class="btn btn-primary" onclick="logout()" id="mobileLogoutBtn" style="display: none;">Logout</button>
-                <button class="mobile-menu-btn" onclick="toggleMobileMenu()">
-                    <i class="fas fa-bars"></i>
-                </button>
+    <header class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                        <span class="text-white font-bold text-sm">SSC</span>
+                    </div>
+                    <h1 class="text-xl font-bold text-gray-800">Test Series</h1>
+                </div>
+                <div id="authButtons" class="flex items-center space-x-4">
+                    <button id="loginBtn" class="text-sm bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700">Login</button>
+                    <button id="signupBtn" class="text-sm bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700">Sign Up</button>
+                </div>
+                <div id="userMenu" class="hidden flex items-center space-x-4">
+                    <span id="welcomeUser" class="text-sm text-gray-600"></span>
+                    <button id="savedQuestionsBtn" class="text-sm bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700">Saved</button>
+                    <button id="logoutBtn" class="text-sm bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700">Logout</button>
+                </div>
             </div>
         </div>
     </header>
-    <!-- Hero Section -->
-    <section id="hero" class="hero section active">
-    <div class="hero-content">
-        <h1>
-            <span class="master-text">MASTER</span><br>
-            <span class="sbd-text">YOUR SBD</span>
-        </h1>
-        <p class="hero-subtitle">
-            <span class="first-line">Structured 12-Week Programs</span><br>
-            <span class="second-line">• Progress Tracking • Nutrition Planning</span>
-        </p>
-        <div class="hero-buttons">
-            <button class="btn btn-primary btn-hero" onclick="handleStartTraining()">Start Training</button>
-            <button class="btn btn-secondary btn-hero" onclick="showSection('calculator')">Calculate 1RM</button>
-        </div>
-    </div>
-</section>
-    <!-- Training Programs Section -->
-    <section id="programs" class="section">
-        <h2 class="section-title">Training Programs</h2>
-        <div class="cards-grid">
-            <div class="card">
-                <div class="card-icon">
-                    <i class="fas fa-user-ninja"></i>
-                </div>
-                <h3>Squat Specialist</h3>
-                <p>High-frequency squat program with progressive overload and targeted accessory work.</p>
-                <ul>
-                    <li>High-frequency squatting</li>
-                    <li>Pause squats & variations</li>
-                    <li>Leg press & lunges</li>
-                    <li>Core strengthening</li>
-                </ul>
-            </div>
-            <div class="card">
-                <div class="card-icon">
-                    <i class="fas fa-hand-rock"></i>
-                </div>
-                <h3>Bench Dominator</h3>
-                <p>Upper body focused program targeting bench press strength and muscle development.</p>
-                <ul>
-                    <li>Competition bench technique</li>
-                    <li>Close-grip & incline work</li>
-                    <li>Tricep & shoulder accessories</li>
-                    <li>Upper back development</li>
-                </ul>
-            </div>
-            <div class="card">
-                <div class="card-icon">
-                    <i class="fas fa-fire"></i>
-                </div>
-                <h3>Deadlift Beast</h3>
-                <p>Posterior chain emphasis with conventional and sumo deadlift variations.</p>
-                <ul>
-                    <li>Deficit & rack pulls</li>
-                    <li>Romanian deadlifts</li>
-                    <li>Hamstring & glute work</li>
-                    <li>Grip strength training</li>
-                </ul>
-            </div>
-        </div>
-        
-    </section>
-    <!-- 12-Week Program Section -->
-    <section id="program" class="section" style="display: none;">
-        <h2 class="section-title">12-Week Program</h2>
-        <div class="program-grid" id="programGrid">
-            <!-- Program will be generated by JavaScript -->
-        </div>
-    </section>
-    <!-- 1RM Calculator Section -->
-    <section id="calculator" class="section">
-        <h2 class="section-title">1RM Calculator</h2>
-        <div class="calculator-grid">
-            <div class="calculator-card">
-                <h3><i class="fas fa-user-ninja"></i> Squat 1RM</h3>
-                <div class="input-group">
-                    <label>Weight Lifted (kg)</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="squatWeight" placeholder="Enter weight">
-                </div>
-                <div class="input-group">
-                    <label>Reps Performed</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="squatReps" placeholder="Enter reps">
-                </div>
-                <button class="btn btn-primary" onclick="calculate1RM('squat')">Calculate</button>
-                <div class="result-display" id="squatResult" style="display: none;">
-                    <h4>Your Squat 1RM: <span id="squatRM"></span> kg</h4>
-                </div>
-            </div>
-            <div class="calculator-card">
-                <h3><i class="fas fa-hand-rock"></i> Bench 1RM</h3>
-                <div class="input-group">
-                    <label>Weight Lifted (kg)</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="benchWeight" placeholder="Enter weight">
-                </div>
-                <div class="input-group">
-                    <label>Reps Performed</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="benchReps" placeholder="Enter reps">
-                </div>
-                <button class="btn btn-primary" onclick="calculate1RM('bench')">Calculate</button>
-                <div class="result-display" id="benchResult" style="display: none;">
-                    <h4>Your Bench 1RM: <span id="benchRM"></span> kg</h4>
-                </div>
-            </div>
-            <div class="calculator-card">
-                <h3><i class="fas fa-fire"></i> Deadlift 1RM</h3>
-                <div class="input-group">
-                    <label>Weight Lifted (kg)</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="deadliftWeight" placeholder="Enter weight">
-                </div>
-                <div class="input-group">
-                    <label>Reps Performed</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="deadliftReps" placeholder="Enter reps">
-                </div>
-                <button class="btn btn-primary" onclick="calculate1RM('deadlift')">Calculate</button>
-                <div class="result-display" id="deadliftResult" style="display: none;">
-                    <h4>Your Deadlift 1RM: <span id="deadliftRM"></span> kg</h4>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Nutrition & Wilks Combined Section -->
-    <section id="nutrition" class="section">
-        <h2 class="section-title">Nutrition & Performance</h2>
-        <div class="nutrition-wilks-grid">
-            <!-- Nutrition Calculator -->
-            <div class="calculator-card">
-                <h3><i class="fas fa-utensils"></i> Nutrition Planner</h3>
-                <div class="input-group">
-                    <label>Current Weight (kg)</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="currentWeight" placeholder="Enter current weight">
-                </div>
-                <div class="input-group">
-                    <label>Target Weight (kg)</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="targetWeight" placeholder="Enter target weight">
-                </div>
-                <div class="input-group">
-                    <label>Timeline (weeks)</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="timeline" placeholder="Enter timeline">
-                </div>
-                <div class="input-group">
-                    <label>Goal</label>
-                    <select id="goal">
-                        <option value="cut">Cut (Fat Loss)</option>
-                        <option value="bulk">Bulk (Muscle Gain)</option>
-                        <option value="maintain">Maintain</option>
-                    </select>
-                </div>
-                <button class="btn btn-primary" onclick="calculateNutrition()">Calculate Plan</button>
-                <div class="result-display" id="nutritionResult" style="display: none;">
-                    <h4>Your Nutrition Plan</h4>
-                    <p>Daily Calories: <span id="calories"></span></p>
-                    <p>Protein: <span id="protein"></span>g</p>
-                    <p>Carbs: <span id="carbs"></span>g</p>
-                    <p>Fats: <span id="fats"></span>g</p>
-                </div>
-            </div>
-            <!-- Wilks Score Calculator -->
-            <div class="calculator-card">
-                <h3><i class="fas fa-trophy"></i> Wilks Score</h3>
-                <div class="input-group">
-                    <label>Gender</label>
-                    <select id="gender">
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Body Weight (kg)</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="bodyWeight" placeholder="Enter body weight">
-                </div>
-                <div class="input-group">
-                    <label>Squat (kg)</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="wilksSquat" placeholder="Enter squat">
-                </div>
-                <div class="input-group">
-                    <label>Bench Press (kg)</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="wilksBench" placeholder="Enter bench">
-                </div>
-                <div class="input-group">
-                    <label>Deadlift (kg)</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="wilksDeadlift" placeholder="Enter deadlift">
-                </div>
-                <button class="btn btn-primary" onclick="calculateWilks()">Calculate Wilks</button>
-                <div class="result-display" id="wilksResult" style="display: none;">
-                    <h4>Your Wilks Score</h4>
-                    <p>Total: <span id="total"></span> kg</p>
-                    <p>Wilks Score: <span id="wilksScore"></span></p>
-                    <p>Rating: <span id="rating"></span></p>
-                    <p>Level: <span id="level"></span></p>
-                </div>
-            </div>
-        </div>
-    </section>
-    <!-- Wilks Score Calculator (Hidden - for navigation compatibility) -->
-    <section id="wilks" style="display: none;"></section>
-    <!-- Records Section -->
-    <section id="records" class="section">
-        <h2 class="section-title">Records</h2>
-        
-        <!-- Add Record Form -->
-        <div class="records-section">
-            <h3>Add New Record</h3>
-            <div class="grid-form">
-                <div class="input-group">
-                    <label>Lifter Name</label>
-                    <input type="text" id="lifterName" placeholder="Enter name">
-                </div>
-                <div class="input-group">
-                    <label>Age Category</label>
-                    <select id="ageCategory" onchange="updateLifterCategories()">
-                        <option value="">Select age category</option>
-                        <option value="sub-junior">Sub Junior</option>
-                        <option value="junior">Junior</option>
-                        <option value="open">Open</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Lifter Category</label>
-                    <select id="lifterCategory" onchange="updateWeightClasses()">
-                        <option value="">Select lifter category</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Weight Class</label>
-                    <select id="weightClass">
-                        <option value="">Select weight class</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Lift Type</label>
-                    <select id="liftType">
-                        <option value="">Select lift type</option>
-                        <option value="squat">Squat</option>
-                        <option value="bench">Bench</option>
-                        <option value="deadlift">Deadlift</option>
-                        <option value="total">Total</option>
-                        <option value="single-bench">Single Bench</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Weight Lifted (kg)</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="weightLifted" placeholder="Enter weight" step="0.5">
-                </div>
-                <div class="input-group">
-                    <label>Record Level</label>
-                    <select id="recordLevel">
-                        <option value="">Select record level</option>
-                        <option value="india">India</option>
-                        <option value="asia">Asia</option>
-                        <option value="europe">Europe</option>
-                        <option value="world">World</option>
-                    </select>
-                </div>
-            </div>
-            <button class="btn btn-primary" onclick="addRecord()">Add Record</button>
-        </div>
-        <!-- Records Table -->
-        <div class="records-section">
-            <h3>Current Records</h3>
-            
-            <!-- Filters -->
-            <div class="grid-form mb-24">
-                <div class="input-group">
-                    <label>Filter by Age Category</label>
-                    <select id="filterAgeCategory" onchange="filterRecords()">
-                        <option value="">All Age Categories</option>
-                        <option value="sub-junior">Sub Junior</option>
-                        <option value="junior">Junior</option>
-                        <option value="open">Open</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Filter by Lifter Category</label>
-                    <select id="filterLifterCategory" onchange="filterRecords()">
-                        <option value="">All Lifter Categories</option>
-                        <option value="open-men-equipped">Open Men Equipped</option>
-                        <option value="open-men-classic">Open Men Classic</option>
-                        <option value="sub-junior-men-equipped">Sub Junior Men Equipped</option>
-                        <option value="sub-junior-men-classic">Sub Junior Men Classic</option>
-                        <option value="junior-men-equipped">Junior Men Equipped</option>
-                        <option value="junior-men-classic">Junior Men Classic</option>
-                        <option value="open-women-equipped">Open Women Equipped</option>
-                        <option value="open-women-classic">Open Women Classic</option>
-                        <option value="sub-junior-women-equipped">Sub Junior Women Equipped</option>
-                        <option value="sub-junior-women-classic">Sub Junior Women Classic</option>
-                        <option value="junior-women-equipped">Junior Women Equipped</option>
-                        <option value="junior-women-classic">Junior Women Classic</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Filter by Weight Class</label>
-                    <select id="filterWeightClass" onchange="filterRecords()">
-                        <option value="">All Weight Classes</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Filter by Lift Type</label>
-                    <select id="filterLiftType" onchange="filterRecords()">
-                        <option value="">All Lift Types</option>
-                        <option value="squat">Squat</option>
-                        <option value="bench">Bench</option>
-                        <option value="deadlift">Deadlift</option>
-                        <option value="total">Total</option>
-                        <option value="single-bench">Single Bench</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Filter by Record Level</label>
-                    <select id="filterRecordLevel" onchange="filterRecords()">
-                        <option value="">All Record Levels</option>
-                        <option value="india">India</option>
-                        <option value="asia">Asia</option>
-                        <option value="europe">Europe</option>
-                        <option value="world">World</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Search by Name</label>
-                    <input type="text" id="filterName" placeholder="Enter lifter name" oninput="filterRecords()">
-                </div>
-            </div>
-            
-            <div class="table-container">
-                <table id="recordsTable">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Age Category</th>
-                            <th>Lifter Category</th>
-                            <th>Weight Class</th>
-                            <th>Lift</th>
-                            <th>Weight (kg)</th>
-                            <th>Level</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="recordsTableBody">
-                        <!-- Records will be populated by JavaScript -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </section>
-    <!-- Profile Section -->
-    <section id="profile" class="section" style="display: none;">
-        <h2 class="section-title">Profile</h2>
-        
-        <!-- User Profile Information -->
-        <div class="records-section">
-            <h3>Personal Information</h3>
-            <div class="grid-form">
-                <div class="input-group">
-                    <label>Full Name</label>
-                    <input type="text" id="profileName" placeholder="Enter full name">
-                </div>
-                <div class="input-group">
-                    <label>Email</label>
-                    <input type="email" id="profileEmail" placeholder="Enter email" readonly style="background: var(--text-muted); opacity: 0.6;">
-                </div>
-                <div class="input-group">
-                    <label>Mobile Number</label>
-                    <input type="tel" id="profileNumber" placeholder="Enter mobile number" readonly style="background: var(--text-muted); opacity: 0.6;">
-                </div>
-                <div class="input-group">
-                    <label>Gender</label>
-                    <select id="profileGender">
-                        <option value="">Select gender</option>
-                        <option value="male">Male</option>
-                        <option value="female">Female</option>
-                        <option value="other">Other</option>
-                    </select>
-                </div>
-                <div class="input-group">
-                    <label>Age</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="profileAge" placeholder="Enter age" min="16" max="80">
-                </div>
-                <div class="input-group">
-                    <label>Height (cm)</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="profileHeight" placeholder="Enter height in cm" min="140" max="220">
-                </div>
-                <div class="input-group">
-                    <label>Weight (kg)</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="profileWeight" placeholder="Enter weight in kg" min="40" max="200">
-                </div>
-                <div class="input-group">
-                    <label>Lifting Experience</label>
-                    <select id="profileExperience">
-                        <option value="">Select experience level</option>
-                        <option value="beginner">Beginner (0-2 years)</option>
-                        <option value="intermediate">Intermediate (2-5 years)</option>
-                        <option value="advanced">Advanced (5+ years)</option>
-                    </select>
-                </div>
-            </div>
-            <button class="btn btn-primary" onclick="updateProfile()">Update Profile</button>
-        </div>
-        <!-- SBD 1RM Information -->
-        <div class="records-section">
-            <h3>Current 1RM Records</h3>
-            <div class="grid-form">
-                <div class="input-group">
-                    <label>Squat 1RM (kg)</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="profileSquat" placeholder="Enter squat 1RM">
-                </div>
-                <div class="input-group">
-                    <label>Bench Press 1RM (kg)</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="profileBench" placeholder="Enter bench 1RM">
-                </div>
-                <div class="input-group">
-                    <label>Deadlift 1RM (kg)</label>
-                    <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="profileDeadlift" placeholder="Enter deadlift 1RM">
-                </div>
-            </div>
-            <button class="btn btn-primary" onclick="updateSBD()">Update SBD Records</button>
-        </div>
-        <!-- Workout History -->
-        <div class="records-section">
-            <h3>Workout History</h3>
-            <div id="workoutHistory">
-                <p>Complete workouts to see your progress here!</p>
-            </div>
-        </div>
-    </section>
+
     <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('loginModal')">&times;</span>
-            <h2 id="modalTitle">Login</h2>
-            
-            <!-- Login Form -->
-            <div id="loginForm">
-                <div class="input-group">
-                    <label>Email</label>
-                    <input type="email" id="loginEmail" placeholder="Enter email">
+    <div id="loginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">Login</h2>
+                <button id="closeLoginModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+            </div>
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" id="loginEmail" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
-                <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" id="loginPassword" placeholder="Enter password">
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" id="loginPassword" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 </div>
-                <div style="display: flex; gap: 12px; margin-top: 24px;">
-                    <button class="btn btn-primary" onclick="login()">Login</button>
-                    <button class="btn btn-secondary" onclick="showSignupForm()">Sign Up</button>
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">Login</button>
+            </form>
+            <p class="text-center text-sm text-gray-600 mt-4">
+                Don't have an account? <button id="switchToSignup" class="text-blue-600 hover:underline">Sign up</button>
+            </p>
+        </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signupModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold text-gray-800">Sign Up</h2>
+                <button id="closeSignupModal" class="text-gray-500 hover:text-gray-700">&times;</button>
+            </div>
+            <form id="signupForm">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
+                    <input type="text" id="signupName" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                    <input type="email" id="signupEmail" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                    <input type="password" id="signupPassword" required class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <button type="submit" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">Sign Up</button>
+            </form>
+            <p class="text-center text-sm text-gray-600 mt-4">
+                Already have an account? <button id="switchToLogin" class="text-blue-600 hover:underline">Login</button>
+            </p>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="mainContent" class="container mx-auto px-4 py-6">
+        <!-- SSC Exams Section -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">SSC Examinations</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showExamDetails('SSC CGL')">
+                    <h3 class="font-semibold text-lg text-blue-600 mb-2">SSC CGL</h3>
+                    <p class="text-sm text-gray-600 mb-2">Combined Graduate Level Examination</p>
+                    <div class="text-xs text-gray-500">
+                        <p>• Eligibility: Graduate</p>
+                        <p>• Salary: ₹25,000 - ₹80,000</p>
+                        <p>• Subjects: English, Reasoning, Math, GS</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showExamDetails('SSC CHSL')">
+                    <h3 class="font-semibold text-lg text-blue-600 mb-2">SSC CHSL</h3>
+                    <p class="text-sm text-gray-600 mb-2">Combined Higher Secondary Level</p>
+                    <div class="text-xs text-gray-500">
+                        <p>• Eligibility: 12th Pass</p>
+                        <p>• Salary: ₹19,000 - ₹63,000</p>
+                        <p>• Subjects: English, Reasoning, Math, GS</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showExamDetails('SSC MTS')">
+                    <h3 class="font-semibold text-lg text-blue-600 mb-2">SSC MTS</h3>
+                    <p class="text-sm text-gray-600 mb-2">Multi Tasking Staff</p>
+                    <div class="text-xs text-gray-500">
+                        <p>• Eligibility: 10th Pass</p>
+                        <p>• Salary: ₹18,000 - ₹56,000</p>
+                        <p>• Subjects: English, Reasoning, Math, GS</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showExamDetails('SSC Stenographer')">
+                    <h3 class="font-semibold text-lg text-blue-600 mb-2">SSC Stenographer</h3>
+                    <p class="text-sm text-gray-600 mb-2">Grade C & D</p>
+                    <div class="text-xs text-gray-500">
+                        <p>• Eligibility: 12th Pass</p>
+                        <p>• Salary: ₹25,000 - ₹81,000</p>
+                        <p>• Subjects: English, GS, Shorthand</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showExamDetails('SSC JE')">
+                    <h3 class="font-semibold text-lg text-blue-600 mb-2">SSC JE</h3>
+                    <p class="text-sm text-gray-600 mb-2">Junior Engineer</p>
+                    <div class="text-xs text-gray-500">
+                        <p>• Eligibility: Engineering Diploma</p>
+                        <p>• Salary: ₹35,000 - ₹1,12,000</p>
+                        <p>• Subjects: Technical, GS, Reasoning</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showExamDetails('SSC GD')">
+                    <h3 class="font-semibold text-lg text-blue-600 mb-2">SSC GD</h3>
+                    <p class="text-sm text-gray-600 mb-2">General Duty Constable</p>
+                    <div class="text-xs text-gray-500">
+                        <p>• Eligibility: 10th Pass</p>
+                        <p>• Salary: ₹21,000 - ₹69,000</p>
+                        <p>• Subjects: English, Reasoning, Math, GS</p>
+                    </div>
                 </div>
             </div>
-            <!-- Signup Form -->
-            <div id="signupForm" style="display: none;">
-                <div class="input-group">
-                    <label>Full Name</label>
-                    <input type="text" id="signupName" placeholder="Enter full name">
+        </section>
+
+        <!-- Subjects Section -->
+        <section>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Practice by Subjects</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showSubject('English')">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="text-red-600 text-xl">📚</span>
+                        </div>
+                        <h3 class="font-semibold text-lg text-gray-800">English</h3>
+                        <p class="text-xs text-gray-500 mt-1">Grammar, Vocabulary, Comprehension</p>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label>Email</label>
-                    <input type="email" id="signupEmail" placeholder="Enter email">
+                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showSubject('Reasoning')">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="text-blue-600 text-xl">🧠</span>
+                        </div>
+                        <h3 class="font-semibold text-lg text-gray-800">Reasoning</h3>
+                        <p class="text-xs text-gray-500 mt-1">Logical, Verbal, Non-verbal</p>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label>Mobile Number</label>
-                    <input type="tel" id="signupNumber" placeholder="Enter mobile number">
+                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showSubject('Mathematics')">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="text-green-600 text-xl">🔢</span>
+                        </div>
+                        <h3 class="font-semibold text-lg text-gray-800">Mathematics</h3>
+                        <p class="text-xs text-gray-500 mt-1">Arithmetic, Algebra, Geometry</p>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label>Lifting Experience</label>
-                    <select id="signupExperience">
-                        <option value="">Select experience level</option>
-                        <option value="beginner">Beginner (0-2 years)</option>
-                        <option value="intermediate">Intermediate (2-5 years)</option>
-                        <option value="advanced">Advanced (5+ years)</option>
-                    </select>
+                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showSubject('General Studies')">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="text-purple-600 text-xl">🌍</span>
+                        </div>
+                        <h3 class="font-semibold text-lg text-gray-800">General Studies</h3>
+                        <p class="text-xs text-gray-500 mt-1">History, Geography, Science</p>
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label>Password</label>
-                    <input type="password" id="signupPassword" placeholder="Enter password">
+                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showSubject('Shorthand')">
+                    <div class="text-center">
+                        <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <span class="text-yellow-600 text-xl">✍️</span>
+                        </div>
+                        <h3 class="font-semibold text-lg text-gray-800">Shorthand</h3>
+                        <p class="text-xs text-gray-500 mt-1">Speed Writing, Dictation</p>
+                    </div>
                 </div>
-                <div style="display: flex; gap: 12px; margin-top: 24px;">
-                    <button class="btn btn-primary" onclick="signup()">Create Account</button>
-                    <button class="btn btn-secondary" onclick="showLoginForm()">Back to Login</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Subject Chapters View -->
+    <div id="subjectView" class="hidden container mx-auto px-4 py-6">
+        <div class="flex items-center mb-6">
+            <button onclick="goBack()" class="text-blue-600 hover:text-blue-800 mr-4">← Back</button>
+            <h2 id="subjectTitle" class="text-2xl font-bold text-gray-800"></h2>
+        </div>
+        <div id="chaptersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </div>
+
+    <!-- Topics View -->
+    <div id="topicsView" class="hidden container mx-auto px-4 py-6">
+        <div class="flex items-center mb-6">
+            <button onclick="goBackToSubject()" class="text-blue-600 hover:text-blue-800 mr-4">← Back</button>
+            <h2 id="chapterTitle" class="text-2xl font-bold text-gray-800"></h2>
+        </div>
+        <div id="topicsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    </div>
+
+    <!-- Practice Sets View -->
+    <div id="practiceSetsView" class="hidden container mx-auto px-4 py-6">
+        <div class="flex items-center mb-6">
+            <button onclick="goBackToTopics()" class="text-blue-600 hover:text-blue-800 mr-4">← Back</button>
+            <h2 id="topicTitle" class="text-2xl font-bold text-gray-800"></h2>
+        </div>
+        <div id="practiceSetsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4"></div>
+    </div>
+
+    <!-- Test Interface -->
+    <div id="testInterface" class="hidden bg-white min-h-screen">
+        <!-- Test Header -->
+        <div class="bg-gray-800 text-white p-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <h3 id="testTitle" class="font-semibold text-sm"></h3>
+                    <span id="questionCounter" class="text-xs bg-blue-600 px-2 py-1 rounded">1/25</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <div id="timer" class="text-xs font-mono bg-red-600 px-2 py-1 rounded">30:00</div>
+                    <button id="pauseBtn" class="text-xs bg-yellow-600 px-2 py-1 rounded hover:bg-yellow-700">⏸</button>
+                    <button id="submitBtn" class="text-xs bg-green-600 px-2 py-1 rounded hover:bg-green-700" onclick="confirmSubmitTest()">✓</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Question Content -->
+        <div class="p-4">
+            <div class="max-w-6xl mx-auto test-layout">
+                <!-- Main Question Area -->
+                <div>
+                    <!-- Mobile Question Navigation (Horizontal Scroll) -->
+                    <div id="mobileQuestionNav" class="md:hidden mb-4 overflow-x-auto">
+                        <div id="mobileQuestionGrid" class="flex space-x-2 pb-2" style="width: max-content;"></div>
+                    </div>
+                    
+                    <div id="questionContent" class="mb-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h4 class="text-lg font-medium flex-1" id="currentQuestion"></h4>
+                            <button id="markIcon" class="ml-4 w-10 h-10 rounded-full border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white transition-colors flex items-center justify-center text-lg font-bold">
+                                🔖
+                            </button>
+                        </div>
+                        <div id="optionsContainer" class="space-y-3"></div>
+                    </div>
+
+                    <!-- Navigation -->
+                    <div class="flex justify-between items-center mb-4">
+                        <button id="prevBtn" class="bg-gray-600 text-white px-3 py-1 rounded text-xs hover:bg-gray-700">← Prev</button>
+                        <button id="questionPanelBtn" class="md:hidden bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700">Q</button>
+                        <div id="nextSubmitContainer">
+                            <button id="nextBtn" class="bg-blue-600 text-white px-3 py-1 rounded text-xs hover:bg-blue-700" onclick="nextQuestion()">Next →</button>
+                            <button id="submitTestBtn" class="hidden bg-green-600 text-white px-3 py-1 rounded text-xs hover:bg-green-700" onclick="confirmSubmitTest()">Submit Test</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Question Panel (Right Side) -->
+                <div id="questionPanel" class="question-panel bg-white rounded-lg p-4 border shadow-lg">
+                    <div class="flex justify-between items-center mb-4">
+                        <h5 class="font-semibold text-lg">Question Navigation</h5>
+                        <button id="closeQuestionPanel" class="md:hidden text-gray-500 hover:text-gray-700 text-xl">&times;</button>
+                    </div>
+                    <div id="questionGrid" class="grid grid-cols-5 gap-2 mb-4"></div>
+                    <div class="flex flex-wrap gap-2 text-xs mb-4">
+                        <span class="flex items-center"><div class="w-3 h-3 bg-blue-600 rounded mr-1"></div>Current</span>
+                        <span class="flex items-center"><div class="w-3 h-3 bg-green-500 rounded mr-1"></div>Answered</span>
+                        <span class="flex items-center"><div class="w-3 h-3 bg-orange-500 rounded mr-1"></div>Review</span>
+                        <span class="flex items-center"><div class="w-3 h-3 bg-gray-300 rounded mr-1"></div>Not Visited</span>
+                    </div>
+                    <div class="pt-3 border-t text-sm text-gray-600">
+                        <p>Progress: <span id="progressText">0/25 answered</span></p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- SBD Modal -->
-    <div id="sbdModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('sbdModal')">&times;</span>
-            <h2>Enter Your SBD Details</h2>
-            <div class="input-group">
-                <label>Current Squat 1RM (kg)</label>
-                <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="currentSquat" placeholder="Enter squat">
+
+    <!-- Result Screen -->
+    <div id="resultScreen" class="hidden bg-white min-h-screen">
+        <div class="container mx-auto px-4 py-8">
+            <div class="max-w-2xl mx-auto text-center">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6">Test Results</h2>
+                <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg p-6 mb-6">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-sm opacity-90">Score</p>
+                            <p id="finalScore" class="text-2xl font-bold">0/25</p>
+                        </div>
+                        <div>
+                            <p class="text-sm opacity-90">Percentage</p>
+                            <p id="finalPercentage" class="text-2xl font-bold">0%</p>
+                        </div>
+                        <div>
+                            <p class="text-sm opacity-90">Time Taken</p>
+                            <p id="timeTaken" class="text-lg font-semibold">00:00</p>
+                        </div>
+                        <div>
+                            <p class="text-sm opacity-90">Accuracy</p>
+                            <p id="accuracy" class="text-lg font-semibold">0%</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                    <button onclick="goHome()" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">Back to Home</button>
+                    <button onclick="reviewAnswers()" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700">Review Answers</button>
+                    <button onclick="reattemptTest()" class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700">Reattempt Test</button>
+                </div>
             </div>
-            <div class="input-group">
-                <label>Current Bench 1RM (kg)</label>
-                <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="currentBench" placeholder="Enter bench">
-            </div>
-            <div class="input-group">
-                <label>Current Deadlift 1RM (kg)</label>
-                <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="currentDeadlift" placeholder="Enter deadlift">
-            </div>
-            <div class="input-group">
-                <label>Training Experience</label>
-                <select id="experience">
-                    <option value="beginner">Beginner (0-2 years)</option>
-                    <option value="intermediate">Intermediate (2-5 years)</option>
-                    <option value="advanced">Advanced (5+ years)</option>
-                </select>
-            </div>
-            <button class="btn btn-primary" onclick="generateProgram()" style="width: 100%; margin-top: 16px;">Generate Program</button>
         </div>
     </div>
-    <!-- Edit Record Modal -->
-    <div id="editRecordModal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal('editRecordModal')">&times;</span>
-            <h2>Edit Record</h2>
-            <div class="input-group">
-                <label>Lifter Name</label>
-                <input type="text" id="editLifterName" placeholder="Enter name">
+
+    <!-- Review Answers Screen -->
+    <div id="reviewScreen" class="hidden bg-white min-h-screen">
+        <div class="bg-gray-800 text-white p-3">
+            <div class="flex justify-between items-center">
+                <h3 class="font-semibold">Review Answers</h3>
+                <button onclick="goHome()" class="text-xs bg-blue-600 px-3 py-1 rounded hover:bg-blue-700">Back to Home</button>
             </div>
-            <div class="input-group">
-                <label>Age Category</label>
-                <select id="editAgeCategory" onchange="updateEditLifterCategories()">
-                    <option value="">Select age category</option>
-                    <option value="sub-junior">Sub Junior</option>
-                    <option value="junior">Junior</option>
-                    <option value="open">Open</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label>Lifter Category</label>
-                <select id="editLifterCategory" onchange="updateEditWeightClasses()">
-                    <option value="">Select lifter category</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label>Weight Class</label>
-                <select id="editWeightClass">
-                    <option value="">Select weight class</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label>Lift Type</label>
-                <select id="editLiftType">
-                    <option value="">Select lift type</option>
-                    <option value="squat">Squat</option>
-                    <option value="bench">Bench</option>
-                    <option value="deadlift">Deadlift</option>
-                    <option value="total">Total</option>
-                    <option value="single-bench">Single Bench</option>
-                </select>
-            </div>
-            <div class="input-group">
-                <label>Weight Lifted (kg)</label>
-                <input type="text" inputmode="decimal" pattern="[0-9]*(.[0-9]{0,1})?" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1').replace(/^0[^.]/, '0').replace(/(\.\d{2,})/, function(match, p1) { return Math.round(parseFloat(p1)).toFixed(1).substring(1); });" id="editWeightLifted" placeholder="Enter weight" step="0.5">
-            </div>
-            <div class="input-group">
-                <label>Record Level</label>
-                <select id="editRecordLevel">
-                    <option value="">Select record level</option>
-                    <option value="india">India</option>
-                    <option value="asia">Asia</option>
-                    <option value="europe">Europe</option>
-                    <option value="world">World</option>
-                </select>
-            </div>
-            <button class="btn btn-primary" onclick="updateRecord()" style="width: 100%; margin-top: 16px;">Update Record</button>
         </div>
+        <div id="reviewContent" class="container mx-auto px-4 py-6"></div>
     </div>
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="logo">
-            <i class="fas fa-dumbbell"></i>
-            PowerLift Pro
+
+    <!-- Saved Questions Screen -->
+    <div id="savedQuestionsScreen" class="hidden container mx-auto px-4 py-6">
+        <div class="flex items-center mb-6">
+            <button onclick="goHome()" class="text-blue-600 hover:text-blue-800 mr-4">← Back</button>
+            <h2 class="text-2xl font-bold text-gray-800">Saved Questions</h2>
         </div>
-        <p>Your complete powerlifting training companion</p>
-    </footer>
+        <div id="savedQuestionsContent"></div>
+    </div>
+
     <script>
-        // Disable right-click and F12
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('keydown', e => {
-            if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && e.key === 'I')) {
-                e.preventDefault();
-            }
-        });
         // Global variables
-        let currentUser = null;
-        let workoutHistory = [];
-        let records = [];
-        let editingRecordIndex = -1;
-        // Weight class data
-        const weightClasses = {
-            men: ['53kg', '59kg', '66kg', '74kg', '83kg', '93kg', '105kg', '120kg', '120+kg'],
-            women: ['47kg', '52kg', '57kg', '63kg', '69kg', '72kg', '76kg', '84kg', '84+kg']
+        let currentSubject = '';
+        let currentChapter = '';
+        let currentTopic = '';
+        let currentTest = null;
+        let currentQuestionIndex = 0;
+        let userAnswers = {};
+        let markedForReview = new Set();
+        let testStartTime = null;
+        let timerInterval = null;
+        let savedQuestions = JSON.parse(localStorage.getItem('savedQuestions') || '[]');
+        let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        let users = JSON.parse(localStorage.getItem('users') || '[]');
+        let pausedTests = JSON.parse(localStorage.getItem('pausedTests') || '{}');
+        let completedTests = JSON.parse(localStorage.getItem('completedTests') || '{}');
+
+        // Sample data structure
+        const subjects = {
+            'English': {
+                'Grammar': {
+                    'Tenses': Array.from({length: 20}, (_, i) => `Tenses Practice Set ${i + 1}`),
+                    'Articles': Array.from({length: 20}, (_, i) => `Articles Practice Set ${i + 1}`),
+                    'Prepositions': Array.from({length: 20}, (_, i) => `Prepositions Practice Set ${i + 1}`)
+                },
+                'Vocabulary': {
+                    'Synonyms': Array.from({length: 20}, (_, i) => `Synonyms Practice Set ${i + 1}`),
+                    'Antonyms': Array.from({length: 20}, (_, i) => `Antonyms Practice Set ${i + 1}`)
+                },
+                'Reading Comprehension': {
+                    'Passages': Array.from({length: 20}, (_, i) => `RC Practice Set ${i + 1}`)
+                }
+            },
+            'Reasoning': {
+                'Logical Reasoning': {
+                    'Syllogism': Array.from({length: 20}, (_, i) => `Syllogism Practice Set ${i + 1}`),
+                    'Blood Relations': Array.from({length: 20}, (_, i) => `Blood Relations Practice Set ${i + 1}`)
+                },
+                'Verbal Reasoning': {
+                    'Analogies': Array.from({length: 20}, (_, i) => `Analogies Practice Set ${i + 1}`),
+                    'Classification': Array.from({length: 20}, (_, i) => `Classification Practice Set ${i + 1}`)
+                },
+                'Non-Verbal Reasoning': {
+                    'Pattern Completion': Array.from({length: 20}, (_, i) => `Pattern Practice Set ${i + 1}`)
+                }
+            },
+            'Mathematics': {
+                'Arithmetic': {
+                    'Percentage': Array.from({length: 20}, (_, i) => `Percentage Practice Set ${i + 1}`),
+                    'Profit & Loss': Array.from({length: 20}, (_, i) => `P&L Practice Set ${i + 1}`),
+                    'Simple Interest': Array.from({length: 20}, (_, i) => `SI Practice Set ${i + 1}`)
+                },
+                'Algebra': {
+                    'Linear Equations': Array.from({length: 20}, (_, i) => `Linear Eq Practice Set ${i + 1}`)
+                },
+                'Geometry': {
+                    'Triangles': Array.from({length: 20}, (_, i) => `Triangles Practice Set ${i + 1}`)
+                }
+            },
+            'General Studies': {
+                'History': {
+                    'Ancient India': Array.from({length: 20}, (_, i) => `Ancient History Set ${i + 1}`),
+                    'Medieval India': Array.from({length: 20}, (_, i) => `Medieval History Set ${i + 1}`)
+                },
+                'Geography': {
+                    'Physical Geography': Array.from({length: 20}, (_, i) => `Physical Geo Set ${i + 1}`)
+                },
+                'Science': {
+                    'Physics': Array.from({length: 20}, (_, i) => `Physics Practice Set ${i + 1}`)
+                }
+            },
+            'Shorthand': {
+                'Speed Writing': {
+                    'Basic Strokes': Array.from({length: 20}, (_, i) => `Basic Strokes Set ${i + 1}`)
+                },
+                'Dictation': {
+                    'English Dictation': Array.from({length: 20}, (_, i) => `English Dictation Set ${i + 1}`)
+                }
+            }
         };
-        const lifterCategories = {
-            'sub-junior': [
-                'sub-junior-men-equipped',
-                'sub-junior-men-classic',
-                'sub-junior-women-equipped',
-                'sub-junior-women-classic'
-            ],
-            'junior': [
-                'junior-men-equipped',
-                'junior-men-classic',
-                'junior-women-equipped',
-                'junior-women-classic'
-            ],
-            'open': [
-                'open-men-equipped',
-                'open-men-classic',
-                'open-women-equipped',
-                'open-women-classic'
-            ]
-        };
-        const categoryLabels = {
-            'open-men-equipped': 'Open Men Equipped',
-            'open-men-classic': 'Open Men Classic',
-            'sub-junior-men-equipped': 'Sub Junior Men Equipped',
-            'sub-junior-men-classic': 'Sub Junior Men Classic',
-            'junior-men-equipped': 'Junior Men Equipped',
-            'junior-men-classic': 'Junior Men Classic',
-            'open-women-equipped': 'Open Women Equipped',
-            'open-women-classic': 'Open Women Classic',
-            'sub-junior-women-equipped': 'Sub Junior Women Equipped',
-            'sub-junior-women-classic': 'Sub Junior Women Classic',
-            'junior-women-equipped': 'Junior Women Equipped',
-            'junior-women-classic': 'Junior Women Classic'
-        };
-        // Theme toggle
-        function toggleTheme() {
-            const body = document.body;
-            const themeIcon = document.getElementById('theme-icon');
-            const mobileThemeIcon = document.getElementById('mobile-theme-icon');
-            
-            if (body.getAttribute('data-theme') === 'dark') {
-                body.setAttribute('data-theme', 'light');
-                themeIcon.className = 'fas fa-sun';
-                mobileThemeIcon.className = 'fas fa-sun';
+
+        // Authentication functions
+        function initializeAuth() {
+            if (currentUser) {
+                showUserMenu();
             } else {
-                body.setAttribute('data-theme', 'dark');
-                themeIcon.className = 'fas fa-moon';
-                mobileThemeIcon.className = 'fas fa-moon';
+                showAuthButtons();
             }
         }
-        // Mobile menu functions
-        function toggleMobileMenu() {
-            const navLinks = document.getElementById('navLinks');
-            navLinks.classList.toggle('active');
+
+        function showUserMenu() {
+            document.getElementById('authButtons').classList.add('hidden');
+            document.getElementById('userMenu').classList.remove('hidden');
+            document.getElementById('welcomeUser').textContent = `Welcome, ${currentUser.name}`;
         }
-        function closeMobileMenu() {
-            const navLinks = document.getElementById('navLinks');
-            navLinks.classList.remove('active');
+
+        function showAuthButtons() {
+            document.getElementById('userMenu').classList.add('hidden');
+            document.getElementById('authButtons').classList.remove('hidden');
         }
-        // Navigation
-        function showSection(sectionId) {
-    // Handle wilks navigation by redirecting to nutrition section
-    if (sectionId === 'wilks') {
-        sectionId = 'nutrition';
-    }
-    // Hide the Profile section if it's not the one being shown
-    const profileSection = document.getElementById('profile');
-    if (profileSection && sectionId !== 'profile') {
-        profileSection.style.display = 'none';
-    }
-    const section = document.getElementById(sectionId);
-    if (section) {
-        // Check if profile section and user not logged in
-        if (sectionId === 'profile' && !currentUser) {
-            showSuccessMessage('Please login to view your profile!');
-            return;
+
+        function login(email, password) {
+            const user = users.find(u => u.email === email && u.password === password);
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                showUserMenu();
+                closeModals();
+                return true;
+            }
+            return false;
         }
-        // Show the selected section
-        section.style.display = 'block';
-        // Additional logic for specific sections
-        if (sectionId === 'program') {
-            generateProgramDisplay();
-        } else if (sectionId === 'records') {
-            displayRecords();
-        } else if (sectionId === 'profile') {
-            populateProfile();
-            displayWorkoutHistory();
+
+        function signup(name, email, password) {
+            if (users.find(u => u.email === email)) {
+                return false; // User already exists
+            }
+            
+            const newUser = { id: Date.now(), name, email, password };
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            
+            currentUser = newUser;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            showUserMenu();
+            closeModals();
+            return true;
         }
-    }
-    // Scroll to the section
-    if (section) {
-        section.scrollIntoView({ behavior: 'smooth' });
-    }
-}
-        // Profile Management
-        function populateProfile() {
-    if (!currentUser) {
-        // Retrieve user data from local storage
-        const storedUser = localStorage.getItem('currentUser');
-        if (storedUser) {
-            currentUser = JSON.parse(storedUser);
-        } else {
-            return;
-        }
-    }
-    document.getElementById('profileName').value = currentUser.name || '';
-    document.getElementById('profileEmail').value = currentUser.email || '';
-    document.getElementById('profileNumber').value = currentUser.number || '';
-    document.getElementById('profileGender').value = currentUser.gender || '';
-    document.getElementById('profileAge').value = currentUser.age || '';
-    document.getElementById('profileHeight').value = currentUser.height || '';
-    document.getElementById('profileWeight').value = currentUser.weight || '';
-    document.getElementById('profileExperience').value = currentUser.experience || '';
-    document.getElementById('profileSquat').value = currentUser.squat || '';
-    document.getElementById('profileBench').value = currentUser.bench || '';
-    document.getElementById('profileDeadlift').value = currentUser.deadlift || '';
-    // Fetch workout history from Firebase
-    if (currentUser) {
-        const userRef = database.ref('users/' + currentUser.uid + '/workoutHistory');
-        userRef.once('value')
-            .then((snapshot) => {
-                const historyData = snapshot.val();
-                if (historyData) {
-                    workoutHistory = Object.values(historyData);
-                    displayWorkoutHistory();
-                }
-            })
-            .catch((error) => {
-                showSuccessMessage('Error fetching workout history: ' + error.message);
-            });
-    }
-}
-        function updateCalculatorTitle() {
-    const calculatorTitle = document.querySelector('.calculator-card h3');
-    if (window.innerWidth <= 768) {
-        calculatorTitle.innerHTML = '<i class="fas fa-user-ninja"></i> SBD 1RM';
-    } else {
-        calculatorTitle.innerHTML = '<i class="fas fa-user-ninja"></i> Squat 1RM';
-    }
-}
-// Call the function on load and on resize
-window.addEventListener('load', updateCalculatorTitle);
-window.addEventListener('resize', updateCalculatorTitle);
-        function updateProfile() {
-    if (!currentUser) {
-        showSuccessMessage('Please login first!');
-        return;
-    }
-    const name = document.getElementById('profileName').value;
-    const gender = document.getElementById('profileGender').value;
-    const age = document.getElementById('profileAge').value;
-    const height = document.getElementById('profileHeight').value;
-    const weight = document.getElementById('profileWeight').value;
-    const experience = document.getElementById('profileExperience').value;
-    if (!name || !gender || !age || !height || !weight || !experience) {
-        showSuccessMessage('Please fill in all fields!');
-        return;
-    }
-    // Update user data in Firebase Realtime Database
-    const userRef = database.ref('users/' + currentUser.uid);
-    userRef.update({
-        name: name,
-        gender: gender,
-        age: parseInt(age),
-        height: parseInt(height),
-        weight: parseInt(weight),
-        experience: experience
-    })
-    .then(() => {
-        // Update local currentUser object
-        currentUser.name = name;
-        currentUser.gender = gender;
-        currentUser.age = parseInt(age);
-        currentUser.height = parseInt(height);
-        currentUser.weight = parseInt(weight);
-        currentUser.experience = experience;
-        // Update user data in local storage
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        showSuccessMessage('Profile updated successfully!');
-    })
-    .catch((error) => {
-        showSuccessMessage('Error updating profile: ' + error.message);
-    });
-}
-function updateSBD() {
-    if (!currentUser) {
-        showSuccessMessage('Please login first!');
-        return;
-    }
-    const squat = document.getElementById('profileSquat').value;
-    const bench = document.getElementById('profileBench').value;
-    const deadlift = document.getElementById('profileDeadlift').value;
-    if (!squat || !bench || !deadlift) {
-        showSuccessMessage('Please fill in all SBD values!');
-        return;
-    }
-    // Update SBD records in Firebase Realtime Database
-    const userRef = database.ref('users/' + currentUser.uid);
-    userRef.update({
-        squat: parseInt(squat),
-        bench: parseInt(bench),
-        deadlift: parseInt(deadlift)
-    })
-    .then(() => {
-        // Update local currentUser object
-        currentUser.squat = parseInt(squat);
-        currentUser.bench = parseInt(bench);
-        currentUser.deadlift = parseInt(deadlift);
-        // Update user data in local storage
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        // Update global program variables if they exist
-        if (userProgram.squat > 0) {
-            userProgram.squat = parseInt(squat);
-            userProgram.bench = parseInt(bench);
-            userProgram.deadlift = parseInt(deadlift);
-        }
-        showSuccessMessage('SBD records updated successfully!');
-    })
-    .catch((error) => {
-        showSuccessMessage('Error updating SBD records: ' + error.message);
-    });
-}
-        // Modal functions
-        function openModal(modalId) {
-            document.getElementById(modalId).style.display = 'block';
-        }
-        function closeModal(modalId) {
-            document.getElementById(modalId).style.display = 'none';
-        }
-        // Authentication
-        function showLoginForm() {
-            document.getElementById('modalTitle').textContent = 'Login';
-            document.getElementById('loginForm').style.display = 'block';
-            document.getElementById('signupForm').style.display = 'none';
-        }
-        function showSignupForm() {
-            document.getElementById('modalTitle').textContent = 'Sign Up';
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('signupForm').style.display = 'block';
-        }
-        function login() {
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
-    if (email && password) {
-        auth.signInWithEmailAndPassword(email, password)
-            .then((userCredential) => {
-                // Signed in
-                const user = userCredential.user;
-                // Fetch user data from Firebase Realtime Database
-                database.ref('users/' + user.uid).once('value')
-                    .then((snapshot) => {
-                        const userData = snapshot.val();
-                        if (userData) {
-                            currentUser = userData;
-                            // Store user data in local storage
-                            localStorage.setItem('currentUser', JSON.stringify(userData));
-                            updateAuthUI();
-                            closeModal('loginModal');
-                            showSuccessMessage('Login successful!');
-                            // Clear form
-                            document.getElementById('loginEmail').value = '';
-                            document.getElementById('loginPassword').value = '';
-                            showLoginForm();
-                        } else {
-                            showSuccessMessage('User data not found!');
-                        }
-                    })
-                    .catch((error) => {
-                        showSuccessMessage('Error fetching user data: ' + error.message);
-                    });
-            })
-            .catch((error) => {
-                showSuccessMessage('Invalid Credentials!');
-            });
-    } else {
-        showSuccessMessage('Please fill in all fields!');
-    }
-}
-        function signup() {
-    const name = document.getElementById('signupName').value;
-    const email = document.getElementById('signupEmail').value;
-    const number = document.getElementById('signupNumber').value;
-    const experience = document.getElementById('signupExperience').value;
-    const password = document.getElementById('signupPassword').value;
-    if (!name || !email || !number || !experience || !password) {
-        showSuccessMessage('Please fill in all fields!');
-        return;
-    }
-    if (password.length < 6) {
-        showSuccessMessage('Password must be at least 6 characters!');
-        return;
-    }
-    auth.createUserWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            // Signed up
-            const user = userCredential.user;
-            const userData = {
-                name: name,
-                email: email,
-                number: number,
-                experience: experience,
-                uid: user.uid,
-                joinDate: new Date().toISOString(),
-                // Additional profile fields
-                gender: '',
-                age: '',
-                height: '',
-                weight: '',
-                squat: '',
-                bench: '',
-                deadlift: ''
-            };
-            // Save user data to Firebase Realtime Database
-            database.ref('users/' + user.uid).set(userData)
-                .then(() => {
-                    currentUser = userData;
-                    updateAuthUI();
-                    closeModal('loginModal');
-                    showSuccessMessage('Signup Successful!');
-                    // Clear form
-                    clearSignupForm();
-                    showLoginForm();
-                })
-                .catch((error) => {
-                    showSuccessMessage('Signup failed: ' + error.message);
-                });
-        })
-        .catch((error) => {
-            showSuccessMessage('Signup failed: ' + error.message);
-        });
-}
-        function clearSignupForm() {
-            document.getElementById('signupName').value = '';
-            document.getElementById('signupEmail').value = '';
-            document.getElementById('signupNumber').value = '';
-            document.getElementById('signupExperience').value = '';
-            document.getElementById('signupPassword').value = '';
-        }
+
         function logout() {
-    auth.signOut().then(() => {
-        currentUser = null;
-        // Clear user data from local storage
-        localStorage.removeItem('currentUser');
-        // Refresh the page to reflect the logged-out state
-        window.location.reload();
-    }).catch((error) => {
-        showSuccessMessage('Logout failed: ' + error.message);
-    });
-}
-        function calculate1RM(lift) {
-    const weight = parseFloat(document.getElementById(`${lift}Weight`).value);
-    const reps = parseInt(document.getElementById(`${lift}Reps`).value);
-    if (weight && reps) {
-        // Epley formula: 1RM = weight × (1 + reps/30)
-        const oneRM = Math.round(weight * (1 + reps / 30));
-        document.getElementById(`${lift}Result`).style.display = 'block';
-        if (window.innerWidth <= 768) {
-            document.getElementById(`${lift}Result`).innerHTML = `<h4>Your SBD 1RM: <span id="${lift}RM"></span> kg</h4>`;
-        } else {
-            document.getElementById(`${lift}Result`).innerHTML = `<h4>Your ${lift.charAt(0).toUpperCase() + lift.slice(1)} 1RM: <span id="${lift}RM"></span> kg</h4>`;
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            showAuthButtons();
+            goHome();
         }
-        document.getElementById(`${lift}RM`).textContent = oneRM;
-    }
-}
-        // Nutrition Calculator
-        function calculateNutrition() {
-            const currentWeight = parseFloat(document.getElementById('currentWeight').value);
-            const targetWeight = parseFloat(document.getElementById('targetWeight').value);
-            const timeline = parseInt(document.getElementById('timeline').value);
-            const goal = document.getElementById('goal').value;
-            
-            if (currentWeight && targetWeight && timeline) {
-                let calories, protein, carbs, fats;
-                
-                // Basic calculations based on goal
-                if (goal === 'cut') {
-                    calories = Math.round(currentWeight * 24);
-                    protein = Math.round(currentWeight * 2.2);
-                    fats = Math.round(currentWeight * 0.8);
-                    carbs = Math.round((calories - (protein * 4) - (fats * 9)) / 4);
-                } else if (goal === 'bulk') {
-                    calories = Math.round(currentWeight * 35);
-                    protein = Math.round(currentWeight * 2.0);
-                    fats = Math.round(currentWeight * 1.0);
-                    carbs = Math.round((calories - (protein * 4) - (fats * 9)) / 4);
-                } else {
-                    calories = Math.round(currentWeight * 30);
-                    protein = Math.round(currentWeight * 2.0);
-                    fats = Math.round(currentWeight * 0.9);
-                    carbs = Math.round((calories - (protein * 4) - (fats * 9)) / 4);
-                }
-                
-                document.getElementById('nutritionResult').style.display = 'block';
-                document.getElementById('calories').textContent = calories;
-                document.getElementById('protein').textContent = protein;
-                document.getElementById('carbs').textContent = carbs;
-                document.getElementById('fats').textContent = fats;
+
+        function closeModals() {
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('signupModal').classList.add('hidden');
+        }
+
+        function requireAuth() {
+            if (!currentUser) {
+                alert('Please login to access this feature');
+                document.getElementById('loginModal').classList.remove('hidden');
+                return false;
             }
+            return true;
         }
-        // Wilks Calculator
-        function calculateWilks() {
-            const gender = document.getElementById('gender').value;
-            const bodyWeight = parseFloat(document.getElementById('bodyWeight').value);
-            const squat = parseFloat(document.getElementById('wilksSquat').value) || 0;
-            const bench = parseFloat(document.getElementById('wilksBench').value) || 0;
-            const deadlift = parseFloat(document.getElementById('wilksDeadlift').value) || 0;
-            
-            if (bodyWeight && (squat || bench || deadlift)) {
-                const total = squat + bench + deadlift;
-                
-                // Simplified Wilks coefficient calculation
-                let coefficient;
-                if (gender === 'male') {
-                    coefficient = 500 / (bodyWeight * bodyWeight * 0.000001 + bodyWeight * 0.01 + 1);
-                } else {
-                    coefficient = 500 / (bodyWeight * bodyWeight * 0.0000015 + bodyWeight * 0.012 + 1);
+
+        // Realistic questions database
+        const questionBank = {
+            'English': {
+                'Grammar': {
+                    'Tenses': [
+                        {
+                            question: "Choose the correct form of the verb: 'By next year, I _____ my degree.'",
+                            options: ["will complete", "will have completed", "would complete", "have completed"],
+                            correct: 1,
+                            explanation: "Future perfect tense is used for actions that will be completed before a specific time in the future."
+                        },
+                        {
+                            question: "Identify the tense: 'She has been working here for five years.'",
+                            options: ["Present Perfect", "Present Perfect Continuous", "Past Perfect", "Past Continuous"],
+                            correct: 1,
+                            explanation: "Present Perfect Continuous tense shows an action that started in the past and continues to the present."
+                        }
+                    ],
+                    'Articles': [
+                        {
+                            question: "Fill in the blank: '_____ honest man is respected by all.'",
+                            options: ["A", "An", "The", "No article"],
+                            correct: 1,
+                            explanation: "'An' is used before words starting with vowel sounds. 'Honest' starts with a silent 'h'."
+                        }
+                    ]
+                },
+                'Vocabulary': {
+                    'Synonyms': [
+                        {
+                            question: "Choose the synonym of 'Abundant':",
+                            options: ["Scarce", "Plentiful", "Limited", "Rare"],
+                            correct: 1,
+                            explanation: "Abundant means existing in large quantities; plentiful has the same meaning."
+                        }
+                    ]
                 }
-                
-                const wilksScore = Math.round(total * coefficient);
-                
-                let rating, level;
-                if (wilksScore < 300) {
-                    rating = "Beginner";
-                    level = "Local";
-                } else if (wilksScore < 400) {
-                    rating = "Intermediate";
-                    level = "Regional";
-                } else if (wilksScore < 500) {
-                    rating = "Advanced";
-                    level = "National";
-                } else {
-                    rating = "Elite";
-                    level = "International";
+            },
+            'Mathematics': {
+                'Arithmetic': {
+                    'Percentage': [
+                        {
+                            question: "If 25% of a number is 75, what is 40% of that number?",
+                            options: ["100", "120", "150", "180"],
+                            correct: 1,
+                            explanation: "If 25% = 75, then 100% = 300. Therefore, 40% of 300 = 120."
+                        },
+                        {
+                            question: "A shopkeeper marks his goods 30% above cost price and gives 10% discount. His profit percentage is:",
+                            options: ["17%", "20%", "15%", "25%"],
+                            correct: 0,
+                            explanation: "Let CP = 100. MP = 130. SP = 130 - 13 = 117. Profit% = (17/100) × 100 = 17%"
+                        }
+                    ],
+                    'Profit & Loss': [
+                        {
+                            question: "An article is sold at 20% profit. If both cost price and selling price are increased by Rs. 100, profit becomes 10%. Find the original cost price.",
+                            options: ["Rs. 400", "Rs. 500", "Rs. 600", "Rs. 800"],
+                            correct: 1,
+                            explanation: "Let CP = x. SP = 1.2x. New equation: (1.2x + 100)/(x + 100) = 1.1. Solving: x = 500"
+                        }
+                    ]
                 }
-                
-                document.getElementById('wilksResult').style.display = 'block';
-                document.getElementById('total').textContent = total;
-                document.getElementById('wilksScore').textContent = wilksScore;
-                document.getElementById('rating').textContent = rating;
-                document.getElementById('level').textContent = level;
+            },
+            'Reasoning': {
+                'Logical Reasoning': {
+                    'Syllogism': [
+                        {
+                            question: "Statements: All roses are flowers. Some flowers are red. Conclusions: I. Some roses are red. II. All red things are flowers.",
+                            options: ["Only I follows", "Only II follows", "Both follow", "Neither follows"],
+                            correct: 3,
+                            explanation: "From the given statements, we cannot conclude that some roses are red or all red things are flowers."
+                        }
+                    ],
+                    'Blood Relations': [
+                        {
+                            question: "Pointing to a man, a woman said, 'His mother is the only daughter of my mother.' How is the woman related to the man?",
+                            options: ["Mother", "Sister", "Aunt", "Grandmother"],
+                            correct: 0,
+                            explanation: "The only daughter of the woman's mother is the woman herself. So the man's mother is the woman, making her his mother."
+                        }
+                    ]
+                }
+            },
+            'General Studies': {
+                'History': {
+                    'Ancient India': [
+                        {
+                            question: "The Indus Valley Civilization was discovered in which year?",
+                            options: ["1920", "1921", "1922", "1924"],
+                            correct: 1,
+                            explanation: "The Indus Valley Civilization was first discovered in 1921 by Dayaram Sahni at Harappa."
+                        },
+                        {
+                            question: "Which of the following was the port city of Indus Valley Civilization?",
+                            options: ["Harappa", "Mohenjodaro", "Lothal", "Kalibangan"],
+                            correct: 2,
+                            explanation: "Lothal was the major port city of the Indus Valley Civilization, located in present-day Gujarat."
+                        }
+                    ]
+                },
+                'Geography': {
+                    'Physical Geography': [
+                        {
+                            question: "Which is the longest river in India?",
+                            options: ["Yamuna", "Ganga", "Godavari", "Narmada"],
+                            correct: 1,
+                            explanation: "The Ganga is the longest river in India, flowing for about 2,525 km from the Himalayas to the Bay of Bengal."
+                        }
+                    ]
+                }
             }
-        }
-        // Global program variables
-        let userProgram = {
-            squat: 0,
-            bench: 0,
-            deadlift: 0,
-            experience: 'beginner'
         };
-        // Program Generation
-        function generateProgram() {
-    const squat = parseFloat(document.getElementById('currentSquat').value);
-    const bench = parseFloat(document.getElementById('currentBench').value);
-    const deadlift = parseFloat(document.getElementById('currentDeadlift').value);
-    const experience = document.getElementById('experience').value;
-    if (squat && bench && deadlift) {
-        // Store user data
-        userProgram = { squat, bench, deadlift, experience };
-        // Fetch workout history from Firebase
-        if (currentUser) {
-            const userRef = database.ref('users/' + currentUser.uid + '/workoutHistory');
-            userRef.once('value')
-                .then((snapshot) => {
-                    const historyData = snapshot.val();
-                    if (historyData) {
-                        workoutHistory = Object.values(historyData);
+
+        // Sample questions generator with realistic questions
+        function generateQuestions(subject, chapter, topic, setNumber) {
+            const questions = [];
+            const topicQuestions = questionBank[subject]?.[chapter]?.[topic] || [];
+            
+            // If we have realistic questions for this topic, use them and fill remaining with generated ones
+            for (let i = 0; i < 25; i++) {
+                if (i < topicQuestions.length) {
+                    questions.push({
+                        id: i + 1,
+                        ...topicQuestions[i]
+                    });
+                } else {
+                    // Generate additional questions if needed
+                    const templates = getQuestionTemplates(subject, chapter, topic);
+                    const template = templates[i % templates.length];
+                    questions.push({
+                        id: i + 1,
+                        question: template.question.replace('{n}', i + 1),
+                        options: template.options,
+                        correct: template.correct,
+                        explanation: template.explanation
+                    });
+                }
+            }
+            return questions;
+        }
+
+        function getQuestionTemplates(subject, chapter, topic) {
+            const templates = {
+                'English': [
+                    {
+                        question: "Choose the correct option to complete the sentence:",
+                        options: ["Option A", "Option B", "Option C", "Option D"],
+                        correct: Math.floor(Math.random() * 4),
+                        explanation: "This tests your understanding of English grammar and usage."
                     }
-                    // Show the program section
-                    document.getElementById('program').style.display = 'block';
-                    closeModal('sbdModal');
-                    showSection('program');
-                    generateProgramDisplay(); // Generate the program display after fetching workout history
-                    showSuccessMessage('Program generated successfully!');
-                })
-                .catch((error) => {
-                    showSuccessMessage('Error fetching workout history: ' + error.message);
-                });
-        } else {
-            // If the user is not logged in, show the program section without fetching history
-            document.getElementById('program').style.display = 'block';
-            closeModal('sbdModal');
-            showSection('program');
-            generateProgramDisplay();
-            showSuccessMessage('Program generated successfully!');
-        }
-    }
-}
-        function getAdminEmail() {
-    const emailParts = ['hey', 'sharvi', '@', 'gmail', '.com'];
-    return emailParts[0] + emailParts[1] + emailParts[2] + emailParts[3] + emailParts[4];
-}
-        function generateProgramDisplay() {
-    const programGrid = document.getElementById('programGrid');
-    programGrid.innerHTML = '';
-    if (!currentUser) {
-        // If user is not logged in, show only the first week and make it full width
-        const weekCard = document.createElement('div');
-        weekCard.className = 'week-card full-width';
-        weekCard.innerHTML = `
-            <div class="week-title">Week 1 - Foundation Phase</div>
-            ${generateWeekDays(1)}
-            <div class="locked-message">
-                <p>Please login to unlock the full split!</p>
-            </div>
-        `;
-        programGrid.appendChild(weekCard);
-    } else {
-        // If user is logged in, show all weeks
-        for (let week = 1; week <= 12; week++) {
-            const weekCard = document.createElement('div');
-            weekCard.className = 'week-card';
-            weekCard.innerHTML = `
-                <div class="week-title">Week ${week} - ${getWeekPhase(week)}</div>
-                ${generateWeekDays(week)}
-            `;
-            programGrid.appendChild(weekCard);
-        }
-    }
-}
-        function getWeekPhase(week) {
-            if (week <= 4) return "Foundation Phase";
-            if (week <= 8) return "Strength Phase";
-            return "Peak Phase";
-        }
-        function getIntensityRange(week) {
-            if (week <= 4) return { min: 60, max: 75 };
-            if (week <= 8) return { min: 70, max: 85 };
-            return { min: 80, max: 95 };
-        }
-        function generateWeekDays(week) {
-    let daysHTML = '';
-    for (let day = 1; day <= 6; day++) {
-        const dayId = `week${week}day${day}`;
-        const dayFocus = getDayFocus(day);
-        const dayExercises = generateDayExercises(day, week);
-        // Check if the day is marked as completed in workout history
-        const isCompleted = workoutHistory.some(workout => workout.workout === dayId);
-        // Determine button text and state based on completion status and login status
-        let completeButton = '';
-        if (currentUser) {
-            completeButton = isCompleted ?
-                `<button class="completed-btn completed" disabled>Done</button>` :
-                `<button class="completed-btn" onclick="markCompleted('${dayId}')" id="${dayId}Btn">Complete</button>`;
-        }
-        daysHTML += `
-            <div class="day-item">
-                <div class="day-header">
-                    <strong>Day ${day} - ${dayFocus}</strong>
-                    ${completeButton}
-                </div>
-                <div class="exercise-list">
-                    ${dayExercises}
-                </div>
-            </div>
-        `;
-    }
-    return daysHTML;
-}
-        function getDayFocus(day) {
-            const focuses = {
-                1: "Squat Focus",
-                2: "Bench Focus", 
-                3: "Deadlift Focus",
-                4: "Squat Volume",
-                5: "Bench Volume",
-                6: "Recovery/Accessories"
+                ],
+                'Mathematics': [
+                    {
+                        question: "Solve the mathematical problem:",
+                        options: ["25", "30", "35", "40"],
+                        correct: Math.floor(Math.random() * 4),
+                        explanation: "This involves basic arithmetic calculations and problem-solving skills."
+                    }
+                ],
+                'Reasoning': [
+                    {
+                        question: "Find the logical conclusion from the given statements:",
+                        options: ["Statement A is true", "Statement B is true", "Both are true", "Neither is true"],
+                        correct: Math.floor(Math.random() * 4),
+                        explanation: "This tests your logical reasoning and analytical thinking abilities."
+                    }
+                ],
+                'General Studies': [
+                    {
+                        question: "Which of the following is correct about Indian history/geography/polity?",
+                        options: ["Option A", "Option B", "Option C", "Option D"],
+                        correct: Math.floor(Math.random() * 4),
+                        explanation: "This tests your knowledge of general studies topics relevant to SSC exams."
+                    }
+                ]
             };
-            return focuses[day];
-        }
-        function calculateWeight(oneRM, percentage) {
-            return Math.round((oneRM * percentage / 100) / 2.5) * 2.5; // Round to nearest 2.5kg
-        }
-        function getExperienceModifier(experience) {
-            const modifiers = {
-                'beginner': { sets: 1, reps: 2, intensity: -5 },
-                'intermediate': { sets: 0, reps: 0, intensity: 0 },
-                'advanced': { sets: 1, reps: -2, intensity: 5 }
-            };
-            return modifiers[experience] || modifiers['intermediate'];
-        }
-        function generateDayExercises(day, week) {
-            const intensity = getIntensityRange(week);
-            const modifier = getExperienceModifier(userProgram.experience);
             
-            let exercises = '';
-            
-            switch(day) {
-                case 1: // Squat Focus
-                    const squatPercent = intensity.min + 10 + modifier.intensity;
-                    const squatWeight = calculateWeight(userProgram.squat, squatPercent);
-                    const squatSets = 4 + modifier.sets;
-                    const squatReps = 5 + modifier.reps;
-                    
-                    exercises = `
-                        <strong>Main Lift:</strong><br>
-                        • Back Squat: ${squatSets}×${squatReps} @ ${squatPercent}% (${squatWeight}kg)<br><br>
-                        
-                        <strong>Secondary Lift:</strong><br>
-                        • Bench Press: 3×8 @ ${intensity.min}% (${calculateWeight(userProgram.bench, intensity.min)}kg)<br><br>
-                        
-                        <strong>Accessories:</strong><br>
-                        • Romanian Deadlifts: 3×10 @ ${calculateWeight(userProgram.deadlift, 60)}kg<br>
-                        • Bulgarian Split Squats: 3×12 each leg @ bodyweight<br>
-                        • Leg Curls: 3×15 @ 40kg<br>
-                        • Walking Lunges: 3×20 steps @ 20kg<br>
-                        • Calf Raises: 4×20 @ 80kg<br>
-                        • Plank: 3×60 seconds
-                    `;
-                    break;
-                    
-                case 2: // Bench Focus
-                    const benchPercent = intensity.min + 10 + modifier.intensity;
-                    const benchWeight = calculateWeight(userProgram.bench, benchPercent);
-                    const benchSets = 4 + modifier.sets;
-                    const benchReps = 5 + modifier.reps;
-                    
-                    exercises = `
-                        <strong>Main Lift:</strong><br>
-                        • Bench Press: ${benchSets}×${benchReps} @ ${benchPercent}% (${benchWeight}kg)<br><br>
-                        
-                        <strong>Secondary Lift:</strong><br>
-                        • Squat: 3×8 @ ${intensity.min}% (${calculateWeight(userProgram.squat, intensity.min)}kg)<br><br>
-                        
-                        <strong>Accessories:</strong><br>
-                        • Incline Dumbbell Press: 3×10 @ 35kg each<br>
-                        • Barbell Rows: 4×8 @ ${calculateWeight(userProgram.bench, 80)}kg<br>
-                        • Close-Grip Bench: 3×12 @ ${calculateWeight(userProgram.bench, 70)}kg<br>
-                        • Tricep Dips: 3×15 @ bodyweight<br>
-                        • Face Pulls: 4×20 @ 30kg<br>
-                        • Overhead Press: 3×10 @ ${calculateWeight(userProgram.bench, 60)}kg
-                    `;
-                    break;
-                    
-                case 3: // Deadlift Focus
-                    const deadliftPercent = intensity.min + 10 + modifier.intensity;
-                    const deadliftWeight = calculateWeight(userProgram.deadlift, deadliftPercent);
-                    const deadliftSets = 3 + modifier.sets;
-                    const deadliftReps = 5 + modifier.reps;
-                    
-                    exercises = `
-                        <strong>Main Lift:</strong><br>
-                        • Deadlift: ${deadliftSets}×${deadliftReps} @ ${deadliftPercent}% (${deadliftWeight}kg)<br><br>
-                        
-                        <strong>Secondary Lift:</strong><br>
-                        • Bench Press: 3×8 @ ${intensity.min}% (${calculateWeight(userProgram.bench, intensity.min)}kg)<br><br>
-                        
-                        <strong>Accessories:</strong><br>
-                        • Deficit Deadlifts: 3×8 @ ${calculateWeight(userProgram.deadlift, 70)}kg<br>
-                        • Barbell Hip Thrusts: 4×12 @ ${calculateWeight(userProgram.deadlift, 60)}kg<br>
-                        • Stiff Leg Deadlifts: 3×12 @ ${calculateWeight(userProgram.deadlift, 50)}kg<br>
-                        • Lat Pulldowns: 4×12 @ 60kg<br>
-                        • Hyperextensions: 3×15 @ 20kg<br>
-                        • Farmer's Walks: 3×40m @ 40kg each hand
-                    `;
-                    break;
-                    
-                case 4: // Squat Volume
-                    const squatVolPercent = intensity.min + modifier.intensity;
-                    const squatVolWeight = calculateWeight(userProgram.squat, squatVolPercent);
-                    
-                    exercises = `
-                        <strong>Main Lift:</strong><br>
-                        • Back Squat: 5×8 @ ${squatVolPercent}% (${squatVolWeight}kg)<br><br>
-                        
-                        <strong>Secondary Lift:</strong><br>
-                        • Deadlift: 3×5 @ ${intensity.min + 5}% (${calculateWeight(userProgram.deadlift, intensity.min + 5)}kg)<br><br>
-                        
-                        <strong>Accessories:</strong><br>
-                        • Front Squats: 3×10 @ ${calculateWeight(userProgram.squat, 60)}kg<br>
-                        • Leg Press: 4×15 @ 200kg<br>
-                        • Leg Extensions: 3×20 @ 50kg<br>
-                        • Goblet Squats: 3×15 @ 25kg<br>
-                        • Box Step-ups: 3×12 each leg @ 20kg<br>
-                        • Abs Circuit: 3 rounds (Crunches, Russian Twists, Leg Raises)
-                    `;
-                    break;
-                    
-                case 5: // Bench Volume
-                    const benchVolPercent = intensity.min + modifier.intensity;
-                    const benchVolWeight = calculateWeight(userProgram.bench, benchVolPercent);
-                    
-                    exercises = `
-                        <strong>Main Lift:</strong><br>
-                        • Bench Press: 5×8 @ ${benchVolPercent}% (${benchVolWeight}kg)<br><br>
-                        
-                        <strong>Secondary Lift:</strong><br>
-                        • Squat: 3×5 @ ${intensity.min + 5}% (${calculateWeight(userProgram.squat, intensity.min + 5)}kg)<br><br>
-                        
-                        <strong>Accessories:</strong><br>
-                        • Dumbbell Bench Press: 4×12 @ 30kg each<br>
-                        • Seated Cable Rows: 4×12 @ 70kg<br>
-                        • Dumbbell Flyes: 3×15 @ 20kg each<br>
-                        • Tricep Pushdowns: 4×15 @ 40kg<br>
-                        • Lateral Raises: 4×20 @ 12kg each<br>
-                        • Push-ups: 3×max reps
-                    `;
-                    break;
-                    
-                case 6: // Recovery/Accessories
-                    exercises = `
-                        <strong>Recovery Day:</strong><br><br>
-                        
-                        <strong>Light Movement:</strong><br>
-                        • Bodyweight Squats: 3×20<br>
-                        • Push-ups: 3×15<br>
-                        • Glute Bridges: 3×20<br><br>
-                        
-                        <strong>Mobility & Accessories:</strong><br>
-                        • Band Pull-aparts: 4×25<br>
-                        • Foam Rolling: 15 minutes<br>
-                        • Hip Flexor Stretches: 3×30 seconds each<br>
-                        • Shoulder Dislocations: 3×15<br>
-                        • Cat-Cow Stretches: 3×15<br>
-                        • Light Cardio: 20-30 minutes walking
-                    `;
-                    break;
-            }
-            
-            return exercises;
+            return templates[subject] || templates['General Studies'];
         }
-        function markCompleted(dayId) {
-    const btn = document.getElementById(dayId + 'Btn');
-    btn.textContent = 'Done';
-    btn.classList.add('completed');
-    btn.disabled = true;
-    // Add to workout history
-    const workoutData = {
-        date: new Date().toISOString(), // Use ISO string for consistency
-        workout: dayId,
-        exercises: generateDayExercises(parseInt(dayId.slice(-1)))
-    };
-    if (currentUser) {
-        // Store the workout data in Firebase under the user's profile
-        const userRef = database.ref('users/' + currentUser.uid + '/workoutHistory');
-        userRef.push(workoutData)
-            .then(() => {
-                showSuccessMessage('Workout completed and saved!');
-            })
-            .catch((error) => {
-                showSuccessMessage('Error saving workout: ' + error.message);
+
+        // Navigation functions
+        function showSubject(subject) {
+            currentSubject = subject;
+            document.getElementById('mainContent').classList.add('hidden');
+            document.getElementById('subjectView').classList.remove('hidden');
+            document.getElementById('subjectTitle').textContent = subject;
+            
+            const chaptersGrid = document.getElementById('chaptersGrid');
+            chaptersGrid.innerHTML = '';
+            
+            Object.keys(subjects[subject]).forEach(chapter => {
+                const chapterCard = document.createElement('div');
+                chapterCard.className = 'bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer';
+                chapterCard.onclick = () => showChapter(chapter);
+                chapterCard.innerHTML = `
+                    <h3 class="font-semibold text-lg text-blue-600 mb-2">${chapter}</h3>
+                    <p class="text-sm text-gray-600">${Object.keys(subjects[subject][chapter]).length} topics available</p>
+                `;
+                chaptersGrid.appendChild(chapterCard);
             });
-    } else {
-        // If the user is not logged in, store locally
-        workoutHistory.push(workoutData);
-        showSuccessMessage('Workout completed!');
-    }
-}
-        // Category management functions
-        function updateLifterCategories() {
-            const ageCategory = document.getElementById('ageCategory').value;
-            const lifterCategorySelect = document.getElementById('lifterCategory');
-            
-            lifterCategorySelect.innerHTML = '<option value="">Select lifter category</option>';
-            
-            if (ageCategory && lifterCategories[ageCategory]) {
-                lifterCategories[ageCategory].forEach(category => {
-                    const option = document.createElement('option');
-                    option.value = category;
-                    option.textContent = categoryLabels[category];
-                    lifterCategorySelect.appendChild(option);
-                });
-            }
-            
-            // Clear weight class when lifter category changes
-            document.getElementById('weightClass').innerHTML = '<option value="">Select weight class</option>';
         }
-        function handleStartTraining() {
-    if (!currentUser) {
-        // If no user is logged in, open the login modal
-        openModal('loginModal');
-    } else {
-        // If a user is logged in, proceed with the usual function
-        openModal('sbdModal');
-    }
-}
-        function updateWeightClasses() {
-            const lifterCategory = document.getElementById('lifterCategory').value;
-            const weightClassSelect = document.getElementById('weightClass');
+
+        function showChapter(chapter) {
+            currentChapter = chapter;
+            document.getElementById('subjectView').classList.add('hidden');
+            document.getElementById('topicsView').classList.remove('hidden');
+            document.getElementById('chapterTitle').textContent = `${currentSubject} - ${chapter}`;
             
-            weightClassSelect.innerHTML = '<option value="">Select weight class</option>';
+            const topicsGrid = document.getElementById('topicsGrid');
+            topicsGrid.innerHTML = '';
             
-            if (lifterCategory) {
-                const isWomen = lifterCategory.includes('women');
-                const classes = isWomen ? weightClasses.women : weightClasses.men;
-                
-                classes.forEach(weightClass => {
-                    const option = document.createElement('option');
-                    option.value = weightClass;
-                    option.textContent = weightClass;
-                    weightClassSelect.appendChild(option);
-                });
-            }
-        }
-        function updateEditLifterCategories() {
-            const ageCategory = document.getElementById('editAgeCategory').value;
-            const lifterCategorySelect = document.getElementById('editLifterCategory');
-            
-            lifterCategorySelect.innerHTML = '<option value="">Select lifter category</option>';
-            
-            if (ageCategory && lifterCategories[ageCategory]) {
-                lifterCategories[ageCategory].forEach(category => {
-                    const option = document.createElement('option');
-                    option.value = category;
-                    option.textContent = categoryLabels[category];
-                    lifterCategorySelect.appendChild(option);
-                });
-            }
-            
-            // Clear weight class when lifter category changes
-            document.getElementById('editWeightClass').innerHTML = '<option value="">Select weight class</option>';
-        }
-        function updateEditWeightClasses() {
-            const lifterCategory = document.getElementById('editLifterCategory').value;
-            const weightClassSelect = document.getElementById('editWeightClass');
-            
-            weightClassSelect.innerHTML = '<option value="">Select weight class</option>';
-            
-            if (lifterCategory) {
-                const isWomen = lifterCategory.includes('women');
-                const classes = isWomen ? weightClasses.women : weightClasses.men;
-                
-                classes.forEach(weightClass => {
-                    const option = document.createElement('option');
-                    option.value = weightClass;
-                    option.textContent = weightClass;
-                    weightClassSelect.appendChild(option);
-                });
-            }
-        }
-        // Records Management
-        function addRecord() {
-    const name = document.getElementById('lifterName').value;
-    const ageCategory = document.getElementById('ageCategory').value;
-    const lifterCategory = document.getElementById('lifterCategory').value;
-    const weightClass = document.getElementById('weightClass').value;
-    const lift = document.getElementById('liftType').value;
-    const weight = parseFloat(document.getElementById('weightLifted').value);
-    const level = document.getElementById('recordLevel').value;
-    if (name && ageCategory && lifterCategory && weightClass && lift && weight && level) {
-        const newRecord = {
-            name,
-            ageCategory,
-            lifterCategory,
-            weightClass,
-            lift,
-            weight,
-            level,
-            timestamp: Date.now()
-        };
-        if (currentUser) {
-            database.ref('powerliftingRecords').push(newRecord)
-                .then((snapshot) => {
-                    // Store the unique ID in the record
-                    newRecord.id = snapshot.key;
-                    records.push(newRecord);
-                    showSuccessMessage('Record added successfully!');
-                    clearRecordForm();
-                })
-                .catch((error) => {
-                    showSuccessMessage('Error adding record: ' + error.message);
-                });
-        } else {
-            records.push(newRecord);
-            showSuccessMessage('Record added locally!');
-            clearRecordForm();
-        }
-    } else {
-        showSuccessMessage('Please fill in all fields!');
-    }
-}
-        function displayRecords(filteredRecords = null) {
-    const tbody = document.getElementById('recordsTableBody');
-    tbody.innerHTML = '';
-    const recordsToShow = filteredRecords || records;
-    recordsToShow.forEach((record, index) => {
-        const originalIndex = filteredRecords ? records.indexOf(record) : index;
-        const row = tbody.insertRow();
-        // Check if the current user is the admin
-        const isAdmin = currentUser && currentUser.email === getAdminEmail();
-        // Only show edit and delete buttons if the user is the admin
-        const actionButtons = isAdmin ? `
-            <button class="btn btn-secondary" onclick="editRecord(${originalIndex})" style="padding: 4px 8px; font-size: 12px; margin-right: 4px;">Edit</button>
-            <button class="btn btn-secondary" onclick="deleteRecord(${originalIndex})" style="padding: 4px 8px; font-size: 12px;">Delete</button>
-        ` : `
-            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px; margin-right: 4px; opacity: 0.5; cursor: not-allowed;" disabled>Edit</button>
-            <button class="btn btn-secondary" style="padding: 4px 8px; font-size: 12px; opacity: 0.5; cursor: not-allowed;" disabled>Delete</button>
-        `;
-        row.innerHTML = `
-            <td>${record.name}</td>
-            <td>${record.ageCategory ? record.ageCategory.charAt(0).toUpperCase() + record.ageCategory.slice(1).replace('-', ' ') : 'N/A'}</td>
-            <td>${categoryLabels[record.lifterCategory] || record.lifterCategory}</td>
-            <td>${record.weightClass}</td>
-            <td>${record.lift ? record.lift.charAt(0).toUpperCase() + record.lift.slice(1).replace('-', ' ') : 'N/A'}</td>
-            <td>${record.weight}</td>
-            <td>${record.level ? record.level.charAt(0).toUpperCase() + record.level.slice(1) : 'N/A'}</td>
-            <td>
-                ${actionButtons}
-            </td>
-        `;
-    });
-}
-        function updateAuthUI() {
-    const loginBtn = document.getElementById('loginBtn');
-    const logoutBtn = document.getElementById('logoutBtn');
-    const mobileLoginBtn = document.getElementById('mobileLoginBtn');
-    const mobileLogoutBtn = document.getElementById('mobileLogoutBtn');
-    const addRecordSection = document.querySelector('.records-section');
-    const accountTab = document.getElementById('accountTab');
-    if (currentUser) {
-        loginBtn.style.display = 'none';
-        logoutBtn.style.display = 'block';
-        mobileLoginBtn.style.display = 'none';
-        mobileLogoutBtn.style.display = 'block';
-        // Check if the current user's email is the admin email
-        if (currentUser.email === getAdminEmail()) {
-            // Show the "Add New Record" section
-            if (addRecordSection) {
-                addRecordSection.style.display = 'block';
-            }
-        } else {
-            // Hide the "Add New Record" section
-            if (addRecordSection) {
-                addRecordSection.style.display = 'none';
-            }
-        }
-        // Show the "Your Account" tab
-        if (accountTab) {
-            accountTab.style.display = 'block';
-        }
-    } else {
-        loginBtn.style.display = 'block';
-        logoutBtn.style.display = 'none';
-        mobileLoginBtn.style.display = 'block';
-        mobileLogoutBtn.style.display = 'none';
-        // Hide the "Add New Record" section if no user is logged in
-        if (addRecordSection) {
-            addRecordSection.style.display = 'none';
-        }
-        // Hide the "Your Account" tab
-        if (accountTab) {
-            accountTab.style.display = 'none';
-        }
-    }
-}
-  function loadRecordsFromFirebase() {
-    database.ref('powerliftingRecords').on('value', (snapshot) => {
-        const recordsData = snapshot.val();
-        if (recordsData) {
-            records = Object.entries(recordsData).map(([id, record]) => ({
-                id,
-                ...record
-            }));
-            displayRecords();
-        }
-    });
-}
-        function filterRecords() {
-            const nameFilter = document.getElementById('filterName').value.toLowerCase();
-            const ageCategoryFilter = document.getElementById('filterAgeCategory').value;
-            const lifterCategoryFilter = document.getElementById('filterLifterCategory').value;
-            const weightClassFilter = document.getElementById('filterWeightClass').value;
-            const liftTypeFilter = document.getElementById('filterLiftType').value;
-            const recordLevelFilter = document.getElementById('filterRecordLevel').value;
-            
-            const filteredRecords = records.filter(record => {
-                return (!nameFilter || record.name.toLowerCase().includes(nameFilter)) &&
-                       (!ageCategoryFilter || record.ageCategory === ageCategoryFilter) &&
-                       (!lifterCategoryFilter || record.lifterCategory === lifterCategoryFilter) &&
-                       (!weightClassFilter || record.weightClass === weightClassFilter) &&
-                       (!liftTypeFilter || record.lift === liftTypeFilter) &&
-                       (!recordLevelFilter || record.level === recordLevelFilter);
+            Object.keys(subjects[currentSubject][chapter]).forEach(topic => {
+                const topicCard = document.createElement('div');
+                topicCard.className = 'bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer';
+                topicCard.onclick = () => showTopic(topic);
+                topicCard.innerHTML = `
+                    <h3 class="font-semibold text-lg text-blue-600 mb-2">${topic}</h3>
+                    <p class="text-sm text-gray-600">20 practice sets available</p>
+                `;
+                topicsGrid.appendChild(topicCard);
             });
-            
-            displayRecords(filteredRecords);
-            updateFilterWeightClasses();
         }
-        function updateFilterWeightClasses() {
-            const lifterCategoryFilter = document.getElementById('filterLifterCategory').value;
-            const weightClassSelect = document.getElementById('filterWeightClass');
+
+        function showTopic(topic) {
+            currentTopic = topic;
+            document.getElementById('topicsView').classList.add('hidden');
+            document.getElementById('practiceSetsView').classList.remove('hidden');
+            document.getElementById('topicTitle').textContent = `${currentSubject} - ${currentChapter} - ${topic}`;
             
-            // Store current selection
-            const currentSelection = weightClassSelect.value;
+            const practiceSetsGrid = document.getElementById('practiceSetsGrid');
+            practiceSetsGrid.innerHTML = '';
             
-            // Clear and add default option
-            weightClassSelect.innerHTML = '<option value="">All Weight Classes</option>';
-            
-            if (lifterCategoryFilter) {
-                const isWomen = lifterCategoryFilter.includes('women');
-                const classes = isWomen ? weightClasses.women : weightClasses.men;
+            subjects[currentSubject][currentChapter][topic].forEach((setName, index) => {
+                const testKey = `${currentSubject}_${currentChapter}_${topic}_${index + 1}`;
+                const pausedTest = currentUser ? pausedTests[currentUser.id]?.[testKey] : null;
+                const completedTest = currentUser ? completedTests[currentUser.id]?.[testKey] : null;
                 
-                classes.forEach(weightClass => {
-                    const option = document.createElement('option');
-                    option.value = weightClass;
-                    option.textContent = weightClass;
-                    weightClassSelect.appendChild(option);
-                });
+                const setCard = document.createElement('div');
+                setCard.className = 'bg-white rounded-lg shadow-md p-3 md:p-4 hover:shadow-lg transition-shadow cursor-pointer relative flex flex-col';
+                setCard.onclick = () => startTest(index + 1);
                 
-                // Restore selection if still valid
-                if (currentSelection && classes.includes(currentSelection)) {
-                    weightClassSelect.value = currentSelection;
+                let statusIcon = '';
+                let buttonText = 'Start Test';
+                let buttonClass = 'text-xs bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700';
+                let extraInfo = '';
+                
+                if (completedTest) {
+                    statusIcon = '<div class="absolute top-2 right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">✓</div>';
+                    buttonText = 'Retake Test';
+                    buttonClass = 'text-xs bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700';
+                    extraInfo = `<p class="text-xs text-purple-600 mb-2">Score: ${completedTest.score}/25 (${completedTest.percentage}%)</p>`;
+                } else if (pausedTest) {
+                    statusIcon = '<div class="absolute top-2 right-2 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs">⏸</div>';
+                    buttonText = 'Resume Test';
+                    buttonClass = 'text-xs bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700';
+                    extraInfo = `<p class="text-xs text-orange-600 mb-2">Progress: ${Object.keys(pausedTest.userAnswers).length}/25 answered</p>`;
+                }
+                
+                setCard.innerHTML = `
+                    ${statusIcon}
+                    <h3 class="font-semibold text-sm md:text-lg text-blue-600 mb-2 pr-8">Practice Set ${index + 1}</h3>
+                    <p class="text-xs md:text-sm text-gray-600 mb-2">25 Questions • 30 Minutes</p>
+                    ${extraInfo}
+                    <div class="flex justify-end mt-auto">
+                        <button class="${buttonClass}">${buttonText}</button>
+                    </div>
+                `;
+                practiceSetsGrid.appendChild(setCard);
+            });
+        }
+
+        // Test functions
+        function startTest(setNumber) {
+            if (!requireAuth()) return;
+            
+            const testKey = `${currentSubject}_${currentChapter}_${currentTopic}_${setNumber}`;
+            const pausedTest = pausedTests[currentUser.id]?.[testKey];
+            
+            if (pausedTest) {
+                // Resume paused test
+                currentTest = pausedTest.currentTest;
+                currentQuestionIndex = pausedTest.currentQuestionIndex;
+                userAnswers = pausedTest.userAnswers;
+                markedForReview = new Set(pausedTest.markedForReview);
+                testStartTime = pausedTest.testStartTime;
+                
+                // Remove from paused tests
+                if (pausedTests[currentUser.id]) {
+                    delete pausedTests[currentUser.id][testKey];
+                    localStorage.setItem('pausedTests', JSON.stringify(pausedTests));
                 }
             } else {
-                // Add all weight classes when no specific category is selected
-                const allClasses = [...new Set([...weightClasses.men, ...weightClasses.women])].sort();
-                allClasses.forEach(weightClass => {
-                    const option = document.createElement('option');
-                    option.value = weightClass;
-                    option.textContent = weightClass;
-                    weightClassSelect.appendChild(option);
-                });
+                // Start new test
+                currentTest = {
+                    subject: currentSubject,
+                    chapter: currentChapter,
+                    topic: currentTopic,
+                    setNumber: setNumber,
+                    questions: generateQuestions(currentSubject, currentChapter, currentTopic, setNumber)
+                };
                 
-                // Restore selection
-                weightClassSelect.value = currentSelection;
+                currentQuestionIndex = 0;
+                userAnswers = {};
+                markedForReview = new Set();
+                testStartTime = Date.now();
             }
+            
+            document.getElementById('practiceSetsView').classList.add('hidden');
+            document.getElementById('testInterface').classList.remove('hidden');
+            document.body.classList.add('test-active');
+            document.getElementById('testTitle').textContent = `${currentSubject} - ${currentChapter} - ${currentTopic} - Set ${setNumber}`;
+            
+            startTimer();
+            loadQuestion();
+            setupQuestionGrid();
         }
-        function editRecord(index) {
-            editingRecordIndex = index;
-            const record = records[index];
+
+        function saveTestState() {
+            if (!currentUser || !currentTest) return;
             
-            // Populate edit form
-            document.getElementById('editLifterName').value = record.name;
-            document.getElementById('editAgeCategory').value = record.ageCategory;
+            const testKey = `${currentTest.subject}_${currentTest.chapter}_${currentTest.topic}_${currentTest.setNumber}`;
             
-            // Update lifter categories based on age category
-            updateEditLifterCategories();
-            document.getElementById('editLifterCategory').value = record.lifterCategory;
+            if (!pausedTests[currentUser.id]) {
+                pausedTests[currentUser.id] = {};
+            }
             
-            // Update weight classes based on lifter category
-            updateEditWeightClasses();
-            document.getElementById('editWeightClass').value = record.weightClass;
+            pausedTests[currentUser.id][testKey] = {
+                currentTest,
+                currentQuestionIndex,
+                userAnswers,
+                markedForReview: Array.from(markedForReview),
+                testStartTime,
+                pausedAt: Date.now()
+            };
             
-            document.getElementById('editLiftType').value = record.lift;
-            document.getElementById('editWeightLifted').value = record.weight;
-            document.getElementById('editRecordLevel').value = record.level;
-            
-            openModal('editRecordModal');
+            localStorage.setItem('pausedTests', JSON.stringify(pausedTests));
         }
-        function updateRecord() {
-    if (editingRecordIndex === -1) return;
-    const name = document.getElementById('editLifterName').value;
-    const ageCategory = document.getElementById('editAgeCategory').value;
-    const lifterCategory = document.getElementById('editLifterCategory').value;
-    const weightClass = document.getElementById('editWeightClass').value;
-    const lift = document.getElementById('editLiftType').value;
-    const weight = parseFloat(document.getElementById('editWeightLifted').value);
-    const level = document.getElementById('editRecordLevel').value;
-    if (name && ageCategory && lifterCategory && weightClass && lift && weight && level) {
-        const record = {
-            name,
-            ageCategory,
-            lifterCategory,
-            weightClass,
-            lift,
-            weight,
-            level,
-            timestamp: Date.now()
-        };
-        const recordId = records[editingRecordIndex].id;
-        if (currentUser && recordId) {
-            database.ref('powerliftingRecords/' + recordId).update(record)
-                .then(() => {
-                    showSuccessMessage('Record updated successfully!');
-                    closeModal('editRecordModal');
-                    editingRecordIndex = -1;
-                })
-                .catch((error) => {
-                    showSuccessMessage('Error updating record: ' + error.message);
-                });
-        } else {
-            showSuccessMessage('Please login to update records!');
-        }
-    } else {
-        showSuccessMessage('Please fill in all fields!');
-    }
-}
-function deleteRecord(index) {
-    const recordId = records[index].id;
-    // Show confirmation dialog
-    const isConfirmed = confirm("Do you want to delete this record?");
-    if (!isConfirmed) {
-        return; // User canceled the deletion
-    }
-    if (currentUser && recordId) {
-        database.ref('powerliftingRecords/' + recordId).remove()
-            .then(() => {
-                showSuccessMessage('Record deleted successfully!');
-            })
-            .catch((error) => {
-                showSuccessMessage('Error deleting record: ' + error.message);
-            });
-    } else {
-        showSuccessMessage('Please login to delete records!');
-    }
-}
-        function clearRecordForm() {
-            document.getElementById('lifterName').value = '';
-            document.getElementById('ageCategory').value = '';
-            document.getElementById('lifterCategory').innerHTML = '<option value="">Select lifter category</option>';
-            document.getElementById('weightClass').innerHTML = '<option value="">Select weight class</option>';
-            document.getElementById('liftType').value = '';
-            document.getElementById('weightLifted').value = '';
-            document.getElementById('recordLevel').value = '';
-        }
-        // Profile Management
-        function displayWorkoutHistory() {
-    const historyDiv = document.getElementById('workoutHistory');
-    if (!workoutHistory || workoutHistory.length === 0) {
-        historyDiv.innerHTML = '<p>Complete workouts to see your progress here!</p>';
-        return;
-    }
-    let historyHTML = '<h4 style="margin-bottom: 16px;">Completed Workouts:</h4>';
-    workoutHistory.forEach(workout => {
-        historyHTML += `
-            <div class="day-item">
-                <strong>${new Date(workout.date).toLocaleDateString()} - ${workout.workout}</strong>
-                <p style="margin-top: 8px;">${workout.exercises}</p>
-            </div>
-        `;
-    });
-    historyDiv.innerHTML = historyHTML;
-}
-        // Success Message
-        function showSuccessMessage(message) {
-            const successDiv = document.createElement('div');
-            successDiv.className = 'success-message';
-            successDiv.textContent = message;
-            document.body.appendChild(successDiv);
+
+        function startTimer() {
+            let timeLeft = 30 * 60; // 30 minutes in seconds
             
-            setTimeout(() => {
-                if (document.body.contains(successDiv)) {
-                    document.body.removeChild(successDiv);
+            timerInterval = setInterval(() => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('timer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitTest();
                 }
-            }, 3000);
+                timeLeft--;
+            }, 1000);
         }
-        // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
-    loadRecordsFromFirebase();
-    auth.onAuthStateChanged((user) => {
-        if (user) {
-            currentUser = user;
-            updateAuthUI();
-        } else {
-            currentUser = null;
-            updateAuthUI();
-        }
-    });
-});
-        // Close modals when clicking outside
-        window.onclick = function(event) {
-            if (event.target.classList.contains('modal')) {
-                event.target.style.display = 'none';
+
+        function loadQuestion() {
+            const question = currentTest.questions[currentQuestionIndex];
+            document.getElementById('questionCounter').textContent = `${currentQuestionIndex + 1}/25`;
+            document.getElementById('currentQuestion').textContent = `Q${currentQuestionIndex + 1}. ${question.question}`;
+            
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 cursor-pointer';
+                optionDiv.onclick = () => selectOption(index);
+                
+                const isSelected = userAnswers[currentQuestionIndex] === index;
+                optionDiv.innerHTML = `
+                    <input type="radio" name="option" ${isSelected ? 'checked' : ''} class="w-4 h-4 text-blue-600">
+                    <label class="flex-1 cursor-pointer">${String.fromCharCode(65 + index)}. ${option}</label>
+                `;
+                optionsContainer.appendChild(optionDiv);
+            });
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+            
+            // Show submit button on last question, next button otherwise
+            const nextBtn = document.getElementById('nextBtn');
+            const submitTestBtn = document.getElementById('submitTestBtn');
+            
+            if (currentQuestionIndex === 24) {
+                nextBtn.classList.add('hidden');
+                submitTestBtn.classList.remove('hidden');
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitTestBtn.classList.add('hidden');
+            }
+            
+            // Update mark icon
+            const markIcon = document.getElementById('markIcon');
+            if (markedForReview.has(currentQuestionIndex)) {
+                markIcon.className = 'ml-4 w-10 h-10 rounded-full bg-orange-500 text-white transition-colors flex items-center justify-center text-lg font-bold';
+                markIcon.innerHTML = '🔖';
+                markIcon.style.transform = 'rotate(0deg)';
+            } else {
+                markIcon.className = 'ml-4 w-10 h-10 rounded-full border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white transition-colors flex items-center justify-center text-lg font-bold';
+                markIcon.innerHTML = '🏷️';
+                markIcon.style.transform = 'rotate(0deg)';
             }
         }
+
+        function selectOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            loadQuestion();
+            updateQuestionGrid();
+        }
+
+        function setupQuestionGrid() {
+            const questionGrid = document.getElementById('questionGrid');
+            const mobileQuestionGrid = document.getElementById('mobileQuestionGrid');
+            questionGrid.innerHTML = '';
+            mobileQuestionGrid.innerHTML = '';
+            
+            for (let i = 0; i < 25; i++) {
+                // Desktop question grid
+                const questionBtn = document.createElement('button');
+                questionBtn.className = 'w-6 h-6 md:w-8 md:h-8 rounded text-xs font-semibold hover:scale-105 mobile-text-xs';
+                questionBtn.textContent = i + 1;
+                questionBtn.onclick = () => {
+                    goToQuestion(i);
+                    document.getElementById('questionPanel').classList.remove('active');
+                };
+                questionGrid.appendChild(questionBtn);
+                
+                // Mobile question grid (horizontal)
+                const mobileQuestionBtn = document.createElement('button');
+                mobileQuestionBtn.className = 'w-8 h-8 md:w-10 md:h-10 rounded text-xs md:text-sm font-semibold hover:scale-105 flex-shrink-0 mobile-text-xs';
+                mobileQuestionBtn.textContent = i + 1;
+                mobileQuestionBtn.onclick = () => {
+                    goToQuestion(i);
+                    // Scroll to center the selected question
+                    mobileQuestionBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                };
+                mobileQuestionGrid.appendChild(mobileQuestionBtn);
+            }
+            updateQuestionGrid();
+        }
+
+        function updateQuestionGrid() {
+            const questionGrid = document.getElementById('questionGrid');
+            const mobileQuestionGrid = document.getElementById('mobileQuestionGrid');
+            const desktopButtons = questionGrid.children;
+            const mobileButtons = mobileQuestionGrid.children;
+            
+            let answeredCount = 0;
+            
+            for (let i = 0; i < desktopButtons.length; i++) {
+                const desktopBtn = desktopButtons[i];
+                const mobileBtn = mobileButtons[i];
+                const baseClass = 'w-6 h-6 md:w-8 md:h-8 rounded text-xs font-semibold hover:scale-105 mobile-text-xs';
+                const mobileBaseClass = 'w-8 h-8 md:w-10 md:h-10 rounded text-xs md:text-sm font-semibold hover:scale-105 flex-shrink-0 mobile-text-xs';
+                
+                let className, mobileClassName;
+                
+                if (i === currentQuestionIndex) {
+                    className = `${baseClass} bg-blue-600 text-white border-2 border-blue-800`;
+                    mobileClassName = `${mobileBaseClass} bg-blue-600 text-white border-2 border-blue-800`;
+                } else if (markedForReview.has(i)) {
+                    className = `${baseClass} bg-orange-500 text-white hover:bg-orange-600`;
+                    mobileClassName = `${mobileBaseClass} bg-orange-500 text-white hover:bg-orange-600`;
+                } else if (userAnswers.hasOwnProperty(i)) {
+                    className = `${baseClass} bg-green-500 text-white hover:bg-green-600`;
+                    mobileClassName = `${mobileBaseClass} bg-green-500 text-white hover:bg-green-600`;
+                    answeredCount++;
+                } else {
+                    className = `${baseClass} bg-gray-300 text-gray-700 hover:bg-gray-400`;
+                    mobileClassName = `${mobileBaseClass} bg-gray-300 text-gray-700 hover:bg-gray-400`;
+                }
+                
+                desktopBtn.className = className;
+                mobileBtn.className = mobileClassName;
+            }
+            
+            // Update progress text
+            document.getElementById('progressText').textContent = `${answeredCount}/25 answered`;
+        }
+
+        function goToQuestion(index) {
+            currentQuestionIndex = index;
+            loadQuestion();
+            updateQuestionGrid();
+        }
+
+        function submitTest() {
+            clearInterval(timerInterval);
+            
+            // Calculate results
+            let correct = 0;
+            currentTest.questions.forEach((question, index) => {
+                if (userAnswers[index] === question.correct) {
+                    correct++;
+                }
+            });
+            
+            const percentage = Math.round((correct / 25) * 100);
+            const timeTaken = Math.floor((Date.now() - testStartTime) / 1000);
+            const accuracy = Object.keys(userAnswers).length > 0 ? Math.round((correct / Object.keys(userAnswers).length) * 100) : 0;
+            
+            // Mark test as completed and reset everything
+            if (currentUser) {
+                const testKey = `${currentTest.subject}_${currentTest.chapter}_${currentTest.topic}_${currentTest.setNumber}`;
+                
+                if (!completedTests[currentUser.id]) {
+                    completedTests[currentUser.id] = {};
+                }
+                
+                completedTests[currentUser.id][testKey] = {
+                    score: correct,
+                    percentage: percentage,
+                    timeTaken: timeTaken,
+                    completedAt: new Date().toISOString()
+                };
+                
+                localStorage.setItem('completedTests', JSON.stringify(completedTests));
+                
+                // Remove from paused tests if it exists
+                if (pausedTests[currentUser.id]?.[testKey]) {
+                    delete pausedTests[currentUser.id][testKey];
+                    localStorage.setItem('pausedTests', JSON.stringify(pausedTests));
+                }
+            }
+            
+            // Store test results for review
+            window.lastTestResults = {
+                test: currentTest,
+                userAnswers: userAnswers,
+                score: correct,
+                percentage: percentage,
+                timeTaken: timeTaken
+            };
+            
+            document.getElementById('finalScore').textContent = `${correct}/25`;
+            document.getElementById('finalPercentage').textContent = `${percentage}%`;
+            document.getElementById('timeTaken').textContent = `${Math.floor(timeTaken / 60)}:${(timeTaken % 60).toString().padStart(2, '0')}`;
+            document.getElementById('accuracy').textContent = `${accuracy}%`;
+            
+            // Reset test state
+            currentTest = null;
+            currentQuestionIndex = 0;
+            userAnswers = {};
+            markedForReview = new Set();
+            testStartTime = null;
+            timerInterval = null;
+            
+            document.getElementById('testInterface').classList.add('hidden');
+            document.getElementById('resultScreen').classList.remove('hidden');
+            document.body.classList.remove('test-active');
+        }
+
+        function reviewAnswers() {
+            document.getElementById('resultScreen').classList.add('hidden');
+            document.getElementById('reviewScreen').classList.remove('hidden');
+            document.body.classList.add('review-active');
+            
+            const reviewContent = document.getElementById('reviewContent');
+            reviewContent.innerHTML = '';
+            
+            const testData = window.lastTestResults;
+            if (!testData) return;
+            
+            testData.test.questions.forEach((question, index) => {
+                const userAnswer = testData.userAnswers[index];
+                const isCorrect = userAnswer === question.correct;
+                
+                // Check if question is already saved
+                const isQuestionSaved = savedQuestions.some(sq => 
+                    sq.subject === testData.test.subject && 
+                    sq.chapter === testData.test.chapter && 
+                    sq.topic === testData.test.topic && 
+                    sq.questionIndex === index
+                );
+                
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'bg-white rounded-lg shadow-md p-4 md:p-6 mb-4';
+                questionDiv.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <h4 class="text-sm md:text-lg font-medium mobile-text-sm flex-1 pr-2">Q${index + 1}. ${question.question}</h4>
+                        <button onclick="saveQuestion(${index})" class="${isQuestionSaved ? 'text-green-600 hover:text-green-700 text-xl' : 'text-blue-600 hover:text-blue-700 text-xl'}" title="${isQuestionSaved ? 'Remove from saved' : 'Save question'}">${isQuestionSaved ? '💾' : '📌'}</button>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="flex items-center space-x-2 md:space-x-3 p-2 rounded ${
+                                optIndex === question.correct ? 'bg-green-100' : 
+                                optIndex === userAnswer && userAnswer !== question.correct ? 'bg-red-100' : 'bg-gray-50'
+                            }">
+                                <span class="font-medium text-xs md:text-sm mobile-text-xs">${String.fromCharCode(65 + optIndex)}.</span>
+                                <span class="text-xs md:text-sm mobile-text-xs flex-1">${option}</span>
+                                ${optIndex === question.correct ? '<span class="text-green-600 text-sm">✓</span>' : ''}
+                                ${optIndex === userAnswer && userAnswer !== question.correct ? '<span class="text-red-600 text-sm">✗</span>' : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="bg-blue-50 p-3 md:p-4 rounded-lg">
+                        <h5 class="font-semibold text-blue-800 mb-2 text-xs md:text-sm mobile-text-xs">Explanation:</h5>
+                        <p class="text-blue-700 text-xs md:text-sm mobile-text-xs">${question.explanation}</p>
+                    </div>
+                `;
+                reviewContent.appendChild(questionDiv);
+            });
+        }
+
+        function saveQuestion(questionIndex) {
+            const testData = window.lastTestResults;
+            if (!testData) return;
+            
+            const question = testData.test.questions[questionIndex];
+            const questionId = `${testData.test.subject}_${testData.test.chapter}_${testData.test.topic}_${questionIndex}`;
+            
+            // Check if question is already saved
+            const existingIndex = savedQuestions.findIndex(sq => 
+                sq.subject === testData.test.subject && 
+                sq.chapter === testData.test.chapter && 
+                sq.topic === testData.test.topic && 
+                sq.questionIndex === questionIndex
+            );
+            
+            const button = event.target;
+            
+            if (existingIndex !== -1) {
+                // Question is already saved, remove it
+                savedQuestions.splice(existingIndex, 1);
+                localStorage.setItem('savedQuestions', JSON.stringify(savedQuestions));
+                button.textContent = '📌';
+                button.className = 'text-blue-600 hover:text-blue-700 text-xl';
+                button.title = 'Save question';
+                alert('Question removed from saved list!');
+            } else {
+                // Save the question
+                const savedQuestion = {
+                    id: Date.now(),
+                    subject: testData.test.subject,
+                    chapter: testData.test.chapter,
+                    topic: testData.test.topic,
+                    questionIndex: questionIndex,
+                    question: question.question,
+                    options: question.options,
+                    correct: question.correct,
+                    explanation: question.explanation,
+                    savedAt: new Date().toISOString()
+                };
+                
+                savedQuestions.push(savedQuestion);
+                localStorage.setItem('savedQuestions', JSON.stringify(savedQuestions));
+                button.textContent = '💾';
+                button.className = 'text-green-600 hover:text-green-700 text-xl';
+                button.title = 'Remove from saved';
+                alert('Question saved successfully!');
+            }
+        }
+
+        function showSavedQuestions() {
+            document.getElementById('mainContent').classList.add('hidden');
+            document.getElementById('savedQuestionsScreen').classList.remove('hidden');
+            
+            const content = document.getElementById('savedQuestionsContent');
+            content.innerHTML = '';
+            
+            if (savedQuestions.length === 0) {
+                content.innerHTML = '<p class="text-center text-gray-500">No saved questions yet.</p>';
+                return;
+            }
+            
+            savedQuestions.forEach((question, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'bg-white rounded-lg shadow-md p-6 mb-4';
+                questionDiv.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h4 class="text-lg font-medium mb-2">${question.question}</h4>
+                            <p class="text-sm text-gray-600">${question.subject} > ${question.chapter} > ${question.topic}</p>
+                        </div>
+                        <button onclick="deleteSavedQuestion(${index})" class="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700">Delete</button>
+                    </div>
+                    <div class="space-y-2 mb-4">
+                        ${question.options.map((option, optIndex) => `
+                            <div class="flex items-center space-x-3 p-2 rounded ${optIndex === question.correct ? 'bg-green-100' : 'bg-gray-50'}">
+                                <span class="font-medium">${String.fromCharCode(65 + optIndex)}.</span>
+                                <span>${option}</span>
+                                ${optIndex === question.correct ? '<span class="text-green-600">✓</span>' : ''}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="bg-blue-50 p-4 rounded-lg">
+                        <h5 class="font-semibold text-blue-800 mb-2">Explanation:</h5>
+                        <p class="text-blue-700">${question.explanation}</p>
+                    </div>
+                `;
+                content.appendChild(questionDiv);
+            });
+        }
+
+        function deleteSavedQuestion(index) {
+            if (confirm('Are you sure you want to delete this question?')) {
+                savedQuestions.splice(index, 1);
+                localStorage.setItem('savedQuestions', JSON.stringify(savedQuestions));
+                showSavedQuestions();
+            }
+        }
+
+        // Navigation functions
+        function goBack() {
+            document.getElementById('subjectView').classList.add('hidden');
+            document.getElementById('mainContent').classList.remove('hidden');
+        }
+
+        function goBackToSubject() {
+            document.getElementById('topicsView').classList.add('hidden');
+            document.getElementById('subjectView').classList.remove('hidden');
+        }
+
+        function goBackToTopics() {
+            document.getElementById('practiceSetsView').classList.add('hidden');
+            document.getElementById('topicsView').classList.remove('hidden');
+        }
+
+        function goHome() {
+            // Hide all screens
+            document.querySelectorAll('[id$="View"], [id$="Screen"], [id$="Interface"]').forEach(el => {
+                el.classList.add('hidden');
+            });
+            document.getElementById('mainContent').classList.remove('hidden');
+            document.body.classList.remove('test-active', 'review-active');
+        }
+
+        function reattemptTest() {
+            document.getElementById('resultScreen').classList.add('hidden');
+            // Go back to practice sets to select test again
+            document.getElementById('practiceSetsView').classList.remove('hidden');
+            showTopic(currentTopic); // Refresh the practice sets view
+        }
+
+        function showExamDetails(examName) {
+            alert(`${examName} Details:\n\nThis would show detailed information about the exam including:\n- Detailed eligibility criteria\n- Complete syllabus\n- Exam pattern\n- Previous year papers\n- Salary structure\n- Job profile`);
+        }
+
+        // Navigation functions for buttons
+        function nextQuestion() {
+            if (currentQuestionIndex < 24) {
+                currentQuestionIndex++;
+                loadQuestion();
+                updateQuestionGrid();
+            }
+        }
+
+        function confirmSubmitTest() {
+            if (confirm('Are you sure you want to submit the test?')) {
+                submitTest();
+            }
+        }
+
+        // Event listeners
+        document.getElementById('prevBtn').onclick = () => {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+                updateQuestionGrid();
+            }
+        };
+
+        document.getElementById('markIcon').onclick = () => {
+            if (markedForReview.has(currentQuestionIndex)) {
+                markedForReview.delete(currentQuestionIndex);
+            } else {
+                markedForReview.add(currentQuestionIndex);
+            }
+            loadQuestion();
+            updateQuestionGrid();
+        };
+
+        document.getElementById('questionPanelBtn').onclick = () => {
+            const panel = document.getElementById('questionPanel');
+            panel.classList.toggle('active');
+        };
+
+        document.getElementById('closeQuestionPanel').onclick = () => {
+            document.getElementById('questionPanel').classList.remove('active');
+        };
+
+        document.getElementById('pauseBtn').onclick = () => {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                saveTestState();
+                document.getElementById('pauseBtn').textContent = 'Resume';
+                alert('Test paused and saved. Click Resume to continue or go back to practice sets to resume later.');
+            } else {
+                startTimer();
+                document.getElementById('pauseBtn').textContent = 'Pause';
+            }
+        };
+
+        document.getElementById('submitBtn').onclick = () => {
+            if (confirm('Are you sure you want to submit the test?')) {
+                submitTest();
+            }
+        };
+
+        document.getElementById('submitTestBtn').onclick = () => {
+            if (confirm('Are you sure you want to submit the test?')) {
+                submitTest();
+            }
+        };
+
+        document.getElementById('savedQuestionsBtn').onclick = () => {
+            if (requireAuth()) showSavedQuestions();
+        };
+
+        // Authentication event listeners
+        document.getElementById('loginBtn').onclick = () => {
+            document.getElementById('loginModal').classList.remove('hidden');
+        };
+
+        document.getElementById('signupBtn').onclick = () => {
+            document.getElementById('signupModal').classList.remove('hidden');
+        };
+
+        document.getElementById('logoutBtn').onclick = logout;
+
+        document.getElementById('closeLoginModal').onclick = closeModals;
+        document.getElementById('closeSignupModal').onclick = closeModals;
+
+        document.getElementById('switchToSignup').onclick = () => {
+            document.getElementById('loginModal').classList.add('hidden');
+            document.getElementById('signupModal').classList.remove('hidden');
+        };
+
+        document.getElementById('switchToLogin').onclick = () => {
+            document.getElementById('signupModal').classList.add('hidden');
+            document.getElementById('loginModal').classList.remove('hidden');
+        };
+
+        document.getElementById('loginForm').onsubmit = (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (login(email, password)) {
+                alert('Login successful!');
+            } else {
+                alert('Invalid email or password');
+            }
+        };
+
+        document.getElementById('signupForm').onsubmit = (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            
+            if (signup(name, email, password)) {
+                alert('Account created successfully!');
+            } else {
+                alert('Email already exists');
+            }
+        };
+
+        // Auto-save test state on page unload
+        window.addEventListener('beforeunload', () => {
+            if (currentTest && timerInterval) {
+                saveTestState();
+            }
+        });
+
+        // Initialize authentication on page load
+        initializeAuth();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96ae5291538e59b8',t:'MTc1NDQ4MTA4OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96d2f046465954a2',t:'MTc1NDg2NTAzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
