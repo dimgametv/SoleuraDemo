@@ -2032,7 +2032,7 @@
         };
 
         const chapterTopics = {
-            'Grammar': ['Tenses', 'Articles', 'Prepositions', 'Conjunctions'],
+            'Grammar': ['Spot The Error', 'Sentence Improvement', 'Active Passive', 'Direct Indirect', 'Fillers'],
             'Vocabulary': ['Synonyms', 'Antonyms', 'Idioms', 'Phrases'],
             'Reading Comprehension': ['Passage Analysis', 'Inference', 'Main Ideas', 'Supporting Details'],
             'Error Detection': ['Subject-Verb Agreement', 'Tense Errors', 'Pronoun Errors', 'Modifier Errors'],
@@ -2061,180 +2061,180 @@
         // Sample questions with Hindi translations
         const sampleQuestions = [
             {
-                question: "What is the synonym of 'abundant'?",
+                question: "Every / curious child / want to / rip open a toy.",
                 questionHi: "'प्रचुर' का समानार्थी शब्द क्या है?",
-                options: ["Scarce", "Plentiful", "Limited", "Rare"],
+                options: ["curious child", "rip open a toy", "Every", "want to"],
                 optionsHi: ["दुर्लभ", "प्रचुर", "सीमित", "विरल"],
-                correct: 1
+                correct: 3
             },
             {
-                question: "If A is the brother of B, and B is the sister of C, then A is C's:",
+                question: "It was / the very well-directed film / and we enjoyed it.",
                 questionHi: "यदि A, B का भाई है, और B, C की बहन है, तो A, C का क्या है:",
-                options: ["Brother", "Sister", "Cousin", "Uncle"],
+                options: ["the very well-directed film", "No error", "and we enjoyed it", "It was"],
                 optionsHi: ["भाई", "बहन", "चचेरा भाई", "चाचा"],
                 correct: 0
             },
             {
-                question: "The capital of India is:",
+                question: "If the economy fails / this year it reflect badly / on the government.",
                 questionHi: "भारत की राजधानी है:",
-                options: ["Mumbai", "Kolkata", "New Delhi", "Chennai"],
+                options: ["this year it reflect badly", "on the government", "No error", "If the economy fails"],
                 optionsHi: ["मुंबई", "कोलकाता", "नई दिल्ली", "चेन्नई"],
-                correct: 2
+                correct: 0
             },
             {
-                question: "What is 25% of 200?",
+                question: "No one were / present when I / entered the hall.",
                 questionHi: "200 का 25% क्या है?",
-                options: ["25", "50", "75", "100"],
+                options: ["present when I", "No one were", "No error", "entered the hall"],
                 optionsHi: ["25", "50", "75", "100"],
                 correct: 1
             },
             {
-                question: "Choose the correct sentence:",
+                question: "We stayed / in Jim’s flat / during he was / on holiday.",
                 questionHi: "सही वाक्य चुनें:",
-                options: ["He don't like apples", "He doesn't likes apples", "He doesn't like apples", "He not like apples"],
+                options: ["on holiday", "We stayed", "in Jim’s flat", "during he was"],
                 optionsHi: ["He don't like apples", "He doesn't likes apples", "He doesn't like apples", "He not like apples"],
+                correct: 3
+            },
+            {
+                question: "He allowed / his son to drive / but he warn him / of the danger.",
+                questionHi: "श्रृंखला पूरी करें: 2, 6, 12, 20, ?",
+                options: ["but he warn him", "of the danger", "He allowed", "his son to drive"],
+                optionsHi: ["28", "30", "32", "36"],
+                correct: 0
+            },
+            {
+                question: "Did you baked / the chocolate cake / yourself this time?",
+                questionHi: "भारत के पहले प्रधानमंत्री कौन थे?",
+                options: ["No error", "yourself this time", "Did you baked", "the chocolate cake"],
+                optionsHi: ["महात्मा गांधी", "जवाहरलाल नेहरू", "सरदार पटेल", "डॉ. राजेंद्र प्रसाद"],
                 correct: 2
             },
             {
-                question: "Complete the series: 2, 6, 12, 20, ?",
-                questionHi: "श्रृंखला पूरी करें: 2, 6, 12, 20, ?",
-                options: ["28", "30", "32", "36"],
-                optionsHi: ["28", "30", "32", "36"],
-                correct: 1
-            },
-            {
-                question: "Who was the first Prime Minister of India?",
-                questionHi: "भारत के पहले प्रधानमंत्री कौन थे?",
-                options: ["Mahatma Gandhi", "Jawaharlal Nehru", "Sardar Patel", "Dr. Rajendra Prasad"],
-                optionsHi: ["महात्मा गांधी", "जवाहरलाल नेहरू", "सरदार पटेल", "डॉ. राजेंद्र प्रसाद"],
-                correct: 1
-            },
-            {
-                question: "If the cost price is ₹100 and selling price is ₹120, what is the profit percentage?",
+                question: "Do you / recall to meet / her at the party / last night?",
                 questionHi: "यदि क्रय मूल्य ₹100 है और विक्रय मूल्य ₹120 है, तो लाभ प्रतिशत क्या है?",
-                options: ["15%", "20%", "25%", "30%"],
+                options: ["Do you", "recall to meet", "last night", "her at the party"],
                 optionsHi: ["15%", "20%", "25%", "30%"],
                 correct: 1
             },
             {
-                question: "What is the antonym of 'expand'?",
+                question: "The recently hike / in the price of petroleum products / will hit / household budgets severely.",
                 questionHi: "'विस्तार' का विपरीत शब्द क्या है?",
-                options: ["Grow", "Increase", "Contract", "Extend"],
+                options: ["in the price of petroleum products", "will hit", "The recently hike", "household budgets severely"],
                 optionsHi: ["बढ़ना", "वृद्धि", "संकुचन", "फैलाना"],
                 correct: 2
             },
             {
-                question: "In a code language, if CAT is written as 3120, how is DOG written?",
+                question: "Your name / precedes before mine / in the / admission list.",
                 questionHi: "एक कूट भाषा में, यदि CAT को 3120 लिखा जाता है, तो DOG कैसे लिखा जाएगा?",
-                options: ["4157", "4167", "4147", "4177"],
+                options: ["Your name", "precedes before mine", "admission list", "in the"],
                 optionsHi: ["4157", "4167", "4147", "4177"],
-                correct: 0
+                correct: 1
             },
             {
-                question: "The longest river in India is:",
+                question: "No sooner did / the child start crying / then the mother / hugged him.",
                 questionHi: "भारत की सबसे लंबी नदी है:",
-                options: ["Yamuna", "Brahmaputra", "Ganga", "Godavari"],
+                options: ["No sooner did", "hugged him", "then the mother", "the child start crying"],
                 optionsHi: ["यमुना", "ब्रह्मपुत्र", "गंगा", "गोदावरी"],
                 correct: 2
             },
             {
-                question: "What is the square root of 144?",
+                question: "It is not worth / having the trouble / to write to him / as he never replies.",
                 questionHi: "144 का वर्गमूल क्या है?",
-                options: ["10", "11", "12", "13"],
+                options: ["having the trouble", "It is not worth", "to write to him", "as he never replies"],
                 optionsHi: ["10", "11", "12", "13"],
-                correct: 2
+                correct: 0
             },
             {
-                question: "Identify the error: 'Each of the students have submitted their assignments.'",
+                question: "My older brother,/ which you’ll / meet later,/ is a dentist.",
                 questionHi: "त्रुटि पहचानें: 'Each of the students have submitted their assignments.'",
-                options: ["Each of", "students have", "submitted their", "No error"],
+                options: ["meet later", "which you’ll", "My older brother", "is a dentist"],
                 optionsHi: ["Each of", "students have", "submitted their", "कोई त्रुटि नहीं"],
                 correct: 1
             },
             {
-                question: "If all roses are flowers and some flowers are red, then:",
+                question: "He was / late / for school / and punished.",
                 questionHi: "यदि सभी गुलाब फूल हैं और कुछ फूल लाल हैं, तो:",
-                options: ["All roses are red", "Some roses are red", "No roses are red", "Cannot be determined"],
+                options: ["for school", "late", "and punished", "He was"],
                 optionsHi: ["सभी गुलाब लाल हैं", "कुछ गुलाब लाल हैं", "कोई गुलाब लाल नहीं है", "निर्धारित नहीं किया जा सकता"],
-                correct: 3
+                correct: 2
             },
             {
-                question: "The Indian Constitution was adopted on:",
+                question: "It was a surprising / to receive the gift/ from my brother.",
                 questionHi: "भारतीय संविधान कब अपनाया गया था:",
-                options: ["15 August 1947", "26 January 1950", "26 November 1949", "2 October 1948"],
+                options: ["No error", "from my brother", "It was a surprising", "to receive the gift"],
                 optionsHi: ["15 अगस्त 1947", "26 जनवरी 1950", "26 नवंबर 1949", "2 अक्टूबर 1948"],
                 correct: 2
             },
             {
-                question: "Simple Interest on ₹1000 at 10% per annum for 2 years is:",
+                question: "The fisheries sector / have grown significantly / in the last one year.",
                 questionHi: "₹1000 पर 10% वार्षिक दर से 2 वर्ष का साधारण ब्याज है:",
-                options: ["₹100", "₹150", "₹200", "₹250"],
+                options: ["in the last one year", "No error", "have grown significantly", "The fisheries sector"],
                 optionsHi: ["₹100", "₹150", "₹200", "₹250"],
                 correct: 2
             },
             {
-                question: "Choose the word that best completes: 'As light as a ____'",
+                question: "My house / is more / spacious than / my sister.",
                 questionHi: "वाक्य पूरा करने के लिए सबसे उपयुक्त शब्द चुनें: 'As light as a ____'",
-                options: ["Stone", "Feather", "Rock", "Metal"],
+                options: ["is more", "my sister", "My house", "spacious than"],
                 optionsHi: ["पत्थर", "पंख", "चट्टान", "धातु"],
                 correct: 1
             },
             {
-                question: "Find the odd one out: 3, 7, 11, 14, 17",
+                question: "This is / too grave sin / to be / pardoned.",
                 questionHi: "विषम संख्या ज्ञात करें: 3, 7, 11, 14, 17",
-                options: ["3", "7", "14", "17"],
+                options: ["to be", "pardoned", "too grave sin", "This is"],
                 optionsHi: ["3", "7", "14", "17"],
                 correct: 2
             },
             {
-                question: "The study of earthquakes is called:",
+                question: "I know the most easiest way to solve this problem.",
                 questionHi: "भूकंप के अध्ययन को कहा जाता है:",
-                options: ["Geology", "Seismology", "Meteorology", "Astronomy"],
+                options: ["I know", "most easiest", "to solve", "this problem"],
                 optionsHi: ["भूविज्ञान", "भूकंप विज्ञान", "मौसम विज्ञान", "खगोल विज्ञान"],
                 correct: 1
             },
             {
-                question: "If x + 5 = 12, then x = ?",
+                question: "Antique diamond necklace / was stolen / from the museum.",
                 questionHi: "यदि x + 5 = 12, तो x = ?",
-                options: ["5", "6", "7", "8"],
+                options: ["was stolen", "No error", "Antique diamond necklace", "from the museum"],
                 optionsHi: ["5", "6", "7", "8"],
                 correct: 2
             },
             {
-                question: "What is the plural of 'child'?",
+                question: "She persisted / to doing / what she wanted / despite opposition.",
                 questionHi: "'child' का बहुवचन क्या है?",
-                options: ["Childs", "Children", "Childes", "Childrens"],
+                options: ["to doing", "what she wanted", "She persisted", "despite opposition"],
+                optionsHi: ["Childs", "Children", "Childes", "Childrens"],
+                correct: 0
+            },
+            {
+                question: "As a painter, he are good if not better than Suresh.",
+                questionHi: "'child' का बहुवचन क्या है?",
+                options: ["he are good", "than Suresh", "if not better", "As a painter"],
+                optionsHi: ["Childs", "Children", "Childes", "Childrens"],
+                correct: 0
+            },
+            {
+                question: "He will return in a hour. ",
+                questionHi: "'child' का बहुवचन क्या है?",
+                options: ["return", "He will", "in a", "hour"],
+                optionsHi: ["Childs", "Children", "Childes", "Childrens"],
+                correct: 2
+            },
+            {
+                question: "It has / been raining / since / two hours.",
+                questionHi: "'child' का बहुवचन क्या है?",
+                options: ["been raining", "since", "It has", "two hours"],
                 optionsHi: ["Childs", "Children", "Childes", "Childrens"],
                 correct: 1
             },
             {
-                question: "A man walks 3 km north, then 4 km east. What is his distance from the starting point?",
-                questionHi: "एक व्यक्ति 3 किमी उत्तर चलता है, फिर 4 किमी पूर्व चलता है। प्रारंभिक बिंदु से उसकी दूरी क्या है?",
-                options: ["5 km", "6 km", "7 km", "8 km"],
-                optionsHi: ["5 किमी", "6 किमी", "7 किमी", "8 किमी"],
-                correct: 0
+                question: "Neither Mohit nor Rohit were there at the shop when I went there.",
+                questionHi: "'child' का बहुवचन क्या है?",
+                options: ["Neither Mohit nor Rohit", "at the shop", "when", "were there"],
+                optionsHi: ["Childs", "Children", "Childes", "Childrens"],
+                correct: 3
             },
-            {
-                question: "The largest planet in our solar system is:",
-                questionHi: "हमारे सौर मंडल का सबसे बड़ा ग्रह है:",
-                options: ["Saturn", "Jupiter", "Neptune", "Uranus"],
-                optionsHi: ["शनि", "बृहस्पति", "नेप्च्यून", "यूरेनस"],
-                correct: 1
-            },
-            {
-                question: "What is 15% of 80?",
-                questionHi: "80 का 15% क्या है?",
-                options: ["10", "12", "15", "18"],
-                optionsHi: ["10", "12", "15", "18"],
-                correct: 1
-            },
-            {
-                question: "Choose the correctly spelled word:",
-                questionHi: "सही वर्तनी वाला शब्द चुनें:",
-                options: ["Recieve", "Receive", "Receve", "Receeve"],
-                optionsHi: ["Recieve", "Receive", "Receve", "Receeve"],
-                correct: 1
-            }
         ];
 
         // Language functions (test-only, disabled for English subjects)
