@@ -1,0 +1,1813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSC Preparation Portal - Complete Study Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        accent: '#8B5CF6'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+      .review-option-selected {
+        border: 2px solid #10B981 !important;
+        background-color: rgba(16, 185, 129, 0.1) !important;
+    }
+    .review-option {
+        border: 2px solid #D1D5DB;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+        transition: all 0.3s ease;
+    }
+    .review-option-correct {
+        background-color: rgba(251, 191, 36, 0.2) !important; /* Light yellow background */
+        border: 2px solid rgba(251, 191, 36, 0.5) !important;
+    }
+    .review-option-incorrect {
+        background-color: rgba(107, 114, 128, 0.5) !important; /* Dark gray background */
+        border: 2px solid rgba(107, 114, 128, 0.7) !important;
+    }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+        .slide-in { animation: slideIn 0.3s ease-out; }
+        .question-attempted { background-color: #10B981; color: white; }
+        .question-current { background-color: #8B5CF6; color: white; }
+        .question-unattempted { background-color: #E5E7EB; color: #374151; }
+        .question-correct { background-color: #10B981; color: white; }
+        .question-wrong { background-color: #EF4444; color: white; }
+        .mobile-nav-toggle { display: none; }
+        .question-marked { background-color: #F59E0B; color: white; }
+        .question-nav-panel {
+            transition: all 0.3s ease-in-out;
+            max-height: 500px;
+            overflow: hidden;
+        }
+        .question-nav-panel.collapsed {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+        @media (max-width: 768px) {
+            .mobile-nav-toggle { display: block; }
+        }
+        @media (max-width: 1024px) {
+            .mobile-nav-toggle { display: block; }
+        }
+        .review-option-selected {
+        border: 2px solid #10B981 !important;
+        background-color: rgba(16, 185, 129, 0.1) !important;
+    }
+    .review-option-correct {
+        border: 2px solid #10B981 !important;
+        background-color: rgba(16, 185, 129, 0.1) !important;
+    }
+    .review-option-incorrect {
+        border: 2px solid #EF4444 !important;
+        background-color: rgba(239, 68, 68, 0.1) !important;
+    }
+    .review-option {
+        border: 1px solid #E5E7EB !important;
+        border-radius: 0.5rem;
+        padding: 0.5rem;
+        margin-bottom: 0.5rem;
+        transition: all 0.3s ease;
+    }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-purple-50 min-h-screen">
+    <!-- Login Page -->
+    <div id="loginPage" class="page">
+        <div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50 px-4">
+            <div class="max-w-md w-full space-y-8">
+                <div class="text-center">
+                    <div class="flex items-center justify-center space-x-3 mb-6">
+                        <svg class="w-10 h-10 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <h1 class="text-3xl font-bold text-gray-800">SSC Preparation Portal</h1>
+                    </div>
+                    <h2 class="text-xl text-gray-600">Welcome back! Please sign in to your account</h2>
+                </div>
+                <!-- Login Form -->
+                <div id="loginForm" class="bg-white rounded-xl shadow-lg p-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Sign In</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                            <input type="email" id="loginEmail" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Enter your email">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                            <input type="password" id="loginPassword" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Enter your password">
+                        </div>
+                        <button onclick="handleLogin()" class="w-full bg-primary hover:bg-blue-600 text-white py-3 rounded-lg font-semibold transition-colors">
+                            Sign In
+                        </button>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <p class="text-gray-600">Don't have an account?
+                            <button onclick="showSignup()" class="text-primary hover:text-blue-600 font-semibold">Sign up here</button>
+                        </p>
+                    </div>
+                </div>
+                <!-- Signup Form -->
+                <div id="signupForm" class="bg-white rounded-xl shadow-lg p-8 hidden">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Create Account</h3>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                            <input type="text" id="signupName" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Enter your full name">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                            <input type="email" id="signupEmail" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Enter your email">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Phone Number</label>
+                            <input type="tel" id="signupPhone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Enter your phone number">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Date of Birth</label>
+                            <input type="date" id="signupDOB" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Target Exam</label>
+                            <select id="signupExam" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="">Select your target exam</option>
+                                <option value="SSC CGL">SSC CGL</option>
+                                <option value="SSC CHSL">SSC CHSL</option>
+                                <option value="SSC MTS">SSC MTS</option>
+                                <option value="SSC GD">SSC GD</option>
+                                <option value="SSC CPO">SSC CPO</option>
+                                <option value="SSC JE">SSC JE</option>
+                                <option value="SSC Stenographer">SSC Stenographer</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Password *</label>
+                            <input type="password" id="signupPassword" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Create a password">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Confirm Password *</label>
+                            <input type="password" id="signupConfirmPassword" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="Confirm your password">
+                        </div>
+                        <button onclick="handleSignup()" class="w-full bg-secondary hover:bg-green-600 text-white py-3 rounded-lg font-semibold transition-colors">
+                            Create Account
+                        </button>
+                    </div>
+                    <div class="mt-6 text-center">
+                        <p class="text-gray-600">Already have an account?
+                            <button onclick="showLogin()" class="text-primary hover:text-blue-600 font-semibold">Sign in here</button>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Home Page -->
+    <div id="homePage" class="page fade-in hidden">
+        <header class="bg-white shadow-lg">
+            <div class="container mx-auto px-2 md:px-4 py-4 md:py-6">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-2 md:space-x-3">
+                        <svg class="w-6 h-6 md:w-10 md:h-10 text-primary" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        </svg>
+                        <h1 class="text-lg md:text-3xl font-bold text-gray-800">SSC Preparation Portal</h1>
+                    </div>
+                    <button onclick="showProfile()" class="flex items-center space-x-1 md:space-x-2 bg-primary hover:bg-blue-600 text-white px-2 md:px-4 py-1 md:py-2 rounded-lg text-sm md:text-base font-semibold transition-colors">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                        </svg>
+                        <span class="hidden md:inline">Profile</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <main class="container mx-auto px-2 md:px-4 py-6 md:py-12">
+            <div class="text-center mb-6 md:mb-12">
+                <h2 class="text-2xl md:text-4xl font-bold text-gray-800 mb-2 md:mb-4">Complete SSC Preparation Platform</h2>
+                <p class="text-base md:text-xl text-gray-600">Comprehensive study materials and practice tests for all SSC exams</p>
+            </div>
+            <!-- Two Main Sections -->
+            <div class="grid lg:grid-cols-2 gap-6 md:gap-8">
+                
+                <!-- Study Materials Section -->
+                <div class="bg-white rounded-xl shadow-lg p-4 md:p-6">
+                    <div class="flex items-center space-x-3 mb-4 md:mb-6">
+                        <div class="w-8 h-8 md:w-10 md:h-10 bg-secondary rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 md:w-5 md:h-5 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-lg md:text-2xl font-bold text-gray-800">Study Materials & Practice</h3>
+                    </div>
+                    <p class="text-sm md:text-base text-gray-600 mb-4 md:mb-6">Subject-wise chapters, topics and practice tests</p>
+                    <button onclick="showSubjects()" class="w-full bg-secondary hover:bg-green-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg text-sm md:text-base font-semibold transition-colors">
+                        Start Studying
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- SSC Exams Information Page -->
+    <div id="examInfoPage" class="page hidden">
+        <header class="bg-white shadow-lg">
+            <div class="container mx-auto px-2 md:px-4 py-4 md:py-6">
+                <div class="flex items-center justify-between">
+                    <button onclick="showHome()" class="flex items-center space-x-1 md:space-x-2 text-primary hover:text-blue-600 transition-colors text-sm md:text-base">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        <span>Back to Home</span>
+                    </button>
+                    <h1 class="text-lg md:text-2xl font-bold text-gray-800">SSC Exams Information</h1>
+                    <div></div>
+                </div>
+            </div>
+        </header>
+        <main class="container mx-auto px-2 md:px-4 py-4 md:py-8">
+            <div id="examInfoGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                <!-- Exam cards will be populated here -->
+            </div>
+        </main>
+    </div>
+    <!-- Subjects Page -->
+    <div id="subjectsPage" class="page hidden">
+        <header class="bg-white shadow-lg">
+            <div class="container mx-auto px-2 md:px-4 py-4 md:py-6">
+                <div class="flex items-center justify-between">
+                    <button onclick="showHome()" class="flex items-center space-x-1 md:space-x-2 text-primary hover:text-blue-600 transition-colors text-sm md:text-base">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        <span>Back to Home</span>
+                    </button>
+                    <div></div>
+                </div>
+            </div>
+        </header>
+        <main class="container mx-auto px-2 md:px-4 py-4 md:py-8">
+            <div id="subjectsGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                <!-- Subject cards will be populated here -->
+            </div>
+        </main>
+    </div>
+    <!-- Chapters Page -->
+    <div id="chaptersPage" class="page hidden">
+        <header class="bg-white shadow-lg">
+            <div class="container mx-auto px-2 md:px-4 py-4 md:py-6">
+                <div class="flex items-center justify-between">
+                    <button onclick="showSubjects()" class="flex items-center space-x-1 md:space-x-2 text-primary hover:text-blue-600 transition-colors text-sm md:text-base">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        <span>Back to Subjects</span>
+                    </button>
+                    <h1 id="chaptersTitle" class="text-lg md:text-2xl font-bold text-gray-800"></h1>
+                    <div></div>
+                </div>
+            </div>
+        </header>
+        <main class="container mx-auto px-2 md:px-4 py-4 md:py-8">
+            <div id="chaptersGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                <!-- Chapter cards will be populated here -->
+            </div>
+        </main>
+    </div>
+    <!-- Topics Page -->
+    <div id="topicsPage" class="page hidden">
+        <header class="bg-white shadow-lg">
+            <div class="container mx-auto px-2 md:px-4 py-4 md:py-6">
+                <div class="flex items-center justify-between">
+                    <button onclick="showChapters(currentSubject)" class="flex items-center space-x-1 md:space-x-2 text-primary hover:text-blue-600 transition-colors text-sm md:text-base">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        <span>Back to Chapters</span>
+                    </button>
+                    <h1 id="topicsTitle" class="text-lg md:text-2xl font-bold text-gray-800"></h1>
+                    <div></div>
+                </div>
+            </div>
+        </header>
+        <main class="container mx-auto px-2 md:px-4 py-4 md:py-8">
+            <div id="topicsGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                <!-- Topic cards will be populated here -->
+            </div>
+        </main>
+    </div>
+    <!-- Practice Sets Page -->
+    <div id="practiceSetsPage" class="page hidden">
+        <header class="bg-white shadow-lg">
+            <div class="container mx-auto px-2 md:px-4 py-4 md:py-6">
+                <div class="flex items-center justify-between">
+                    <button onclick="showTopics(currentSubject, currentChapter)" class="flex items-center space-x-1 md:space-x-2 text-primary hover:text-blue-600 transition-colors text-sm md:text-base">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        <span>Back to Topics</span>
+                    </button>
+                    <h1 id="practiceSetTitle" class="text-lg md:text-2xl font-bold text-gray-800"></h1>
+                    <div></div>
+                </div>
+            </div>
+        </header>
+        <main class="container mx-auto px-2 md:px-4 py-4 md:py-8">
+            <div id="practiceSetsGrid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
+                <!-- Practice sets will be populated here -->
+            </div>
+        </main>
+    </div>
+    <!-- User Profile Page -->
+    <div id="profilePage" class="page hidden">
+        <header class="bg-white shadow-lg">
+            <div class="container mx-auto px-2 md:px-4 py-4 md:py-6">
+                <div class="flex items-center justify-between">
+                    <button onclick="showHome()" class="flex items-center space-x-1 md:space-x-2 text-primary hover:text-blue-600 transition-colors text-sm md:text-base">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        <span>Back to Home</span>
+                    </button>
+                    <h1 class="text-lg md:text-2xl font-bold text-gray-800">My Profile</h1>
+                    <button onclick="logout()" class="bg-red-500 hover:bg-red-600 text-white px-3 md:px-4 py-1 md:py-2 rounded-lg text-sm font-semibold transition-colors">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+        <main class="container mx-auto px-2 md:px-4 py-4 md:py-8">
+            <!-- Profile Stats -->
+            <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 mb-4 md:mb-6">
+                <div class="flex items-center space-x-3 md:space-x-4 mb-4 md:mb-6">
+                    <div class="w-12 h-12 md:w-16 md:h-16 bg-primary rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6 md:w-8 md:h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 id="profileUserName" class="text-lg md:text-2xl font-bold text-gray-800">Student</h2>
+                        <p id="profileUserEmail" class="text-sm md:text-base text-gray-600">SSC Aspirant</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+                    <div class="text-center">
+                        <div class="text-xl md:text-3xl font-bold text-primary mb-1" id="profileTestsTaken">0</div>
+                        <div class="text-xs md:text-sm text-gray-600">Tests Taken</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-xl md:text-3xl font-bold text-secondary mb-1" id="profileAvgScore">0%</div>
+                        <div class="text-xs md:text-sm text-gray-600">Avg Score</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-xl md:text-3xl font-bold text-accent mb-1" id="profileSavedQuestions">0</div>
+                        <div class="text-xs md:text-sm text-gray-600">Saved Questions</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-xl md:text-3xl font-bold text-orange-500 mb-1" id="profileStudyTime">0h</div>
+                        <div class="text-xs md:text-sm text-gray-600">Study Time</div>
+                    </div>
+                </div>
+            </div>
+            <!-- User Details -->
+            <div class="bg-white rounded-xl shadow-lg p-4 md:p-6 mb-4 md:mb-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">Personal Information</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="text-sm text-gray-600">Phone Number</label>
+                        <p id="profilePhone" class="font-semibold text-gray-800">Not provided</p>
+                    </div>
+                    <div>
+                        <label class="text-sm text-gray-600">Date of Birth</label>
+                        <p id="profileDOB" class="font-semibold text-gray-800">Not provided</p>
+                    </div>
+                    <div>
+                        <label class="text-sm text-gray-600">Target Exam</label>
+                        <p id="profileExam" class="font-semibold text-gray-800">Not selected</p>
+                    </div>
+                    <div>
+                        <label class="text-sm text-gray-600">Member Since</label>
+                        <p id="profileJoinDate" class="font-semibold text-gray-800">Today</p>
+                    </div>
+                </div>
+            </div>
+            <!-- Navigation Tabs -->
+            <div class="bg-white rounded-xl shadow-lg mb-4 md:mb-6">
+                <div class="flex border-b">
+                    <button onclick="showProfileTab('history')" id="historyTab" class="flex-1 px-3 md:px-6 py-3 md:py-4 text-sm md:text-base font-semibold text-primary border-b-2 border-primary">
+                        Test History
+                    </button>
+                    <button onclick="showProfileTab('saved')" id="savedTab" class="flex-1 px-3 md:px-6 py-3 md:py-4 text-sm md:text-base font-semibold text-gray-500 hover:text-primary transition-colors">
+                        Saved Questions
+                    </button>
+                </div>
+                <!-- Test History Tab -->
+                <div id="historyTabContent" class="p-4 md:p-6">
+                    <div id="testHistoryList">
+                        <div class="text-center text-gray-500 py-8">
+                            <svg class="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            <p class="text-sm md:text-base">No test history yet. Take your first test!</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Saved Questions Tab -->
+                <div id="savedTabContent" class="p-4 md:p-6 hidden">
+                    <div id="savedQuestionsList">
+                        <div class="text-center text-gray-500 py-8">
+                            <svg class="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                            </svg>
+                            <p class="text-sm md:text-base">No saved questions yet. Save questions during review!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Test Interface -->
+    <div id="testInterface" class="page hidden">
+        <header class="bg-white shadow-lg">
+            <div class="container mx-auto px-2 md:px-4 py-3 md:py-4">
+                <div class="flex items-center justify-between flex-wrap gap-2 md:gap-4">
+                    <h1 id="testTitle" class="text-sm md:text-xl font-bold text-gray-800"></h1>
+                    <div class="flex items-center space-x-2 md:space-x-4">
+                        <div id="languageSelector" class="hidden">
+                            <select id="languageSelect" class="border border-gray-300 rounded-lg px-2 md:px-3 py-1 md:py-2 text-xs md:text-sm" onchange="changeLanguage()">
+                                <option value="english">English</option>
+                                <option value="hindi">Hindi</option>
+                            </select>
+                        </div>
+                        <button id="pauseResumeBtn" onclick="toggleTimer()" class="bg-accent hover:bg-purple-600 text-white px-2 md:px-4 py-1 md:py-2 rounded-lg text-xs md:text-sm font-semibold transition-colors">
+                            Pause
+                        </button>
+                        <div id="timer" class="text-sm md:text-xl font-bold text-red-600 bg-red-50 px-2 md:px-4 py-1 md:py-2 rounded-lg">
+                            30:00
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container mx-auto px-2 md:px-4 py-3 md:py-6">
+            <div class="grid lg:grid-cols-4 gap-3 md:gap-6">
+                <!-- Question Area -->
+                <div class="lg:col-span-3">
+                    <div class="bg-white rounded-xl shadow-lg p-3 md:p-6">
+                        <div id="questionArea">
+                            <div class="mb-4 md:mb-6 flex items-center justify-between">
+                                <span class="text-xs md:text-sm text-gray-500">Question <span id="currentQuestionNum">1</span> of <span id="totalQuestions">25</span></span>
+                                <button id="markForReviewBtn" onclick="toggleMarkForReview()" class="flex items-center space-x-1 md:space-x-2 px-2 md:px-3 py-1 md:py-2 rounded-lg text-xs md:text-sm font-semibold transition-colors bg-orange-100 text-orange-700 hover:bg-orange-200">
+                                    <svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                                    </svg>
+                                    <span id="markForReviewText">Review Later</span>
+                                </button>
+                            </div>
+                            <div id="questionText" class="text-sm md:text-lg font-medium text-gray-800 mb-4 md:mb-6"></div>
+                            <div id="optionsArea" class="space-y-2 md:space-y-3"></div>
+                        </div>
+                        <div class="test-nav-buttons flex justify-between mt-4 md:mt-8 pt-4 md:pt-6 border-t">
+                            <button id="prevBtn" onclick="previousQuestion()" class="bg-gray-500 hover:bg-gray-600 text-white px-2 md:px-4 py-1 md:py-2 rounded text-xs md:text-sm font-semibold transition-colors disabled:opacity-50" disabled>
+                                Prev
+                            </button>
+                            <div class="flex space-x-1 md:space-x-2">
+                                <button id="nextBtn" onclick="nextQuestion()" class="bg-primary hover:bg-blue-600 text-white px-2 md:px-4 py-1 md:py-2 rounded text-xs md:text-sm font-semibold transition-colors">
+                                    Next
+                                </button>
+                                <button id="submitBtn" onclick="submitTest()" class="bg-red-500 hover:bg-red-600 text-white px-2 md:px-4 py-1 md:py-2 rounded text-xs md:text-sm font-semibold transition-colors hidden">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Question Navigation Panel -->
+                <div class="lg:col-span-1">
+                    <button class="mobile-nav-toggle bg-primary text-white p-2 rounded-full mb-3 md:mb-4 lg:hidden shadow-lg" onclick="toggleQuestionNav()">
+                        <svg id="navToggleIcon" class="w-5 h-5 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
+                    <div id="questionNavPanel" class="question-nav-panel bg-white rounded-xl shadow-lg p-3 md:p-4">
+                        <h3 class="font-bold text-gray-800 mb-3 md:mb-4 text-sm md:text-base">Questions</h3>
+                        <div id="questionNavGrid" class="grid grid-cols-5 gap-1 md:gap-2">
+                            <!-- Question navigation buttons will be populated here -->
+                        </div>
+                        <div class="mt-3 md:mt-4 text-xs md:text-sm">
+                            <div class="flex items-center space-x-1 md:space-x-2 mb-1 md:mb-2">
+                                <div class="w-3 h-3 md:w-4 md:h-4 bg-secondary rounded"></div>
+                                <span>Attempted</span>
+                            </div>
+                            <div class="flex items-center space-x-1 md:space-x-2 mb-1 md:mb-2">
+                                <div class="w-3 h-3 md:w-4 md:h-4 bg-purple-500 rounded"></div>
+                                <span>Current</span>
+                            </div>
+                            <div class="flex items-center space-x-1 md:space-x-2 mb-1 md:mb-2">
+                                <div class="w-3 h-3 md:w-4 md:h-4 bg-yellow-500 rounded"></div>
+                                <span>Marked</span>
+                            </div>
+                            <div class="flex items-center space-x-1 md:space-x-2">
+                                <div class="w-3 h-3 md:w-4 md:h-4 bg-gray-300 rounded"></div>
+                                <span>Unattempted</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Result Screen -->
+    <div id="resultScreen" class="page hidden">
+        <header class="bg-white shadow-lg">
+            <div class="container mx-auto px-2 md:px-4 py-4 md:py-6">
+                <h1 class="text-lg md:text-2xl font-bold text-gray-800 text-center">Test Results</h1>
+            </div>
+        </header>
+        <main class="container mx-auto px-2 md:px-4 py-4 md:py-8">
+            <div class="max-w-4xl mx-auto">
+                <div class="text-center mb-4 md:mb-8">
+                    <h2 class="text-xl md:text-3xl font-bold text-gray-800 mb-2">Test Completed!</h2>
+                    <p class="text-sm md:text-base text-gray-600">Here are your results</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-4 md:p-8 mb-4 md:mb-8">
+                    <div class="grid grid-cols-3 gap-3 md:gap-6 text-center">
+                        <div>
+                            <div class="text-lg md:text-3xl font-bold text-primary mb-1 md:mb-2" id="finalScore">0/25</div>
+                            <div class="text-xs md:text-base text-gray-600">Score</div>
+                        </div>
+                        <div>
+                            <div class="text-lg md:text-3xl font-bold text-secondary mb-1 md:mb-2" id="finalPercentage">0%</div>
+                            <div class="text-xs md:text-base text-gray-600">Percentage</div>
+                        </div>
+                        <div>
+                            <div class="text-lg md:text-3xl font-bold text-accent mb-1 md:mb-2" id="timeSpent">00:00</div>
+                            <div class="text-xs md:text-base text-gray-600">Time Spent</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-lg p-4 md:p-8 mb-4 md:mb-8">
+                    <h3 class="text-base md:text-xl font-bold text-gray-800 mb-3 md:mb-4">Question-wise Analysis</h3>
+                    <div id="analysisGrid" class="grid grid-cols-5 md:grid-cols-10 gap-1 md:gap-2 mb-3 md:mb-4">
+                        <!-- Analysis buttons will be populated here -->
+                    </div>
+                    <div class="flex flex-wrap gap-2 md:gap-4 text-xs md:text-sm">
+                        <div class="flex items-center space-x-1 md:space-x-2">
+                            <div class="w-3 h-3 md:w-4 md:h-4 bg-secondary rounded"></div>
+                            <span>Correct</span>
+                        </div>
+                        <div class="flex items-center space-x-1 md:space-x-2">
+                            <div class="w-3 h-3 md:w-4 md:h-4 bg-red-500 rounded"></div>
+                            <span>Wrong</span>
+                        </div>
+                        <div class="flex items-center space-x-1 md:space-x-2">
+                            <div class="w-3 h-3 md:w-4 md:h-4 bg-gray-300 rounded"></div>
+                            <span>Unattempted</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col md:flex-row justify-center gap-2 md:gap-4">
+                    <button onclick="showReviewAnswers()" class="bg-secondary hover:bg-green-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg text-sm md:text-base font-semibold transition-colors">
+                        Review Answers
+                    </button>
+                    <button onclick="restartTest()" class="bg-primary hover:bg-blue-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg text-sm md:text-base font-semibold transition-colors">
+                        Restart Test
+                    </button>
+                    <button onclick="backToPracticeSets()" class="bg-accent hover:bg-purple-600 text-white px-4 md:px-6 py-2 md:py-3 rounded-lg text-sm md:text-base font-semibold transition-colors">
+                        Back to Practice Sets
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <!-- Review Answers Page -->
+    <div id="reviewAnswersPage" class="page hidden">
+        <header class="bg-white shadow-lg">
+            <div class="container mx-auto px-2 md:px-4 py-4 md:py-6">
+                <div class="flex items-center justify-between flex-wrap gap-2">
+                    <button onclick="showResultScreen()" class="flex items-center space-x-1 md:space-x-2 text-primary hover:text-blue-600 transition-colors text-sm md:text-base">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                        </svg>
+                        <span>Back to Results</span>
+                    </button>
+                    <h1 class="text-lg md:text-2xl font-bold text-gray-800">Review Answers</h1>
+                    <div class="flex items-center space-x-2 md:space-x-4">
+                        <div class="text-xs md:text-sm text-gray-600">
+                            <span class="text-green-600 font-semibold" id="reviewCorrectCount">0</span> Correct |
+                            <span class="text-red-600 font-semibold" id="reviewIncorrectCount">0</span> Incorrect |
+                            <span class="text-gray-500 font-semibold" id="reviewSkippedCount">0</span> Skipped
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="container mx-auto px-2 md:px-4 py-3 md:py-6">
+            <div class="grid lg:grid-cols-4 gap-3 md:gap-6">
+                <!-- Review Question Area -->
+                <div class="lg:col-span-3">
+                    <div class="bg-white rounded-xl shadow-lg p-3 md:p-6">
+                        <div id="reviewQuestionArea">
+                            <div class="mb-4 md:mb-6 flex items-center justify-between flex-wrap gap-2">
+                                <span class="text-xs md:text-sm text-gray-500">Question <span id="reviewCurrentQuestionNum">1</span> of <span id="reviewTotalQuestions">25</span></span>
+                                <div class="flex items-center space-x-2">
+                                    <div id="reviewQuestionStatus" class="px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-semibold">
+                                        <!-- Status will be populated here -->
+                                    </div>
+                                    <button id="saveQuestionBtn" onclick="saveCurrentQuestion()" class="flex items-center space-x-1 px-2 md:px-3 py-1 rounded-lg text-xs md:text-sm font-semibold transition-colors bg-accent text-white hover:bg-purple-600">
+                                        <svg class="w-3 h-3 md:w-4 md:h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                                        </svg>
+                                        <span class="hidden md:inline">Save</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="reviewQuestionText" class="text-sm md:text-lg font-medium text-gray-800 mb-4 md:mb-6"></div>
+                            <div id="reviewOptionsArea" class="space-y-2 md:space-y-3 mb-4 md:mb-6"></div>
+                            <!-- Explanation Section -->
+                            <div class="bg-blue-50 border-l-4 border-blue-400 p-3 md:p-4 rounded-r-lg">
+                                <h4 class="font-semibold text-blue-800 mb-2 text-sm md:text-base">📚 Explanation</h4>
+                                <div id="reviewExplanation" class="text-blue-700 text-sm md:text-base"></div>
+                            </div>
+                        </div>
+                        <div class="test-nav-buttons flex justify-between mt-4 md:mt-8 pt-4 md:pt-6 border-t">
+                            <button id="reviewPrevBtn" onclick="previousReviewQuestion()" class="bg-gray-500 hover:bg-gray-600 text-white px-2 md:px-4 py-1 md:py-2 rounded text-xs md:text-sm font-semibold transition-colors disabled:opacity-50" disabled>
+                                Prev
+                            </button>
+                            <div class="flex space-x-1 md:space-x-2">
+                                <button id="reviewNextBtn" onclick="nextReviewQuestion()" class="bg-primary hover:bg-blue-600 text-white px-2 md:px-4 py-1 md:py-2 rounded text-xs md:text-sm font-semibold transition-colors">
+                                    Next
+                                </button>
+                                <button onclick="showResultScreen()" class="bg-secondary hover:bg-green-600 text-white px-2 md:px-4 py-1 md:py-2 rounded text-xs md:text-sm font-semibold transition-colors">
+                                    Results
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Review Navigation Panel -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-xl shadow-lg p-3 md:p-4">
+                        <h3 class="font-bold text-gray-800 mb-3 md:mb-4 text-sm md:text-base">Questions</h3>
+                        <div id="reviewNavGrid" class="grid grid-cols-5 gap-1 md:gap-2">
+                            <!-- Review navigation buttons will be populated here -->
+                        </div>
+                        <div class="mt-3 md:mt-4 text-xs md:text-sm">
+                            <div class="flex items-center space-x-1 md:space-x-2 mb-1 md:mb-2">
+                                <div class="w-3 h-3 md:w-4 md:h-4 bg-secondary rounded"></div>
+                                <span>Correct</span>
+                            </div>
+                            <div class="flex items-center space-x-1 md:space-x-2 mb-1 md:mb-2">
+                                <div class="w-3 h-3 md:w-4 md:h-4 bg-red-500 rounded"></div>
+                                <span>Incorrect</span>
+                            </div>
+                            <div class="flex items-center space-x-1 md:space-x-2 mb-1 md:mb-2">
+                                <div class="w-3 h-3 md:w-4 md:h-4 bg-purple-500 rounded"></div>
+                                <span>Current</span>
+                            </div>
+                            <div class="flex items-center space-x-1 md:space-x-2">
+                                <div class="w-3 h-3 md:w-4 md:h-4 bg-gray-300 rounded"></div>
+                                <span>Skipped</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Global variables
+        let currentSubject = '';
+        let currentChapter = '';
+        let currentTopic = '';
+        let currentTestId = '';
+        let currentQuestionIndex = 0;
+        let testQuestions = [];
+        let userAnswers = {};
+        let markedForReview = {};
+        let timerInterval = null;
+        let timeRemaining = 1800; // 30 minutes in seconds
+        let isPaused = false;
+        let currentLanguage = 'english';
+        let testStartTime = null;
+        let reviewQuestionIndex = 0;
+        let testResults = [];
+        let savedQuestions = JSON.parse(localStorage.getItem('savedQuestions') || '[]');
+        let testHistory = JSON.parse(localStorage.getItem('testHistory') || '[]');
+        let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+        
+        // Subject Structure
+        const subjectStructure = {
+            'English': {
+                icon: '📚',
+                color: 'bg-blue-500',
+                chapters: {
+                    'Grammar': {
+                        topics: {
+                            'Tenses': ['Present Tense Basics', 'Past Tense Usage', 'Future Tense Forms', 'Perfect Tenses', 'Continuous Tenses'],
+                            'Articles': ['Definite Articles', 'Indefinite Articles', 'Zero Articles', 'Article Usage Rules', 'Common Mistakes'],
+                            'Prepositions': ['Time Prepositions', 'Place Prepositions', 'Direction Prepositions', 'Phrasal Prepositions', 'Complex Prepositions'],
+                            'Voice': ['Active to Passive', 'Passive to Active', 'Modal Verbs in Passive', 'Complex Sentences', 'Voice in Questions'],
+                            'Narration': ['Direct to Indirect', 'Indirect to Direct', 'Reporting Verbs', 'Time Changes', 'Question Reporting']
+                        }
+                    },
+                    'Vocabulary': {
+                        topics: {
+                            'Synonyms': ['Common Synonyms', 'Advanced Synonyms', 'Contextual Synonyms', 'Synonym Pairs', 'Difficult Synonyms'],
+                            'Antonyms': ['Basic Antonyms', 'Advanced Antonyms', 'Contextual Antonyms', 'Prefix Antonyms', 'Complex Antonyms'],
+                            'One Word Substitution': ['Common Phrases', 'Technical Terms', 'Social Terms', 'Scientific Terms', 'Literary Terms'],
+                            'Idioms & Phrases': ['Common Idioms', 'Business Idioms', 'Color Idioms', 'Animal Idioms', 'Body Part Idioms'],
+                            'Spelling': ['Commonly Misspelled', 'Silent Letters', 'Double Letters', 'IE/EI Words', 'Suffix Spelling']
+                        }
+                    },
+                    'Reading Comprehension': {
+                        topics: {
+                            'Passage Reading': ['Short Passages', 'Medium Passages', 'Long Passages', 'Technical Passages', 'Literary Passages'],
+                            'Main Idea': ['Central Theme', 'Primary Purpose', 'Author\'s Intent', 'Implicit Ideas', 'Conclusion Drawing'],
+                            'Inference': ['Logical Inference', 'Contextual Clues', 'Implied Meaning', 'Author\'s Tone', 'Hidden Messages'],
+                            'Vocabulary in Context': ['Word Meaning', 'Contextual Usage', 'Phrase Meaning', 'Technical Terms', 'Literary Devices'],
+                            'Critical Analysis': ['Argument Analysis', 'Evidence Evaluation', 'Bias Detection', 'Fact vs Opinion', 'Logical Flaws']
+                        }
+                    }
+                }
+            },
+            'Reasoning': {
+                icon: '🧠',
+                color: 'bg-green-500',
+                chapters: {
+                    'Verbal Reasoning': {
+                        topics: {
+                            'Analogies': ['Word Analogies', 'Letter Analogies', 'Number Analogies', 'Mixed Analogies', 'Complex Analogies'],
+                            'Classification': ['Word Classification', 'Letter Classification', 'Number Classification', 'Mixed Classification', 'Odd One Out'],
+                            'Series': ['Letter Series', 'Number Series', 'Mixed Series', 'Alpha-Numeric Series', 'Complex Series'],
+                            'Coding-Decoding': ['Letter Coding', 'Number Coding', 'Mixed Coding', 'Substitution Coding', 'Complex Coding'],
+                            'Blood Relations': ['Basic Relations', 'Complex Relations', 'Coded Relations', 'Mixed Relations', 'Generation Problems']
+                        }
+                    },
+                    'Non-Verbal Reasoning': {
+                        topics: {
+                            'Pattern Completion': ['Simple Patterns', 'Complex Patterns', 'Geometric Patterns', 'Number Patterns', 'Mixed Patterns'],
+                            'Figure Series': ['Basic Series', 'Rotation Series', 'Reflection Series', 'Complex Series', 'Mixed Operations'],
+                            'Analogy': ['Shape Analogy', 'Pattern Analogy', 'Number Analogy', 'Mixed Analogy', 'Complex Analogy'],
+                            'Classification': ['Shape Classification', 'Pattern Classification', 'Size Classification', 'Mixed Classification', 'Odd Figure Out'],
+                            'Mirror Images': ['Simple Mirrors', 'Complex Mirrors', 'Water Images', 'Mixed Images', 'Rotational Images']
+                        }
+                    },
+                    'Logical Reasoning': {
+                        topics: {
+                            'Syllogism': ['Basic Syllogism', 'Complex Syllogism', 'Negative Syllogism', 'Mixed Syllogism', 'Advanced Syllogism'],
+                            'Statement & Assumptions': ['Basic Assumptions', 'Hidden Assumptions', 'Multiple Assumptions', 'Complex Statements', 'Policy Assumptions'],
+                            'Statement & Conclusions': ['Direct Conclusions', 'Indirect Conclusions', 'Multiple Conclusions', 'Complex Statements', 'Logical Conclusions'],
+                            'Cause & Effect': ['Direct Cause', 'Indirect Cause', 'Multiple Causes', 'Effect Analysis', 'Causal Chains'],
+                            'Decision Making': ['Simple Decisions', 'Complex Decisions', 'Multi-criteria Decisions', 'Policy Decisions', 'Ethical Decisions']
+                        }
+                    }
+                }
+            },
+            'General Studies': {
+                icon: '🌍',
+                color: 'bg-purple-500',
+                chapters: {
+                    'History': {
+                        topics: {
+                            'Ancient India': ['Indus Valley Civilization', 'Vedic Period', 'Mauryan Empire', 'Gupta Period', 'South Indian Dynasties'],
+                            'Medieval India': ['Delhi Sultanate', 'Mughal Empire', 'Maratha Empire', 'Regional Kingdoms', 'Cultural Developments'],
+                            'Modern India': ['British Rule', 'Freedom Struggle', 'National Movement', 'Independence', 'Post-Independence'],
+                            'World History': ['Ancient Civilizations', 'Medieval Period', 'Renaissance', 'Industrial Revolution', 'World Wars'],
+                            'Art & Culture': ['Indian Art Forms', 'Classical Music', 'Dance Forms', 'Literature', 'Festivals']
+                        }
+                    },
+                    'Geography': {
+                        topics: {
+                            'Physical Geography': ['Earth Structure', 'Landforms', 'Climate', 'Natural Vegetation', 'Soil Types'],
+                            'Indian Geography': ['Physical Features', 'Rivers & Lakes', 'Climate Zones', 'Natural Resources', 'Agriculture'],
+                            'World Geography': ['Continents', 'Oceans', 'Mountain Ranges', 'Deserts', 'Climate Zones'],
+                            'Economic Geography': ['Industries', 'Trade Routes', 'Transportation', 'Communication', 'Urbanization'],
+                            'Environmental Geography': ['Ecosystems', 'Biodiversity', 'Conservation', 'Pollution', 'Climate Change']
+                        }
+                    },
+                    'Polity': {
+                        topics: {
+                            'Constitution': ['Preamble', 'Fundamental Rights', 'Directive Principles', 'Fundamental Duties', 'Constitutional Amendments'],
+                            'Union Government': ['President', 'Prime Minister', 'Parliament', 'Supreme Court', 'Central Ministries'],
+                            'State Government': ['Governor', 'Chief Minister', 'State Legislature', 'High Courts', 'Local Bodies'],
+                            'Elections': ['Election Commission', 'Electoral Process', 'Political Parties', 'Voting System', 'Electoral Reforms'],
+                            'Governance': ['Public Policy', 'Administrative Structure', 'Transparency', 'Accountability', 'E-Governance']
+                        }
+                    },
+                    'Economics': {
+                        topics: {
+                            'Basic Economics': ['Demand & Supply', 'Market Structure', 'Price Mechanism', 'Economic Systems', 'Economic Problems'],
+                            'Indian Economy': ['Economic Planning', 'Five Year Plans', 'Economic Reforms', 'Sectoral Growth', 'Economic Indicators'],
+                            'Banking & Finance': ['Banking System', 'RBI Functions', 'Monetary Policy', 'Financial Markets', 'Insurance'],
+                            'Public Finance': ['Government Budget', 'Taxation', 'Public Expenditure', 'Fiscal Policy', 'Public Debt'],
+                            'International Trade': ['Balance of Payments', 'Exchange Rate', 'Trade Policy', 'WTO', 'Regional Cooperation']
+                        }
+                    },
+                    'Science': {
+                        topics: {
+                            'Physics': ['Mechanics', 'Heat & Thermodynamics', 'Light', 'Sound', 'Electricity & Magnetism'],
+                            'Chemistry': ['Atomic Structure', 'Chemical Bonding', 'Acids & Bases', 'Metals & Non-metals', 'Organic Chemistry'],
+                            'Biology': ['Cell Biology', 'Human Body Systems', 'Plant Biology', 'Genetics', 'Evolution'],
+                            'Environmental Science': ['Ecology', 'Pollution', 'Natural Resources', 'Biodiversity', 'Climate Change'],
+                            'Space Science': ['Solar System', 'Stars & Galaxies', 'Space Missions', 'Satellites', 'Space Technology']
+                        }
+                    }
+                }
+            },
+            'Mathematics': {
+                icon: '🔢',
+                color: 'bg-red-500',
+                chapters: {
+                    'Arithmetic': {
+                        topics: {
+                            'Number System': ['Natural Numbers', 'Whole Numbers', 'Integers', 'Rational Numbers', 'Real Numbers'],
+                            'Percentage': ['Basic Percentage', 'Percentage Change', 'Successive Percentage', 'Percentage in Exams', 'Applications'],
+                            'Profit & Loss': ['Basic Concepts', 'Discount', 'Marked Price', 'Successive Transactions', 'Partnership'],
+                            'Simple Interest': ['Basic Formula', 'Time Calculation', 'Rate Calculation', 'Principal Calculation', 'Applications'],
+                            'Compound Interest': ['Basic Formula', 'Compound vs Simple', 'Half-yearly Compounding', 'Quarterly Compounding', 'Applications']
+                        }
+                    },
+                    'Algebra': {
+                        topics: {
+                            'Basic Algebra': ['Variables', 'Expressions', 'Equations', 'Inequalities', 'Factorization'],
+                            'Linear Equations': ['One Variable', 'Two Variables', 'Simultaneous Equations', 'Word Problems', 'Graphical Method'],
+                            'Quadratic Equations': ['Standard Form', 'Factorization Method', 'Formula Method', 'Completing Square', 'Applications'],
+                            'Polynomials': ['Types of Polynomials', 'Operations', 'Factorization', 'Remainder Theorem', 'Factor Theorem'],
+                            'Sequences & Series': ['Arithmetic Progression', 'Geometric Progression', 'Harmonic Progression', 'Special Series', 'Applications']
+                        }
+                    },
+                    'Geometry': {
+                        topics: {
+                            'Basic Geometry': ['Points & Lines', 'Angles', 'Triangles', 'Quadrilaterals', 'Circles'],
+                            'Triangles': ['Types of Triangles', 'Congruence', 'Similarity', 'Pythagoras Theorem', 'Area Calculation'],
+                            'Circles': ['Basic Properties', 'Tangent & Secant', 'Chord Properties', 'Arc & Sector', 'Area & Circumference'],
+                            'Coordinate Geometry': ['Cartesian Plane', 'Distance Formula', 'Section Formula', 'Area of Triangle', 'Straight Lines'],
+                            'Mensuration': ['Area Formulas', 'Volume Formulas', 'Surface Area', '2D Figures', '3D Figures']
+                        }
+                    },
+                    'Trigonometry': {
+                        topics: {
+                            'Basic Trigonometry': ['Trigonometric Ratios', 'Standard Angles', 'Trigonometric Tables', 'Complementary Angles', 'Basic Identities'],
+                            'Trigonometric Identities': ['Fundamental Identities', 'Sum & Difference', 'Product Identities', 'Half Angle', 'Double Angle'],
+                            'Heights & Distances': ['Angle of Elevation', 'Angle of Depression', 'Line of Sight', 'Practical Problems', 'Applications'],
+                            'Trigonometric Equations': ['Simple Equations', 'General Solutions', 'Principal Solutions', 'Conditional Equations', 'Applications'],
+                            'Inverse Trigonometry': ['Inverse Functions', 'Principal Values', 'Properties', 'Equations', 'Applications']
+                        }
+                    }
+                }
+            },
+            'Shorthand': {
+                icon: '✍️',
+                color: 'bg-yellow-500',
+                chapters: {
+                    'Pitman Shorthand': {
+                        topics: {
+                            'Basic Strokes': ['Straight Lines', 'Curves', 'Circles', 'Hooks', 'Loops'],
+                            'Consonants': ['Light Consonants', 'Heavy Consonants', 'Aspirated Consonants', 'Compound Consonants', 'Special Consonants'],
+                            'Vowels': ['Light Vowels', 'Heavy Vowels', 'Diphthongs', 'Vowel Indication', 'Vowel Omission'],
+                            'Word Formation': ['Simple Words', 'Compound Words', 'Prefixes', 'Suffixes', 'Contractions'],
+                            'Speed Building': ['Dictation Practice', 'Speed Tests', 'Accuracy Tests', 'Transcription', 'Professional Practice']
+                        }
+                    },
+                    'Gregg Shorthand': {
+                        topics: {
+                            'Alphabet': ['Basic Alphabet', 'Joining Rules', 'Size Variations', 'Position Writing', 'Proportion'],
+                            'Brief Forms': ['Common Words', 'Frequent Words', 'Business Terms', 'Technical Terms', 'Abbreviations'],
+                            'Phrases': ['Common Phrases', 'Business Phrases', 'Courtesy Phrases', 'Time Phrases', 'Special Phrases'],
+                            'Word Endings': ['Common Endings', 'Plural Endings', 'Verb Endings', 'Adjective Endings', 'Adverb Endings'],
+                            'Advanced Techniques': ['Speed Writing', 'Fluency Building', 'Dictation Skills', 'Transcription Speed', 'Professional Standards']
+                        }
+                    },
+                    'Typing Skills': {
+                        topics: {
+                            'Basic Typing': ['Finger Placement', 'Home Row Keys', 'Touch Typing', 'Posture', 'Keyboard Layout'],
+                            'Speed Building': ['Speed Tests', 'Accuracy Tests', 'Timed Practice', 'Error Correction', 'Rhythm Development'],
+                            'English Typing': ['Letter Practice', 'Word Practice', 'Sentence Practice', 'Paragraph Practice', 'Document Typing'],
+                            'Hindi Typing': ['Devanagari Script', 'Keyboard Layout', 'Character Formation', 'Word Formation', 'Speed Practice'],
+                            'Professional Typing': ['Business Letters', 'Reports', 'Tables', 'Forms', 'Official Documents']
+                        }
+                    }
+                }
+            }
+        };
+        // Sample Questions Generator
+        function generateSampleQuestions(subject, chapter, topic, count = 25) {
+            const questions = [];
+            // Base question templates for different subjects
+            const questionTemplates = {
+                'English': [
+                    {
+                        question: "Choose the correct synonym for '{word}':",
+                        options: ["{synonym1}", "{synonym2}", "{correct}", "{synonym3}"],
+                        correct: 2,
+                        explanation: "The word '{word}' means {meaning}. '{correct}' is the most appropriate synonym as it conveys the same meaning."
+                    },
+                    {
+                        question: "Identify the grammatically correct sentence:",
+                        options: ["{wrong1}", "{wrong2}", "{correct}", "{wrong3}"],
+                        correct: 2,
+                        explanation: "The correct sentence follows proper grammar rules. {explanation_detail}"
+                    }
+                ],
+                'Reasoning': [
+                    {
+                        question: "Complete the series: {series}",
+                        options: ["{option1}", "{correct}", "{option2}", "{option3}"],
+                        correct: 1,
+                        explanation: "The pattern in this series is {pattern}. Following this logic, the next term is {correct}."
+                    },
+                    {
+                        question: "If {condition}, then {question}?",
+                        options: ["{option1}", "{option2}", "{correct}", "{option3}"],
+                        correct: 2,
+                        explanation: "Based on the given condition, {explanation_detail}. Therefore, {correct} is the correct answer."
+                    }
+                ],
+                'General Studies': [
+                    {
+                        question: "Which of the following is related to {topic_area}?",
+                        options: ["{option1}", "{option2}", "{correct}", "{option3}"],
+                        correct: 2,
+                        explanation: "{correct} is directly related to {topic_area} because {explanation_detail}."
+                    }
+                ],
+                'Mathematics': [
+                    {
+                        question: "Solve: {problem}",
+                        options: ["{option1}", "{correct}", "{option2}", "{option3}"],
+                        correct: 1,
+                        explanation: "To solve this problem: {step1}. {step2}. Therefore, the answer is {correct}."
+                    }
+                ],
+                'Shorthand': [
+                    {
+                        question: "In Pitman shorthand, how is '{word}' written?",
+                        options: ["{option1}", "{correct}", "{option2}", "{option3}"],
+                        correct: 1,
+                        explanation: "The word '{word}' is written as {correct} in Pitman shorthand following the rules of {rule_explanation}."
+                    }
+                ]
+            };
+            // Generate questions based on subject and topic
+            for (let i = 1; i <= count; i++) {
+                const baseTemplate = questionTemplates[subject] ?
+                    questionTemplates[subject][Math.floor(Math.random() * questionTemplates[subject].length)] :
+                    questionTemplates['General Studies'][0];
+                const question = {
+                    id: i,
+                    question: `${topic} - Question ${i}: ${baseTemplate.question.replace(/{[^}]+}/g, 'sample')}`,
+                    options: baseTemplate.options.map(opt => opt.replace(/{[^}]+}/g, `Option ${Math.floor(Math.random() * 100)}`)),
+                    correct: baseTemplate.correct,
+                    explanation: `This question tests your understanding of ${topic} in ${chapter}. ${baseTemplate.explanation.replace(/{[^}]+}/g, 'the concept')}`
+                };
+                questions.push(question);
+            }
+            return questions;
+        }
+        // Authentication functions
+        function showLogin() {
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('signupForm').classList.add('hidden');
+        }
+        function showSignup() {
+            document.getElementById('loginForm').classList.add('hidden');
+            document.getElementById('signupForm').classList.remove('hidden');
+        }
+        function handleLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            if (!email || !password) {
+                alert('Please fill in all fields');
+                return;
+            }
+            // Demo login - in real app, this would validate against a server
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            const user = users.find(u => u.email === email && u.password === password);
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                showHome();
+            } else {
+                alert('Invalid email or password');
+            }
+        }
+        function handleSignup() {
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const phone = document.getElementById('signupPhone').value;
+            const dob = document.getElementById('signupDOB').value;
+            const exam = document.getElementById('signupExam').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            if (!name || !email || !password || !confirmPassword) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+            // Check if user already exists
+            const users = JSON.parse(localStorage.getItem('users') || '[]');
+            if (users.find(u => u.email === email)) {
+                alert('User with this email already exists');
+                return;
+            }
+            // Create new user
+            const newUser = {
+                id: Date.now(),
+                name,
+                email,
+                phone,
+                dob,
+                exam,
+                password,
+                joinDate: new Date().toISOString()
+            };
+            users.push(newUser);
+            localStorage.setItem('users', JSON.stringify(users));
+            currentUser = newUser;
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            alert('Account created successfully!');
+            showHome();
+        }
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            showPage('loginPage');
+        }
+        // Utility functions
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.add('hidden');
+            });
+            document.getElementById(pageId).classList.remove('hidden');
+            document.getElementById(pageId).classList.add('fade-in');
+        }
+        function showHome() {
+            showPage('homePage');
+            clearInterval(timerInterval);
+            if (window.autoSaveInterval) {
+                clearInterval(window.autoSaveInterval);
+            }
+        }
+        // Navigation functions
+        function showExamInfo() {
+            const grid = document.getElementById('examInfoGrid');
+            grid.innerHTML = '';
+            Object.entries(sscExams).forEach(([examCode, examData]) => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-xl shadow-lg p-4 md:p-6 hover:shadow-xl transition-all duration-300';
+                card.innerHTML = `
+                    <div class="mb-4">
+                        <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-2">${examCode}</h3>
+                        <p class="text-sm text-gray-600">${examData.name}</p>
+                    </div>
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Eligibility:</span>
+                            <span class="font-semibold text-right">${examData.eligibility}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Age Limit:</span>
+                            <span class="font-semibold">${examData.ageLimit}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Salary:</span>
+                            <span class="font-semibold text-green-600">${examData.salary}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Vacancies:</span>
+                            <span class="font-semibold text-blue-600">${examData.vacancies}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-600">Next Exam:</span>
+                            <span class="font-semibold text-red-600">${examData.nextExam}</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t">
+                        <button onclick="showExamDetails('${examCode}')" class="w-full bg-primary hover:bg-blue-600 text-white py-2 rounded-lg text-sm font-semibold transition-colors">
+                            View Details
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            showPage('examInfoPage');
+        }
+        function showExamDetails(examCode) {
+            const examData = sscExams[examCode];
+            alert(`${examCode} Details:\n\n` +
+                  `Posts: ${examData.posts}\n` +
+                  `Exam Pattern: ${examData.examPattern}\n` +
+                  `Subjects: ${examData.subjects}\n` +
+                  `Application Fee: ${examData.applicationFee}`);
+        }
+        function showSubjects() {
+            const grid = document.getElementById('subjectsGrid');
+            grid.innerHTML = '';
+            Object.entries(subjectStructure).forEach(([subject, data]) => {
+                const chapterCount = Object.keys(data.chapters).length;
+                let topicCount = 0;
+                Object.values(data.chapters).forEach(chapter => {
+                    topicCount += Object.keys(chapter.topics).length;
+                });
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-xl shadow-lg p-4 md:p-6 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2';
+                card.innerHTML = `
+                    <div class="text-center">
+                        <div class="w-12 h-12 md:w-16 md:h-16 ${data.color} rounded-full flex items-center justify-center mx-auto mb-3 md:mb-4">
+                            <span class="text-2xl md:text-3xl">${data.icon}</span>
+                        </div>
+                        <h3 class="text-lg md:text-2xl font-bold text-gray-800 mb-2 md:mb-3">${subject}</h3>
+                        <div class="text-sm md:text-base text-gray-600 mb-4 md:mb-6">
+                            <p>${chapterCount} Chapters</p>
+                            <p>${topicCount} Topics</p>
+                            <p>${topicCount * 25} Practice Tests</p>
+                        </div>
+                        <button onclick="showChapters('${subject}')" class="w-full md:w-auto ${data.color} hover:opacity-90 text-white px-4 md:px-8 py-2 md:py-3 rounded-lg text-sm md:text-base font-semibold transition-colors duration-300">
+                            Start Learning
+                        </button>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            showPage('subjectsPage');
+        }
+        function showChapters(subject) {
+            currentSubject = subject;
+            document.getElementById('chaptersTitle').textContent = `${subject} - Chapters`;
+            const grid = document.getElementById('chaptersGrid');
+            grid.innerHTML = '';
+            const chapters = subjectStructure[subject].chapters;
+            Object.entries(chapters).forEach(([chapter, data]) => {
+                const topicCount = Object.keys(data.topics).length;
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-xl shadow-lg p-4 md:p-6 hover:shadow-xl transition-all duration-300';
+                card.innerHTML = `
+                    <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-3">${chapter}</h3>
+                    <div class="text-sm md:text-base text-gray-600 mb-4">
+                        <p>📚 ${topicCount} Topics</p>
+                        <p>📝 ${topicCount * 25} Practice Tests</p>
+                        <p>⏱️ Comprehensive Coverage</p>
+                    </div>
+                    <button onclick="showTopics('${subject}', '${chapter}')" class="w-full ${subjectStructure[subject].color} hover:opacity-90 text-white py-2 md:py-3 rounded-lg text-sm md:text-base font-semibold transition-colors">
+                        View Topics
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+            showPage('chaptersPage');
+        }
+        function showTopics(subject, chapter) {
+            currentSubject = subject;
+            currentChapter = chapter;
+            document.getElementById('topicsTitle').textContent = `${subject} - ${chapter}`;
+            const grid = document.getElementById('topicsGrid');
+            grid.innerHTML = '';
+            const topics = subjectStructure[subject].chapters[chapter].topics;
+            Object.entries(topics).forEach(([topic, subtopics]) => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-xl shadow-lg p-4 md:p-6 hover:shadow-xl transition-all duration-300';
+                card.innerHTML = `
+                    <h3 class="text-lg md:text-xl font-bold text-gray-800 mb-3">${topic}</h3>
+                    <div class="text-sm text-gray-600 mb-4">
+                        <p>📋 ${subtopics.length} Subtopics</p>
+                        <p>📝 25 Practice Tests</p>
+                        <p>⏱️ 30 minutes each</p>
+                        <p>❓ 25 questions per test</p>
+                    </div>
+                    <div class="mb-4">
+                        <p class="text-xs text-gray-500 mb-2">Subtopics:</p>
+                        <div class="flex flex-wrap gap-1">
+                            ${subtopics.slice(0, 3).map(subtopic =>
+                                `<span class="text-xs bg-gray-100 px-2 py-1 rounded">${subtopic}</span>`
+                            ).join('')}
+                            ${subtopics.length > 3 ? `<span class="text-xs text-gray-400">+${subtopics.length - 3} more</span>` : ''}
+                        </div>
+                    </div>
+                    <button onclick="showPracticeSets('${subject}', '${chapter}', '${topic}')" class="w-full ${subjectStructure[subject].color} hover:opacity-90 text-white py-2 md:py-3 rounded-lg text-sm md:text-base font-semibold transition-colors">
+                        Start Practice
+                    </button>
+                `;
+                grid.appendChild(card);
+            });
+            showPage('topicsPage');
+        }
+        function showPracticeSets(subject, chapter, topic) {
+    currentSubject = subject;
+    currentChapter = chapter;
+    currentTopic = topic;
+    document.getElementById('practiceSetTitle').textContent = `${topic} - Practice Sets`;
+    const grid = document.getElementById('practiceSetsGrid');
+    grid.innerHTML = '';
+    for (let i = 1; i <= 25; i++) {
+        const testKey = `${subject}_${chapter}_${topic}_${i}`;
+        const savedState = localStorage.getItem(`test_${testKey}`);
+        const isPaused = savedState ? JSON.parse(savedState).isPaused : false;
+        // Check if test is completed
+        const isCompleted = testHistory.some(test =>
+            test.subject === subject &&
+            test.chapter === chapter &&
+            test.topic === topic &&
+            test.testId === i
+        );
+        const card = document.createElement('div');
+        card.className = 'bg-white rounded-xl shadow-lg p-3 md:p-6 hover:shadow-xl transition-all duration-300 relative';
+        let statusText = '';
+        let buttonClass = 'bg-primary hover:bg-blue-600';
+        let buttonText = 'Start Test';
+        let statusIcon = '';
+        if (isCompleted) {
+            const completedTest = testHistory.find(test =>
+                test.subject === subject &&
+                test.chapter === chapter &&
+                test.topic === topic &&
+                test.testId === i
+            );
+            statusIcon = '<div class="absolute top-2 right-2 bg-green-100 rounded-full p-1"><svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg></div>';
+            buttonClass = 'bg-green-500 hover:bg-green-600';
+            buttonText = 'Retake Test';
+        } else if (isPaused) {
+            statusIcon = '<div class="absolute top-2 right-2 bg-yellow-100 rounded-full p-1"><svg class="w-4 h-4 text-yellow-600" fill="currentColor" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M8 5v14l11-7z" clip-rule="evenodd"/></svg></div>';
+            buttonClass = 'bg-orange-500 hover:bg-orange-600';
+            buttonText = 'Resume Test';
+        }
+        card.innerHTML = `
+            ${statusIcon}
+            <h3 class="text-base md:text-xl font-bold text-gray-800 mb-2 md:mb-3">${topic} - Test ${i}</h3>
+            <div class="text-xs md:text-sm text-gray-600 mb-3 md:mb-4">
+                <p>Questions: 25</p>
+                <p>Time Limit: 30 minutes</p>
+                <p>Subject: ${subject}</p>
+                <p>Chapter: ${chapter}</p>
+                ${statusText}
+            </div>
+            <button onclick="startTest('${subject}', '${chapter}', '${topic}', ${i})" class="w-full ${buttonClass} text-white py-2 rounded-lg text-sm md:text-base font-semibold transition-colors">
+                ${buttonText}
+            </button>
+        `;
+        grid.appendChild(card);
+    }
+    showPage('practiceSetsPage');
+}
+        function startTest(subject, chapter, topic, testId) {
+            currentSubject = subject;
+            currentChapter = chapter;
+            currentTopic = topic;
+            currentTestId = testId;
+            currentQuestionIndex = 0;
+            userAnswers = {};
+            markedForReview = {};
+            // Generate test questions
+            testQuestions = generateSampleQuestions(subject, chapter, topic, 25);
+            // Check if this is a retake (test already completed)
+            const isRetake = testHistory.some(test =>
+                test.subject === subject &&
+                test.chapter === chapter &&
+                test.topic === topic &&
+                test.testId === testId
+            );
+            // Check for saved state (only if not a retake)
+            const testKey = `${subject}_${chapter}_${topic}_${testId}`;
+            const savedState = !isRetake ? localStorage.getItem(`test_${testKey}`) : null;
+            if (savedState) {
+                const state = JSON.parse(savedState);
+                currentQuestionIndex = state.currentQuestionIndex || 0;
+                userAnswers = state.userAnswers || {};
+                markedForReview = state.markedForReview || {};
+                timeRemaining = state.timeRemaining || 1800;
+                currentLanguage = state.language || 'english';
+                testStartTime = state.testStartTime || Date.now();
+            } else {
+                // Fresh start or retake - reset everything
+                timeRemaining = 1800;
+                testStartTime = Date.now();
+                // Clear any existing saved state for retakes
+                if (isRetake) {
+                    localStorage.removeItem(`test_${testKey}`);
+                }
+            }
+            document.getElementById('testTitle').textContent = `${subject} - ${topic} - Test ${testId}`;
+            // Hide language selector for now (can be enabled for specific subjects)
+            document.getElementById('languageSelector').classList.add('hidden');
+            setupQuestionNavigation();
+            displayQuestion();
+            startTimer();
+            showPage('testInterface');
+            // Start continuous auto-save every 2 seconds during test
+            if (window.autoSaveInterval) {
+                clearInterval(window.autoSaveInterval);
+            }
+            window.autoSaveInterval = setInterval(saveTestState, 2000);
+        }
+        // Profile functions
+        function showProfile() {
+            updateProfileStats();
+            showPage('profilePage');
+        }
+        function updateProfileStats() {
+            // Update user information
+            if (currentUser) {
+                document.getElementById('profileUserName').textContent = currentUser.name;
+                document.getElementById('profileUserEmail').textContent = currentUser.email;
+                document.getElementById('profilePhone').textContent = currentUser.phone || 'Not provided';
+                document.getElementById('profileDOB').textContent = currentUser.dob ? new Date(currentUser.dob).toLocaleDateString() : 'Not provided';
+                document.getElementById('profileExam').textContent = currentUser.exam || 'Not selected';
+                document.getElementById('profileJoinDate').textContent = new Date(currentUser.joinDate).toLocaleDateString();
+            }
+            document.getElementById('profileTestsTaken').textContent = testHistory.length;
+            if (testHistory.length > 0) {
+                const avgScore = Math.round(testHistory.reduce((sum, test) => sum + test.percentage, 0) / testHistory.length);
+                document.getElementById('profileAvgScore').textContent = `${avgScore}%`;
+                const totalTime = testHistory.reduce((sum, test) => sum + test.timeSpent, 0);
+                const hours = Math.floor(totalTime / 3600);
+                document.getElementById('profileStudyTime').textContent = `${hours}h`;
+            }
+            document.getElementById('profileSavedQuestions').textContent = savedQuestions.length;
+            loadTestHistory();
+            loadSavedQuestions();
+        }
+        function showProfileTab(tab) {
+            // Update tab buttons
+            document.getElementById('historyTab').className = tab === 'history' ?
+                'flex-1 px-3 md:px-6 py-3 md:py-4 text-sm md:text-base font-semibold text-primary border-b-2 border-primary' :
+                'flex-1 px-3 md:px-6 py-3 md:py-4 text-sm md:text-base font-semibold text-gray-500 hover:text-primary transition-colors';
+            document.getElementById('savedTab').className = tab === 'saved' ?
+                'flex-1 px-3 md:px-6 py-3 md:py-4 text-sm md:text-base font-semibold text-primary border-b-2 border-primary' :
+                'flex-1 px-3 md:px-6 py-3 md:py-4 text-sm md:text-base font-semibold text-gray-500 hover:text-primary transition-colors';
+            // Show/hide content
+            document.getElementById('historyTabContent').classList.toggle('hidden', tab !== 'history');
+            document.getElementById('savedTabContent').classList.toggle('hidden', tab !== 'saved');
+        }
+        function loadTestHistory() {
+            const historyList = document.getElementById('testHistoryList');
+            if (testHistory.length === 0) {
+                historyList.innerHTML = `
+                    <div class="text-center text-gray-500 py-8">
+                        <svg class="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        <p class="text-sm md:text-base">No test history yet. Take your first test!</p>
+                    </div>
+                `;
+                return;
+            }
+            historyList.innerHTML = testHistory.map(test => `
+                <div class="border-b border-gray-200 py-3 md:py-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-semibold text-gray-800 text-sm md:text-base">${test.subject} - ${test.topic || 'Practice'}</h4>
+                            <p class="text-xs md:text-sm text-gray-600">${test.chapter ? `${test.chapter} - ` : ''}Test ${test.testId}</p>
+                            <p class="text-xs md:text-sm text-gray-600">${new Date(test.date).toLocaleDateString()}</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm md:text-base font-bold ${test.percentage >= 70 ? 'text-green-600' : test.percentage >= 50 ? 'text-yellow-600' : 'text-red-600'}">${test.percentage}%</div>
+                            <div class="text-xs md:text-sm text-gray-500">${test.score}/${test.total}</div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        function loadSavedQuestions() {
+            const savedList = document.getElementById('savedQuestionsList');
+            if (savedQuestions.length === 0) {
+                savedList.innerHTML = `
+                    <div class="text-center text-gray-500 py-8">
+                        <svg class="w-12 h-12 md:w-16 md:h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+                        </svg>
+                        <p class="text-sm md:text-base">No saved questions yet. Save questions during review!</p>
+                    </div>
+                `;
+                return;
+            }
+            savedList.innerHTML = savedQuestions.map((q, index) => `
+                <div class="border border-gray-200 rounded-lg p-3 md:p-4 mb-3 md:mb-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs md:text-sm text-gray-500">${q.subject} - ${q.topic || 'General'}</span>
+                        <button onclick="removeSavedQuestion(${index})" class="text-red-500 hover:text-red-700 text-xs md:text-sm">
+                            Remove
+                        </button>
+                    </div>
+                    <div onclick="toggleExplanation(${index})" class="cursor-pointer">
+                        <h4 class="font-medium text-gray-800 mb-2 text-sm md:text-base hover:text-primary transition-colors">${q.question}</h4>
+                        <div class="space-y-1 mb-3">
+                            ${q.options.map((option, i) => `
+                                <div class="text-xs md:text-sm ${i === q.correct ? 'text-green-600 font-semibold' : 'text-gray-600'}">
+                                    ${String.fromCharCode(65 + i)}. ${option} ${i === q.correct ? '✓' : ''}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div id="explanation-${index}" class="explanation-content bg-blue-50 border-l-4 border-blue-400 p-2 md:p-3 rounded-r max-h-0 overflow-hidden transition-all duration-300">
+                        <div class="flex items-center justify-between mb-2">
+                            <h5 class="font-semibold text-blue-800 text-xs md:text-sm">📚 Explanation</h5>
+                            <svg class="w-4 h-4 text-blue-600 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </div>
+                        <p class="text-xs md:text-sm text-blue-700">${q.explanation}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+        function removeSavedQuestion(index) {
+            savedQuestions.splice(index, 1);
+            localStorage.setItem('savedQuestions', JSON.stringify(savedQuestions));
+            loadSavedQuestions();
+            updateProfileStats();
+        }
+        function toggleExplanation(index) {
+            const explanationDiv = document.getElementById(`explanation-${index}`);
+            const icon = explanationDiv.querySelector('svg');
+            if (explanationDiv.style.maxHeight === '0px' || !explanationDiv.style.maxHeight) {
+                explanationDiv.style.maxHeight = explanationDiv.scrollHeight + 'px';
+                explanationDiv.style.paddingTop = '0.5rem';
+                explanationDiv.style.paddingBottom = '0.75rem';
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                explanationDiv.style.maxHeight = '0px';
+                explanationDiv.style.paddingTop = '0';
+                explanationDiv.style.paddingBottom = '0';
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+        // Test Interface Functions
+        function setupQuestionNavigation() {
+            const grid = document.getElementById('questionNavGrid');
+            grid.innerHTML = '';
+            for (let i = 0; i < testQuestions.length; i++) {
+                const button = document.createElement('button');
+                button.className = 'w-8 h-8 rounded text-sm font-semibold transition-colors';
+                button.textContent = i + 1;
+                button.onclick = () => goToQuestion(i);
+                updateQuestionNavButton(button, i);
+                grid.appendChild(button);
+            }
+            document.getElementById('totalQuestions').textContent = testQuestions.length;
+        }
+        function updateQuestionNavButton(button, index) {
+            const baseClass = 'w-6 h-6 md:w-8 md:h-8 rounded text-xs md:text-sm font-semibold transition-colors';
+            if (index === currentQuestionIndex) {
+                button.className = baseClass + ' question-current';
+            } else if (markedForReview[index] && userAnswers[index] !== undefined) {
+                button.className = baseClass + ' question-marked';
+            } else if (markedForReview[index]) {
+                button.className = baseClass + ' question-marked';
+            } else if (userAnswers[index] !== undefined) {
+                button.className = baseClass + ' question-attempted';
+            } else {
+                button.className = baseClass + ' question-unattempted';
+            }
+        }
+        function displayQuestion() {
+            const question = testQuestions[currentQuestionIndex];
+            document.getElementById('currentQuestionNum').textContent = currentQuestionIndex + 1;
+            document.getElementById('questionText').textContent = question.question;
+            const optionsArea = document.getElementById('optionsArea');
+            optionsArea.innerHTML = '';
+            question.options.forEach((option, index) => {
+                const div = document.createElement('div');
+                div.className = 'flex items-center space-x-3';
+                div.innerHTML = `
+                    <input type="radio" id="option${index}" name="answer" value="${index}"
+                           ${userAnswers[currentQuestionIndex] === index ? 'checked' : ''}
+                           onchange="selectAnswer(${index})" class="w-4 h-4 text-primary">
+                    <label for="option${index}" class="text-gray-700 cursor-pointer">${option}</label>
+                `;
+                optionsArea.appendChild(div);
+            });
+            // Update mark for review button
+            updateMarkForReviewButton();
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+            if (currentQuestionIndex === testQuestions.length - 1) {
+                document.getElementById('nextBtn').classList.add('hidden');
+                document.getElementById('submitBtn').classList.remove('hidden');
+            } else {
+                document.getElementById('nextBtn').classList.remove('hidden');
+                document.getElementById('submitBtn').classList.add('hidden');
+            }
+            // Update question navigation
+            setupQuestionNavigation();
+        }
+        function selectAnswer(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            setupQuestionNavigation();
+            // Auto-save immediately when answer is selected
+            saveTestState();
+        }
+        function previousQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                displayQuestion();
+                saveTestState();
+            }
+        }
+        function nextQuestion() {
+            if (currentQuestionIndex < testQuestions.length - 1) {
+                currentQuestionIndex++;
+                displayQuestion();
+                saveTestState();
+            }
+        }
+        function goToQuestion(index) {
+            currentQuestionIndex = index;
+            displayQuestion();
+            saveTestState();
+        }
+        function toggleMarkForReview() {
+            const isMarked = markedForReview[currentQuestionIndex];
+            markedForReview[currentQuestionIndex] = !isMarked;
+            updateMarkForReviewButton();
+            setupQuestionNavigation();
+            saveTestState();
+        }
+        function updateMarkForReviewButton() {
+            const btn = document.getElementById('markForReviewBtn');
+            const text = document.getElementById('markForReviewText');
+            if (markedForReview[currentQuestionIndex]) {
+                btn.className = 'flex items-center space-x-1 md:space-x-2 px-2 md:px-3 py-1 md:py-2 rounded-lg text-xs md:text-sm font-semibold transition-colors bg-orange-500 text-white hover:bg-orange-600';
+                text.textContent = 'Review Later';
+            } else {
+                btn.className = 'flex items-center space-x-1 md:space-x-2 px-2 md:px-3 py-1 md:py-2 rounded-lg text-xs md:text-sm font-semibold transition-colors bg-orange-100 text-orange-700 hover:bg-orange-200';
+                text.textContent = 'Review Later';
+            }
+        }
+        function startTimer() {
+            isPaused = false;
+            document.getElementById('pauseResumeBtn').textContent = 'Pause';
+            timerInterval = setInterval(() => {
+                if (!isPaused) {
+                    timeRemaining--;
+                    updateTimerDisplay();
+                    if (timeRemaining <= 0) {
+                        submitTest();
+                    }
+                }
+            }, 1000);
+        }
+        function toggleTimer() {
+            isPaused = !isPaused;
+            document.getElementById('pauseResumeBtn').textContent = isPaused ? 'Resume' : 'Pause';
+        }
+        function updateTimerDisplay() {
+            const minutes = Math.floor(timeRemaining / 60);
+            const seconds = timeRemaining % 60;
+            document.getElementById('timer').textContent =
+                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        function saveTestState() {
+            if (currentSubject && currentChapter && currentTopic && currentTestId) {
+                const testKey = `${currentSubject}_${currentChapter}_${currentTopic}_${currentTestId}`;
+                const state = {
+                    currentQuestionIndex,
+                    userAnswers,
+                    markedForReview,
+                    timeRemaining,
+                    language: currentLanguage,
+                    isPaused: true,
+                    timestamp: Date.now(),
+                    testStartTime: testStartTime
+                };
+                localStorage.setItem(`test_${testKey}`, JSON.stringify(state));
+            }
+        }
+        function submitTest() {
+            clearInterval(timerInterval);
+            if (window.autoSaveInterval) {
+                clearInterval(window.autoSaveInterval);
+            }
+            // Calculate results
+            let correctAnswers = 0;
+            testResults = [];
+            testQuestions.forEach((question, index) => {
+                const userAnswer = userAnswers[index];
+                const isCorrect = userAnswer === question.correct;
+                if (isCorrect) correctAnswers++;
+                testResults.push({
+                    questionIndex: index,
+                    isCorrect,
+                    isAttempted: userAnswer !== undefined,
+                    userAnswer: userAnswer,
+                    correctAnswer: question.correct,
+                    question: question
+                });
+            });
+            const percentage = Math.round((correctAnswers / testQuestions.length) * 100);
+            const timeSpent = testStartTime ? Math.floor((Date.now() - testStartTime) / 1000) : (1800 - timeRemaining);
+            // Display results
+            document.getElementById('finalScore').textContent = `${correctAnswers}/${testQuestions.length}`;
+            document.getElementById('finalPercentage').textContent = `${percentage}%`;
+            const spentMinutes = Math.floor(timeSpent / 60);
+            const spentSeconds = timeSpent % 60;
+            document.getElementById('timeSpent').textContent =
+                `${spentMinutes.toString().padStart(2, '0')}:${spentSeconds.toString().padStart(2, '0')}`;
+            // Create analysis grid
+            const analysisGrid = document.getElementById('analysisGrid');
+            analysisGrid.innerHTML = '';
+            testResults.forEach((result, index) => {
+                const button = document.createElement('button');
+                button.className = 'w-8 h-8 rounded text-sm font-semibold';
+                button.textContent = index + 1;
+                if (result.isCorrect) {
+                    button.className += ' question-correct';
+                } else if (result.isAttempted) {
+                    button.className += ' question-wrong';
+                } else {
+                    button.className += ' question-unattempted';
+                }
+                button.onclick = () => {
+                    reviewQuestionIndex = index;
+                    showReviewAnswers();
+                };
+                analysisGrid.appendChild(button);
+            });
+            // Save test history
+            const testRecord = {
+                subject: currentSubject,
+                chapter: currentChapter,
+                topic: currentTopic,
+                testId: currentTestId,
+                date: new Date().toISOString(),
+                score: correctAnswers,
+                total: testQuestions.length,
+                percentage: percentage,
+                timeSpent: timeSpent
+            };
+            testHistory.push(testRecord);
+            localStorage.setItem('testHistory', JSON.stringify(testHistory));
+            // Clear saved state for this test
+            const testKey = `${currentSubject}_${currentChapter}_${currentTopic}_${currentTestId}`;
+            localStorage.removeItem(`test_${testKey}`);
+            showPage('resultScreen');
+        }
+        function showReviewAnswers() {
+        const question = testQuestions[reviewQuestionIndex];
+        const result = testResults[reviewQuestionIndex];
+        document.getElementById('reviewCurrentQuestionNum').textContent = reviewQuestionIndex + 1;
+        document.getElementById('reviewTotalQuestions').textContent = testQuestions.length;
+        document.getElementById('reviewQuestionText').textContent = question.question;
+        const optionsArea = document.getElementById('reviewOptionsArea');
+        optionsArea.innerHTML = '';
+        question.options.forEach((option, index) => {
+            const div = document.createElement('div');
+            let className = 'review-option';
+            if (index === question.correct) {
+                className += ' review-option-correct';
+            } else if (result.userAnswer === index && !result.isCorrect) {
+                className += ' review-option-incorrect';
+            }
+            div.className = className;
+            div.innerHTML = `
+                <div class="flex items-center space-x-3">
+                    <label class="text-gray-700 cursor-pointer">${option}</label>
+                    ${index === question.correct ? '<span class="text-green-600 ml-2">✓</span>' : ''}
+                    ${result.userAnswer === index && !result.isCorrect ? '<span class="text-red-600 ml-2">✗</span>' : ''}
+                </div>
+            `;
+            optionsArea.appendChild(div);
+        });
+        // Set question status
+        const statusElement = document.getElementById('reviewQuestionStatus');
+        if (result.isCorrect) {
+            statusElement.textContent = 'Correct';
+            statusElement.className = 'px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-semibold bg-green-100 text-green-800';
+        } else if (result.isAttempted) {
+            statusElement.textContent = 'Incorrect';
+            statusElement.className = 'px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-semibold bg-red-100 text-red-800';
+        } else {
+            statusElement.textContent = 'Skipped';
+            statusElement.className = 'px-2 md:px-3 py-1 rounded-full text-xs md:text-sm font-semibold bg-gray-100 text-gray-800';
+        }
+        // Set explanation
+        document.getElementById('reviewExplanation').textContent = question.explanation;
+        // Update review navigation
+        setupReviewNavigation();
+        // Update counters
+        const correctCount = testResults.filter(r => r.isCorrect).length;
+        const incorrectCount = testResults.filter(r => r.isAttempted && !r.isCorrect).length;
+        const skippedCount = testResults.filter(r => !r.isAttempted).length;
+        document.getElementById('reviewCorrectCount').textContent = correctCount;
+        document.getElementById('reviewIncorrectCount').textContent = incorrectCount;
+        document.getElementById('reviewSkippedCount').textContent = skippedCount;
+        showPage('reviewAnswersPage');
+    }
+        function setupReviewNavigation() {
+            const grid = document.getElementById('reviewNavGrid');
+            grid.innerHTML = '';
+            testResults.forEach((result, index) => {
+                const button = document.createElement('button');
+                button.className = 'w-8 h-8 rounded text-sm font-semibold transition-colors';
+                button.textContent = index + 1;
+                if (result.isCorrect) {
+                    button.className += ' question-correct';
+                } else if (result.isAttempted) {
+                    button.className += ' question-wrong';
+                } else {
+                    button.className += ' question-unattempted';
+                }
+                if (index === reviewQuestionIndex) {
+                    button.className += ' question-current';
+                }
+                button.onclick = () => {
+                    reviewQuestionIndex = index;
+                    showReviewAnswers();
+                };
+                grid.appendChild(button);
+            });
+        }
+        function previousReviewQuestion() {
+            if (reviewQuestionIndex > 0) {
+                reviewQuestionIndex--;
+                showReviewAnswers();
+            }
+        }
+        function nextReviewQuestion() {
+            if (reviewQuestionIndex < testResults.length - 1) {
+                reviewQuestionIndex++;
+                showReviewAnswers();
+            }
+        }
+        function saveCurrentQuestion() {
+    const question = testQuestions[reviewQuestionIndex];
+    const result = testResults[reviewQuestionIndex];
+    // Check if question is already saved
+    const isAlreadySaved = savedQuestions.some(q =>
+        q.id === question.id &&
+        q.subject === currentSubject &&
+        q.topic === currentTopic
+    );
+    if (!isAlreadySaved) {
+        const savedQuestion = {
+            id: question.id,
+            subject: currentSubject,
+            topic: currentTopic,
+            question: question.question,
+            options: question.options,
+            correct: question.correct,
+            explanation: question.explanation,
+            userAnswer: result.userAnswer,
+            isCorrect: result.isCorrect
+        };
+        savedQuestions.push(savedQuestion);
+        localStorage.setItem('savedQuestions', JSON.stringify(savedQuestions));
+        // Update the button to indicate the question is saved
+        const saveButton = document.getElementById('saveQuestionBtn');
+        saveButton.textContent = 'Saved!';
+        saveButton.className = 'flex items-center space-x-1 px-2 md:px-3 py-1 rounded-lg text-xs md:text-sm font-semibold transition-colors bg-green-500 text-white cursor-default';
+    } else {
+        alert('This question is already saved!');
+    }
+}
+        function restartTest() {
+            startTest(currentSubject, currentChapter, currentTopic, currentTestId);
+        }
+        function backToPracticeSets() {
+            showPracticeSets(currentSubject, currentChapter, currentTopic);
+        }
+        function showResultScreen() {
+            showPage('resultScreen');
+        }
+        function toggleQuestionNav() {
+            const panel = document.getElementById('questionNavPanel');
+            const icon = document.getElementById('navToggleIcon');
+            panel.classList.toggle('collapsed');
+            if (panel.classList.contains('collapsed')) {
+                icon.style.transform = 'rotate(90deg)';
+            } else {
+                icon.style.transform = 'rotate(-90deg)';
+            }
+        }
+        // Initialize the app
+        if (!currentUser) {
+            showPage('loginPage');
+        } else {
+            showPage('homePage');
+        }
+    </script>
+</body>
+</html>
