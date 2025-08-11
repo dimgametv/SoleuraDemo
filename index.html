@@ -2799,7 +2799,6 @@ function saveQuestion(questionIndex) {
 
     // Check if the question is already saved by the user
     const isQuestionSaved = savedQuestions.some(q => q.questionKey === questionKey);
-
     const button = event.target;
 
     if (isQuestionSaved) {
@@ -2811,7 +2810,6 @@ function saveQuestion(questionIndex) {
         button.textContent = 'Save Question';
         button.classList.remove('bg-green-600');
         button.classList.add('bg-blue-600');
-
         alert('Question removed from saved list!');
     } else {
         // Add the question to savedQuestions
@@ -2826,7 +2824,6 @@ function saveQuestion(questionIndex) {
             topic: currentTopic,
             questionKey: questionKey
         };
-
         savedQuestions.push(savedQuestion);
         localStorage.setItem('savedQuestions', JSON.stringify(savedQuestions));
 
@@ -2834,7 +2831,6 @@ function saveQuestion(questionIndex) {
         button.textContent = 'Saved';
         button.classList.remove('bg-blue-600');
         button.classList.add('bg-green-600');
-
         alert('Question saved for later review!');
     }
 }
@@ -2862,7 +2858,6 @@ function saveQuestion(questionIndex) {
     if (!requireAuth()) return;
 
     pushToHistory('profile');
-
     hideAllViews();
     showProfileView();
 
@@ -2887,6 +2882,7 @@ function saveQuestion(questionIndex) {
     loadTestHistory();
     loadSavedQuestions();
 }
+
 function loadSavedQuestions() {
     const savedQuestionsContent = document.getElementById('profileSavedQuestionsContent');
     const userSavedQuestions = savedQuestions.filter(q => q.questionKey.startsWith(currentUser.id));
@@ -2909,33 +2905,34 @@ function loadSavedQuestions() {
     `).join('');
 }
         function loadTestHistory() {
-            const historyContent = document.getElementById('testHistoryContent');
-            const userTests = completedTests[currentUser.id] || {};
-            
-            if (Object.keys(userTests).length === 0) {
-                historyContent.innerHTML = '<p class="text-gray-500 text-center py-8">No tests taken yet. Start practicing to see your history here!</p>';
-                return;
-            }
-            
-            const sortedTests = Object.entries(userTests).sort((a, b) => b[1].completedAt - a[1].completedAt);
-            
-            historyContent.innerHTML = sortedTests.map(([testKey, result]) => `
-                <div class="border border-gray-200 rounded-lg p-4 mb-3">
-                    <div class="flex justify-between items-start mb-2">
-                        <h5 class="font-medium text-gray-800">${result.subject} - ${result.chapter} - ${result.topic}</h5>
-                        <span class="text-xs text-gray-500">${new Date(result.completedAt).toLocaleDateString()}</span>
-                    </div>
-                    <div class="flex justify-between items-center">
-                        <span class="text-sm text-gray-600">Set ${result.setNumber}</span>
-                        <div class="flex space-x-4 text-sm">
-                            <span class="text-blue-600">Score: ${result.score}/${result.totalQuestions}</span>
-                            <span class="text-green-600">${result.percentage}%</span>
-                            <span class="text-purple-600">${formatTime(result.timeTaken)}</span>
-                        </div>
-                    </div>
+    const historyContent = document.getElementById('testHistoryContent');
+    const userTests = completedTests[currentUser.id] || {};
+
+    if (Object.keys(userTests).length === 0) {
+        historyContent.innerHTML = '<p class="text-gray-500 text-center py-8">No tests taken yet. Start practicing to see your history here!</p>';
+        return;
+    }
+
+    const sortedTests = Object.entries(userTests).sort((a, b) => b[1].completedAt - a[1].completedAt);
+
+    historyContent.innerHTML = sortedTests.map(([testKey, result]) => `
+        <div class="border border-gray-200 rounded-lg p-4 mb-3">
+            <div class="flex justify-between items-start mb-2">
+                <h5 class="font-medium text-gray-800">${result.subject} - ${result.chapter} - ${result.topic}</h5>
+                <span class="text-xs text-gray-500">${new Date(result.completedAt).toLocaleDateString()}</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-sm text-gray-600">Set ${result.setNumber}</span>
+                <div class="flex space-x-4 text-sm">
+                    <span class="text-blue-600">Score: ${result.score}/${result.totalQuestions}</span>
+                    <span class="text-green-600">${result.percentage}%</span>
+                    <span class="text-purple-600">${formatTime(result.timeTaken)}</span>
                 </div>
-            `).join('');
-        }
+            </div>
+        </div>
+    `).join('');
+}
+
 
         // Header scroll animation
         let lastScrollTop = 0;
