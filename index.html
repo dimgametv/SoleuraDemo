@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
-    <title>SSC Test Series - Prepare for Success</title>
+    <title>PrepSSC - Prepare for Success</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=Exo+2:wght@300;400;500;600;700;800&display=swap');
         body { 
             font-family: 'Inter', sans-serif; 
             /* Hide scrollbar for Chrome, Safari and Opera */
@@ -74,31 +74,97 @@
             }
         }
         
-        /* Hide header during test */
-        .test-active header {
+        /* Hide header during test, review, and video */
+        .test-active header,
+        .review-active header,
+        .video-active header {
             display: none !important;
+        }
+
+        /* Header animation */
+        header {
+            transform: translateY(0);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        header.header-hidden {
+            transform: translateY(-100%);
+        }
+
+        /* Exam card styles with yellow and sky blue colors */
+        .exam-card {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateY(0) scale(1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .exam-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+        
+        .exam-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+        
+        .exam-card:hover::before {
+            left: 100%;
+        }
+        
+        .exam-card:active {
+            transform: translateY(-4px) scale(0.98);
+            transition: all 0.1s ease;
+        }
+        
+        .exam-card.cgl {
+            background: linear-gradient(135deg, #feca57 0%, #ff9f43 100%);
+        }
+        .exam-card.chsl {
+            background: linear-gradient(135deg, #48dbfb 0%, #0abde3 100%);
+        }
+        .exam-card.mts {
+            background: linear-gradient(135deg, #feca57 0%, #ff9f43 100%);
+        }
+        .exam-card.steno {
+            background: linear-gradient(135deg, #48dbfb 0%, #0abde3 100%);
+        }
+        .exam-card.gd {
+            background: linear-gradient(135deg, #feca57 0%, #ff9f43 100%);
+        }
+        .exam-card.cpo {
+            background: linear-gradient(135deg, #48dbfb 0%, #0abde3 100%);
         }
     </style>
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
     <!-- Header -->
     <header class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-3">
+        <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-2">
-                    <div class="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                        <span class="text-white font-bold text-sm">SSC</span>
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <span class="text-white font-bold text-lg" style="font-family: 'Orbitron', monospace;">P</span>
                     </div>
-                    <h1 class="text-xl font-bold text-gray-800">Test Series</h1>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800" style="font-family: 'Orbitron', monospace;">PrepSSC</h1>
+                        <p class="text-xs text-gray-500">Your Gateway to Government Jobs</p>
+                    </div>
                 </div>
-                <div id="authButtons" class="flex items-center space-x-4">
-                    <button id="loginBtn" class="text-sm bg-blue-600 text-white px-3 py-1 rounded-lg hover:bg-blue-700">Login</button>
-                    <button id="signupBtn" class="text-sm bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700">Sign Up</button>
+                <div id="authButtons" class="flex items-center space-x-2">
+                    <button id="loginBtn" class="bg-blue-600 text-white px-2 py-1 md:px-4 md:py-2 rounded-lg hover:bg-blue-700 font-medium transition-colors text-xs md:text-sm">Login</button>
+                    <button id="signupBtn" class="bg-green-600 text-white px-2 py-1 md:px-4 md:py-2 rounded-lg hover:bg-green-700 font-medium transition-colors text-xs md:text-sm">Sign Up</button>
                 </div>
-                <div id="userMenu" class="hidden flex items-center space-x-4">
-                    <span id="welcomeUser" class="text-sm text-gray-600"></span>
-                    <button id="savedQuestionsBtn" class="text-sm bg-green-600 text-white px-3 py-1 rounded-lg hover:bg-green-700">Saved</button>
-                    <button id="logoutBtn" class="text-sm bg-red-600 text-white px-3 py-1 rounded-lg hover:bg-red-700">Logout</button>
+                <div id="userMenu" class="hidden flex items-center space-x-2">
+                    <button id="profileBtn" class="bg-indigo-600 text-white px-2 py-1 md:px-4 md:py-2 rounded-lg hover:bg-indigo-700 font-medium transition-colors text-xs md:text-sm">Profile</button>
+                    <button id="logoutBtn" class="bg-red-600 text-white px-2 py-1 md:px-4 md:py-2 rounded-lg hover:bg-red-700 font-medium transition-colors text-xs md:text-sm">Logout</button>
                 </div>
             </div>
         </div>
@@ -157,125 +223,348 @@
     </div>
 
     <!-- Main Content -->
-    <div id="mainContent" class="container mx-auto px-4 py-6">
+    <div id="mainContent" class="container mx-auto px-4 py-8">
+        <!-- Hero Section -->
+        <section class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-2xl text-white p-8 mb-12 shadow-xl">
+            <div class="max-w-4xl mx-auto text-center">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4" style="font-family: 'Orbitron', monospace;">Master Your SSC Preparation</h1>
+                <p class="text-xl md:text-2xl mb-6 opacity-90">Comprehensive Test Series for All SSC Examinations</p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <div class="text-2xl font-bold">25,000+</div>
+                        <div class="text-sm opacity-80">Practice Questions</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <div class="text-2xl font-bold">500+</div>
+                        <div class="text-sm opacity-80">Mock Tests</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <div class="text-2xl font-bold">50,000+</div>
+                        <div class="text-sm opacity-80">Students</div>
+                    </div>
+                    <div class="bg-white/10 backdrop-blur-sm rounded-lg p-4">
+                        <div class="text-2xl font-bold">95%</div>
+                        <div class="text-sm opacity-80">Success Rate</div>
+                    </div>
+                </div>
+                <button onclick="document.getElementById('examSection').scrollIntoView({behavior: 'smooth'})" class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg" style="font-family: 'Exo 2', sans-serif;">
+                    Start Your Journey
+                </button>
+            </div>
+        </section>
+
         <!-- SSC Exams Section -->
-        <section class="mb-8">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">SSC Examinations</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showExamDetails('SSC CGL')">
-                    <h3 class="font-semibold text-lg text-blue-600 mb-2">SSC CGL</h3>
-                    <p class="text-sm text-gray-600 mb-2">Combined Graduate Level Examination</p>
-                    <div class="text-xs text-gray-500">
-                        <p>• Eligibility: Graduate</p>
-                        <p>• Salary: ₹25,000 - ₹80,000</p>
-                        <p>• Subjects: English, Reasoning, Math, GS</p>
+        <section id="examSection" class="mb-16">
+            <div class="text-center mb-10">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">🎯 SSC Examinations</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto text-lg">Select from the most popular SSC examinations. Each exam has tailored preparation materials and comprehensive practice tests.</p>
+            </div>
+            
+            <!-- Exam Cards Grid (3 per row) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+                <!-- SSC CGL -->
+                <div class="exam-card cgl bg-white rounded-2xl shadow-xl overflow-hidden cursor-pointer" onclick="showExamDetails('CGL')">
+                    <div class="h-32 flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <div class="text-4xl mb-2">🎯</div>
+                            <h3 class="text-2xl font-bold" style="font-family: 'Rajdhani', sans-serif;">SSC CGL</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-3">Combined Graduate Level</h4>
+                        <p class="text-gray-600 mb-4">The most prestigious SSC exam for graduate-level posts in various government departments.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Tier 1 & 2</span>
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">High Salary</span>
+                            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">Central Govt</span>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            <p>• Age: 18-32 years</p>
+                            <p>• Qualification: Graduate</p>
+                            <p>• Salary: ₹25,500 - ₹81,100</p>
+                        </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showExamDetails('SSC CHSL')">
-                    <h3 class="font-semibold text-lg text-blue-600 mb-2">SSC CHSL</h3>
-                    <p class="text-sm text-gray-600 mb-2">Combined Higher Secondary Level</p>
-                    <div class="text-xs text-gray-500">
-                        <p>• Eligibility: 12th Pass</p>
-                        <p>• Salary: ₹19,000 - ₹63,000</p>
-                        <p>• Subjects: English, Reasoning, Math, GS</p>
+
+                <!-- SSC CHSL -->
+                <div class="exam-card chsl bg-white rounded-2xl shadow-xl overflow-hidden cursor-pointer" onclick="showExamDetails('CHSL')">
+                    <div class="h-32 flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <div class="text-4xl mb-2">📚</div>
+                            <h3 class="text-2xl font-bold" style="font-family: 'Rajdhani', sans-serif;">SSC CHSL</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-3">Combined Higher Secondary Level</h4>
+                        <p class="text-gray-600 mb-4">Perfect for 12th pass candidates seeking clerical and data entry positions.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-cyan-100 text-cyan-800 px-3 py-1 rounded-full text-sm">12th Pass</span>
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Entry Level</span>
+                            <span class="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm">Clerical</span>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            <p>• Age: 18-27 years</p>
+                            <p>• Qualification: 12th Pass</p>
+                            <p>• Salary: ₹19,900 - ₹63,200</p>
+                        </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showExamDetails('SSC MTS')">
-                    <h3 class="font-semibold text-lg text-blue-600 mb-2">SSC MTS</h3>
-                    <p class="text-sm text-gray-600 mb-2">Multi Tasking Staff</p>
-                    <div class="text-xs text-gray-500">
-                        <p>• Eligibility: 10th Pass</p>
-                        <p>• Salary: ₹18,000 - ₹56,000</p>
-                        <p>• Subjects: English, Reasoning, Math, GS</p>
+
+                <!-- SSC MTS -->
+                <div class="exam-card mts bg-white rounded-2xl shadow-xl overflow-hidden cursor-pointer" onclick="showExamDetails('MTS')">
+                    <div class="h-32 flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <div class="text-4xl mb-2">🔧</div>
+                            <h3 class="text-2xl font-bold" style="font-family: 'Rajdhani', sans-serif;">SSC MTS</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-3">Multi-Tasking Staff</h4>
+                        <p class="text-gray-600 mb-4">Entry-level positions for 10th pass candidates in various government departments.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">10th Pass</span>
+                            <span class="bg-purple-100 text-purple-800 px-3 py-1 rounded-full text-sm">Support Staff</span>
+                            <span class="bg-indigo-100 text-indigo-800 px-3 py-1 rounded-full text-sm">Group C</span>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            <p>• Age: 18-25 years</p>
+                            <p>• Qualification: 10th Pass</p>
+                            <p>• Salary: ₹18,000 - ₹56,900</p>
+                        </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showExamDetails('SSC Stenographer')">
-                    <h3 class="font-semibold text-lg text-blue-600 mb-2">SSC Stenographer</h3>
-                    <p class="text-sm text-gray-600 mb-2">Grade C & D</p>
-                    <div class="text-xs text-gray-500">
-                        <p>• Eligibility: 12th Pass</p>
-                        <p>• Salary: ₹25,000 - ₹81,000</p>
-                        <p>• Subjects: English, GS, Shorthand</p>
+
+                <!-- SSC Stenographer -->
+                <div class="exam-card steno bg-white rounded-2xl shadow-xl overflow-hidden cursor-pointer" onclick="showExamDetails('STENO')">
+                    <div class="h-32 flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <div class="text-4xl mb-2">✍️</div>
+                            <h3 class="text-2xl font-bold" style="font-family: 'Rajdhani', sans-serif;">SSC STENO</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-3">Stenographer Grade C & D</h4>
+                        <p class="text-gray-600 mb-4">Specialized positions requiring shorthand and typing skills in government offices.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Shorthand</span>
+                            <span class="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm">Typing</span>
+                            <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm">Specialized</span>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            <p>• Age: 18-30 years</p>
+                            <p>• Qualification: 12th Pass</p>
+                            <p>• Salary: ₹25,500 - ₹81,100</p>
+                        </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showExamDetails('SSC JE')">
-                    <h3 class="font-semibold text-lg text-blue-600 mb-2">SSC JE</h3>
-                    <p class="text-sm text-gray-600 mb-2">Junior Engineer</p>
-                    <div class="text-xs text-gray-500">
-                        <p>• Eligibility: Engineering Diploma</p>
-                        <p>• Salary: ₹35,000 - ₹1,12,000</p>
-                        <p>• Subjects: Technical, GS, Reasoning</p>
+
+                <!-- SSC GD -->
+                <div class="exam-card gd bg-white rounded-2xl shadow-xl overflow-hidden cursor-pointer" onclick="showExamDetails('GD')">
+                    <div class="h-32 flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <div class="text-4xl mb-2">🛡️</div>
+                            <h3 class="text-2xl font-bold" style="font-family: 'Rajdhani', sans-serif;">SSC GD</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-3">General Duty Constable</h4>
+                        <p class="text-gray-600 mb-4">Join paramilitary forces like BSF, CRPF, CISF, and SSB as a constable.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm">10th Pass</span>
+                            <span class="bg-red-100 text-red-800 px-3 py-1 rounded-full text-sm">Physical Test</span>
+                            <span class="bg-yellow-100 text-yellow-800 px-3 py-1 rounded-full text-sm">Paramilitary</span>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            <p>• Age: 18-23 years</p>
+                            <p>• Qualification: 10th Pass</p>
+                            <p>• Salary: ₹21,700 - ₹69,100</p>
+                        </div>
                     </div>
                 </div>
-                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showExamDetails('SSC GD')">
-                    <h3 class="font-semibold text-lg text-blue-600 mb-2">SSC GD</h3>
-                    <p class="text-sm text-gray-600 mb-2">General Duty Constable</p>
-                    <div class="text-xs text-gray-500">
-                        <p>• Eligibility: 10th Pass</p>
-                        <p>• Salary: ₹21,000 - ₹69,000</p>
-                        <p>• Subjects: English, Reasoning, Math, GS</p>
+
+                <!-- SSC CPO -->
+                <div class="exam-card cpo bg-white rounded-2xl shadow-xl overflow-hidden cursor-pointer" onclick="showExamDetails('CPO')">
+                    <div class="h-32 flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <div class="text-4xl mb-2">👮</div>
+                            <h3 class="text-2xl font-bold" style="font-family: 'Rajdhani', sans-serif;">SSC CPO</h3>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h4 class="text-xl font-semibold text-gray-800 mb-3">Central Police Organization</h4>
+                        <p class="text-gray-600 mb-4">Sub-Inspector positions in CBI, NIA, SSB, and CISF with excellent career prospects.</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm">Graduate</span>
+                            <span class="bg-teal-100 text-teal-800 px-3 py-1 rounded-full text-sm">Sub-Inspector</span>
+                            <span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full text-sm">Investigation</span>
+                        </div>
+                        <div class="text-sm text-gray-500">
+                            <p>• Age: 20-25 years</p>
+                            <p>• Qualification: Graduate</p>
+                            <p>• Salary: ₹35,400 - ₹1,12,400</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Subjects Section -->
-        <section>
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">Practice by Subjects</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showSubject('English')">
+        <!-- Divider -->
+        <div class="flex items-center justify-center mb-16">
+            <div class="flex-1 border-t border-gray-300"></div>
+            <div class="px-6 text-gray-500 font-medium">OR</div>
+            <div class="flex-1 border-t border-gray-300"></div>
+        </div>
+
+        <!-- All Subjects Section -->
+        <section id="allSubjectsSection" class="mb-12">
+            <div class="text-center mb-10">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">📚 Practice by Subject</h2>
+                <p class="text-gray-600 max-w-3xl mx-auto text-lg">Choose any subject to start practicing. Each subject contains comprehensive question banks with detailed explanations and step-by-step solutions.</p>
+            </div>
+            
+            <!-- Subject Cards Grid (5 subjects) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 max-w-7xl mx-auto">
+                <!-- English -->
+                <button class="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-red-300 group transform hover:-translate-y-2 w-full text-left" onclick="showSubject('English')">
                     <div class="text-center">
-                        <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <span class="text-red-600 text-xl">📚</span>
+                        <div class="w-20 h-20 bg-gradient-to-br from-red-500 to-red-600 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                            <span class="text-white text-3xl">📚</span>
                         </div>
-                        <h3 class="font-semibold text-lg text-gray-800">English</h3>
-                        <p class="text-xs text-gray-500 mt-1">Grammar, Vocabulary, Comprehension</p>
+                        <h3 class="font-bold text-xl text-gray-800 mb-3">English</h3>
+                        <p class="text-sm text-gray-600 mb-4 leading-relaxed">Grammar, Vocabulary & Comprehension</p>
+                        <div class="bg-red-50 rounded-lg p-3 mb-4">
+                            <div class="text-xs text-red-700 font-semibold">
+                                3 Chapters • 6 Topics
+                            </div>
+                            <div class="text-xs text-red-600 mt-1">
+                                120+ Practice Questions
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-center space-x-1 text-red-500">
+                            <span class="text-xs">Start Learning</span>
+                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
                     </div>
-                </div>
-                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showSubject('Reasoning')">
+                </button>
+
+                <!-- Reasoning -->
+                <button class="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-blue-300 group transform hover:-translate-y-2 w-full text-left" onclick="showSubject('Reasoning')">
                     <div class="text-center">
-                        <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <span class="text-blue-600 text-xl">🧠</span>
+                        <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                            <span class="text-white text-3xl">🧠</span>
                         </div>
-                        <h3 class="font-semibold text-lg text-gray-800">Reasoning</h3>
-                        <p class="text-xs text-gray-500 mt-1">Logical, Verbal, Non-verbal</p>
+                        <h3 class="font-bold text-xl text-gray-800 mb-3">Reasoning</h3>
+                        <p class="text-sm text-gray-600 mb-4 leading-relaxed">Logical, Verbal & Non-Verbal</p>
+                        <div class="bg-blue-50 rounded-lg p-3 mb-4">
+                            <div class="text-xs text-blue-700 font-semibold">
+                                3 Chapters • 5 Topics
+                            </div>
+                            <div class="text-xs text-blue-600 mt-1">
+                                100+ Practice Questions
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-center space-x-1 text-blue-500">
+                            <span class="text-xs">Start Learning</span>
+                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
                     </div>
-                </div>
-                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showSubject('Mathematics')">
+                </button>
+
+                <!-- General Studies -->
+                <button class="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-purple-300 group transform hover:-translate-y-2 w-full text-left" onclick="showSubject('General Studies')">
                     <div class="text-center">
-                        <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <span class="text-green-600 text-xl">🔢</span>
+                        <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-purple-600 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                            <span class="text-white text-3xl">🌍</span>
                         </div>
-                        <h3 class="font-semibold text-lg text-gray-800">Mathematics</h3>
-                        <p class="text-xs text-gray-500 mt-1">Arithmetic, Algebra, Geometry</p>
+                        <h3 class="font-bold text-xl text-gray-800 mb-3">General Studies</h3>
+                        <p class="text-sm text-gray-600 mb-4 leading-relaxed">History, Geography & Science</p>
+                        <div class="bg-purple-50 rounded-lg p-3 mb-4">
+                            <div class="text-xs text-purple-700 font-semibold">
+                                3 Chapters • 4 Topics
+                            </div>
+                            <div class="text-xs text-purple-600 mt-1">
+                                80+ Practice Questions
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-center space-x-1 text-purple-500">
+                            <span class="text-xs">Start Learning</span>
+                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
                     </div>
-                </div>
-                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showSubject('General Studies')">
+                </button>
+
+                <!-- Mathematics -->
+                <button class="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-amber-300 group transform hover:-translate-y-2 w-full text-left" onclick="showSubject('Mathematics')">
                     <div class="text-center">
-                        <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <span class="text-purple-600 text-xl">🌍</span>
+                        <div class="w-20 h-20 bg-gradient-to-br from-amber-500 to-amber-600 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                            <span class="text-white text-3xl">🔢</span>
                         </div>
-                        <h3 class="font-semibold text-lg text-gray-800">General Studies</h3>
-                        <p class="text-xs text-gray-500 mt-1">History, Geography, Science</p>
+                        <h3 class="font-bold text-xl text-gray-800 mb-3">Mathematics</h3>
+                        <p class="text-sm text-gray-600 mb-4 leading-relaxed">Arithmetic, Algebra & Geometry</p>
+                        <div class="bg-amber-50 rounded-lg p-3 mb-4">
+                            <div class="text-xs text-amber-700 font-semibold">
+                                4 Chapters • 8 Topics
+                            </div>
+                            <div class="text-xs text-amber-600 mt-1">
+                                150+ Practice Questions
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-center space-x-1 text-amber-500">
+                            <span class="text-xs">Start Learning</span>
+                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
                     </div>
-                </div>
-                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer" onclick="showSubject('Shorthand')">
+                </button>
+
+                <!-- SSC STENO -->
+                <button class="bg-white rounded-2xl shadow-xl p-8 hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100 hover:border-pink-300 group transform hover:-translate-y-2 w-full text-left" onclick="showSubject('SSC STENO')">
                     <div class="text-center">
-                        <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                            <span class="text-yellow-600 text-xl">✍️</span>
+                        <div class="w-20 h-20 bg-gradient-to-br from-pink-500 to-rose-600 rounded-3xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg">
+                            <span class="text-white text-3xl">✍️</span>
                         </div>
-                        <h3 class="font-semibold text-lg text-gray-800">Shorthand</h3>
-                        <p class="text-xs text-gray-500 mt-1">Speed Writing, Dictation</p>
+                        <h3 class="font-bold text-xl text-gray-800 mb-3">SSC STENO</h3>
+                        <p class="text-sm text-gray-600 mb-4 leading-relaxed">Pitman Shorthand & Kailash Chandra</p>
+                        <div class="bg-pink-50 rounded-lg p-3 mb-4">
+                            <div class="text-xs text-pink-700 font-semibold">
+                                2 Chapters • 36 Topics
+                            </div>
+                            <div class="text-xs text-pink-600 mt-1">
+                                528+ Dictation Exercises
+                            </div>
+                        </div>
+                        <div class="flex items-center justify-center space-x-1 text-pink-500">
+                            <span class="text-xs">Start Learning</span>
+                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"></path>
+                            </svg>
+                        </div>
                     </div>
-                </div>
+                </button>
             </div>
         </section>
+    </div>
+
+    <!-- Exam Details View -->
+    <div id="examDetailsView" class="hidden container mx-auto px-4 py-6">
+        <div class="flex items-center mb-6">
+            <button onclick="goBackToHome()" class="text-blue-600 hover:text-blue-800 mr-4">← Back to Home</button>
+            <h2 id="examDetailsTitle" class="text-3xl font-bold text-gray-800"></h2>
+        </div>
+        <div id="examDetailsContent" class="max-w-4xl mx-auto"></div>
     </div>
 
     <!-- Subject Chapters View -->
     <div id="subjectView" class="hidden container mx-auto px-4 py-6">
         <div class="flex items-center mb-6">
-            <button onclick="goBack()" class="text-blue-600 hover:text-blue-800 mr-4">← Back</button>
+            <button onclick="goBackToSubjects()" class="text-blue-600 hover:text-blue-800 mr-4">← Back</button>
             <h2 id="subjectTitle" class="text-2xl font-bold text-gray-800"></h2>
         </div>
         <div id="chaptersGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
@@ -368,6 +657,80 @@
         </div>
     </div>
 
+    <!-- Video Interface for Dictations -->
+    <div id="videoInterface" class="hidden bg-white min-h-screen">
+        <!-- Video Header -->
+        <div class="bg-gray-800 text-white p-3">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <span id="currentSpeedDisplay" class="text-sm bg-pink-600 px-3 py-2 rounded font-medium">840 words @ 80 WPM</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button id="backToSetsBtn" class="text-xs bg-blue-600 px-3 py-1 rounded hover:bg-blue-700">← Back</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Content -->
+        <div class="p-2 md:p-4">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-lg shadow-lg p-3 md:p-6">
+                    <div class="mb-4 md:mb-6">
+                        
+                        <!-- Speed Control Section -->
+                        <div id="speedControlSection" class="bg-gradient-to-r from-purple-50 to-pink-50 border border-purple-200 rounded-lg p-3 md:p-4 mb-4 md:mb-6">
+                            <h3 class="font-semibold text-purple-800 mb-2 md:mb-3 text-sm md:text-base">🎛️ Dictation Speed Control</h3>
+                            <div id="speedButtonsContainer" class="grid grid-cols-5 gap-1 md:gap-2">
+                                <button onclick="setDictationSpeed(60)" class="speed-btn bg-white border border-purple-300 text-purple-700 px-2 py-1 md:px-3 md:py-2 rounded text-xs md:text-sm font-medium hover:bg-purple-100 transition-colors">60</button>
+                                <button onclick="setDictationSpeed(70)" class="speed-btn bg-white border border-purple-300 text-purple-700 px-2 py-1 md:px-3 md:py-2 rounded text-xs md:text-sm font-medium hover:bg-purple-100 transition-colors">70</button>
+                                <button onclick="setDictationSpeed(80)" class="speed-btn bg-purple-600 text-white px-2 py-1 md:px-3 md:py-2 rounded text-xs md:text-sm font-medium hover:bg-purple-700 transition-colors active">80</button>
+                                <button onclick="setDictationSpeed(90)" class="speed-btn bg-white border border-purple-300 text-purple-700 px-2 py-1 md:px-3 md:py-2 rounded text-xs md:text-sm font-medium hover:bg-purple-100 transition-colors">90</button>
+                                <button onclick="setDictationSpeed(100)" class="speed-btn bg-white border border-purple-300 text-purple-700 px-2 py-1 md:px-3 md:py-2 rounded text-xs md:text-sm font-medium hover:bg-purple-100 transition-colors">100</button>
+                            </div>
+                            <p class="text-xs text-purple-600 mt-1 md:mt-2">Select your preferred dictation speed. A new video will load for each speed.</p>
+                        </div>
+                        
+                        <div class="bg-pink-50 border border-pink-200 rounded-lg p-2 md:p-4 mb-3 md:mb-6">
+                            <div class="flex flex-wrap items-center gap-2 md:gap-4 text-xs md:text-sm text-pink-800">
+                                <div class="flex items-center space-x-1">
+                                    <span class="font-semibold">📝 Words:</span>
+                                    <span id="wordCount">840</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <span class="font-semibold">⚡ Speed:</span>
+                                    <span id="selectedSpeed">80 WPM</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <span class="font-semibold">⏱️ Duration:</span>
+                                    <span id="estimatedDuration">~10.5 minutes</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- YouTube Video Embed -->
+                    <div class="relative w-full" style="padding-bottom: 56.25%; height: 0;">
+                        <div id="dictationVideo" class="absolute top-0 left-0 w-full h-full rounded-lg"></div>
+                    </div>
+                    
+
+                    
+                    <!-- Instructions -->
+                    <div class="mt-4 md:mt-6 bg-blue-50 border border-blue-200 rounded-lg p-3 md:p-4">
+                        <h3 class="font-semibold text-blue-800 mb-2 text-sm md:text-base">📋 Instructions:</h3>
+                        <ul class="text-xs md:text-sm text-blue-700 space-y-1">
+                            <li>• Select your preferred dictation speed using the buttons above</li>
+                            <li>• Listen carefully to the dictation and write in shorthand</li>
+                            <li>• A new video will load for each selected speed</li>
+                            <li>• You can pause, rewind, or change speed at any time during dictation</li>
+                            <li>• Practice transcribing your shorthand notes after dictation</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Result Screen -->
     <div id="resultScreen" class="hidden bg-white min-h-screen">
         <div class="container mx-auto px-4 py-8">
@@ -413,6 +776,96 @@
         <div id="reviewContent" class="container mx-auto px-4 py-6"></div>
     </div>
 
+    <!-- User Profile Screen -->
+    <div id="profileScreen" class="hidden container mx-auto px-4 py-6">
+        <div class="flex items-center mb-6">
+            <button onclick="goHome()" class="text-blue-600 hover:text-blue-800 mr-4">← Back</button>
+            <h2 class="text-2xl font-bold text-gray-800">My Profile</h2>
+        </div>
+        
+        <!-- Profile Header -->
+        <div class="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl text-white p-6 mb-6">
+            <div class="flex items-center space-x-4">
+                <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                    <span class="text-2xl font-bold" id="profileInitials">U</span>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold" id="profileName">User Name</h3>
+                    <p class="opacity-90" id="profileEmail">user@email.com</p>
+                    <p class="text-sm opacity-75">Member since <span id="memberSince">2024</span></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                <div class="text-2xl font-bold text-blue-600" id="totalTestsTaken">0</div>
+                <div class="text-sm text-gray-600">Tests Taken</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                <div class="text-2xl font-bold text-green-600" id="averageScore">0%</div>
+                <div class="text-sm text-gray-600">Average Score</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                <div class="text-2xl font-bold text-purple-600" id="totalSavedQuestions">0</div>
+                <div class="text-sm text-gray-600">Saved Questions</div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md p-4 text-center">
+                <div class="text-2xl font-bold text-orange-600" id="studyStreak">0</div>
+                <div class="text-sm text-gray-600">Day Streak</div>
+            </div>
+        </div>
+
+        <!-- Profile Tabs -->
+        <div class="bg-white rounded-lg shadow-md">
+            <div class="border-b border-gray-200">
+                <nav class="flex space-x-8 px-6">
+                    <button class="py-4 px-1 border-b-2 border-blue-500 font-medium text-blue-600 profile-tab active" data-tab="history">Test History</button>
+                    <button class="py-4 px-1 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700 profile-tab" data-tab="saved">Saved Questions</button>
+                    <button class="py-4 px-1 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700 profile-tab" data-tab="performance">Performance</button>
+                </nav>
+            </div>
+
+            <!-- Test History Tab -->
+            <div id="historyTab" class="p-6 profile-tab-content">
+                <h4 class="text-lg font-semibold mb-4">Recent Test History</h4>
+                <div id="testHistoryContent">
+                    <p class="text-gray-500 text-center py-8">No tests taken yet. Start practicing to see your history here!</p>
+                </div>
+            </div>
+
+            <!-- Saved Questions Tab -->
+            <div id="savedTab" class="p-6 profile-tab-content hidden">
+                <h4 class="text-lg font-semibold mb-4">Saved Questions</h4>
+                <div id="profileSavedQuestionsContent">
+                    <p class="text-gray-500 text-center py-8">No saved questions yet. Save questions during practice to review them later!</p>
+                </div>
+            </div>
+
+            <!-- Performance Tab -->
+            <div id="performanceTab" class="p-6 profile-tab-content hidden">
+                <h4 class="text-lg font-semibold mb-4">Performance Analytics</h4>
+                <div id="performanceContent">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h5 class="font-medium text-gray-800 mb-3">Subject-wise Performance</h5>
+                            <div id="subjectPerformance">
+                                <p class="text-gray-500 text-sm">Take tests to see your subject-wise performance</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <h5 class="font-medium text-gray-800 mb-3">Recent Trends</h5>
+                            <div id="performanceTrends">
+                                <p class="text-gray-500 text-sm">Performance trends will appear after taking multiple tests</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Saved Questions Screen -->
     <div id="savedQuestionsScreen" class="hidden container mx-auto px-4 py-6">
         <div class="flex items-center mb-6">
@@ -424,6 +877,7 @@
 
     <script>
         // Global variables
+        let currentExam = '';
         let currentSubject = '';
         let currentChapter = '';
         let currentTopic = '';
@@ -438,70 +892,826 @@
         let users = JSON.parse(localStorage.getItem('users') || '[]');
         let pausedTests = JSON.parse(localStorage.getItem('pausedTests') || '{}');
         let completedTests = JSON.parse(localStorage.getItem('completedTests') || '{}');
+        
+        // Navigation history system
+        let navigationHistory = ['home'];
+        let isNavigatingBack = false;
+        
+        function pushToHistory(page, data = {}) {
+            if (!isNavigatingBack) {
+                navigationHistory.push(page);
+                const stateData = { page, ...data };
+                history.pushState(stateData, '', `#${page}`);
+            }
+        }
+        
+        function handleBrowserBack() {
+            isNavigatingBack = true;
+            
+            if (navigationHistory.length > 1) {
+                navigationHistory.pop(); // Remove current page
+                const previousPage = navigationHistory[navigationHistory.length - 1];
+                
+                // Hide all views first
+                hideAllViews();
+                
+                switch (previousPage) {
+                    case 'home':
+                        showMainContent();
+                        break;
+                    case 'subject':
+                        showSubjectView();
+                        break;
+                    case 'chapter':
+                        showTopicsView();
+                        break;
+                    case 'topic':
+                        showPracticeSetsView();
+                        break;
+                    case 'profile':
+                        showProfileView();
+                        break;
+                    case 'exam':
+                        showExamDetailsView();
+                        break;
+                    case 'test':
+                        showTestInterface();
+                        break;
+                    case 'video':
+                        showVideoInterface();
+                        break;
+                    case 'result':
+                        showResultScreen();
+                        break;
+                    case 'review':
+                        showReviewScreen();
+                        break;
+                    default:
+                        showMainContent();
+                }
+            } else {
+                hideAllViews();
+                showMainContent();
+            }
+            
+            setTimeout(() => {
+                isNavigatingBack = false;
+            }, 100);
+        }
+        
+        function hideAllViews() {
+            document.querySelectorAll('[id$="View"], [id$="Screen"], [id$="Interface"]').forEach(el => {
+                el.classList.add('hidden');
+            });
+            document.getElementById('mainContent').classList.add('hidden');
+            document.body.classList.remove('test-active', 'review-active', 'video-active');
+        }
+        
+        function showMainContent() {
+            document.getElementById('mainContent').classList.remove('hidden');
+        }
+        
+        function showSubjectView() {
+            document.getElementById('subjectView').classList.remove('hidden');
+        }
+        
+        function showTopicsView() {
+            document.getElementById('topicsView').classList.remove('hidden');
+        }
+        
+        function showPracticeSetsView() {
+            document.getElementById('practiceSetsView').classList.remove('hidden');
+        }
+        
+        function showProfileView() {
+            document.getElementById('profileScreen').classList.remove('hidden');
+        }
+        
+        function showExamDetailsView() {
+            document.getElementById('examDetailsView').classList.remove('hidden');
+        }
+        
+        function showTestInterface() {
+            document.getElementById('testInterface').classList.remove('hidden');
+            document.body.classList.add('test-active');
+        }
+        
+        function showVideoInterface() {
+            document.getElementById('videoInterface').classList.remove('hidden');
+            document.body.classList.add('video-active');
+        }
+        
+        function showResultScreen() {
+            document.getElementById('resultScreen').classList.remove('hidden');
+        }
+        
+        function showReviewScreen() {
+            document.getElementById('reviewScreen').classList.remove('hidden');
+            document.body.classList.add('review-active');
+        }
 
-        // Sample data structure
-        const subjects = {
-            'English': {
-                'Grammar': {
-                    'Tenses': Array.from({length: 20}, (_, i) => `Tenses Practice Set ${i + 1}`),
-                    'Articles': Array.from({length: 20}, (_, i) => `Articles Practice Set ${i + 1}`),
-                    'Prepositions': Array.from({length: 20}, (_, i) => `Prepositions Practice Set ${i + 1}`)
+        // SSC Exam Details
+        const examDetails = {
+            'CGL': {
+                title: 'SSC Combined Graduate Level (CGL)',
+                icon: '🎯',
+                gradient: 'from-blue-600 to-purple-700',
+                description: 'The most prestigious SSC exam for graduate-level posts in various government departments and ministries.',
+                eligibility: {
+                    age: '18-32 years (varies by post)',
+                    qualification: 'Bachelor\'s degree from a recognized university',
+                    nationality: 'Indian citizen'
                 },
-                'Vocabulary': {
-                    'Synonyms': Array.from({length: 20}, (_, i) => `Synonyms Practice Set ${i + 1}`),
-                    'Antonyms': Array.from({length: 20}, (_, i) => `Antonyms Practice Set ${i + 1}`)
+                examPattern: {
+                    tier1: {
+                        name: 'Tier 1 (Preliminary)',
+                        duration: '60 minutes',
+                        questions: '100 questions',
+                        subjects: ['General Intelligence & Reasoning (25)', 'General Awareness (25)', 'Quantitative Aptitude (25)', 'English Comprehension (25)'],
+                        marks: '200 marks (2 marks each)',
+                        negativeMarking: '0.5 marks deducted for wrong answers'
+                    },
+                    tier2: {
+                        name: 'Tier 2 (Mains)',
+                        papers: [
+                            'Paper 1: Quantitative Abilities (2 hours, 200 marks)',
+                            'Paper 2: English Language & Comprehension (2 hours, 200 marks)',
+                            'Paper 3: Statistics (2 hours, 200 marks) - For Statistical Investigator posts',
+                            'Paper 4: General Studies (Finance & Economics) (2 hours, 200 marks) - For AAO posts'
+                        ]
+                    },
+                    tier3: {
+                        name: 'Tier 3 (Descriptive)',
+                        duration: '60 minutes',
+                        type: 'Descriptive Paper (Essay/Letter/Application writing)',
+                        marks: '100 marks'
+                    },
+                    tier4: {
+                        name: 'Tier 4 (Skill Test)',
+                        type: 'Computer Proficiency Test/Data Entry Speed Test (as applicable)'
+                    }
                 },
-                'Reading Comprehension': {
-                    'Passages': Array.from({length: 20}, (_, i) => `RC Practice Set ${i + 1}`)
+                posts: [
+                    { name: 'Assistant Audit Officer', salary: '₹44,900 - ₹1,42,400', department: 'CAG' },
+                    { name: 'Assistant Accounts Officer', salary: '₹44,900 - ₹1,42,400', department: 'Various' },
+                    { name: 'Assistant Section Officer', salary: '₹44,900 - ₹1,42,400', department: 'Central Secretariat' },
+                    { name: 'Inspector (Central Excise)', salary: '₹44,900 - ₹1,42,400', department: 'CBIC' },
+                    { name: 'Inspector (Income Tax)', salary: '₹44,900 - ₹1,42,400', department: 'CBDT' },
+                    { name: 'Sub Inspector', salary: '₹35,400 - ₹1,12,400', department: 'CBI/NIA' },
+                    { name: 'Statistical Investigator', salary: '₹35,400 - ₹1,12,400', department: 'Various' },
+                    { name: 'Tax Assistant', salary: '₹25,500 - ₹81,100', department: 'CBDT/CBIC' },
+                    { name: 'Upper Division Clerk', salary: '₹25,500 - ₹81,100', department: 'Various' }
+                ],
+                syllabus: {
+                    reasoning: ['Analogies', 'Similarities', 'Differences', 'Space visualization', 'Problem solving', 'Analysis', 'Judgment', 'Decision making', 'Visual memory', 'Discrimination', 'Observation', 'Relationship', 'Arithmetical reasoning', 'Verbal and figure classification', 'Arithmetical number series', 'Non-verbal series'],
+                    english: ['Vocabulary', 'Grammar', 'Sentence structure', 'Synonyms', 'Antonyms', 'Sentence completion', 'Phrases and idioms', 'One word substitution', 'Improvement of sentences', 'Active/Passive voice', 'Conversion into direct/indirect narration', 'Shuffling of sentence parts', 'Shuffling of sentences in a passage', 'Cloze passage', 'Comprehension passage'],
+                    quantitative: ['Number Systems', 'Computation of Whole Numbers', 'Decimals and Fractions', 'Relationships between Numbers', 'Fundamental arithmetical operations', 'Percentages', 'Ratio and Proportion', 'Square roots', 'Averages', 'Interest', 'Profit and Loss', 'Discount', 'Partnership Business', 'Mixture and Alligation', 'Time and distance', 'Time and work', 'Basic algebraic identities', 'Linear equations', 'Graphs of Linear Equations', 'Triangle and its various kinds of centres', 'Congruence and similarity of triangles', 'Circle and its chords', 'tangents', 'angles subtended by chords of a circle', 'Common tangents to two or more circles', 'Triangle', 'Quadrilaterals', 'Regular Polygons', 'Circle', 'Right Prism', 'Right Circular Cone', 'Right Circular Cylinder', 'Sphere', 'Hemispheres', 'Rectangular Parallelepiped', 'Regular Right Pyramid with triangular or square Base', 'Trigonometric ratio', 'Degree and Radian Measures', 'Standard Identities', 'Complementary angles', 'Heights and Distances', 'Histogram', 'Frequency polygon', 'Bar-diagram', 'Pie-chart'],
+                    gk: ['History', 'Culture', 'Geography', 'Economic Scene', 'General Policy', 'Scientific Research', 'Current Affairs', 'Books and Authors', 'Sports', 'Important Schemes', 'Important Days', 'Portfolio', 'People in News']
+                },
+                preparation: {
+                    duration: '6-12 months',
+                    strategy: [
+                        'Start with NCERT books for basic concepts',
+                        'Focus on previous year questions',
+                        'Take regular mock tests',
+                        'Improve speed and accuracy',
+                        'Stay updated with current affairs',
+                        'Practice descriptive writing for Tier 3'
+                    ]
                 }
             },
-            'Reasoning': {
-                'Logical Reasoning': {
-                    'Syllogism': Array.from({length: 20}, (_, i) => `Syllogism Practice Set ${i + 1}`),
-                    'Blood Relations': Array.from({length: 20}, (_, i) => `Blood Relations Practice Set ${i + 1}`)
+            'CHSL': {
+                title: 'SSC Combined Higher Secondary Level (CHSL)',
+                icon: '📚',
+                gradient: 'from-pink-500 to-red-600',
+                description: 'Perfect entry-level exam for 12th pass candidates seeking clerical and data entry positions in government departments.',
+                eligibility: {
+                    age: '18-27 years (relaxation as per government norms)',
+                    qualification: '12th Standard or equivalent from a recognized Board',
+                    nationality: 'Indian citizen'
                 },
-                'Verbal Reasoning': {
-                    'Analogies': Array.from({length: 20}, (_, i) => `Analogies Practice Set ${i + 1}`),
-                    'Classification': Array.from({length: 20}, (_, i) => `Classification Practice Set ${i + 1}`)
+                examPattern: {
+                    tier1: {
+                        name: 'Tier 1 (Computer Based Examination)',
+                        duration: '60 minutes',
+                        questions: '100 questions',
+                        subjects: ['General Intelligence (25)', 'General Awareness (25)', 'Quantitative Aptitude (25)', 'English Language (25)'],
+                        marks: '200 marks (2 marks each)',
+                        negativeMarking: '0.5 marks deducted for wrong answers'
+                    },
+                    tier2: {
+                        name: 'Tier 2 (Descriptive Paper)',
+                        duration: '60 minutes',
+                        type: 'Essay/Letter/Application writing in English or Hindi',
+                        marks: '100 marks',
+                        qualifying: 'Qualifying in nature (33% marks required)'
+                    },
+                    tier3: {
+                        name: 'Tier 3 (Skill Test/Typing Test)',
+                        tests: [
+                            'Typing Test for DEO posts: 8000 key depressions per hour',
+                            'Skill Test for PA/SA posts: Shorthand @ 80/60 wpm'
+                        ]
+                    }
                 },
-                'Non-Verbal Reasoning': {
-                    'Pattern Completion': Array.from({length: 20}, (_, i) => `Pattern Practice Set ${i + 1}`)
+                posts: [
+                    { name: 'Lower Division Clerk (LDC)', salary: '₹19,900 - ₹63,200', department: 'Various Ministries' },
+                    { name: 'Junior Secretariat Assistant (JSA)', salary: '₹19,900 - ₹63,200', department: 'Various Ministries' },
+                    { name: 'Postal Assistant (PA)', salary: '₹25,500 - ₹81,100', department: 'Department of Posts' },
+                    { name: 'Sorting Assistant (SA)', salary: '₹25,500 - ₹81,100', department: 'Department of Posts' },
+                    { name: 'Data Entry Operator (DEO)', salary: '₹25,500 - ₹81,100', department: 'Various Ministries' },
+                    { name: 'Court Clerk', salary: '₹19,900 - ₹63,200', department: 'Supreme Court/High Courts' }
+                ],
+                syllabus: {
+                    reasoning: ['Analogies', 'Similarities', 'Differences', 'Space visualization', 'Problem solving', 'Analysis', 'Judgment', 'Decision making', 'Visual memory', 'Discrimination', 'Observation', 'Relationship', 'Arithmetical reasoning', 'Verbal and figure classification', 'Arithmetical number series', 'Non-verbal series'],
+                    english: ['Vocabulary', 'Grammar', 'Sentence structure', 'Synonyms', 'Antonyms', 'Sentence completion', 'Phrases and idioms', 'One word substitution', 'Improvement of sentences', 'Active/Passive voice', 'Conversion into direct/indirect narration', 'Shuffling of sentence parts', 'Cloze passage', 'Comprehension passage'],
+                    quantitative: ['Number Systems', 'Computation of Whole Numbers', 'Decimals and Fractions', 'Fundamental arithmetical operations', 'Percentages', 'Ratio and Proportion', 'Square roots', 'Averages', 'Interest', 'Profit and Loss', 'Discount', 'Partnership Business', 'Mixture and Alligation', 'Time and distance', 'Time and work', 'Basic algebraic identities', 'Linear equations', 'Triangle', 'Circle', 'Mensuration', 'Trigonometry', 'Statistics'],
+                    gk: ['History', 'Geography', 'Polity', 'Economics', 'General Science', 'Current Affairs', 'Sports', 'Books and Authors', 'Important Days', 'Awards and Honours']
+                },
+                preparation: {
+                    duration: '4-8 months',
+                    strategy: [
+                        'Focus on 12th standard concepts',
+                        'Practice typing and shorthand regularly',
+                        'Solve previous year papers',
+                        'Take online mock tests',
+                        'Improve general awareness',
+                        'Practice descriptive writing'
+                    ]
                 }
             },
-            'Mathematics': {
-                'Arithmetic': {
-                    'Percentage': Array.from({length: 20}, (_, i) => `Percentage Practice Set ${i + 1}`),
-                    'Profit & Loss': Array.from({length: 20}, (_, i) => `P&L Practice Set ${i + 1}`),
-                    'Simple Interest': Array.from({length: 20}, (_, i) => `SI Practice Set ${i + 1}`)
+            'MTS': {
+                title: 'SSC Multi-Tasking Staff (MTS)',
+                icon: '🔧',
+                gradient: 'from-cyan-500 to-blue-600',
+                description: 'Entry-level positions for 10th pass candidates in various government departments as support staff.',
+                eligibility: {
+                    age: '18-25 years (relaxation as per government norms)',
+                    qualification: 'Matriculation or equivalent from a recognized Board',
+                    nationality: 'Indian citizen'
                 },
-                'Algebra': {
-                    'Linear Equations': Array.from({length: 20}, (_, i) => `Linear Eq Practice Set ${i + 1}`)
+                examPattern: {
+                    paper1: {
+                        name: 'Paper 1 (Computer Based Examination)',
+                        duration: '90 minutes',
+                        questions: '100 questions',
+                        subjects: ['General Intelligence & Reasoning (25)', 'Numerical Aptitude (25)', 'General Awareness (25)', 'English Language & Comprehension (25)'],
+                        marks: '100 marks (1 mark each)',
+                        negativeMarking: '0.25 marks deducted for wrong answers'
+                    },
+                    paper2: {
+                        name: 'Paper 2 (Descriptive)',
+                        duration: '30 minutes',
+                        type: 'Short Essay/Letter in English or Hindi or any language in 8th Schedule of Constitution',
+                        marks: '50 marks',
+                        qualifying: 'Qualifying in nature'
+                    }
                 },
-                'Geometry': {
-                    'Triangles': Array.from({length: 20}, (_, i) => `Triangles Practice Set ${i + 1}`)
+                posts: [
+                    { name: 'Multi Tasking Staff', salary: '₹18,000 - ₹56,900', department: 'Various Central Government Offices' },
+                    { name: 'Peon', salary: '₹18,000 - ₹56,900', department: 'Various Ministries' },
+                    { name: 'Daftary', salary: '₹18,000 - ₹56,900', department: 'Various Ministries' },
+                    { name: 'Chowkidar', salary: '₹18,000 - ₹56,900', department: 'Various Ministries' },
+                    { name: 'Safaiwala', salary: '₹18,000 - ₹56,900', department: 'Various Ministries' },
+                    { name: 'Mali', salary: '₹18,000 - ₹56,900', department: 'Various Ministries' }
+                ],
+                syllabus: {
+                    reasoning: ['Similarities and Differences', 'Space visualization', 'Problem solving', 'Analysis', 'Judgment', 'Decision making', 'Visual memory', 'Discrimination', 'Observation', 'Relationship', 'Arithmetical reasoning', 'Verbal and figure classification', 'Arithmetical number series', 'Non-verbal series'],
+                    numerical: ['Number Systems', 'Computation of Whole Numbers', 'Decimals and Fractions', 'Relationships between Numbers', 'Fundamental arithmetical operations', 'Percentages', 'Ratio and Proportion', 'Square roots', 'Averages', 'Interest', 'Profit and Loss', 'Discount', 'Partnership Business', 'Mixture and Alligation', 'Time and distance', 'Time and work'],
+                    english: ['Vocabulary', 'Grammar', 'Sentence structure', 'Synonyms', 'Antonyms', 'Sentence completion', 'Phrases and idioms', 'One word substitution', 'Improvement of sentences', 'Active/Passive voice', 'Conversion into direct/indirect narration', 'Shuffling of sentence parts', 'Cloze passage', 'Comprehension passage'],
+                    gk: ['History', 'Geography', 'Polity', 'Economics', 'General Science', 'Current Affairs', 'Sports', 'Culture', 'Important Days', 'Books and Authors']
+                },
+                preparation: {
+                    duration: '3-6 months',
+                    strategy: [
+                        'Focus on 10th standard concepts',
+                        'Practice basic mathematics',
+                        'Improve general knowledge',
+                        'Solve previous year papers',
+                        'Take regular mock tests',
+                        'Practice descriptive writing'
+                    ]
                 }
             },
-            'General Studies': {
-                'History': {
-                    'Ancient India': Array.from({length: 20}, (_, i) => `Ancient History Set ${i + 1}`),
-                    'Medieval India': Array.from({length: 20}, (_, i) => `Medieval History Set ${i + 1}`)
+            'STENO': {
+                title: 'SSC Stenographer Grade C & D',
+                icon: '✍️',
+                gradient: 'from-green-500 to-teal-600',
+                description: 'Specialized positions requiring shorthand and typing skills in government offices and courts.',
+                eligibility: {
+                    age: '18-30 years (relaxation as per government norms)',
+                    qualification: '12th Standard or equivalent from a recognized Board',
+                    nationality: 'Indian citizen'
                 },
-                'Geography': {
-                    'Physical Geography': Array.from({length: 20}, (_, i) => `Physical Geo Set ${i + 1}`)
+                examPattern: {
+                    paper1: {
+                        name: 'Computer Based Examination',
+                        duration: '120 minutes',
+                        questions: '200 questions',
+                        subjects: ['General Intelligence & Reasoning (50)', 'General Awareness (50)', 'English Language & Comprehension (100)'],
+                        marks: '200 marks (1 mark each)',
+                        negativeMarking: '0.25 marks deducted for wrong answers'
+                    },
+                    paper2: {
+                        name: 'Skill Test',
+                        tests: [
+                            'Stenography Test in English @ 100 wpm for Grade C',
+                            'Stenography Test in English @ 80 wpm for Grade D',
+                            'Stenography Test in Hindi @ 80 wpm for Grade C',
+                            'Stenography Test in Hindi @ 60 wpm for Grade D'
+                        ],
+                        duration: '10 minutes dictation + 50 minutes transcription (Grade C), 10 minutes dictation + 65 minutes transcription (Grade D)'
+                    }
                 },
-                'Science': {
-                    'Physics': Array.from({length: 20}, (_, i) => `Physics Practice Set ${i + 1}`)
+                posts: [
+                    { name: 'Stenographer Grade C', salary: '₹25,500 - ₹81,100', department: 'Various Central Government Offices' },
+                    { name: 'Stenographer Grade D', salary: '₹19,900 - ₹63,200', department: 'Various Central Government Offices' }
+                ],
+                syllabus: {
+                    reasoning: ['Analogies', 'Similarities', 'Differences', 'Space visualization', 'Problem solving', 'Analysis', 'Judgment', 'Decision making', 'Visual memory', 'Discrimination', 'Observation', 'Relationship', 'Arithmetical reasoning', 'Verbal and figure classification', 'Arithmetical number series', 'Non-verbal series'],
+                    english: ['Vocabulary', 'Grammar', 'Sentence structure', 'Synonyms', 'Antonyms', 'Sentence completion', 'Phrases and idioms', 'One word substitution', 'Improvement of sentences', 'Active/Passive voice', 'Conversion into direct/indirect narration', 'Shuffling of sentence parts', 'Shuffling of sentences in a passage', 'Cloze passage', 'Comprehension passage', 'Fill in the blanks'],
+                    gk: ['History', 'Geography', 'Polity', 'Economics', 'General Science', 'Current Affairs', 'Sports', 'Culture', 'Important Days', 'Books and Authors', 'Awards and Honours']
+                },
+                preparation: {
+                    duration: '6-12 months',
+                    strategy: [
+                        'Master shorthand writing (Pitman/Gregg)',
+                        'Practice typing regularly',
+                        'Focus heavily on English language',
+                        'Improve dictation speed gradually',
+                        'Practice transcription accuracy',
+                        'Take skill test practice sessions'
+                    ]
                 }
             },
-            'Shorthand': {
-                'Speed Writing': {
-                    'Basic Strokes': Array.from({length: 20}, (_, i) => `Basic Strokes Set ${i + 1}`)
+            'GD': {
+                title: 'SSC General Duty Constable',
+                icon: '🛡️',
+                gradient: 'from-yellow-500 to-orange-600',
+                description: 'Join paramilitary forces like BSF, CRPF, CISF, and SSB as a constable to serve the nation.',
+                eligibility: {
+                    age: '18-23 years (relaxation as per government norms)',
+                    qualification: 'Matriculation or 10th standard pass from a recognized Board',
+                    nationality: 'Indian citizen',
+                    physical: 'Must meet physical standards for height, chest, weight'
                 },
-                'Dictation': {
-                    'English Dictation': Array.from({length: 20}, (_, i) => `English Dictation Set ${i + 1}`)
+                examPattern: {
+                    paper1: {
+                        name: 'Computer Based Examination',
+                        duration: '90 minutes',
+                        questions: '80 questions',
+                        subjects: ['General Intelligence & Reasoning (20)', 'General Knowledge & General Awareness (20)', 'Elementary Mathematics (20)', 'English/Hindi (20)'],
+                        marks: '160 marks (2 marks each)',
+                        negativeMarking: '0.5 marks deducted for wrong answers'
+                    },
+                    pst: {
+                        name: 'Physical Standard Test',
+                        standards: {
+                            male: 'Height: 170 cm, Chest: 80-85 cm',
+                            female: 'Height: 157 cm, Weight: Proportionate'
+                        }
+                    },
+                    pet: {
+                        name: 'Physical Efficiency Test',
+                        tests: [
+                            'Race (Male: 5 km in 24 minutes, Female: 1.6 km in 8.5 minutes)',
+                            'Long Jump, High Jump, Shot Put (as applicable)'
+                        ]
+                    },
+                    medical: {
+                        name: 'Detailed Medical Examination',
+                        type: 'Comprehensive medical fitness test'
+                    }
+                },
+                posts: [
+                    { name: 'Constable (GD) in BSF', salary: '₹21,700 - ₹69,100', department: 'Border Security Force' },
+                    { name: 'Constable (GD) in CRPF', salary: '₹21,700 - ₹69,100', department: 'Central Reserve Police Force' },
+                    { name: 'Constable (GD) in CISF', salary: '₹21,700 - ₹69,100', department: 'Central Industrial Security Force' },
+                    { name: 'Constable (GD) in ITBP', salary: '₹21,700 - ₹69,100', department: 'Indo-Tibetan Border Police' },
+                    { name: 'Constable (GD) in SSB', salary: '₹21,700 - ₹69,100', department: 'Sashastra Seema Bal' },
+                    { name: 'Rifleman (GD) in Assam Rifles', salary: '₹21,700 - ₹69,100', department: 'Assam Rifles' }
+                ],
+                syllabus: {
+                    reasoning: ['Analogies', 'Similarities', 'Differences', 'Space visualization', 'Problem solving', 'Analysis', 'Judgment', 'Decision making', 'Visual memory', 'Discrimination', 'Observation', 'Relationship', 'Arithmetical reasoning', 'Verbal and figure classification', 'Arithmetical number series', 'Non-verbal series'],
+                    mathematics: ['Number Systems', 'Computation of Whole Numbers', 'Decimals and Fractions', 'Relationships between Numbers', 'Fundamental arithmetical operations', 'Percentages', 'Ratio and Proportion', 'Square roots', 'Averages', 'Interest', 'Profit and Loss', 'Discount', 'Partnership Business', 'Mixture and Alligation', 'Time and distance', 'Time and work'],
+                    english: ['Vocabulary', 'Grammar', 'Sentence structure', 'Synonyms', 'Antonyms', 'Sentence completion', 'Phrases and idioms', 'One word substitution', 'Improvement of sentences', 'Active/Passive voice', 'Conversion into direct/indirect narration', 'Comprehension passage'],
+                    gk: ['History', 'Geography', 'Polity', 'Economics', 'General Science', 'Current Affairs', 'Sports', 'Culture', 'Important Days', 'Books and Authors']
+                },
+                preparation: {
+                    duration: '4-8 months',
+                    strategy: [
+                        'Focus on 10th standard concepts',
+                        'Maintain physical fitness',
+                        'Practice running and exercises daily',
+                        'Improve general awareness',
+                        'Solve previous year papers',
+                        'Take regular mock tests'
+                    ]
+                }
+            },
+            'CPO': {
+                title: 'SSC Central Police Organization (CPO)',
+                icon: '👮',
+                gradient: 'from-indigo-500 to-purple-600',
+                description: 'Sub-Inspector positions in CBI, NIA, SSB, and CISF with excellent career prospects in investigation and security.',
+                eligibility: {
+                    age: '20-25 years (relaxation as per government norms)',
+                    qualification: 'Bachelor\'s degree from a recognized university',
+                    nationality: 'Indian citizen',
+                    physical: 'Must meet physical standards and medical fitness'
+                },
+                examPattern: {
+                    paper1: {
+                        name: 'Computer Based Examination',
+                        duration: '120 minutes',
+                        questions: '200 questions',
+                        subjects: ['General Intelligence & Reasoning (50)', 'General Knowledge & General Awareness (50)', 'Quantitative Aptitude (50)', 'English Comprehension (50)'],
+                        marks: '200 marks (1 mark each)',
+                        negativeMarking: '0.25 marks deducted for wrong answers'
+                    },
+                    paper2: {
+                        name: 'English Language & Comprehension',
+                        duration: '120 minutes',
+                        questions: '200 questions',
+                        marks: '200 marks',
+                        type: 'Qualifying paper (minimum 35% marks required)'
+                    },
+                    pst: {
+                        name: 'Physical Standard Test',
+                        standards: {
+                            male: 'Height: 165 cm, Chest: 76-81 cm',
+                            female: 'Height: 150 cm, Weight: Proportionate'
+                        }
+                    },
+                    pet: {
+                        name: 'Physical Efficiency Test',
+                        tests: [
+                            '100 meters race',
+                            '800 meters race',
+                            'Long Jump',
+                            'High Jump',
+                            'Shot Put'
+                        ]
+                    },
+                    medical: {
+                        name: 'Detailed Medical Examination',
+                        type: 'Comprehensive medical and psychological fitness test'
+                    }
+                },
+                posts: [
+                    { name: 'Sub Inspector in CBI', salary: '₹35,400 - ₹1,12,400', department: 'Central Bureau of Investigation' },
+                    { name: 'Sub Inspector in NIA', salary: '₹35,400 - ₹1,12,400', department: 'National Investigation Agency' },
+                    { name: 'Assistant Sub Inspector in CISF', salary: '₹29,200 - ₹92,300', department: 'Central Industrial Security Force' },
+                    { name: 'Sub Inspector in SSB', salary: '₹35,400 - ₹1,12,400', department: 'Sashastra Seema Bal' }
+                ],
+                syllabus: {
+                    reasoning: ['Analogies', 'Similarities', 'Differences', 'Space visualization', 'Problem solving', 'Analysis', 'Judgment', 'Decision making', 'Visual memory', 'Discrimination', 'Observation', 'Relationship', 'Arithmetical reasoning', 'Verbal and figure classification', 'Arithmetical number series', 'Non-verbal series'],
+                    quantitative: ['Number Systems', 'Computation of Whole Numbers', 'Decimals and Fractions', 'Relationships between Numbers', 'Fundamental arithmetical operations', 'Percentages', 'Ratio and Proportion', 'Square roots', 'Averages', 'Interest', 'Profit and Loss', 'Discount', 'Partnership Business', 'Mixture and Alligation', 'Time and distance', 'Time and work', 'Basic algebraic identities', 'Linear equations', 'Graphs of Linear Equations', 'Triangle', 'Quadrilaterals', 'Circle', 'Mensuration', 'Trigonometry', 'Statistics'],
+                    english: ['Vocabulary', 'Grammar', 'Sentence structure', 'Synonyms', 'Antonyms', 'Sentence completion', 'Phrases and idioms', 'One word substitution', 'Improvement of sentences', 'Active/Passive voice', 'Conversion into direct/indirect narration', 'Shuffling of sentence parts', 'Shuffling of sentences in a passage', 'Cloze passage', 'Comprehension passage'],
+                    gk: ['History', 'Geography', 'Polity', 'Economics', 'General Science', 'Current Affairs', 'Sports', 'Culture', 'Important Days', 'Books and Authors', 'Awards and Honours', 'Indian Constitution', 'Law and Order']
+                },
+                preparation: {
+                    duration: '8-12 months',
+                    strategy: [
+                        'Strong foundation in all subjects',
+                        'Focus on current affairs and law',
+                        'Maintain excellent physical fitness',
+                        'Practice interview skills',
+                        'Solve previous year papers',
+                        'Take comprehensive mock tests'
+                    ]
                 }
             }
         };
+
+        // All subjects data structure
+        const allSubjects = {
+            'English': {
+                icon: '📚',
+                color: 'from-red-500 to-red-600',
+                description: 'Grammar, Vocabulary & Comprehension',
+                chapters: {
+                    'Grammar': {
+                        'Tenses': Array.from({length: 20}, (_, i) => `Tenses Practice Set ${i + 1}`),
+                        'Articles': Array.from({length: 20}, (_, i) => `Articles Practice Set ${i + 1}`),
+                        'Prepositions': Array.from({length: 20}, (_, i) => `Prepositions Practice Set ${i + 1}`)
+                    },
+                    'Vocabulary': {
+                        'Synonyms': Array.from({length: 20}, (_, i) => `Synonyms Practice Set ${i + 1}`),
+                        'Antonyms': Array.from({length: 20}, (_, i) => `Antonyms Practice Set ${i + 1}`)
+                    },
+                    'Reading Comprehension': {
+                        'Passages': Array.from({length: 20}, (_, i) => `RC Practice Set ${i + 1}`)
+                    }
+                }
+            },
+            'Reasoning': {
+                icon: '🧠',
+                color: 'from-blue-500 to-blue-600',
+                description: 'Logical, Verbal & Non-Verbal',
+                chapters: {
+                    'Logical Reasoning': {
+                        'Syllogism': Array.from({length: 20}, (_, i) => `Syllogism Practice Set ${i + 1}`),
+                        'Blood Relations': Array.from({length: 20}, (_, i) => `Blood Relations Practice Set ${i + 1}`)
+                    },
+                    'Verbal Reasoning': {
+                        'Analogies': Array.from({length: 20}, (_, i) => `Analogies Practice Set ${i + 1}`),
+                        'Classification': Array.from({length: 20}, (_, i) => `Classification Practice Set ${i + 1}`)
+                    },
+                    'Non-Verbal Reasoning': {
+                        'Pattern Completion': Array.from({length: 20}, (_, i) => `Pattern Practice Set ${i + 1}`)
+                    }
+                }
+            },
+            'General Studies': {
+                icon: '🌍',
+                color: 'from-purple-500 to-purple-600',
+                description: 'History, Geography & Science',
+                chapters: {
+                    'History': {
+                        'Ancient India': Array.from({length: 20}, (_, i) => `Ancient History Set ${i + 1}`),
+                        'Medieval India': Array.from({length: 20}, (_, i) => `Medieval History Set ${i + 1}`)
+                    },
+                    'Geography': {
+                        'Physical Geography': Array.from({length: 20}, (_, i) => `Physical Geo Set ${i + 1}`)
+                    },
+                    'Science': {
+                        'Physics': Array.from({length: 20}, (_, i) => `Physics Practice Set ${i + 1}`)
+                    }
+                }
+            },
+            'Mathematics': {
+                icon: '🔢',
+                color: 'from-amber-500 to-amber-600',
+                description: 'Arithmetic, Algebra & Geometry',
+                chapters: {
+                    'Arithmetic': {
+                        'Percentage': Array.from({length: 20}, (_, i) => `Percentage Practice Set ${i + 1}`),
+                        'Profit & Loss': Array.from({length: 20}, (_, i) => `Profit & Loss Set ${i + 1}`),
+                        'Time & Work': Array.from({length: 20}, (_, i) => `Time & Work Set ${i + 1}`)
+                    },
+                    'Algebra': {
+                        'Linear Equations': Array.from({length: 20}, (_, i) => `Linear Equations Set ${i + 1}`),
+                        'Quadratic Equations': Array.from({length: 20}, (_, i) => `Quadratic Equations Set ${i + 1}`)
+                    },
+                    'Geometry': {
+                        'Triangles': Array.from({length: 20}, (_, i) => `Triangles Practice Set ${i + 1}`),
+                        'Circles': Array.from({length: 20}, (_, i) => `Circles Practice Set ${i + 1}`)
+                    },
+                    'Mensuration': {
+                        'Area & Perimeter': Array.from({length: 20}, (_, i) => `Area & Perimeter Set ${i + 1}`)
+                    }
+                }
+            },
+            'SSC STENO': {
+                icon: '✍️',
+                color: 'from-pink-500 to-rose-600',
+                description: 'Pitman Shorthand & Kailash Chandra',
+                chapters: {
+                    'Basic Shorthand': {
+                        'Lesson 1 - Simple Consonants': ['Exercise 1A', 'Exercise 1B', 'Exercise 1C', 'Exercise 1D', 'Exercise 1E'],
+                        'Lesson 2 - Vowels': ['Exercise 2A', 'Exercise 2B', 'Exercise 2C', 'Exercise 2D', 'Exercise 2E'],
+                        'Lesson 3 - Circles': ['Exercise 3A', 'Exercise 3B', 'Exercise 3C', 'Exercise 3D', 'Exercise 3E'],
+                        'Lesson 4 - Hooks': ['Exercise 4A', 'Exercise 4B', 'Exercise 4C', 'Exercise 4D', 'Exercise 4E'],
+                        'Lesson 5 - Loops': ['Exercise 5A', 'Exercise 5B', 'Exercise 5C', 'Exercise 5D', 'Exercise 5E'],
+                        'Lesson 6 - Halving': ['Exercise 6A', 'Exercise 6B', 'Exercise 6C', 'Exercise 6D', 'Exercise 6E'],
+                        'Lesson 7 - Doubling': ['Exercise 7A', 'Exercise 7B', 'Exercise 7C', 'Exercise 7D', 'Exercise 7E'],
+                        'Lesson 8 - Shun Hook': ['Exercise 8A', 'Exercise 8B', 'Exercise 8C', 'Exercise 8D', 'Exercise 8E'],
+                        'Lesson 9 - Tion Hook': ['Exercise 9A', 'Exercise 9B', 'Exercise 9C', 'Exercise 9D', 'Exercise 9E'],
+                        'Lesson 10 - Intersections': ['Exercise 10A', 'Exercise 10B', 'Exercise 10C', 'Exercise 10D', 'Exercise 10E'],
+                        'Lesson 11 - Contractions': ['Exercise 11A', 'Exercise 11B', 'Exercise 11C', 'Exercise 11D', 'Exercise 11E'],
+                        'Lesson 12 - Phrasing': ['Exercise 12A', 'Exercise 12B', 'Exercise 12C', 'Exercise 12D', 'Exercise 12E']
+                    },
+                    'Advanced Shorthand': {
+                        'Kailash Chandra Volume 1': Array.from({length: 22}, (_, i) => `Dictation ${i + 1}`),
+                        'Kailash Chandra Volume 2': Array.from({length: 22}, (_, i) => `Dictation ${i + 23}`),
+                        'Kailash Chandra Volume 3': Array.from({length: 22}, (_, i) => `Dictation ${i + 45}`),
+                        'Kailash Chandra Volume 4': Array.from({length: 22}, (_, i) => `Dictation ${i + 67}`),
+                        'Kailash Chandra Volume 5': Array.from({length: 22}, (_, i) => `Dictation ${i + 89}`),
+                        'Kailash Chandra Volume 6': Array.from({length: 22}, (_, i) => `Dictation ${i + 111}`),
+                        'Kailash Chandra Volume 7': Array.from({length: 22}, (_, i) => `Dictation ${i + 133}`),
+                        'Kailash Chandra Volume 8': Array.from({length: 22}, (_, i) => `Dictation ${i + 155}`),
+                        'Kailash Chandra Volume 9': Array.from({length: 22}, (_, i) => `Dictation ${i + 177}`),
+                        'Kailash Chandra Volume 10': Array.from({length: 22}, (_, i) => `Dictation ${i + 199}`),
+                        'Kailash Chandra Volume 11': Array.from({length: 22}, (_, i) => `Dictation ${i + 221}`),
+                        'Kailash Chandra Volume 12': Array.from({length: 22}, (_, i) => `Dictation ${i + 243}`),
+                        'Kailash Chandra Volume 13': Array.from({length: 22}, (_, i) => `Dictation ${i + 265}`),
+                        'Kailash Chandra Volume 14': Array.from({length: 22}, (_, i) => `Dictation ${i + 287}`),
+                        'Kailash Chandra Volume 15': Array.from({length: 22}, (_, i) => `Dictation ${i + 309}`),
+                        'Kailash Chandra Volume 16': Array.from({length: 22}, (_, i) => `Dictation ${i + 331}`),
+                        'Kailash Chandra Volume 17': Array.from({length: 22}, (_, i) => `Dictation ${i + 353}`),
+                        'Kailash Chandra Volume 18': Array.from({length: 22}, (_, i) => `Dictation ${i + 375}`),
+                        'Kailash Chandra Volume 19': Array.from({length: 22}, (_, i) => `Dictation ${i + 397}`),
+                        'Kailash Chandra Volume 20': Array.from({length: 22}, (_, i) => `Dictation ${i + 419}`),
+                        'Kailash Chandra Volume 21': Array.from({length: 22}, (_, i) => `Dictation ${i + 441}`),
+                        'Kailash Chandra Volume 22': Array.from({length: 22}, (_, i) => `Dictation ${i + 463}`),
+                        'Kailash Chandra Volume 23': Array.from({length: 22}, (_, i) => `Dictation ${i + 485}`),
+                        'Kailash Chandra Volume 24': Array.from({length: 22}, (_, i) => `Dictation ${i + 507}`)
+                    }
+                }
+            }
+        };
+
+        // Show exam details
+        function showExamDetails(examCode) {
+            const exam = examDetails[examCode];
+            if (!exam) return;
+            
+            pushToHistory('exam', { examCode });
+            
+            document.getElementById('mainContent').classList.add('hidden');
+            document.getElementById('examDetailsView').classList.remove('hidden');
+            document.getElementById('examDetailsTitle').textContent = exam.title;
+            
+            const content = document.getElementById('examDetailsContent');
+            content.innerHTML = `
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden mb-8">
+                    <div class="h-40 bg-gradient-to-r ${exam.gradient} flex items-center justify-center">
+                        <div class="text-center text-white">
+                            <div class="text-6xl mb-4">${exam.icon}</div>
+                            <h2 class="text-3xl font-bold">${exam.title}</h2>
+                        </div>
+                    </div>
+                    <div class="p-8">
+                        <p class="text-lg text-gray-700 mb-6">${exam.description}</p>
+                        
+                        <!-- Eligibility -->
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-4">Eligibility Criteria</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div class="bg-blue-50 rounded-lg p-4">
+                                    <h4 class="font-semibold text-blue-800 mb-2">Age Limit</h4>
+                                    <p class="text-blue-700">${exam.eligibility.age}</p>
+                                </div>
+                                <div class="bg-green-50 rounded-lg p-4">
+                                    <h4 class="font-semibold text-green-800 mb-2">Qualification</h4>
+                                    <p class="text-green-700">${exam.eligibility.qualification}</p>
+                                </div>
+                                <div class="bg-purple-50 rounded-lg p-4">
+                                    <h4 class="font-semibold text-purple-800 mb-2">Nationality</h4>
+                                    <p class="text-purple-700">${exam.eligibility.nationality}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Exam Pattern -->
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-4">Exam Pattern</h3>
+                            ${generateExamPatternHTML(exam.examPattern)}
+                        </div>
+                        
+                        <!-- Posts & Salary -->
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-4">Posts & Salary</h3>
+                            <div class="overflow-x-auto">
+                                <table class="w-full bg-white border border-gray-200 rounded-lg">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-4 py-3 text-left font-semibold text-gray-800">Post</th>
+                                            <th class="px-4 py-3 text-left font-semibold text-gray-800">Salary Range</th>
+                                            <th class="px-4 py-3 text-left font-semibold text-gray-800">Department</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${exam.posts.map(post => `
+                                            <tr class="border-t border-gray-200">
+                                                <td class="px-4 py-3 font-medium text-gray-800">${post.name}</td>
+                                                <td class="px-4 py-3 text-green-600 font-semibold">${post.salary}</td>
+                                                <td class="px-4 py-3 text-gray-600">${post.department}</td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Syllabus -->
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-4">Detailed Syllabus</h3>
+                            ${generateSyllabusHTML(exam.syllabus)}
+                        </div>
+                        
+                        <!-- Preparation Strategy -->
+                        <div class="mb-8">
+                            <h3 class="text-2xl font-bold text-gray-800 mb-4">Preparation Strategy</h3>
+                            <div class="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg p-6">
+                                <p class="text-lg font-semibold text-blue-800 mb-4">Recommended Duration: ${exam.preparation.duration}</p>
+                                <ul class="space-y-2">
+                                    ${exam.preparation.strategy.map(tip => `
+                                        <li class="flex items-start space-x-2">
+                                            <span class="text-blue-600 mt-1">✓</span>
+                                            <span class="text-gray-700">${tip}</span>
+                                        </li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <!-- Start Preparation Button -->
+                        <div class="text-center">
+                            <button onclick="startPreparation()" class="bg-gradient-to-r ${exam.gradient} text-white px-8 py-4 rounded-xl font-bold text-lg hover:shadow-lg transform hover:scale-105 transition-all duration-300">
+                                🚀 Start Preparation Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function generateExamPatternHTML(pattern) {
+            let html = '';
+            
+            Object.entries(pattern).forEach(([key, value]) => {
+                if (typeof value === 'object' && value.name) {
+                    html += `
+                        <div class="bg-gray-50 rounded-lg p-6 mb-4">
+                            <h4 class="text-xl font-bold text-gray-800 mb-3">${value.name}</h4>
+                            ${value.duration ? `<p class="text-gray-600 mb-2"><strong>Duration:</strong> ${value.duration}</p>` : ''}
+                            ${value.questions ? `<p class="text-gray-600 mb-2"><strong>Questions:</strong> ${value.questions}</p>` : ''}
+                            ${value.marks ? `<p class="text-gray-600 mb-2"><strong>Marks:</strong> ${value.marks}</p>` : ''}
+                            ${value.negativeMarking ? `<p class="text-red-600 mb-2"><strong>Negative Marking:</strong> ${value.negativeMarking}</p>` : ''}
+                            ${value.subjects ? `
+                                <div class="mt-3">
+                                    <strong class="text-gray-800">Subjects:</strong>
+                                    <ul class="mt-2 space-y-1">
+                                        ${value.subjects.map(subject => `<li class="text-gray-600">• ${subject}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
+                            ${value.papers ? `
+                                <div class="mt-3">
+                                    <strong class="text-gray-800">Papers:</strong>
+                                    <ul class="mt-2 space-y-1">
+                                        ${value.papers.map(paper => `<li class="text-gray-600">• ${paper}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
+                            ${value.tests ? `
+                                <div class="mt-3">
+                                    <strong class="text-gray-800">Tests:</strong>
+                                    <ul class="mt-2 space-y-1">
+                                        ${value.tests.map(test => `<li class="text-gray-600">• ${test}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
+                            ${value.type ? `<p class="text-gray-600 mb-2"><strong>Type:</strong> ${value.type}</p>` : ''}
+                            ${value.qualifying ? `<p class="text-orange-600 mb-2"><strong>Note:</strong> ${value.qualifying}</p>` : ''}
+                            ${value.standards ? `
+                                <div class="mt-3">
+                                    <strong class="text-gray-800">Physical Standards:</strong>
+                                    <ul class="mt-2 space-y-1">
+                                        ${Object.entries(value.standards).map(([gender, standard]) => `<li class="text-gray-600">• ${gender.charAt(0).toUpperCase() + gender.slice(1)}: ${standard}</li>`).join('')}
+                                    </ul>
+                                </div>
+                            ` : ''}
+                        </div>
+                    `;
+                }
+            });
+            
+            return html;
+        }
+
+        function generateSyllabusHTML(syllabus) {
+            return `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    ${Object.entries(syllabus).map(([subject, topics]) => `
+                        <div class="bg-gray-50 rounded-lg p-6">
+                            <h4 class="text-xl font-bold text-gray-800 mb-4 capitalize">${subject.replace(/([A-Z])/g, ' $1').trim()}</h4>
+                            <ul class="space-y-2">
+                                ${topics.map(topic => `<li class="text-gray-600 flex items-start"><span class="text-blue-500 mr-2">•</span>${topic}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function startPreparation() {
+            document.getElementById('examDetailsView').classList.add('hidden');
+            document.getElementById('mainContent').classList.remove('hidden');
+            // Scroll to subjects section
+            document.getElementById('allSubjectsSection').scrollIntoView({behavior: 'smooth'});
+        }
+
+        function goBackToHome() {
+            handleBrowserBack();
+        }
+
+        // Go back to subjects from chapters
+        function goBackToSubjects() {
+            handleBrowserBack();
+        }
+
+        // Go back to subject from topics
+        function goBackToSubject() {
+            handleBrowserBack();
+        }
+
+        // Go back to topics from practice sets
+        function goBackToTopics() {
+            handleBrowserBack();
+        }
 
         // Authentication functions
         function initializeAuth() {
@@ -515,7 +1725,6 @@
         function showUserMenu() {
             document.getElementById('authButtons').classList.add('hidden');
             document.getElementById('userMenu').classList.remove('hidden');
-            document.getElementById('welcomeUser').textContent = `Welcome, ${currentUser.name}`;
         }
 
         function showAuthButtons() {
@@ -756,20 +1965,28 @@
         // Navigation functions
         function showSubject(subject) {
             currentSubject = subject;
+            pushToHistory('subject', { subject });
             document.getElementById('mainContent').classList.add('hidden');
             document.getElementById('subjectView').classList.remove('hidden');
-            document.getElementById('subjectTitle').textContent = subject;
+            // Hide subject title completely - just show "Chapters"
+            document.getElementById('subjectTitle').textContent = 'Chapters';
             
             const chaptersGrid = document.getElementById('chaptersGrid');
             chaptersGrid.innerHTML = '';
             
-            Object.keys(subjects[subject]).forEach(chapter => {
+            const subjectData = allSubjects[subject];
+            if (!subjectData) {
+                chaptersGrid.innerHTML = '<p class="text-center text-gray-500">No chapters available for this subject.</p>';
+                return;
+            }
+            
+            Object.keys(subjectData.chapters).forEach(chapter => {
                 const chapterCard = document.createElement('div');
                 chapterCard.className = 'bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer';
                 chapterCard.onclick = () => showChapter(chapter);
                 chapterCard.innerHTML = `
                     <h3 class="font-semibold text-lg text-blue-600 mb-2">${chapter}</h3>
-                    <p class="text-sm text-gray-600">${Object.keys(subjects[subject][chapter]).length} topics available</p>
+                    <p class="text-sm text-gray-600">${Object.keys(subjectData.chapters[chapter]).length} topics available</p>
                 `;
                 chaptersGrid.appendChild(chapterCard);
             });
@@ -777,14 +1994,22 @@
 
         function showChapter(chapter) {
             currentChapter = chapter;
+            pushToHistory('chapter', { subject: currentSubject, chapter });
             document.getElementById('subjectView').classList.add('hidden');
             document.getElementById('topicsView').classList.remove('hidden');
-            document.getElementById('chapterTitle').textContent = `${currentSubject} - ${chapter}`;
+            // Hide subject name completely - just show chapter name
+            document.getElementById('chapterTitle').textContent = chapter;
             
             const topicsGrid = document.getElementById('topicsGrid');
             topicsGrid.innerHTML = '';
             
-            Object.keys(subjects[currentSubject][chapter]).forEach(topic => {
+            const chapterData = allSubjects[currentSubject].chapters[chapter];
+            if (!chapterData) {
+                topicsGrid.innerHTML = '<p class="text-center text-gray-500">No topics available for this chapter.</p>';
+                return;
+            }
+            
+            Object.keys(chapterData).forEach(topic => {
                 const topicCard = document.createElement('div');
                 topicCard.className = 'bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow cursor-pointer';
                 topicCard.onclick = () => showTopic(topic);
@@ -798,46 +2023,68 @@
 
         function showTopic(topic) {
             currentTopic = topic;
+            pushToHistory('topic', { subject: currentSubject, chapter: currentChapter, topic });
             document.getElementById('topicsView').classList.add('hidden');
             document.getElementById('practiceSetsView').classList.remove('hidden');
-            document.getElementById('topicTitle').textContent = `${currentSubject} - ${currentChapter} - ${topic}`;
+            // Hide subject name completely - just show topic name
+            document.getElementById('topicTitle').textContent = topic;
             
             const practiceSetsGrid = document.getElementById('practiceSetsGrid');
             practiceSetsGrid.innerHTML = '';
             
-            subjects[currentSubject][currentChapter][topic].forEach((setName, index) => {
+            const topicData = allSubjects[currentSubject].chapters[currentChapter][topic];
+            if (!topicData) {
+                practiceSetsGrid.innerHTML = '<p class="text-center text-gray-500">No practice sets available for this topic.</p>';
+                return;
+            }
+            
+            topicData.forEach((setName, index) => {
                 const testKey = `${currentSubject}_${currentChapter}_${topic}_${index + 1}`;
                 const pausedTest = currentUser ? pausedTests[currentUser.id]?.[testKey] : null;
                 const completedTest = currentUser ? completedTests[currentUser.id]?.[testKey] : null;
                 
                 const setCard = document.createElement('div');
-                setCard.className = 'bg-white rounded-lg shadow-md p-3 md:p-4 hover:shadow-lg transition-shadow cursor-pointer relative flex flex-col';
-                setCard.onclick = () => startTest(index + 1);
+                setCard.className = 'bg-white rounded-lg shadow-md p-3 md:p-4 hover:shadow-lg transition-shadow relative flex flex-col';
                 
                 let statusIcon = '';
                 let buttonText = 'Start Test';
                 let buttonClass = 'text-xs bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700';
                 let extraInfo = '';
+                let cardTitle = `Practice Set ${index + 1}`;
+                let cardDescription = '25 Questions • 30 Minutes';
+                
+                // Check if this is a dictation exercise (SSC STENO)
+                if (currentSubject === 'SSC STENO') {
+                    if (currentChapter === 'Advanced Shorthand') {
+                        cardTitle = setName;
+                        cardDescription = '840 words • 80 WPM';
+                        buttonText = 'Start Dictation';
+                    } else if (currentChapter === 'Basic Shorthand') {
+                        cardTitle = setName;
+                        cardDescription = 'Basic Dictation • 60 WPM';
+                        buttonText = 'Start Dictation';
+                    }
+                }
                 
                 if (completedTest) {
                     statusIcon = '<div class="absolute top-2 right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center text-white text-xs">✓</div>';
-                    buttonText = 'Retake Test';
+                    buttonText = currentSubject === 'SSC STENO' && currentChapter === 'Advanced Shorthand' ? 'Retake Dictation' : 'Retake Test';
                     buttonClass = 'text-xs bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700';
                     extraInfo = `<p class="text-xs text-purple-600 mb-2">Score: ${completedTest.score}/25 (${completedTest.percentage}%)</p>`;
                 } else if (pausedTest) {
                     statusIcon = '<div class="absolute top-2 right-2 w-6 h-6 bg-orange-500 rounded-full flex items-center justify-center text-white text-xs">⏸</div>';
-                    buttonText = 'Resume Test';
+                    buttonText = currentSubject === 'SSC STENO' && currentChapter === 'Advanced Shorthand' ? 'Resume Dictation' : 'Resume Test';
                     buttonClass = 'text-xs bg-orange-600 text-white px-3 py-1 rounded hover:bg-orange-700';
                     extraInfo = `<p class="text-xs text-orange-600 mb-2">Progress: ${Object.keys(pausedTest.userAnswers).length}/25 answered</p>`;
                 }
                 
                 setCard.innerHTML = `
                     ${statusIcon}
-                    <h3 class="font-semibold text-sm md:text-lg text-blue-600 mb-2 pr-8">Practice Set ${index + 1}</h3>
-                    <p class="text-xs md:text-sm text-gray-600 mb-2">25 Questions • 30 Minutes</p>
+                    <h3 class="font-semibold text-sm md:text-lg text-blue-600 mb-2 pr-8">${cardTitle}</h3>
+                    <p class="text-xs md:text-sm text-gray-600 mb-2">${cardDescription}</p>
                     ${extraInfo}
                     <div class="flex justify-end mt-auto">
-                        <button class="${buttonClass}">${buttonText}</button>
+                        <button class="${buttonClass}" onclick="event.stopPropagation(); startTest(${index + 1}); return false;">${buttonText}</button>
                     </div>
                 `;
                 practiceSetsGrid.appendChild(setCard);
@@ -847,6 +2094,12 @@
         // Test functions
         function startTest(setNumber) {
             if (!requireAuth()) return;
+            
+            // Check if this is a dictation (SSC STENO)
+            if (currentSubject === 'SSC STENO') {
+                startDictation(setNumber);
+                return;
+            }
             
             const testKey = `${currentSubject}_${currentChapter}_${currentTopic}_${setNumber}`;
             const pausedTest = pausedTests[currentUser.id]?.[testKey];
@@ -880,15 +2133,304 @@
                 testStartTime = Date.now();
             }
             
-            document.getElementById('practiceSetsView').classList.add('hidden');
-            document.getElementById('testInterface').classList.remove('hidden');
-            document.body.classList.add('test-active');
+            pushToHistory('test', { subject: currentSubject, chapter: currentChapter, topic: currentTopic, setNumber });
+            
+            hideAllViews();
+            showTestInterface();
             document.getElementById('testTitle').textContent = `${currentSubject} - ${currentChapter} - ${currentTopic} - Set ${setNumber}`;
             
             startTimer();
             loadQuestion();
             setupQuestionGrid();
         }
+
+        // Global variables for dictation
+        let currentDictationSpeed = 80;
+        let dictationPlayer = null;
+        let playerReady = false;
+        let isPlaying = true;
+        let isMuted = false;
+        let currentDictationSet = 1;
+        
+        function startDictation(setNumber) {
+            currentDictationSet = setNumber;
+            pushToHistory('video', { subject: currentSubject, chapter: currentChapter, topic: currentTopic, setNumber });
+            
+            hideAllViews();
+            showVideoInterface();
+            
+            // Setup speed controls based on chapter type
+            setupSpeedControls();
+            
+            // Set default speed based on chapter type
+            if (currentChapter === 'Basic Shorthand') {
+                currentDictationSpeed = 60;
+                updateSpeedDisplay();
+                updateActiveSpeedButton(60);
+            } else {
+                currentDictationSpeed = 80;
+                updateSpeedDisplay();
+                updateActiveSpeedButton(80);
+            }
+            
+            // Load the appropriate dictation video
+            loadDictationVideo();
+            
+            // Reset states
+            isMuted = false;
+            isPlaying = true;
+        }
+        
+        function setupSpeedControls() {
+            const speedButtonsContainer = document.getElementById('speedButtonsContainer');
+            
+            if (currentChapter === 'Basic Shorthand') {
+                // Basic Shorthand speeds: 40, 50, 60, 70, 80
+                speedButtonsContainer.innerHTML = `
+                    <button onclick="setDictationSpeed(40)" class="speed-btn bg-white border border-purple-300 text-purple-700 px-2 py-1 md:px-3 md:py-2 rounded text-xs md:text-sm font-medium hover:bg-purple-100 transition-colors">40</button>
+                    <button onclick="setDictationSpeed(50)" class="speed-btn bg-white border border-purple-300 text-purple-700 px-2 py-1 md:px-3 md:py-2 rounded text-xs md:text-sm font-medium hover:bg-purple-100 transition-colors">50</button>
+                    <button onclick="setDictationSpeed(60)" class="speed-btn bg-purple-600 text-white px-2 py-1 md:px-3 md:py-2 rounded text-xs md:text-sm font-medium hover:bg-purple-700 transition-colors active">60</button>
+                    <button onclick="setDictationSpeed(70)" class="speed-btn bg-white border border-purple-300 text-purple-700 px-2 py-1 md:px-3 md:py-2 rounded text-xs md:text-sm font-medium hover:bg-purple-100 transition-colors">70</button>
+                    <button onclick="setDictationSpeed(80)" class="speed-btn bg-white border border-purple-300 text-purple-700 px-2 py-1 md:px-3 md:py-2 rounded text-xs md:text-sm font-medium hover:bg-purple-100 transition-colors">80</button>
+                `;
+            } else {
+                // Advanced Shorthand speeds: 80, 90, 100, 110, 120
+                speedButtonsContainer.innerHTML = `
+                    <button onclick="setDictationSpeed(80)" class="speed-btn bg-purple-600 text-white px-2 py-1 md:px-3 md:py-2 rounded text-xs md:text-sm font-medium hover:bg-purple-700 transition-colors active">80</button>
+                    <button onclick="setDictationSpeed(90)" class="speed-btn bg-white border border-purple-300 text-purple-700 px-2 py-1 md:px-3 md:py-2 rounded text-xs md:text-sm font-medium hover:bg-purple-100 transition-colors">90</button>
+                    <button onclick="setDictationSpeed(100)" class="speed-btn bg-white border border-purple-300 text-purple-700 px-2 py-1 md:px-3 md:py-2 rounded text-xs md:text-sm font-medium hover:bg-purple-100 transition-colors">100</button>
+                    <button onclick="setDictationSpeed(110)" class="speed-btn bg-white border border-purple-300 text-purple-700 px-2 py-1 md:px-3 md:py-2 rounded text-xs md:text-sm font-medium hover:bg-purple-100 transition-colors">110</button>
+                    <button onclick="setDictationSpeed(120)" class="speed-btn bg-white border border-purple-300 text-purple-700 px-2 py-1 md:px-3 md:py-2 rounded text-xs md:text-sm font-medium hover:bg-purple-100 transition-colors">120</button>
+                `;
+            }
+        }
+        
+        // Dictation video database - organized by chapter, lesson, exercise, and speed
+        const dictationVideos = {
+            'Basic Shorthand': {
+                'Lesson 1 - Simple Consonants': {
+                    'Exercise 1A': {
+                        40: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&controls=1&rel=0',
+                        50: 'https://www.youtube.com/embed/kJQP7kiw5Fk?autoplay=1&controls=1&rel=0',
+                        60: 'https://www.youtube.com/embed/L_jWHffIx5E?autoplay=1&controls=1&rel=0',
+                        70: 'https://www.youtube.com/embed/fJ9rUzIMcZQ?autoplay=1&controls=1&rel=0',
+                        80: 'https://www.youtube.com/embed/QB7ACr7pUuE?autoplay=1&controls=1&rel=0'
+                    },
+                    'Exercise 1B': {
+                        40: 'https://www.youtube.com/embed/9bZkp7q19f0?autoplay=1&controls=1&rel=0',
+                        50: 'https://www.youtube.com/embed/YQHsXMglC9A?autoplay=1&controls=1&rel=0',
+                        60: 'https://www.youtube.com/embed/3JZ_D3ELwOQ?autoplay=1&controls=1&rel=0',
+                        70: 'https://www.youtube.com/embed/60ItHLz5WEA?autoplay=1&controls=1&rel=0',
+                        80: 'https://www.youtube.com/embed/kffacxfA7G4?autoplay=1&controls=1&rel=0'
+                    }
+                    // More exercises would be added here
+                },
+                'Lesson 2 - Vowels': {
+                    'Exercise 2A': {
+                        40: 'https://www.youtube.com/embed/JGwWNGJdvx8?autoplay=1&controls=1&rel=0',
+                        50: 'https://www.youtube.com/embed/ZZ5LpwO-An4?autoplay=1&controls=1&rel=0',
+                        60: 'https://www.youtube.com/embed/LHBQ9jOdqMI?autoplay=1&controls=1&rel=0',
+                        70: 'https://www.youtube.com/embed/A_MjCqQoLLA?autoplay=1&controls=1&rel=0',
+                        80: 'https://www.youtube.com/embed/04854XqcfCY?autoplay=1&controls=1&rel=0'
+                    }
+                    // More exercises would be added here
+                }
+                // More lessons would be added here
+            },
+            'Advanced Shorthand': {
+                'Kailash Chandra Volume 1': {
+                    'Dictation 1': {
+                        80: 'https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&controls=1&rel=0',
+                        90: 'https://www.youtube.com/embed/kJQP7kiw5Fk?autoplay=1&controls=1&rel=0',
+                        100: 'https://www.youtube.com/embed/L_jWHffIx5E?autoplay=1&controls=1&rel=0',
+                        110: 'https://www.youtube.com/embed/fJ9rUzIMcZQ?autoplay=1&controls=1&rel=0',
+                        120: 'https://www.youtube.com/embed/QB7ACr7pUuE?autoplay=1&controls=1&rel=0'
+                    },
+                    'Dictation 2': {
+                        80: 'https://www.youtube.com/embed/9bZkp7q19f0?autoplay=1&controls=1&rel=0',
+                        90: 'https://www.youtube.com/embed/YQHsXMglC9A?autoplay=1&controls=1&rel=0',
+                        100: 'https://www.youtube.com/embed/3JZ_D3ELwOQ?autoplay=1&controls=1&rel=0',
+                        110: 'https://www.youtube.com/embed/60ItHLz5WEA?autoplay=1&controls=1&rel=0',
+                        120: 'https://www.youtube.com/embed/kffacxfA7G4?autoplay=1&controls=1&rel=0'
+                    }
+                    // More dictations would be added here
+                }
+                // More volumes would be added here
+            }
+        };
+        
+        function loadDictationVideo() {
+            const videoContainer = document.getElementById('dictationVideo');
+            
+            // Get the current exercise/dictation name
+            const topicData = allSubjects[currentSubject].chapters[currentChapter][currentTopic];
+            const exerciseName = topicData[currentDictationSet - 1];
+            
+            // Get the video URL for current exercise and speed
+            let videoUrl = null;
+            
+            if (dictationVideos[currentChapter] && 
+                dictationVideos[currentChapter][currentTopic] && 
+                dictationVideos[currentChapter][currentTopic][exerciseName] &&
+                dictationVideos[currentChapter][currentTopic][exerciseName][currentDictationSpeed]) {
+                
+                videoUrl = dictationVideos[currentChapter][currentTopic][exerciseName][currentDictationSpeed];
+            } else {
+                // Fallback to a default educational video if specific video not found
+                videoUrl = `https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1&controls=1&rel=0&modestbranding=1`;
+            }
+            
+            // Create iframe for the video
+            videoContainer.innerHTML = `
+                <iframe 
+                    width="100%" 
+                    height="100%" 
+                    src="${videoUrl}" 
+                    title="Shorthand Dictation - ${exerciseName} @ ${currentDictationSpeed} WPM"
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                    allowfullscreen
+                    style="border-radius: 8px;">
+                </iframe>
+            `;
+            
+            playerReady = true;
+            isPlaying = true;
+            
+            showVideoNotification(`🎥 Loading ${exerciseName} at ${currentDictationSpeed} WPM`);
+        }
+        
+
+        
+        function setDictationSpeed(speed) {
+            currentDictationSpeed = speed;
+            updateSpeedDisplay();
+            updateActiveSpeedButton(speed);
+            
+            // Reload the video with new speed
+            loadDictationVideo();
+            
+            showSpeedChangeNotification(speed);
+        }
+        
+        function updateSpeedDisplay() {
+            document.getElementById('selectedSpeed').textContent = `${currentDictationSpeed} WPM`;
+            
+            // Set word count and duration based on chapter type
+            let wordCount, estimatedMinutes;
+            if (currentChapter === 'Basic Shorthand') {
+                wordCount = 200; // Basic exercises are shorter
+                document.getElementById('currentSpeedDisplay').textContent = `200 words @ ${currentDictationSpeed} WPM`;
+            } else {
+                wordCount = 840; // Advanced dictations
+                document.getElementById('currentSpeedDisplay').textContent = `840 words @ ${currentDictationSpeed} WPM`;
+            }
+            
+            document.getElementById('wordCount').textContent = wordCount;
+            estimatedMinutes = (wordCount / currentDictationSpeed).toFixed(1);
+            document.getElementById('estimatedDuration').textContent = `~${estimatedMinutes} minutes`;
+        }
+        
+
+        
+        function showVideoNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-20 right-2 md:right-4 bg-blue-600 text-white px-3 py-2 rounded-lg shadow-lg z-50 transition-all duration-300 text-sm';
+            
+            let icon = '📹';
+            if (message.includes('muted')) icon = '🔇';
+            else if (message.includes('unmuted')) icon = '🔊';
+            else if (message.includes('paused')) icon = '⏸️';
+            else if (message.includes('playing')) icon = '▶️';
+            else if (message.includes('Loading')) icon = '🎥';
+            
+            notification.innerHTML = `
+                <div class="flex items-center space-x-2">
+                    <span>${icon}</span>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 2 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 2000);
+        }
+        
+
+        
+        function updateActiveSpeedButton(selectedSpeed) {
+            // Remove active class from all speed buttons
+            document.querySelectorAll('.speed-btn').forEach(btn => {
+                btn.classList.remove('active', 'bg-purple-600', 'text-white');
+                btn.classList.add('bg-white', 'border', 'border-purple-300', 'text-purple-700');
+            });
+            
+            // Add active class to selected button
+            const activeBtn = document.querySelector(`button[onclick="setDictationSpeed(${selectedSpeed})"]`);
+            if (activeBtn) {
+                activeBtn.classList.add('active', 'bg-purple-600', 'text-white');
+                activeBtn.classList.remove('bg-white', 'border', 'border-purple-300', 'text-purple-700');
+            }
+        }
+        
+        function showSpeedChangeNotification(speed) {
+            // Create a temporary notification
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-20 right-2 md:right-4 bg-purple-600 text-white px-3 py-2 rounded-lg shadow-lg z-50 transition-all duration-300 text-sm';
+            
+            notification.innerHTML = `
+                <div class="flex items-center space-x-2">
+                    <span>🎛️</span>
+                    <span>Loading ${speed} WPM video...</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 2 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 2000);
+        }
+        
+        function showErrorNotification(message) {
+            // Create a temporary error notification
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-20 right-2 md:right-4 bg-red-600 text-white px-3 py-2 rounded-lg shadow-lg z-50 transition-all duration-300 text-sm';
+            notification.innerHTML = `
+                <div class="flex items-center space-x-2">
+                    <span>⚠️</span>
+                    <span>${message}</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.parentNode.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+        
+
 
         function saveTestState() {
             if (!currentUser || !currentTest) return;
@@ -950,113 +2492,127 @@
             });
             
             // Update navigation buttons
-            document.getElementById('prevBtn').disabled = currentQuestionIndex === 0;
+            document.getElementById('prevBtn').style.display = currentQuestionIndex === 0 ? 'none' : 'inline-block';
             
-            // Show submit button on last question, next button otherwise
-            const nextBtn = document.getElementById('nextBtn');
-            const submitTestBtn = document.getElementById('submitTestBtn');
-            
-            if (currentQuestionIndex === 24) {
-                nextBtn.classList.add('hidden');
-                submitTestBtn.classList.remove('hidden');
+            if (currentQuestionIndex === currentTest.questions.length - 1) {
+                document.getElementById('nextBtn').classList.add('hidden');
+                document.getElementById('submitTestBtn').classList.remove('hidden');
             } else {
-                nextBtn.classList.remove('hidden');
-                submitTestBtn.classList.add('hidden');
+                document.getElementById('nextBtn').classList.remove('hidden');
+                document.getElementById('submitTestBtn').classList.add('hidden');
             }
             
-            // Update mark icon
+            // Update mark for review button
             const markIcon = document.getElementById('markIcon');
             if (markedForReview.has(currentQuestionIndex)) {
-                markIcon.className = 'ml-4 w-10 h-10 rounded-full bg-orange-500 text-white transition-colors flex items-center justify-center text-lg font-bold';
-                markIcon.innerHTML = '🔖';
-                markIcon.style.transform = 'rotate(0deg)';
+                markIcon.classList.add('bg-orange-500', 'text-white');
+                markIcon.classList.remove('border-orange-500', 'text-orange-500');
             } else {
-                markIcon.className = 'ml-4 w-10 h-10 rounded-full border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white transition-colors flex items-center justify-center text-lg font-bold';
-                markIcon.innerHTML = '🏷️';
-                markIcon.style.transform = 'rotate(0deg)';
+                markIcon.classList.remove('bg-orange-500', 'text-white');
+                markIcon.classList.add('border-orange-500', 'text-orange-500');
             }
+            
+            updateQuestionGrid();
         }
 
         function selectOption(optionIndex) {
             userAnswers[currentQuestionIndex] = optionIndex;
+            loadQuestion(); // Reload to show selection
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIndex < currentTest.questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+
+        function goToQuestion(questionIndex) {
+            currentQuestionIndex = questionIndex;
             loadQuestion();
-            updateQuestionGrid();
+        }
+
+        function toggleMarkForReview() {
+            if (markedForReview.has(currentQuestionIndex)) {
+                markedForReview.delete(currentQuestionIndex);
+            } else {
+                markedForReview.add(currentQuestionIndex);
+            }
+            loadQuestion();
         }
 
         function setupQuestionGrid() {
             const questionGrid = document.getElementById('questionGrid');
             const mobileQuestionGrid = document.getElementById('mobileQuestionGrid');
+            
             questionGrid.innerHTML = '';
             mobileQuestionGrid.innerHTML = '';
             
-            for (let i = 0; i < 25; i++) {
-                // Desktop question grid
+            for (let i = 0; i < currentTest.questions.length; i++) {
+                // Desktop grid
                 const questionBtn = document.createElement('button');
-                questionBtn.className = 'w-6 h-6 md:w-8 md:h-8 rounded text-xs font-semibold hover:scale-105 mobile-text-xs';
+                questionBtn.className = 'w-8 h-8 rounded text-xs font-medium transition-colors';
                 questionBtn.textContent = i + 1;
-                questionBtn.onclick = () => {
-                    goToQuestion(i);
-                    document.getElementById('questionPanel').classList.remove('active');
-                };
-                questionGrid.appendChild(questionBtn);
+                questionBtn.onclick = () => goToQuestion(i);
                 
-                // Mobile question grid (horizontal)
+                // Mobile grid
                 const mobileQuestionBtn = document.createElement('button');
-                mobileQuestionBtn.className = 'w-8 h-8 md:w-10 md:h-10 rounded text-xs md:text-sm font-semibold hover:scale-105 flex-shrink-0 mobile-text-xs';
+                mobileQuestionBtn.className = 'w-8 h-8 rounded text-xs font-medium transition-colors flex-shrink-0';
                 mobileQuestionBtn.textContent = i + 1;
-                mobileQuestionBtn.onclick = () => {
-                    goToQuestion(i);
-                    // Scroll to center the selected question
-                    mobileQuestionBtn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
-                };
+                mobileQuestionBtn.onclick = () => goToQuestion(i);
+                
+                questionGrid.appendChild(questionBtn);
                 mobileQuestionGrid.appendChild(mobileQuestionBtn);
             }
+            
             updateQuestionGrid();
         }
 
         function updateQuestionGrid() {
-            const questionGrid = document.getElementById('questionGrid');
-            const mobileQuestionGrid = document.getElementById('mobileQuestionGrid');
-            const desktopButtons = questionGrid.children;
-            const mobileButtons = mobileQuestionGrid.children;
+            const buttons = document.querySelectorAll('#questionGrid button, #mobileQuestionGrid button');
             
-            let answeredCount = 0;
-            
-            for (let i = 0; i < desktopButtons.length; i++) {
-                const desktopBtn = desktopButtons[i];
-                const mobileBtn = mobileButtons[i];
-                const baseClass = 'w-6 h-6 md:w-8 md:h-8 rounded text-xs font-semibold hover:scale-105 mobile-text-xs';
-                const mobileBaseClass = 'w-8 h-8 md:w-10 md:h-10 rounded text-xs md:text-sm font-semibold hover:scale-105 flex-shrink-0 mobile-text-xs';
+            buttons.forEach((btn, index) => {
+                const questionIndex = index % currentTest.questions.length;
+                btn.className = 'w-8 h-8 rounded text-xs font-medium transition-colors';
                 
-                let className, mobileClassName;
-                
-                if (i === currentQuestionIndex) {
-                    className = `${baseClass} bg-blue-600 text-white border-2 border-blue-800`;
-                    mobileClassName = `${mobileBaseClass} bg-blue-600 text-white border-2 border-blue-800`;
-                } else if (markedForReview.has(i)) {
-                    className = `${baseClass} bg-orange-500 text-white hover:bg-orange-600`;
-                    mobileClassName = `${mobileBaseClass} bg-orange-500 text-white hover:bg-orange-600`;
-                } else if (userAnswers.hasOwnProperty(i)) {
-                    className = `${baseClass} bg-green-500 text-white hover:bg-green-600`;
-                    mobileClassName = `${mobileBaseClass} bg-green-500 text-white hover:bg-green-600`;
-                    answeredCount++;
+                if (questionIndex === currentQuestionIndex) {
+                    btn.classList.add('bg-blue-600', 'text-white');
+                } else if (userAnswers.hasOwnProperty(questionIndex)) {
+                    if (markedForReview.has(questionIndex)) {
+                        btn.classList.add('bg-orange-500', 'text-white');
+                    } else {
+                        btn.classList.add('bg-green-500', 'text-white');
+                    }
+                } else if (markedForReview.has(questionIndex)) {
+                    btn.classList.add('bg-orange-500', 'text-white');
                 } else {
-                    className = `${baseClass} bg-gray-300 text-gray-700 hover:bg-gray-400`;
-                    mobileClassName = `${mobileBaseClass} bg-gray-300 text-gray-700 hover:bg-gray-400`;
+                    btn.classList.add('bg-gray-300', 'text-gray-700');
                 }
-                
-                desktopBtn.className = className;
-                mobileBtn.className = mobileClassName;
-            }
+            });
             
-            // Update progress text
-            document.getElementById('progressText').textContent = `${answeredCount}/25 answered`;
+            // Update progress
+            const answered = Object.keys(userAnswers).length;
+            document.getElementById('progressText').textContent = `${answered}/25 answered`;
         }
 
-        function goToQuestion(index) {
-            currentQuestionIndex = index;
-            loadQuestion();
-            updateQuestionGrid();
+        function confirmSubmitTest() {
+            const answered = Object.keys(userAnswers).length;
+            const unanswered = currentTest.questions.length - answered;
+            
+            if (unanswered > 0) {
+                if (!confirm(`You have ${unanswered} unanswered questions. Are you sure you want to submit?`)) {
+                    return;
+                }
+            }
+            
+            submitTest();
         }
 
         function submitTest() {
@@ -1064,17 +2620,27 @@
             
             // Calculate results
             let correct = 0;
+            let wrong = 0;
+            let unanswered = 0;
+            
             currentTest.questions.forEach((question, index) => {
-                if (userAnswers[index] === question.correct) {
-                    correct++;
+                if (userAnswers.hasOwnProperty(index)) {
+                    if (userAnswers[index] === question.correct) {
+                        correct++;
+                    } else {
+                        wrong++;
+                    }
+                } else {
+                    unanswered++;
                 }
             });
             
-            const percentage = Math.round((correct / 25) * 100);
+            const totalMarks = correct * 2 - wrong * 0.5; // 2 marks for correct, -0.5 for wrong
+            const percentage = Math.round((correct / currentTest.questions.length) * 100);
             const timeTaken = Math.floor((Date.now() - testStartTime) / 1000);
-            const accuracy = Object.keys(userAnswers).length > 0 ? Math.round((correct / Object.keys(userAnswers).length) * 100) : 0;
+            const accuracy = answered > 0 ? Math.round((correct / Object.keys(userAnswers).length) * 100) : 0;
             
-            // Mark test as completed and reset everything
+            // Save test result
             if (currentUser) {
                 const testKey = `${currentTest.subject}_${currentTest.chapter}_${currentTest.topic}_${currentTest.setNumber}`;
                 
@@ -1084,363 +2650,336 @@
                 
                 completedTests[currentUser.id][testKey] = {
                     score: correct,
+                    totalQuestions: currentTest.questions.length,
                     percentage: percentage,
                     timeTaken: timeTaken,
-                    completedAt: new Date().toISOString()
+                    accuracy: accuracy,
+                    completedAt: Date.now(),
+                    subject: currentTest.subject,
+                    chapter: currentTest.chapter,
+                    topic: currentTest.topic,
+                    setNumber: currentTest.setNumber
                 };
                 
                 localStorage.setItem('completedTests', JSON.stringify(completedTests));
-                
-                // Remove from paused tests if it exists
-                if (pausedTests[currentUser.id]?.[testKey]) {
-                    delete pausedTests[currentUser.id][testKey];
-                    localStorage.setItem('pausedTests', JSON.stringify(pausedTests));
-                }
             }
             
-            // Store test results for review
-            window.lastTestResults = {
-                test: currentTest,
-                userAnswers: userAnswers,
-                score: correct,
-                percentage: percentage,
-                timeTaken: timeTaken
-            };
+            // Show results
+            pushToHistory('result');
+            hideAllViews();
+            showResultScreen();
             
-            document.getElementById('finalScore').textContent = `${correct}/25`;
+            document.getElementById('finalScore').textContent = `${correct}/${currentTest.questions.length}`;
             document.getElementById('finalPercentage').textContent = `${percentage}%`;
-            document.getElementById('timeTaken').textContent = `${Math.floor(timeTaken / 60)}:${(timeTaken % 60).toString().padStart(2, '0')}`;
+            document.getElementById('timeTaken').textContent = formatTime(timeTaken);
             document.getElementById('accuracy').textContent = `${accuracy}%`;
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function goHome() {
+            // Reset navigation history to home only
+            if (!isNavigatingBack) {
+                navigationHistory = ['home'];
+                history.replaceState({ page: 'home' }, '', '#home');
+            }
             
-            // Reset test state
+            // Hide all views and show main content
+            hideAllViews();
+            showMainContent();
+            
+            // Clear test data
             currentTest = null;
             currentQuestionIndex = 0;
             userAnswers = {};
             markedForReview = new Set();
-            testStartTime = null;
-            timerInterval = null;
             
-            document.getElementById('testInterface').classList.add('hidden');
-            document.getElementById('resultScreen').classList.remove('hidden');
-            document.body.classList.remove('test-active');
+            // Reset navigation state
+            currentSubject = '';
+            currentChapter = '';
+            currentTopic = '';
+            
+            // Reset video state
+            playerReady = false;
+            isPlaying = true;
+            isMuted = false;
+            dictationPlayer = null;
+            
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
         }
 
         function reviewAnswers() {
-            document.getElementById('resultScreen').classList.add('hidden');
-            document.getElementById('reviewScreen').classList.remove('hidden');
-            document.body.classList.add('review-active');
+            pushToHistory('review');
+            hideAllViews();
+            showReviewScreen();
             
             const reviewContent = document.getElementById('reviewContent');
             reviewContent.innerHTML = '';
             
-            const testData = window.lastTestResults;
-            if (!testData) return;
-            
-            testData.test.questions.forEach((question, index) => {
-                const userAnswer = testData.userAnswers[index];
+            currentTest.questions.forEach((question, index) => {
+                const userAnswer = userAnswers[index];
                 const isCorrect = userAnswer === question.correct;
-                
-                // Check if question is already saved
-                const isQuestionSaved = savedQuestions.some(sq => 
-                    sq.subject === testData.test.subject && 
-                    sq.chapter === testData.test.chapter && 
-                    sq.topic === testData.test.topic && 
-                    sq.questionIndex === index
-                );
+                const wasAnswered = userAnswers.hasOwnProperty(index);
                 
                 const questionDiv = document.createElement('div');
-                questionDiv.className = 'bg-white rounded-lg shadow-md p-4 md:p-6 mb-4';
+                questionDiv.className = `mb-6 p-4 rounded-lg border-2 ${isCorrect ? 'border-green-200 bg-green-50' : wasAnswered ? 'border-red-200 bg-red-50' : 'border-gray-200 bg-gray-50'}`;
+                
                 questionDiv.innerHTML = `
-                    <div class="flex justify-between items-start mb-4">
-                        <h4 class="text-sm md:text-lg font-medium mobile-text-sm flex-1 pr-2">Q${index + 1}. ${question.question}</h4>
-                        <button onclick="saveQuestion(${index})" class="${isQuestionSaved ? 'text-green-600 hover:text-green-700 text-xl' : 'text-blue-600 hover:text-blue-700 text-xl'}" title="${isQuestionSaved ? 'Remove from saved' : 'Save question'}">${isQuestionSaved ? '💾' : '📌'}</button>
+                    <div class="flex justify-between items-start mb-3">
+                        <h4 class="font-medium text-lg">Q${index + 1}. ${question.question}</h4>
+                        <span class="px-2 py-1 rounded text-xs font-medium ${isCorrect ? 'bg-green-200 text-green-800' : wasAnswered ? 'bg-red-200 text-red-800' : 'bg-gray-200 text-gray-800'}">
+                            ${isCorrect ? 'Correct' : wasAnswered ? 'Wrong' : 'Not Answered'}
+                        </span>
                     </div>
+                    
                     <div class="space-y-2 mb-4">
-                        ${question.options.map((option, optIndex) => `
-                            <div class="flex items-center space-x-2 md:space-x-3 p-2 rounded ${
-                                optIndex === question.correct ? 'bg-green-100' : 
-                                optIndex === userAnswer && userAnswer !== question.correct ? 'bg-red-100' : 'bg-gray-50'
-                            }">
-                                <span class="font-medium text-xs md:text-sm mobile-text-xs">${String.fromCharCode(65 + optIndex)}.</span>
-                                <span class="text-xs md:text-sm mobile-text-xs flex-1">${option}</span>
-                                ${optIndex === question.correct ? '<span class="text-green-600 text-sm">✓</span>' : ''}
-                                ${optIndex === userAnswer && userAnswer !== question.correct ? '<span class="text-red-600 text-sm">✗</span>' : ''}
-                            </div>
-                        `).join('')}
+                        ${question.options.map((option, optIndex) => {
+                            let optionClass = 'p-2 rounded border';
+                            if (optIndex === question.correct) {
+                                optionClass += ' bg-green-100 border-green-300 text-green-800';
+                            } else if (optIndex === userAnswer && userAnswer !== question.correct) {
+                                optionClass += ' bg-red-100 border-red-300 text-red-800';
+                            } else {
+                                optionClass += ' bg-white border-gray-200';
+                            }
+                            
+                            return `
+                                <div class="${optionClass}">
+                                    ${String.fromCharCode(65 + optIndex)}. ${option}
+                                    ${optIndex === question.correct ? ' ✓' : ''}
+                                    ${optIndex === userAnswer && userAnswer !== question.correct ? ' ✗' : ''}
+                                </div>
+                            `;
+                        }).join('')}
                     </div>
-                    <div class="bg-blue-50 p-3 md:p-4 rounded-lg">
-                        <h5 class="font-semibold text-blue-800 mb-2 text-xs md:text-sm mobile-text-xs">Explanation:</h5>
-                        <p class="text-blue-700 text-xs md:text-sm mobile-text-xs">${question.explanation}</p>
+                    
+                    <div class="bg-blue-50 border border-blue-200 rounded p-3">
+                        <p class="text-sm text-blue-800"><strong>Explanation:</strong> ${question.explanation}</p>
                     </div>
                 `;
+                
                 reviewContent.appendChild(questionDiv);
             });
         }
 
-        function saveQuestion(questionIndex) {
-            const testData = window.lastTestResults;
-            if (!testData) return;
+        function reattemptTest() {
+            // Reset test state
+            currentQuestionIndex = 0;
+            userAnswers = {};
+            markedForReview = new Set();
+            testStartTime = Date.now();
             
-            const question = testData.test.questions[questionIndex];
-            const questionId = `${testData.test.subject}_${testData.test.chapter}_${testData.test.topic}_${questionIndex}`;
+            // Go back to test interface
+            pushToHistory('test');
+            hideAllViews();
+            showTestInterface();
             
-            // Check if question is already saved
-            const existingIndex = savedQuestions.findIndex(sq => 
-                sq.subject === testData.test.subject && 
-                sq.chapter === testData.test.chapter && 
-                sq.topic === testData.test.topic && 
-                sq.questionIndex === questionIndex
-            );
-            
-            const button = event.target;
-            
-            if (existingIndex !== -1) {
-                // Question is already saved, remove it
-                savedQuestions.splice(existingIndex, 1);
-                localStorage.setItem('savedQuestions', JSON.stringify(savedQuestions));
-                button.textContent = '📌';
-                button.className = 'text-blue-600 hover:text-blue-700 text-xl';
-                button.title = 'Save question';
-                alert('Question removed from saved list!');
-            } else {
-                // Save the question
-                const savedQuestion = {
-                    id: Date.now(),
-                    subject: testData.test.subject,
-                    chapter: testData.test.chapter,
-                    topic: testData.test.topic,
-                    questionIndex: questionIndex,
-                    question: question.question,
-                    options: question.options,
-                    correct: question.correct,
-                    explanation: question.explanation,
-                    savedAt: new Date().toISOString()
-                };
-                
-                savedQuestions.push(savedQuestion);
-                localStorage.setItem('savedQuestions', JSON.stringify(savedQuestions));
-                button.textContent = '💾';
-                button.className = 'text-green-600 hover:text-green-700 text-xl';
-                button.title = 'Remove from saved';
-                alert('Question saved successfully!');
-            }
+            startTimer();
+            loadQuestion();
+            setupQuestionGrid();
         }
 
-        function showSavedQuestions() {
-            document.getElementById('mainContent').classList.add('hidden');
-            document.getElementById('savedQuestionsScreen').classList.remove('hidden');
+        function showProfile() {
+            if (!requireAuth()) return;
             
-            const content = document.getElementById('savedQuestionsContent');
-            content.innerHTML = '';
+            pushToHistory('profile');
             
-            if (savedQuestions.length === 0) {
-                content.innerHTML = '<p class="text-center text-gray-500">No saved questions yet.</p>';
+            hideAllViews();
+            showProfileView();
+            
+            // Update profile information
+            document.getElementById('profileName').textContent = currentUser.name;
+            document.getElementById('profileEmail').textContent = currentUser.email;
+            document.getElementById('profileInitials').textContent = currentUser.name.charAt(0).toUpperCase();
+            document.getElementById('memberSince').textContent = new Date(currentUser.id).getFullYear();
+            
+            // Calculate and display stats
+            const userTests = completedTests[currentUser.id] || {};
+            const testCount = Object.keys(userTests).length;
+            const totalScore = Object.values(userTests).reduce((sum, test) => sum + test.percentage, 0);
+            const averageScore = testCount > 0 ? Math.round(totalScore / testCount) : 0;
+            
+            document.getElementById('totalTestsTaken').textContent = testCount;
+            document.getElementById('averageScore').textContent = `${averageScore}%`;
+            document.getElementById('totalSavedQuestions').textContent = savedQuestions.length;
+            document.getElementById('studyStreak').textContent = '0'; // Placeholder
+            
+            // Load test history
+            loadTestHistory();
+        }
+
+        function loadTestHistory() {
+            const historyContent = document.getElementById('testHistoryContent');
+            const userTests = completedTests[currentUser.id] || {};
+            
+            if (Object.keys(userTests).length === 0) {
+                historyContent.innerHTML = '<p class="text-gray-500 text-center py-8">No tests taken yet. Start practicing to see your history here!</p>';
                 return;
             }
             
-            savedQuestions.forEach((question, index) => {
-                const questionDiv = document.createElement('div');
-                questionDiv.className = 'bg-white rounded-lg shadow-md p-6 mb-4';
-                questionDiv.innerHTML = `
-                    <div class="flex justify-between items-start mb-4">
-                        <div>
-                            <h4 class="text-lg font-medium mb-2">${question.question}</h4>
-                            <p class="text-sm text-gray-600">${question.subject} > ${question.chapter} > ${question.topic}</p>
+            const sortedTests = Object.entries(userTests).sort((a, b) => b[1].completedAt - a[1].completedAt);
+            
+            historyContent.innerHTML = sortedTests.map(([testKey, result]) => `
+                <div class="border border-gray-200 rounded-lg p-4 mb-3">
+                    <div class="flex justify-between items-start mb-2">
+                        <h5 class="font-medium text-gray-800">${result.subject} - ${result.chapter} - ${result.topic}</h5>
+                        <span class="text-xs text-gray-500">${new Date(result.completedAt).toLocaleDateString()}</span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm text-gray-600">Set ${result.setNumber}</span>
+                        <div class="flex space-x-4 text-sm">
+                            <span class="text-blue-600">Score: ${result.score}/${result.totalQuestions}</span>
+                            <span class="text-green-600">${result.percentage}%</span>
+                            <span class="text-purple-600">${formatTime(result.timeTaken)}</span>
                         </div>
-                        <button onclick="deleteSavedQuestion(${index})" class="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700">Delete</button>
                     </div>
-                    <div class="space-y-2 mb-4">
-                        ${question.options.map((option, optIndex) => `
-                            <div class="flex items-center space-x-3 p-2 rounded ${optIndex === question.correct ? 'bg-green-100' : 'bg-gray-50'}">
-                                <span class="font-medium">${String.fromCharCode(65 + optIndex)}.</span>
-                                <span>${option}</span>
-                                ${optIndex === question.correct ? '<span class="text-green-600">✓</span>' : ''}
-                            </div>
-                        `).join('')}
-                    </div>
-                    <div class="bg-blue-50 p-4 rounded-lg">
-                        <h5 class="font-semibold text-blue-800 mb-2">Explanation:</h5>
-                        <p class="text-blue-700">${question.explanation}</p>
-                    </div>
-                `;
-                content.appendChild(questionDiv);
-            });
+                </div>
+            `).join('');
         }
 
-        function deleteSavedQuestion(index) {
-            if (confirm('Are you sure you want to delete this question?')) {
-                savedQuestions.splice(index, 1);
-                localStorage.setItem('savedQuestions', JSON.stringify(savedQuestions));
-                showSavedQuestions();
-            }
-        }
-
-        // Navigation functions
-        function goBack() {
-            document.getElementById('subjectView').classList.add('hidden');
-            document.getElementById('mainContent').classList.remove('hidden');
-        }
-
-        function goBackToSubject() {
-            document.getElementById('topicsView').classList.add('hidden');
-            document.getElementById('subjectView').classList.remove('hidden');
-        }
-
-        function goBackToTopics() {
-            document.getElementById('practiceSetsView').classList.add('hidden');
-            document.getElementById('topicsView').classList.remove('hidden');
-        }
-
-        function goHome() {
-            // Hide all screens
-            document.querySelectorAll('[id$="View"], [id$="Screen"], [id$="Interface"]').forEach(el => {
-                el.classList.add('hidden');
-            });
-            document.getElementById('mainContent').classList.remove('hidden');
-            document.body.classList.remove('test-active', 'review-active');
-        }
-
-        function reattemptTest() {
-            document.getElementById('resultScreen').classList.add('hidden');
-            // Go back to practice sets to select test again
-            document.getElementById('practiceSetsView').classList.remove('hidden');
-            showTopic(currentTopic); // Refresh the practice sets view
-        }
-
-        function showExamDetails(examName) {
-            alert(`${examName} Details:\n\nThis would show detailed information about the exam including:\n- Detailed eligibility criteria\n- Complete syllabus\n- Exam pattern\n- Previous year papers\n- Salary structure\n- Job profile`);
-        }
-
-        // Navigation functions for buttons
-        function nextQuestion() {
-            if (currentQuestionIndex < 24) {
-                currentQuestionIndex++;
-                loadQuestion();
-                updateQuestionGrid();
-            }
-        }
-
-        function confirmSubmitTest() {
-            if (confirm('Are you sure you want to submit the test?')) {
-                submitTest();
-            }
-        }
-
-        // Event listeners
-        document.getElementById('prevBtn').onclick = () => {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                loadQuestion();
-                updateQuestionGrid();
-            }
-        };
-
-        document.getElementById('markIcon').onclick = () => {
-            if (markedForReview.has(currentQuestionIndex)) {
-                markedForReview.delete(currentQuestionIndex);
-            } else {
-                markedForReview.add(currentQuestionIndex);
-            }
-            loadQuestion();
-            updateQuestionGrid();
-        };
-
-        document.getElementById('questionPanelBtn').onclick = () => {
-            const panel = document.getElementById('questionPanel');
-            panel.classList.toggle('active');
-        };
-
-        document.getElementById('closeQuestionPanel').onclick = () => {
-            document.getElementById('questionPanel').classList.remove('active');
-        };
-
-        document.getElementById('pauseBtn').onclick = () => {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-                saveTestState();
-                document.getElementById('pauseBtn').textContent = 'Resume';
-                alert('Test paused and saved. Click Resume to continue or go back to practice sets to resume later.');
-            } else {
-                startTimer();
-                document.getElementById('pauseBtn').textContent = 'Pause';
-            }
-        };
-
-        document.getElementById('submitBtn').onclick = () => {
-            if (confirm('Are you sure you want to submit the test?')) {
-                submitTest();
-            }
-        };
-
-        document.getElementById('submitTestBtn').onclick = () => {
-            if (confirm('Are you sure you want to submit the test?')) {
-                submitTest();
-            }
-        };
-
-        document.getElementById('savedQuestionsBtn').onclick = () => {
-            if (requireAuth()) showSavedQuestions();
-        };
-
-        // Authentication event listeners
-        document.getElementById('loginBtn').onclick = () => {
-            document.getElementById('loginModal').classList.remove('hidden');
-        };
-
-        document.getElementById('signupBtn').onclick = () => {
-            document.getElementById('signupModal').classList.remove('hidden');
-        };
-
-        document.getElementById('logoutBtn').onclick = logout;
-
-        document.getElementById('closeLoginModal').onclick = closeModals;
-        document.getElementById('closeSignupModal').onclick = closeModals;
-
-        document.getElementById('switchToSignup').onclick = () => {
-            document.getElementById('loginModal').classList.add('hidden');
-            document.getElementById('signupModal').classList.remove('hidden');
-        };
-
-        document.getElementById('switchToLogin').onclick = () => {
-            document.getElementById('signupModal').classList.add('hidden');
-            document.getElementById('loginModal').classList.remove('hidden');
-        };
-
-        document.getElementById('loginForm').onsubmit = (e) => {
-            e.preventDefault();
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
+        // Header scroll animation
+        let lastScrollTop = 0;
+        let scrollTimeout;
+        
+        function handleScroll() {
+            const header = document.querySelector('header');
+            const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
             
-            if (login(email, password)) {
-                alert('Login successful!');
-            } else {
-                alert('Invalid email or password');
-            }
-        };
-
-        document.getElementById('signupForm').onsubmit = (e) => {
-            e.preventDefault();
-            const name = document.getElementById('signupName').value;
-            const email = document.getElementById('signupEmail').value;
-            const password = document.getElementById('signupPassword').value;
+            // Clear existing timeout
+            clearTimeout(scrollTimeout);
             
-            if (signup(name, email, password)) {
-                alert('Account created successfully!');
-            } else {
-                alert('Email already exists');
-            }
-        };
+            // Set timeout to handle scroll end
+            scrollTimeout = setTimeout(() => {
+                if (currentScroll > lastScrollTop && currentScroll > 100) {
+                    // Scrolling down & past 100px
+                    header.classList.add('header-hidden');
+                } else {
+                    // Scrolling up or at top
+                    header.classList.remove('header-hidden');
+                }
+                lastScrollTop = currentScroll <= 0 ? 0 : currentScroll;
+            }, 10);
+        }
 
-        // Auto-save test state on page unload
-        window.addEventListener('beforeunload', () => {
-            if (currentTest && timerInterval) {
-                saveTestState();
-            }
+        // Initialize event listeners when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeAuth();
+            
+            // Add scroll listener for header animation
+            window.addEventListener('scroll', handleScroll, { passive: true });
+            
+            // Handle browser back button
+            window.addEventListener('popstate', function(event) {
+                if (event.state && event.state.page) {
+                    handleBrowserBack();
+                }
+            });
+            
+            // Initialize browser history
+            history.replaceState({ page: 'home' }, '', '#home');
+            
+            // Login/Signup modal handlers
+            document.getElementById('loginBtn').onclick = () => document.getElementById('loginModal').classList.remove('hidden');
+            document.getElementById('signupBtn').onclick = () => document.getElementById('signupModal').classList.remove('hidden');
+            document.getElementById('closeLoginModal').onclick = closeModals;
+            document.getElementById('closeSignupModal').onclick = closeModals;
+            document.getElementById('switchToSignup').onclick = () => {
+                document.getElementById('loginModal').classList.add('hidden');
+                document.getElementById('signupModal').classList.remove('hidden');
+            };
+            document.getElementById('switchToLogin').onclick = () => {
+                document.getElementById('signupModal').classList.add('hidden');
+                document.getElementById('loginModal').classList.remove('hidden');
+            };
+            
+            // Form submissions
+            document.getElementById('loginForm').onsubmit = (e) => {
+                e.preventDefault();
+                const email = document.getElementById('loginEmail').value;
+                const password = document.getElementById('loginPassword').value;
+                if (login(email, password)) {
+                    alert('Login successful!');
+                } else {
+                    alert('Invalid credentials!');
+                }
+            };
+            
+            document.getElementById('signupForm').onsubmit = (e) => {
+                e.preventDefault();
+                const name = document.getElementById('signupName').value;
+                const email = document.getElementById('signupEmail').value;
+                const password = document.getElementById('signupPassword').value;
+                if (signup(name, email, password)) {
+                    alert('Account created successfully!');
+                } else {
+                    alert('User already exists!');
+                }
+            };
+            
+            // User menu handlers
+            document.getElementById('profileBtn').onclick = showProfile;
+            document.getElementById('logoutBtn').onclick = logout;
+            
+            // Video interface handlers
+            document.getElementById('backToSetsBtn').onclick = () => {
+                handleBrowserBack();
+            };
+            
+            // Test interface handlers
+            document.getElementById('prevBtn').onclick = prevQuestion;
+            document.getElementById('markIcon').onclick = toggleMarkForReview;
+            document.getElementById('pauseBtn').onclick = () => {
+                if (confirm('Are you sure you want to pause this test? Your progress will be saved and you can resume later.')) {
+                    saveTestState();
+                    goHome();
+                    alert('Test paused and saved. You can resume it later.');
+                }
+            };
+            
+            // Question panel handlers
+            document.getElementById('questionPanelBtn').onclick = () => {
+                document.getElementById('questionPanel').classList.add('active');
+            };
+            document.getElementById('closeQuestionPanel').onclick = () => {
+                document.getElementById('questionPanel').classList.remove('active');
+            };
+            
+            // Profile tab handlers
+            document.querySelectorAll('.profile-tab').forEach(tab => {
+                tab.onclick = () => {
+                    const targetTab = tab.dataset.tab;
+                    
+                    // Update active tab
+                    document.querySelectorAll('.profile-tab').forEach(t => {
+                        t.classList.remove('active', 'border-blue-500', 'text-blue-600');
+                        t.classList.add('border-transparent', 'text-gray-500');
+                    });
+                    tab.classList.add('active', 'border-blue-500', 'text-blue-600');
+                    tab.classList.remove('border-transparent', 'text-gray-500');
+                    
+                    // Show target content
+                    document.querySelectorAll('.profile-tab-content').forEach(content => {
+                        content.classList.add('hidden');
+                    });
+                    document.getElementById(`${targetTab}Tab`).classList.remove('hidden');
+                };
+            });
+            
+            // Close modals when clicking outside
+            document.getElementById('loginModal').onclick = (e) => {
+                if (e.target.id === 'loginModal') closeModals();
+            };
+            document.getElementById('signupModal').onclick = (e) => {
+                if (e.target.id === 'signupModal') closeModals();
+            };
         });
-
-        // Initialize authentication on page load
-        initializeAuth();
     </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96d2f046465954a2',t:'MTc1NDg2NTAzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'96d6ced6d2361bb6',t:'MTc1NDkwNTYwOS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
