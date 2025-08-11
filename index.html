@@ -766,6 +766,7 @@
 </div>
 
 
+
     <!-- Review Answers Screen -->
     <div id="reviewScreen" class="hidden bg-white min-h-screen">
         <div class="bg-gray-800 text-white p-3">
@@ -2491,6 +2492,9 @@
                 `;
                 optionsContainer.appendChild(optionDiv);
             });
+
+            document.getElementById('submitTestBtn').onclick = confirmSubmitTest;
+
             
             // Update navigation buttons
             document.getElementById('prevBtn').style.display = currentQuestionIndex === 0 ? 'none' : 'inline-block';
@@ -2604,17 +2608,20 @@
         }
 
         function confirmSubmitTest() {
-            const answered = Object.keys(userAnswers).length;
-            const unanswered = currentTest.questions.length - answered;
-            
-            if (unanswered > 0) {
-                if (!confirm(`You have ${unanswered} unanswered questions. Are you sure you want to submit?`)) {
-                    return;
-                }
-            }
-            
-            submitTest();
+    console.log("confirmSubmitTest function called");
+    const answered = Object.keys(userAnswers).length;
+    const unanswered = currentTest.questions.length - answered;
+
+    if (unanswered > 0) {
+        if (!confirm(`You have ${unanswered} unanswered questions. Are you sure you want to submit?`)) {
+            console.log("User chose not to submit the test");
+            return;
         }
+    }
+
+    console.log("Proceeding to submit the test");
+    submitTest();
+}
 
         function submitTest() {
     console.log("submitTest function called");
@@ -2642,7 +2649,7 @@
     const totalMarks = correct * 2 - wrong * 0.5; // 2 marks for correct, -0.5 for wrong
     const percentage = Math.round((correct / currentTest.questions.length) * 100);
     const timeTaken = Math.floor((Date.now() - testStartTime) / 1000);
-    const accuracy = answered > 0 ? Math.round((correct / Object.keys(userAnswers).length) * 100) : 0;
+    const accuracy = Object.keys(userAnswers).length > 0 ? Math.round((correct / Object.keys(userAnswers).length) * 100) : 0;
 
     console.log(`Total Marks: ${totalMarks}, Percentage: ${percentage}%, Time Taken: ${timeTaken}s, Accuracy: ${accuracy}%`);
 
