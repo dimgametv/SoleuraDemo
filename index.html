@@ -2743,6 +2743,8 @@
         const userAnswer = userAnswers[index];
         const isCorrect = userAnswer === question.correct;
         const wasAnswered = userAnswers.hasOwnProperty(index);
+        const questionKey = `${currentUser.id}_${currentTest.subject}_${currentChapter}_${currentTopic}_${index}`;
+        const isQuestionSaved = savedQuestions.some(q => q.questionKey === questionKey);
 
         const questionDiv = document.createElement('div');
         questionDiv.className = `mb-6 p-4 rounded-lg border-2 ${isCorrect ? 'border-green-200 bg-green-50' : wasAnswered ? 'border-red-200 bg-red-50' : 'border-gray-200 bg-gray-50'}`;
@@ -2781,8 +2783,8 @@
             </div>
 
             <div class="flex justify-end mt-2">
-                <button class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700 text-xs" onclick="saveQuestion(${index})">
-                    Save Question
+                <button class="bg-${isQuestionSaved ? 'green' : 'blue'}-600 text-white px-3 py-1 rounded hover:bg-${isQuestionSaved ? 'green' : 'blue'}-700 text-xs" onclick="saveQuestion(${index})">
+                    ${isQuestionSaved ? 'Saved' : 'Save Question'}
                 </button>
             </div>
         `;
@@ -2790,21 +2792,53 @@
         reviewContent.appendChild(questionDiv);
     });
 }
+
 function saveQuestion(questionIndex) {
     const question = currentTest.questions[questionIndex];
-    const savedQuestion = {
-        question: question.question,
-        options: question.options,
-        correct: question.correct,
-        explanation: question.explanation,
-        savedAt: new Date().toISOString()
-    };
+    const questionKey = `${currentUser.id}_${currentTest.subject}_${currentTest.chapter}_${currentTest.topic}_${questionIndex}`;
 
-    savedQuestions.push(savedQuestion);
-    localStorage.setItem('savedQuestions', JSON.stringify(savedQuestions));
+    // Check if the question is already saved by the user
+    const isQuestionSaved = savedQuestions.some(q => q.questionKey === questionKey);
 
-    alert('Question saved for later review!');
+    const button = event.target;
+
+    if (isQuestionSaved) {
+        // Remove the question from savedQuestions
+        savedQuestions = savedQuestions.filter(q => q.questionKey !== questionKey);
+        localStorage.setItem('savedQuestions', JSON.stringify(savedQuestions));
+
+        // Update button appearance
+        button.textContent = 'Save Question';
+        button.classList.remove('bg-green-600');
+        button.classList.add('bg-blue-600');
+
+        alert('Question removed from saved list!');
+    } else {
+        // Add the question to savedQuestions
+        const savedQuestion = {
+            question: question.question,
+            options: question.options,
+            correct: question.correct,
+            explanation: question.explanation,
+            savedAt: new Date().toISOString(),
+            subject: currentTest.subject,
+            chapter: currentChapter,
+            topic: currentTopic,
+            questionKey: questionKey
+        };
+
+        savedQuestions.push(savedQuestion);
+        localStorage.setItem('savedQuestions', JSON.stringify(savedQuestions));
+
+        // Update button appearance
+        button.textContent = 'Saved';
+        button.classList.remove('bg-blue-600');
+        button.classList.add('bg-green-600');
+
+        alert('Question saved for later review!');
+    }
 }
+
 
 
         function reattemptTest() {
@@ -2825,34 +2859,55 @@ function saveQuestion(questionIndex) {
         }
 
         function showProfile() {
-            if (!requireAuth()) return;
-            
-            pushToHistory('profile');
-            
-            hideAllViews();
-            showProfileView();
-            
-            // Update profile information
-            document.getElementById('profileName').textContent = currentUser.name;
-            document.getElementById('profileEmail').textContent = currentUser.email;
-            document.getElementById('profileInitials').textContent = currentUser.name.charAt(0).toUpperCase();
-            document.getElementById('memberSince').textContent = new Date(currentUser.id).getFullYear();
-            
-            // Calculate and display stats
-            const userTests = completedTests[currentUser.id] || {};
-            const testCount = Object.keys(userTests).length;
-            const totalScore = Object.values(userTests).reduce((sum, test) => sum + test.percentage, 0);
-            const averageScore = testCount > 0 ? Math.round(totalScore / testCount) : 0;
-            
-            document.getElementById('totalTestsTaken').textContent = testCount;
-            document.getElementById('averageScore').textContent = `${averageScore}%`;
-            document.getElementById('totalSavedQuestions').textContent = savedQuestions.length;
-            document.getElementById('studyStreak').textContent = '0'; // Placeholder
-            
-            // Load test history
-            loadTestHistory();
-        }
+    if (!requireAuth()) return;
 
+    pushToHistory('profile');
+
+    hideAllViews();
+    showProfileView();
+
+    // Update profile information
+    document.getElementById('profileName').textContent = currentUser.name;
+    document.getElementById('profileEmail').textContent = currentUser.email;
+    document.getElementById('profileInitials').textContent = currentUser.name.charAt(0).toUpperCase();
+    document.getElementById('memberSince').textContent = new Date(currentUser.id).getFullYear();
+
+    // Calculate and display stats
+    const userTests = completedTests[currentUser.id] || {};
+    const testCount = Object.keys(userTests).length;
+    const totalScore = Object.values(userTests).reduce((sum, test) => sum + test.percentage, 0);
+    const averageScore = testCount > 0 ? Math.round(totalScore / testCount) : 0;
+
+    document.getElementById('totalTestsTaken').textContent = testCount;
+    document.getElementById('averageScore').textContent = `${averageScore}%`;
+    document.getElementById('totalSavedQuestions').textContent = savedQuestions.filter(q => q.questionKey.startsWith(currentUser.id)).length;
+    document.getElementById('studyStreak').textContent = '0'; // Placeholder
+
+    // Load test history
+    loadTestHistory();
+    loadSavedQuestions();
+}
+function loadSavedQuestions() {
+    const savedQuestionsContent = document.getElementById('profileSavedQuestionsContent');
+    const userSavedQuestions = savedQuestions.filter(q => q.questionKey.startsWith(currentUser.id));
+
+    if (userSavedQuestions.length === 0) {
+        savedQuestionsContent.innerHTML = '<p class="text-gray-500 text-center py-8">No saved questions yet. Save questions during practice to review them later!</p>';
+        return;
+    }
+
+    savedQuestionsContent.innerHTML = userSavedQuestions.map((question, index) => `
+        <div class="border border-gray-200 rounded-lg p-4 mb-3">
+            <div class="flex justify-between items-start mb-2">
+                <h5 class="font-medium text-gray-800">${question.subject} - ${question.chapter}</h5>
+                <span class="text-xs text-gray-500">${new Date(question.savedAt).toLocaleDateString()}</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <p class="text-sm text-gray-600">${question.question}</p>
+            </div>
+        </div>
+    `).join('');
+}
         function loadTestHistory() {
             const historyContent = document.getElementById('testHistoryContent');
             const userTests = completedTests[currentUser.id] || {};
