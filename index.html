@@ -733,37 +733,38 @@
 
     <!-- Result Screen -->
     <div id="resultScreen" class="hidden bg-white min-h-screen">
-        <div class="container mx-auto px-4 py-8">
-            <div class="max-w-2xl mx-auto text-center">
-                <h2 class="text-3xl font-bold text-gray-800 mb-6">Test Results</h2>
-                <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg p-6 mb-6">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <p class="text-sm opacity-90">Score</p>
-                            <p id="finalScore" class="text-2xl font-bold">0/25</p>
-                        </div>
-                        <div>
-                            <p class="text-sm opacity-90">Percentage</p>
-                            <p id="finalPercentage" class="text-2xl font-bold">0%</p>
-                        </div>
-                        <div>
-                            <p class="text-sm opacity-90">Time Taken</p>
-                            <p id="timeTaken" class="text-lg font-semibold">00:00</p>
-                        </div>
-                        <div>
-                            <p class="text-sm opacity-90">Accuracy</p>
-                            <p id="accuracy" class="text-lg font-semibold">0%</p>
-                        </div>
+    <div class="container mx-auto px-4 py-8">
+        <div class="max-w-2xl mx-auto text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-6">Test Results</h2>
+            <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg p-6 mb-6">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm opacity-90">Score</p>
+                        <p id="finalScore" class="text-2xl font-bold">0/25</p>
+                    </div>
+                    <div>
+                        <p class="text-sm opacity-90">Percentage</p>
+                        <p id="finalPercentage" class="text-2xl font-bold">0%</p>
+                    </div>
+                    <div>
+                        <p class="text-sm opacity-90">Time Taken</p>
+                        <p id="timeTaken" class="text-lg font-semibold">00:00</p>
+                    </div>
+                    <div>
+                        <p class="text-sm opacity-90">Accuracy</p>
+                        <p id="accuracy" class="text-lg font-semibold">0%</p>
                     </div>
                 </div>
-                <div class="flex flex-col sm:flex-row gap-3 justify-center">
-                    <button onclick="goHome()" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">Back to Home</button>
-                    <button onclick="reviewAnswers()" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700">Review Answers</button>
-                    <button onclick="reattemptTest()" class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700">Reattempt Test</button>
-                </div>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+                <button onclick="goHome()" class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700">Back to Home</button>
+                <button onclick="reviewAnswers()" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700">Review Answers</button>
+                <button onclick="reattemptTest()" class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700">Reattempt Test</button>
             </div>
         </div>
     </div>
+</div>
+
 
     <!-- Review Answers Screen -->
     <div id="reviewScreen" class="hidden bg-white min-h-screen">
@@ -898,12 +899,12 @@
         let isNavigatingBack = false;
         
         function pushToHistory(page, data = {}) {
-            if (!isNavigatingBack) {
-                navigationHistory.push(page);
-                const stateData = { page, ...data };
-                history.pushState(stateData, '', `#${page}`);
-            }
-        }
+    if (!isNavigatingBack) {
+        navigationHistory.push(page);
+        const stateData = { page, ...data };
+        history.pushState(stateData, '', `#${page}`);
+    }
+}
         
         function handleBrowserBack() {
             isNavigatingBack = true;
@@ -960,12 +961,12 @@
         }
         
         function hideAllViews() {
-            document.querySelectorAll('[id$="View"], [id$="Screen"], [id$="Interface"]').forEach(el => {
-                el.classList.add('hidden');
-            });
-            document.getElementById('mainContent').classList.add('hidden');
-            document.body.classList.remove('test-active', 'review-active', 'video-active');
-        }
+    document.querySelectorAll('[id$="View"], [id$="Screen"], [id$="Interface"]').forEach(el => {
+        el.classList.add('hidden');
+    });
+    document.getElementById('mainContent').classList.add('hidden');
+    document.body.classList.remove('test-active', 'review-active', 'video-active');
+}
         
         function showMainContent() {
             document.getElementById('mainContent').classList.remove('hidden');
@@ -1002,8 +1003,8 @@
         }
         
         function showResultScreen() {
-            document.getElementById('resultScreen').classList.remove('hidden');
-        }
+    document.getElementById('resultScreen').classList.remove('hidden');
+}
         
         function showReviewScreen() {
             document.getElementById('reviewScreen').classList.remove('hidden');
@@ -2616,64 +2617,71 @@
         }
 
         function submitTest() {
-            clearInterval(timerInterval);
-            
-            // Calculate results
-            let correct = 0;
-            let wrong = 0;
-            let unanswered = 0;
-            
-            currentTest.questions.forEach((question, index) => {
-                if (userAnswers.hasOwnProperty(index)) {
-                    if (userAnswers[index] === question.correct) {
-                        correct++;
-                    } else {
-                        wrong++;
-                    }
-                } else {
-                    unanswered++;
-                }
-            });
-            
-            const totalMarks = correct * 2 - wrong * 0.5; // 2 marks for correct, -0.5 for wrong
-            const percentage = Math.round((correct / currentTest.questions.length) * 100);
-            const timeTaken = Math.floor((Date.now() - testStartTime) / 1000);
-            const accuracy = answered > 0 ? Math.round((correct / Object.keys(userAnswers).length) * 100) : 0;
-            
-            // Save test result
-            if (currentUser) {
-                const testKey = `${currentTest.subject}_${currentTest.chapter}_${currentTest.topic}_${currentTest.setNumber}`;
-                
-                if (!completedTests[currentUser.id]) {
-                    completedTests[currentUser.id] = {};
-                }
-                
-                completedTests[currentUser.id][testKey] = {
-                    score: correct,
-                    totalQuestions: currentTest.questions.length,
-                    percentage: percentage,
-                    timeTaken: timeTaken,
-                    accuracy: accuracy,
-                    completedAt: Date.now(),
-                    subject: currentTest.subject,
-                    chapter: currentTest.chapter,
-                    topic: currentTest.topic,
-                    setNumber: currentTest.setNumber
-                };
-                
-                localStorage.setItem('completedTests', JSON.stringify(completedTests));
+    console.log("submitTest function called");
+    clearInterval(timerInterval);
+
+    // Calculate results
+    let correct = 0;
+    let wrong = 0;
+    let unanswered = 0;
+
+    currentTest.questions.forEach((question, index) => {
+        if (userAnswers.hasOwnProperty(index)) {
+            if (userAnswers[index] === question.correct) {
+                correct++;
+            } else {
+                wrong++;
             }
-            
-            // Show results
-            pushToHistory('result');
-            hideAllViews();
-            showResultScreen();
-            
-            document.getElementById('finalScore').textContent = `${correct}/${currentTest.questions.length}`;
-            document.getElementById('finalPercentage').textContent = `${percentage}%`;
-            document.getElementById('timeTaken').textContent = formatTime(timeTaken);
-            document.getElementById('accuracy').textContent = `${accuracy}%`;
+        } else {
+            unanswered++;
         }
+    });
+
+    console.log(`Correct: ${correct}, Wrong: ${wrong}, Unanswered: ${unanswered}`);
+
+    const totalMarks = correct * 2 - wrong * 0.5; // 2 marks for correct, -0.5 for wrong
+    const percentage = Math.round((correct / currentTest.questions.length) * 100);
+    const timeTaken = Math.floor((Date.now() - testStartTime) / 1000);
+    const accuracy = answered > 0 ? Math.round((correct / Object.keys(userAnswers).length) * 100) : 0;
+
+    console.log(`Total Marks: ${totalMarks}, Percentage: ${percentage}%, Time Taken: ${timeTaken}s, Accuracy: ${accuracy}%`);
+
+    // Save test result
+    if (currentUser) {
+        const testKey = `${currentTest.subject}_${currentTest.chapter}_${currentTest.topic}_${currentTest.setNumber}`;
+
+        if (!completedTests[currentUser.id]) {
+            completedTests[currentUser.id] = {};
+        }
+
+        completedTests[currentUser.id][testKey] = {
+            score: correct,
+            totalQuestions: currentTest.questions.length,
+            percentage: percentage,
+            timeTaken: timeTaken,
+            accuracy: accuracy,
+            completedAt: Date.now(),
+            subject: currentTest.subject,
+            chapter: currentTest.chapter,
+            topic: currentTest.topic,
+            setNumber: currentTest.setNumber
+        };
+
+        localStorage.setItem('completedTests', JSON.stringify(completedTests));
+    }
+
+    // Show results
+    pushToHistory('result');
+    hideAllViews();
+    showResultScreen();
+
+    document.getElementById('finalScore').textContent = `${correct}/${currentTest.questions.length}`;
+    document.getElementById('finalPercentage').textContent = `${percentage}%`;
+    document.getElementById('timeTaken').textContent = formatTime(timeTaken);
+    document.getElementById('accuracy').textContent = `${accuracy}%`;
+}
+
+
 
         function formatTime(seconds) {
             const minutes = Math.floor(seconds / 60);
