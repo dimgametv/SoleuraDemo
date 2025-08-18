@@ -1861,327 +1861,1010 @@ Tips:
 
         // Real questions database
         const questionsDatabase = {
-            english: {
-                'Grammar Fundamentals': [
-                    {
-                        question: "Choose the correct form of the verb: 'She _____ to the market every day.'",
-                        options: ["go", "goes", "going", "gone"],
-                        correct: 1,
-                        explanation: "With third person singular subjects (she, he, it), we use 'goes' in simple present tense."
-                    },
-                    {
-                        question: "Identify the correct sentence:",
-                        options: ["I have went to school", "I have gone to school", "I have go to school", "I have going to school"],
-                        correct: 1,
-                        explanation: "The past participle of 'go' is 'gone', used with 'have' in present perfect tense."
-                    },
-                    {
-                        question: "Choose the correct article: '_____ honest man is respected by all.'",
-                        options: ["A", "An", "The", "No article"],
-                        correct: 1,
-                        explanation: "'An' is used before words beginning with vowel sounds. 'Honest' starts with a silent 'h', so it has a vowel sound."
-                    },
-                    {
-                        question: "Which sentence is grammatically correct?",
-                        options: ["Neither of the boys are present", "Neither of the boys is present", "Neither of the boy are present", "Neither of the boy is present"],
-                        correct: 1,
-                        explanation: "'Neither' is singular and takes a singular verb 'is'. Also, 'boys' (plural) is correct after 'of the'."
-                    },
-                    {
-                        question: "Choose the correct preposition: 'She is good _____ mathematics.'",
-                        options: ["in", "at", "on", "with"],
-                        correct: 1,
-                        explanation: "We use 'at' with subjects or skills. 'Good at mathematics' is the correct usage."
-                    },
-                    {
-                        question: "Identify the correct passive voice: 'They are building a new house.'",
-                        options: ["A new house is being built by them", "A new house is built by them", "A new house was being built by them", "A new house has been built by them"],
-                        correct: 0,
-                        explanation: "Present continuous active voice 'are building' becomes 'is being built' in passive voice."
-                    },
-                    {
-                        question: "Choose the correct form: 'If I _____ rich, I would help the poor.'",
-                        options: ["am", "was", "were", "will be"],
-                        correct: 2,
-                        explanation: "In second conditional (hypothetical situations), we use 'were' with all subjects after 'if'."
-                    },
-                    {
-                        question: "Which is the correct comparative form of 'good'?",
-                        options: ["gooder", "more good", "better", "best"],
-                        correct: 2,
-                        explanation: "'Good' has an irregular comparative form 'better' and superlative form 'best'."
-                    },
-                    {
-                        question: "Choose the correct sentence:",
-                        options: ["I have been living here since five years", "I have been living here for five years", "I am living here since five years", "I was living here for five years"],
-                        correct: 1,
-                        explanation: "We use 'for' with a period of time and present perfect continuous for actions continuing from past to present."
-                    },
-                    {
-                        question: "Identify the correct use of apostrophe:",
-                        options: ["The boy's are playing", "The boys' are playing", "The boys are playing", "The boy's' are playing"],
-                        correct: 2,
-                        explanation: "No apostrophe is needed here as 'boys' is simply a plural noun, not showing possession."
-                    }
-                ],
-                'Vocabulary Building': [
-                    {
-                        question: "Choose the synonym of 'Abundant':",
-                        options: ["Scarce", "Plentiful", "Limited", "Rare"],
-                        correct: 1,
-                        explanation: "'Abundant' means existing in large quantities; plentiful."
-                    },
-                    {
-                        question: "What is the antonym of 'Benevolent'?",
-                        options: ["Kind", "Generous", "Malevolent", "Charitable"],
-                        correct: 2,
-                        explanation: "'Benevolent' means kind and generous. Its antonym is 'malevolent' meaning evil or harmful."
-                    },
-                    {
-                        question: "Choose the correct meaning of 'Ephemeral':",
-                        options: ["Permanent", "Lasting for a very short time", "Eternal", "Continuous"],
-                        correct: 1,
-                        explanation: "'Ephemeral' means lasting for a very short time; transitory."
-                    },
-                    {
-                        question: "Select the synonym of 'Meticulous':",
-                        options: ["Careless", "Precise", "Hasty", "Rough"],
-                        correct: 1,
-                        explanation: "'Meticulous' means showing great attention to detail; very careful and precise."
-                    },
-                    {
-                        question: "What does 'Ubiquitous' mean?",
-                        options: ["Rare", "Present everywhere", "Ancient", "Modern"],
-                        correct: 1,
-                        explanation: "'Ubiquitous' means present, appearing, or found everywhere."
-                    },
-                    {
-                        question: "Choose the antonym of 'Verbose':",
-                        options: ["Talkative", "Wordy", "Concise", "Lengthy"],
-                        correct: 2,
-                        explanation: "'Verbose' means using more words than needed. Its antonym is 'concise' meaning brief and clear."
-                    },
-                    {
-                        question: "What is the meaning of 'Pragmatic'?",
-                        options: ["Idealistic", "Practical", "Theoretical", "Emotional"],
-                        correct: 1,
-                        explanation: "'Pragmatic' means dealing with things sensibly and realistically; practical."
-                    },
-                    {
-                        question: "Select the synonym of 'Arduous':",
-                        options: ["Easy", "Simple", "Difficult", "Pleasant"],
-                        correct: 2,
-                        explanation: "'Arduous' means involving or requiring strenuous effort; difficult and tiring."
-                    },
-                    {
-                        question: "What does 'Serendipity' mean?",
-                        options: ["Bad luck", "A pleasant surprise", "Planned event", "Disaster"],
-                        correct: 1,
-                        explanation: "'Serendipity' means the occurrence of events by chance in a happy or beneficial way."
-                    },
-                    {
-                        question: "Choose the antonym of 'Candid':",
-                        options: ["Honest", "Frank", "Deceptive", "Open"],
-                        correct: 2,
-                        explanation: "'Candid' means truthful and straightforward. Its antonym is 'deceptive' meaning misleading."
-                    }
-                ]
+    english: {
+        'Spot the Error': [
+            {
+                question: "Choose the correct form of the verb: 'She _____ to the market every day.'",
+                options: ["go", "goes", "going", "gone"],
+                correct: 1,
+                explanation: "With third person singular subjects (she, he, it), we use 'goes' in simple present tense."
             },
-            reasoning: {
-                'Logical Reasoning': [
-                    {
-                        question: "If all roses are flowers and some flowers are red, which conclusion is definitely true?",
-                        options: ["All roses are red", "Some roses are red", "No roses are red", "Some roses may be red"],
-                        correct: 3,
-                        explanation: "We cannot conclude that roses are definitely red, but it's possible that some roses may be red."
-                    },
-                    {
-                        question: "In a certain code, COMPUTER is written as RFUVQNPC. How is MEDICINE written in that code?",
-                        options: ["EOJDEJFM", "EOJDJEFM", "NFEJDJOF", "NFEJDEJF"],
-                        correct: 2,
-                        explanation: "Each letter is replaced by the letter that comes after it in the alphabet. M→N, E→F, D→E, I→J, C→D, I→J, N→O, E→F."
-                    },
-                    {
-                        question: "Find the missing number in the series: 2, 6, 12, 20, 30, ?",
-                        options: ["40", "42", "44", "46"],
-                        correct: 1,
-                        explanation: "The differences are 4, 6, 8, 10, so the next difference should be 12. 30 + 12 = 42."
-                    },
-                    {
-                        question: "If A is taller than B, B is taller than C, and C is taller than D, who is the shortest?",
-                        options: ["A", "B", "C", "D"],
-                        correct: 3,
-                        explanation: "Following the chain A > B > C > D, D is the shortest person."
-                    },
-                    {
-                        question: "Which number should come next in the sequence: 1, 4, 9, 16, 25, ?",
-                        options: ["30", "35", "36", "49"],
-                        correct: 2,
-                        explanation: "These are perfect squares: 1², 2², 3², 4², 5², so next is 6² = 36."
-                    },
-                    {
-                        question: "If FRIEND is coded as HUMJTK, then CANDLE is coded as:",
-                        options: ["EDRIRL", "ECQFNG", "DCPMFG", "ECQGMF"],
-                        correct: 1,
-                        explanation: "Each letter is moved 2 positions forward in the alphabet. C→E, A→C, N→P, D→F, L→N, E→G."
-                    },
-                    {
-                        question: "In a row of children, Ravi is 9th from the left and 38th from the right. How many children are there in the row?",
-                        options: ["45", "46", "47", "48"],
-                        correct: 1,
-                        explanation: "Total children = Position from left + Position from right - 1 = 9 + 38 - 1 = 46."
-                    },
-                    {
-                        question: "If today is Wednesday, what day will it be 100 days from now?",
-                        options: ["Monday", "Tuesday", "Wednesday", "Friday"],
-                        correct: 3,
-                        explanation: "100 ÷ 7 = 14 remainder 2. So 100 days from Wednesday will be Friday (2 days after Wednesday)."
-                    },
-                    {
-                        question: "Find the odd one out: 3, 5, 7, 12, 13, 17, 19",
-                        options: ["3", "5", "12", "19"],
-                        correct: 2,
-                        explanation: "All numbers except 12 are prime numbers. 12 is composite (divisible by 2, 3, 4, 6)."
-                    },
-                    {
-                        question: "If EARTH is written as 51238, how is HEART written?",
-                        options: ["85123", "81523", "85132", "81532"],
-                        correct: 1,
-                        explanation: "E=5, A=1, R=2, T=3, H=8. So HEART = H(8) + E(5) + A(1) + R(2) + T(3) = 81523."
-                    }
-                ]
+            {
+                question: "Identify the correct sentence:",
+                options: ["I have went to school", "I have gone to school", "I have go to school", "I have going to school"],
+                correct: 1,
+                explanation: "The past participle of 'go' is 'gone', used with 'have' in present perfect tense."
             },
-            general: {
-                'Indian History': [
-                    {
-                        question: "Who was the first President of India?",
-                        options: ["Jawaharlal Nehru", "Dr. Rajendra Prasad", "Dr. A.P.J. Abdul Kalam", "Dr. S. Radhakrishnan"],
-                        correct: 1,
-                        explanation: "Dr. Rajendra Prasad was the first President of India, serving from 1950 to 1962."
-                    },
-                    {
-                        question: "The Quit India Movement was launched in which year?",
-                        options: ["1940", "1942", "1944", "1946"],
-                        correct: 1,
-                        explanation: "The Quit India Movement was launched by Mahatma Gandhi on August 8, 1942."
-                    },
-                    {
-                        question: "Who founded the Mauryan Empire?",
-                        options: ["Ashoka", "Chandragupta Maurya", "Bindusara", "Bimbisara"],
-                        correct: 1,
-                        explanation: "Chandragupta Maurya founded the Mauryan Empire around 321 BCE with the help of Chanakya."
-                    },
-                    {
-                        question: "The Battle of Plassey was fought in which year?",
-                        options: ["1757", "1764", "1767", "1770"],
-                        correct: 0,
-                        explanation: "The Battle of Plassey was fought on June 23, 1757, between the British East India Company and the Nawab of Bengal."
-                    },
-                    {
-                        question: "Who was known as the 'Iron Man of India'?",
-                        options: ["Jawaharlal Nehru", "Mahatma Gandhi", "Sardar Vallabhbhai Patel", "Subhas Chandra Bose"],
-                        correct: 2,
-                        explanation: "Sardar Vallabhbhai Patel was known as the 'Iron Man of India' for his role in the integration of princely states."
-                    },
-                    {
-                        question: "The Harappan Civilization belonged to which age?",
-                        options: ["Stone Age", "Bronze Age", "Iron Age", "Copper Age"],
-                        correct: 1,
-                        explanation: "The Harappan Civilization (2600-1900 BCE) belonged to the Bronze Age, known for its advanced urban planning."
-                    },
-                    {
-                        question: "Who wrote 'Hind Swaraj'?",
-                        options: ["Bal Gangadhar Tilak", "Mahatma Gandhi", "Jawaharlal Nehru", "Rabindranath Tagore"],
-                        correct: 1,
-                        explanation: "Mahatma Gandhi wrote 'Hind Swaraj' in 1909, outlining his vision of Indian self-rule."
-                    },
-                    {
-                        question: "The First War of Indian Independence took place in:",
-                        options: ["1857", "1858", "1859", "1860"],
-                        correct: 0,
-                        explanation: "The First War of Indian Independence (Sepoy Mutiny) began on May 10, 1857."
-                    },
-                    {
-                        question: "Who was the last Mughal Emperor?",
-                        options: ["Akbar Shah II", "Bahadur Shah Zafar", "Shah Alam II", "Muhammad Shah"],
-                        correct: 1,
-                        explanation: "Bahadur Shah Zafar was the last Mughal Emperor, who was exiled to Burma after the 1857 revolt."
-                    },
-                    {
-                        question: "The Indian National Congress was founded in which year?",
-                        options: ["1883", "1885", "1887", "1889"],
-                        correct: 1,
-                        explanation: "The Indian National Congress was founded in 1885 by Allan Octavian Hume."
-                    }
-                ]
+            {
+                question: "Choose the correct article: '_____ honest man is respected by all.'",
+                options: ["A", "An", "The", "No article"],
+                correct: 1,
+                explanation: "'An' is used before words beginning with vowel sounds. 'Honest' starts with a silent 'h', so it has a vowel sound."
             },
-            shorthand: {
-                'Basic Shorthand': {
-                    'Volume 1': [
-                        {
-                            question: "In Pitman shorthand, which stroke represents the sound 'P'?",
-                            options: ["Light downward stroke", "Heavy downward stroke", "Light upward stroke", "Heavy upward stroke"],
-                            correct: 0,
-                            explanation: "In Pitman shorthand, 'P' is represented by a light downward stroke."
-                        },
-                        {
-                            question: "What does a dot placed after a consonant indicate in shorthand?",
-                            options: ["Vowel 'a'", "Vowel 'e'", "Vowel 'i'", "Vowel 'o'"],
-                            correct: 0,
-                            explanation: "A dot placed after a consonant indicates the vowel 'a' in Pitman shorthand."
-                        },
-                        {
-                            question: "Which shorthand system uses thickness of strokes to distinguish between sounds?",
-                            options: ["Gregg", "Pitman", "Teeline", "Speedwriting"],
-                            correct: 1,
-                            explanation: "Pitman shorthand uses thick and thin strokes to distinguish between voiced and voiceless consonants."
-                        },
-                        {
-                            question: "In shorthand, what is the term for joining strokes together?",
-                            options: ["Blending", "Joining", "Phrasing", "Connecting"],
-                            correct: 2,
-                            explanation: "Phrasing is the technique of joining shorthand outlines together to increase writing speed."
-                        },
-                        {
-                            question: "What does a dash placed above a consonant represent?",
-                            options: ["Vowel 'a'", "Vowel 'e'", "Vowel 'i'", "Vowel 'o'"],
-                            correct: 1,
-                            explanation: "A dash placed above a consonant represents the vowel 'e' in Pitman shorthand."
-                        },
-                        {
-                            question: "Which position indicates the vowel 'i' in Pitman shorthand?",
-                            options: ["Dot before consonant", "Dot after consonant", "Dash before consonant", "Dash after consonant"],
-                            correct: 2,
-                            explanation: "A dash placed before a consonant indicates the vowel 'i' in Pitman shorthand."
-                        },
-                        {
-                            question: "What is the shorthand outline for the word 'the'?",
-                            options: ["T-H-E written separately", "A single tick mark", "TH joined with E", "A special symbol"],
-                            correct: 3,
-                            explanation: "The word 'the' has a special abbreviated symbol in shorthand for speed and efficiency."
-                        },
-                        {
-                            question: "In shorthand dictation, what speed is typically required for stenographer exams?",
-                            options: ["60 wpm", "80 wpm", "100 wpm", "120 wpm"],
-                            correct: 1,
-                            explanation: "Most stenographer exams require a minimum speed of 80 words per minute in shorthand dictation."
-                        },
-                        {
-                            question: "What does the term 'transcription' mean in shorthand?",
-                            options: ["Writing shorthand", "Reading shorthand aloud", "Converting shorthand to longhand", "Taking dictation"],
-                            correct: 2,
-                            explanation: "Transcription is the process of converting shorthand notes back into normal longhand writing."
-                        },
-                        {
-                            question: "Which vowel is represented by a dot placed before a consonant?",
-                            options: ["a", "e", "i", "o"],
-                            correct: 3,
-                            explanation: "A dot placed before a consonant represents the vowel 'o' in Pitman shorthand."
-                        }
-                    ]
-                }
+            {
+                question: "Which sentence is grammatically correct?",
+                options: ["Neither of the boys are present", "Neither of the boys is present", "Neither of the boy are present", "Neither of the boy is present"],
+                correct: 1,
+                explanation: "'Neither' is singular and takes a singular verb 'is'. Also, 'boys' (plural) is correct after 'of the'."
+            },
+            {
+                question: "Choose the correct preposition: 'She is good _____ mathematics.'",
+                options: ["in", "at", "on", "with"],
+                correct: 1,
+                explanation: "We use 'at' with subjects or skills. 'Good at mathematics' is the correct usage."
+            },
+            {
+                question: "Identify the correct passive voice: 'They are building a new house.'",
+                options: ["A new house is being built by them", "A new house is built by them", "A new house was being built by them", "A new house has been built by them"],
+                correct: 0,
+                explanation: "Present continuous active voice 'are building' becomes 'is being built' in passive voice."
+            },
+            {
+                question: "Choose the correct form: 'If I _____ rich, I would help the poor.'",
+                options: ["am", "was", "were", "will be"],
+                correct: 2,
+                explanation: "In second conditional (hypothetical situations), we use 'were' with all subjects after 'if'."
+            },
+            {
+                question: "Which is the correct comparative form of 'good'?",
+                options: ["gooder", "more good", "better", "best"],
+                correct: 2,
+                explanation: "'Good' has an irregular comparative form 'better' and superlative form 'best'."
+            },
+            {
+                question: "Choose the correct sentence:",
+                options: ["I have been living here since five years", "I have been living here for five years", "I am living here since five years", "I was living here for five years"],
+                correct: 1,
+                explanation: "We use 'for' with a period of time and present perfect continuous for actions continuing from past to present."
+            },
+            {
+                question: "Identify the correct use of apostrophe:",
+                options: ["The boy's are playing", "The boys' are playing", "The boys are playing", "The boy's' are playing"],
+                correct: 2,
+                explanation: "No apostrophe is needed here as 'boys' is simply a plural noun, not showing possession."
             }
-        };
+        ],
+        'Sentence Improvement': [
+            {
+                question: "Choose the synonym of 'Abundant':",
+                options: ["Scarce", "Plentiful", "Limited", "Rare"],
+                correct: 1,
+                explanation: "'Abundant' means existing in large quantities; plentiful."
+            },
+            {
+                question: "What is the antonym of 'Benevolent'?",
+                options: ["Kind", "Generous", "Malevolent", "Charitable"],
+                correct: 2,
+                explanation: "'Benevolent' means kind and generous. Its antonym is 'malevolent' meaning evil or harmful."
+            },
+            {
+                question: "Choose the correct meaning of 'Ephemeral':",
+                options: ["Permanent", "Lasting for a very short time", "Eternal", "Continuous"],
+                correct: 1,
+                explanation: "'Ephemeral' means lasting for a very short time; transitory."
+            },
+            {
+                question: "Select the synonym of 'Meticulous':",
+                options: ["Careless", "Precise", "Hasty", "Rough"],
+                correct: 1,
+                explanation: "'Meticulous' means showing great attention to detail; very careful and precise."
+            },
+            {
+                question: "What does 'Ubiquitous' mean?",
+                options: ["Rare", "Present everywhere", "Ancient", "Modern"],
+                correct: 1,
+                explanation: "'Ubiquitous' means present, appearing, or found everywhere."
+            },
+            {
+                question: "Choose the antonym of 'Verbose':",
+                options: ["Talkative", "Wordy", "Concise", "Lengthy"],
+                correct: 2,
+                explanation: "'Verbose' means using more words than needed. Its antonym is 'concise' meaning brief and clear."
+            },
+            {
+                question: "What is the meaning of 'Pragmatic'?",
+                options: ["Idealistic", "Practical", "Theoretical", "Emotional"],
+                correct: 1,
+                explanation: "'Pragmatic' means dealing with things sensibly and realistically; practical."
+            },
+            {
+                question: "Select the synonym of 'Arduous':",
+                options: ["Easy", "Simple", "Difficult", "Pleasant"],
+                correct: 2,
+                explanation: "'Arduous' means involving or requiring strenuous effort; difficult and tiring."
+            },
+            {
+                question: "What does 'Serendipity' mean?",
+                options: ["Bad luck", "A pleasant surprise", "Planned event", "Disaster"],
+                correct: 1,
+                explanation: "'Serendipity' means the occurrence of events by chance in a happy or beneficial way."
+            },
+            {
+                question: "Choose the antonym of 'Candid':",
+                options: ["Honest", "Frank", "Deceptive", "Open"],
+                correct: 2,
+                explanation: "'Candid' means truthful and straightforward. Its antonym is 'deceptive' meaning misleading."
+            }
+        ],
+        'Active Passive': [
+            {
+                question: "Convert the following sentence to passive voice: 'She writes a letter.'",
+                options: ["A letter is written by her", "A letter was written by her", "A letter has been written by her", "A letter is being written by her"],
+                correct: 0,
+                explanation: "The correct passive form of 'She writes a letter' is 'A letter is written by her'."
+            },
+            {
+                question: "Convert the following sentence to passive voice: 'They are building a house.'",
+                options: ["A house is being built by them", "A house was being built by them", "A house has been built by them", "A house is built by them"],
+                correct: 0,
+                explanation: "The correct passive form of 'They are building a house' is 'A house is being built by them'."
+            },
+            {
+                question: "Convert the following sentence to passive voice: 'He will finish the work.'",
+                options: ["The work will be finished by him", "The work will have been finished by him", "The work is finished by him", "The work was finished by him"],
+                correct: 0,
+                explanation: "The correct passive form of 'He will finish the work' is 'The work will be finished by him'."
+            },
+            {
+                question: "Convert the following sentence to passive voice: 'The teacher praised the student.'",
+                options: ["The student was praised by the teacher", "The student is praised by the teacher", "The student has been praised by the teacher", "The student had been praised by the teacher"],
+                correct: 0,
+                explanation: "The correct passive form of 'The teacher praised the student' is 'The student was praised by the teacher'."
+            },
+            {
+                question: "Convert the following sentence to passive voice: 'She has completed the project.'",
+                options: ["The project has been completed by her", "The project had been completed by her", "The project is completed by her", "The project was completed by her"],
+                correct: 0,
+                explanation: "The correct passive form of 'She has completed the project' is 'The project has been completed by her'."
+            },
+            {
+                question: "Convert the following sentence to passive voice: 'They will have completed the task.'",
+                options: ["The task will have been completed by them", "The task will be completed by them", "The task is completed by them", "The task was completed by them"],
+                correct: 0,
+                explanation: "The correct passive form of 'They will have completed the task' is 'The task will have been completed by them'."
+            },
+            {
+                question: "Convert the following sentence to passive voice: 'He is reading a book.'",
+                options: ["A book is being read by him", "A book is read by him", "A book has been read by him", "A book was being read by him"],
+                correct: 0,
+                explanation: "The correct passive form of 'He is reading a book' is 'A book is being read by him'."
+            },
+            {
+                question: "Convert the following sentence to passive voice: 'She had written a letter.'",
+                options: ["A letter had been written by her", "A letter was written by her", "A letter has been written by her", "A letter is written by her"],
+                correct: 0,
+                explanation: "The correct passive form of 'She had written a letter' is 'A letter had been written by her'."
+            },
+            {
+                question: "Convert the following sentence to passive voice: 'They can solve the problem.'",
+                options: ["The problem can be solved by them", "The problem could be solved by them", "The problem is solved by them", "The problem was solved by them"],
+                correct: 0,
+                explanation: "The correct passive form of 'They can solve the problem' is 'The problem can be solved by them'."
+            },
+            {
+                question: "Convert the following sentence to passive voice: 'He must finish the work.'",
+                options: ["The work must be finished by him", "The work must have been finished by him", "The work is finished by him", "The work was finished by him"],
+                correct: 0,
+                explanation: "The correct passive form of 'He must finish the work' is 'The work must be finished by him'."
+            }
+        ],
+        'Direct Indirect': [
+            {
+                question: "Convert the following sentence to indirect speech: 'She said, \"I am happy.\"'",
+                options: ["She said that she was happy", "She said that she is happy", "She said that I was happy", "She said that I am happy"],
+                correct: 0,
+                explanation: "The correct indirect form of 'She said, \"I am happy\"' is 'She said that she was happy'."
+            },
+            {
+                question: "Convert the following sentence to indirect speech: 'He said, \"I will go.\"'",
+                options: ["He said that he would go", "He said that he will go", "He said that I would go", "He said that I will go"],
+                correct: 0,
+                explanation: "The correct indirect form of 'He said, \"I will go\"' is 'He said that he would go'."
+            },
+            {
+                question: "Convert the following sentence to indirect speech: 'She said, \"I have finished my work.\"'",
+                options: ["She said that she had finished her work", "She said that she has finished her work", "She said that I had finished my work", "She said that I have finished my work"],
+                correct: 0,
+                explanation: "The correct indirect form of 'She said, \"I have finished my work\"' is 'She said that she had finished her work'."
+            },
+            {
+                question: "Convert the following sentence to indirect speech: 'He said, \"I am going to the market.\"'",
+                options: ["He said that he was going to the market", "He said that he is going to the market", "He said that I was going to the market", "He said that I am going to the market"],
+                correct: 0,
+                explanation: "The correct indirect form of 'He said, \"I am going to the market\"' is 'He said that he was going to the market'."
+            },
+            {
+                question: "Convert the following sentence to indirect speech: 'She said, \"I can help you.\"'",
+                options: ["She said that she could help me", "She said that she can help me", "She said that I could help you", "She said that I can help you"],
+                correct: 0,
+                explanation: "The correct indirect form of 'She said, \"I can help you\"' is 'She said that she could help me'."
+            },
+            {
+                question: "Convert the following sentence to indirect speech: 'He said, \"I have been working hard.\"'",
+                options: ["He said that he had been working hard", "He said that he has been working hard", "He said that I had been working hard", "He said that I have been working hard"],
+                correct: 0,
+                explanation: "The correct indirect form of 'He said, \"I have been working hard\"' is 'He said that he had been working hard'."
+            },
+            {
+                question: "Convert the following sentence to indirect speech: 'She said, \"I will have finished the work by tomorrow.\"'",
+                options: ["She said that she would have finished the work by the next day", "She said that she will have finished the work by tomorrow", "She said that I would have finished the work by the next day", "She said that I will have finished the work by tomorrow"],
+                correct: 0,
+                explanation: "The correct indirect form of 'She said, \"I will have finished the work by tomorrow\"' is 'She said that she would have finished the work by the next day'."
+            },
+            {
+                question: "Convert the following sentence to indirect speech: 'He said, \"I must go now.\"'",
+                options: ["He said that he had to go then", "He said that he must go now", "He said that I had to go then", "He said that I must go now"],
+                correct: 0,
+                explanation: "The correct indirect form of 'He said, \"I must go now\"' is 'He said that he had to go then'."
+            },
+            {
+                question: "Convert the following sentence to indirect speech: 'She said, \"I may come tomorrow.\"'",
+                options: ["She said that she might come the next day", "She said that she may come tomorrow", "She said that I might come the next day", "She said that I may come tomorrow"],
+                correct: 0,
+                explanation: "The correct indirect form of 'She said, \"I may come tomorrow\"' is 'She said that she might come the next day'."
+            },
+            {
+                question: "Convert the following sentence to indirect speech: 'He said, \"I am writing a letter.\"'",
+                options: ["He said that he was writing a letter", "He said that he is writing a letter", "He said that I was writing a letter", "He said that I am writing a letter"],
+                correct: 0,
+                explanation: "The correct indirect form of 'He said, \"I am writing a letter\"' is 'He said that he was writing a letter'."
+            }
+        ],
+        'Fill in the Blank': [
+            {
+                question: "Fill in the blank: 'She is _____ to school every day.'",
+                options: ["go", "goes", "going", "gone"],
+                correct: 1,
+                explanation: "The correct form is 'goes' for the third person singular subject 'she'."
+            },
+            {
+                question: "Fill in the blank: 'They _____ the movie last night.'",
+                options: ["watch", "watches", "watched", "watching"],
+                correct: 2,
+                explanation: "The correct past tense form is 'watched'."
+            },
+            {
+                question: "Fill in the blank: 'He _____ a book every week.'",
+                options: ["read", "reads", "reading", "red"],
+                correct: 1,
+                explanation: "The correct form is 'reads' for the third person singular subject 'he'."
+            },
+            {
+                question: "Fill in the blank: 'We _____ to the park yesterday.'",
+                options: ["go", "goes", "went", "gone"],
+                correct: 2,
+                explanation: "The correct past tense form is 'went'."
+            },
+            {
+                question: "Fill in the blank: 'She _____ her homework before dinner.'",
+                options: ["finish", "finishes", "finished", "finishing"],
+                correct: 2,
+                explanation: "The correct past tense form is 'finished'."
+            },
+            {
+                question: "Fill in the blank: 'They _____ football every Saturday.'",
+                options: ["play", "plays", "played", "playing"],
+                correct: 0,
+                explanation: "The correct form is 'play' for the plural subject 'they'."
+            },
+            {
+                question: "Fill in the blank: 'He _____ to the gym every morning.'",
+                options: ["go", "goes", "going", "gone"],
+                correct: 1,
+                explanation: "The correct form is 'goes' for the third person singular subject 'he'."
+            },
+            {
+                question: "Fill in the blank: 'She _____ a song at the concert.'",
+                options: ["sing", "sings", "sang", "singing"],
+                correct: 2,
+                explanation: "The correct past tense form is 'sang'."
+            },
+            {
+                question: "Fill in the blank: 'They _____ the match last Sunday.'",
+                options: ["win", "wins", "won", "winning"],
+                correct: 2,
+                explanation: "The correct past tense form is 'won'."
+            },
+            {
+                question: "Fill in the blank: 'He _____ his keys on the table.'",
+                options: ["leave", "leaves", "left", "leaving"],
+                correct: 2,
+                explanation: "The correct past tense form is 'left'."
+            }
+        ],
+        'Synonyms': [
+            {
+                question: "Choose the synonym of 'Happy':",
+                options: ["Sad", "Joyful", "Angry", "Tired"],
+                correct: 1,
+                explanation: "'Joyful' is a synonym of 'Happy'."
+            },
+            {
+                question: "Choose the synonym of 'Big':",
+                options: ["Small", "Large", "Tiny", "Short"],
+                correct: 1,
+                explanation: "'Large' is a synonym of 'Big'."
+            },
+            {
+                question: "Choose the synonym of 'Fast':",
+                options: ["Slow", "Quick", "Lazy", "Tired"],
+                correct: 1,
+                explanation: "'Quick' is a synonym of 'Fast'."
+            },
+            {
+                question: "Choose the synonym of 'Smart':",
+                options: ["Stupid", "Intelligent", "Lazy", "Tired"],
+                correct: 1,
+                explanation: "'Intelligent' is a synonym of 'Smart'."
+            },
+            {
+                question: "Choose the synonym of 'Beautiful':",
+                options: ["Ugly", "Pretty", "Lazy", "Tired"],
+                correct: 1,
+                explanation: "'Pretty' is a synonym of 'Beautiful'."
+            },
+            {
+                question: "Choose the synonym of 'Brave':",
+                options: ["Cowardly", "Courageous", "Lazy", "Tired"],
+                correct: 1,
+                explanation: "'Courageous' is a synonym of 'Brave'."
+            },
+            {
+                question: "Choose the synonym of 'Angry':",
+                options: ["Happy", "Mad", "Lazy", "Tired"],
+                correct: 1,
+                explanation: "'Mad' is a synonym of 'Angry'."
+            },
+            {
+                question: "Choose the synonym of 'Tired':",
+                options: ["Energetic", "Exhausted", "Lazy", "Happy"],
+                correct: 1,
+                explanation: "'Exhausted' is a synonym of 'Tired'."
+            },
+            {
+                question: "Choose the synonym of 'Funny':",
+                options: ["Sad", "Humorous", "Lazy", "Tired"],
+                correct: 1,
+                explanation: "'Humorous' is a synonym of 'Funny'."
+            },
+            {
+                question: "Choose the synonym of 'Kind':",
+                options: ["Mean", "Compassionate", "Lazy", "Tired"],
+                correct: 1,
+                explanation: "'Compassionate' is a synonym of 'Kind'."
+            }
+        ],
+        'Antonyms': [
+            {
+                question: "Choose the antonym of 'Hot':",
+                options: ["Warm", "Cold", "Spicy", "Boiling"],
+                correct: 1,
+                explanation: "'Cold' is the antonym of 'Hot'."
+            },
+            {
+                question: "Choose the antonym of 'Fast':",
+                options: ["Quick", "Slow", "Rapid", "Speedy"],
+                correct: 1,
+                explanation: "'Slow' is the antonym of 'Fast'."
+            },
+            {
+                question: "Choose the antonym of 'Happy':",
+                options: ["Joyful", "Sad", "Excited", "Energetic"],
+                correct: 1,
+                explanation: "'Sad' is the antonym of 'Happy'."
+            },
+            {
+                question: "Choose the antonym of 'Big':",
+                options: ["Large", "Small", "Huge", "Giant"],
+                correct: 1,
+                explanation: "'Small' is the antonym of 'Big'."
+            },
+            {
+                question: "Choose the antonym of 'Smart':",
+                options: ["Intelligent", "Stupid", "Cleaver", "Bright"],
+                correct: 1,
+                explanation: "'Stupid' is the antonym of 'Smart'."
+            },
+            {
+                question: "Choose the antonym of 'Beautiful':",
+                options: ["Pretty", "Ugly", "Attractive", "Charming"],
+                correct: 1,
+                explanation: "'Ugly' is the antonym of 'Beautiful'."
+            },
+            {
+                question: "Choose the antonym of 'Brave':",
+                options: ["Courageous", "Cowardly", "Heroic", "Fearless"],
+                correct: 1,
+                explanation: "'Cowardly' is the antonym of 'Brave'."
+            },
+            {
+                question: "Choose the antonym of 'Angry':",
+                options: ["Mad", "Calm", "Furious", "Annoyed"],
+                correct: 1,
+                explanation: "'Calm' is the antonym of 'Angry'."
+            },
+            {
+                question: "Choose the antonym of 'Tired':",
+                options: ["Exhausted", "Energetic", "Weary", "Fatigued"],
+                correct: 1,
+                explanation: "'Energetic' is the antonym of 'Tired'."
+            },
+            {
+                question: "Choose the antonym of 'Funny':",
+                options: ["Humorous", "Serious", "Comical", "Amusing"],
+                correct: 1,
+                explanation: "'Serious' is the antonym of 'Funny'."
+            }
+        ],
+        'Idioms & Phrases': [
+            {
+                question: "What does the idiom 'Hit the books' mean?",
+                options: ["To read or study hard", "To physically hit books", "To throw books", "To buy books"],
+                correct: 0,
+                explanation: "'Hit the books' means to read or study hard."
+            },
+            {
+                question: "What does the idiom 'Break a leg' mean?",
+                options: ["To wish someone bad luck", "To wish someone good luck", "To physically break a leg", "To dance"],
+                correct: 1,
+                explanation: "'Break a leg' is a way to wish someone good luck."
+            },
+            {
+                question: "What does the idiom 'Under the weather' mean?",
+                options: ["To feel sick", "To be outside", "To be happy", "To be confused"],
+                correct: 0,
+                explanation: "'Under the weather' means to feel sick."
+            },
+            {
+                question: "What does the idiom 'Piece of cake' mean?",
+                options: ["Something difficult", "Something easy", "A dessert", "A challenge"],
+                correct: 1,
+                explanation: "'Piece of cake' means something is very easy."
+            },
+            {
+                question: "What does the idiom 'Cost an arm and a leg' mean?",
+                options: ["Something cheap", "Something expensive", "Something free", "Something valuable"],
+                correct: 1,
+                explanation: "'Cost an arm and a leg' means something is very expensive."
+            },
+            {
+                question: "What does the idiom 'Bite the bullet' mean?",
+                options: ["To avoid something", "To face a difficult situation bravely", "To eat something", "To be scared"],
+                correct: 1,
+                explanation: "'Bite the bullet' means to face a difficult situation bravely."
+            },
+            {
+                question: "What does the idiom 'Spill the beans' mean?",
+                options: ["To keep a secret", "To reveal a secret", "To cook", "To be quiet"],
+                correct: 1,
+                explanation: "'Spill the beans' means to reveal a secret."
+            },
+            {
+                question: "What does the idiom 'Burn the midnight oil' mean?",
+                options: ["To sleep early", "To stay up late working", "To waste time", "To be lazy"],
+                correct: 1,
+                explanation: "'Burn the midnight oil' means to stay up late working."
+            },
+            {
+                question: "What does the idiom 'Let the cat out of the bag' mean?",
+                options: ["To hide a secret", "To reveal a secret", "To be quiet", "To be sneaky"],
+                correct: 1,
+                explanation: "'Let the cat out of the bag' means to reveal a secret."
+            },
+            {
+                question: "What does the idiom 'Kill two birds with one stone' mean?",
+                options: ["To fail at two tasks", "To succeed at two tasks with one action", "To be lazy", "To be confused"],
+                correct: 1,
+                explanation: "'Kill two birds with one stone' means to succeed at two tasks with one action."
+            }
+        ],
+        'One Word Substitution': [
+            {
+                question: "What is the one-word substitution for 'A person who loves books'?",
+                options: ["Bibliophile", "Philanthropist", "Bibliophobe", "Philatelist"],
+                correct: 0,
+                explanation: "'Bibliophile' is the one-word substitution for 'A person who loves books'."
+            },
+            {
+                question: "What is the one-word substitution for 'A person who loves mankind'?",
+                options: ["Misanthrope", "Philanthropist", "Humanist", "Optimist"],
+                correct: 1,
+                explanation: "'Philanthropist' is the one-word substitution for 'A person who loves mankind'."
+            },
+            {
+                question: "What is the one-word substitution for 'A person who hates mankind'?",
+                options: ["Philanthropist", "Misanthrope", "Humanist", "Pessimist"],
+                correct: 1,
+                explanation: "'Misanthrope' is the one-word substitution for 'A person who hates mankind'."
+            },
+            {
+                question: "What is the one-word substitution for 'A person who collects stamps'?",
+                options: ["Philatelist", "Numismatist", "Bibliophile", "Cartographer"],
+                correct: 0,
+                explanation: "'Philatelist' is the one-word substitution for 'A person who collects stamps'."
+            },
+            {
+                question: "What is the one-word substitution for 'A person who collects coins'?",
+                options: ["Philatelist", "Numismatist", "Bibliophile", "Cartographer"],
+                correct: 1,
+                explanation: "'Numismatist' is the one-word substitution for 'A person who collects coins'."
+            },
+            {
+                question: "What is the one-word substitution for 'A person who studies maps'?",
+                options: ["Philatelist", "Numismatist", "Bibliophile", "Cartographer"],
+                correct: 3,
+                explanation: "'Cartographer' is the one-word substitution for 'A person who studies maps'."
+            },
+            {
+                question: "What is the one-word substitution for 'A person who writes with both hands'?",
+                options: ["Ambidextrous", "Dexterous", "Sinister", "Ambivalent"],
+                correct: 0,
+                explanation: "'Ambidextrous' is the one-word substitution for 'A person who writes with both hands'."
+            },
+            {
+                question: "What is the one-word substitution for 'A person who is indifferent'?",
+                options: ["Ambidextrous", "Dexterous", "Sinister", "Ambivalent"],
+                correct: 3,
+                explanation: "'Ambivalent' is the one-word substitution for 'A person who is indifferent'."
+            },
+            {
+                question: "What is the one-word substitution for 'A person who is skilled with hands'?",
+                options: ["Ambidextrous", "Dexterous", "Sinister", "Ambivalent"],
+                correct: 1,
+                explanation: "'Dexterous' is the one-word substitution for 'A person who is skilled with hands'."
+            },
+            {
+                question: "What is the one-word substitution for 'A person who is left-handed'?",
+                options: ["Ambidextrous", "Dexterous", "Sinister", "Ambivalent"],
+                correct: 2,
+                explanation: "'Sinister' is the one-word substitution for 'A person who is left-handed'."
+            }
+        ],
+        'Spelling Check': [
+            {
+                question: "Which is the correct spelling?",
+                options: ["Accomodate", "Accommodate", "Acommodate", "Accommodate"],
+                correct: 3,
+                explanation: "'Accommodate' is the correct spelling."
+            },
+            {
+                question: "Which is the correct spelling?",
+                options: ["Recieve", "Receive", "Recive", "Recieve"],
+                correct: 1,
+                explanation: "'Receive' is the correct spelling."
+            },
+            {
+                question: "Which is the correct spelling?",
+                options: ["Seperate", "Separate", "Seperate", "Separete"],
+                correct: 1,
+                explanation: "'Separate' is the correct spelling."
+            },
+            {
+                question: "Which is the correct spelling?",
+                options: ["Occurred", "Occured", "Ocurred", "Occurred"],
+                correct: 3,
+                explanation: "'Occurred' is the correct spelling."
+            },
+            {
+                question: "Which is the correct spelling?",
+                options: ["Definitely", "Definately", "Definitly", "Definitely"],
+                correct: 3,
+                explanation: "'Definitely' is the correct spelling."
+            },
+            {
+                question: "Which is the correct spelling?",
+                options: ["Embarrass", "Embarass", "Embarrass", "Embaras"],
+                correct: 2,
+                explanation: "'Embarrass' is the correct spelling."
+            },
+            {
+                question: "Which is the correct spelling?",
+                options: ["Occasion", "Occassion", "Ocasion", "Occasion"],
+                correct: 3,
+                explanation: "'Occasion' is the correct spelling."
+            },
+            {
+                question: "Which is the correct spelling?",
+                options: ["Necessary", "Neccessary", "Necessery", "Necessary"],
+                correct: 3,
+                explanation: "'Necessary' is the correct spelling."
+            },
+            {
+                question: "Which is the correct spelling?",
+                options: ["Independent", "Independant", "Independant", "Independent"],
+                correct: 3,
+                explanation: "'Independent' is the correct spelling."
+            },
+            {
+                question: "Which is the correct spelling?",
+                options: ["Conscience", "Conscience", "Consciense", "Conscience"],
+                correct: 3,
+                explanation: "'Conscience' is the correct spelling."
+            }
+        ],
+        'Para Jumbles': [
+            {
+                question: "Arrange the following sentences in the correct order: 1. She went to the market. 2. She bought some fruits. 3. She returned home. 4. She prepared a fruit salad.",
+                options: ["1, 2, 3, 4", "1, 3, 2, 4", "2, 1, 3, 4", "4, 3, 2, 1"],
+                correct: 0,
+                explanation: "The correct order is: She went to the market, bought some fruits, returned home, and prepared a fruit salad."
+            },
+            {
+                question: "Arrange the following sentences in the correct order: 1. He woke up early. 2. He went for a run. 3. He took a shower. 4. He had breakfast.",
+                options: ["1, 2, 3, 4", "1, 3, 2, 4", "2, 1, 3, 4", "4, 3, 2, 1"],
+                correct: 0,
+                explanation: "The correct order is: He woke up early, went for a run, took a shower, and had breakfast."
+            },
+            {
+                question: "Arrange the following sentences in the correct order: 1. She opened the book. 2. She sat on the chair. 3. She read the first chapter. 4. She closed the book.",
+                options: ["1, 2, 3, 4", "2, 1, 3, 4", "1, 3, 2, 4", "4, 3, 2, 1"],
+                correct: 1,
+                explanation: "The correct order is: She sat on the chair, opened the book, read the first chapter, and closed the book."
+            },
+            {
+                question: "Arrange the following sentences in the correct order: 1. He turned on the TV. 2. He sat on the couch. 3. He watched the news. 4. He turned off the TV.",
+                options: ["1, 2, 3, 4", "2, 1, 3, 4", "1, 3, 2, 4", "4, 3, 2, 1"],
+                correct: 1,
+                explanation: "The correct order is: He sat on the couch, turned on the TV, watched the news, and turned off the TV."
+            },
+            {
+                question: "Arrange the following sentences in the correct order: 1. She put on her shoes. 2. She left the house. 3. She wore her coat. 4. She reached the station.",
+                options: ["1, 2, 3, 4", "3, 1, 2, 4", "2, 1, 3, 4", "4, 3, 2, 1"],
+                correct: 1,
+                explanation: "The correct order is: She wore her coat, put on her shoes, left the house, and reached the station."
+            },
+            {
+                question: "Arrange the following sentences in the correct order: 1. He opened the door. 2. He entered the room. 3. He switched on the light. 4. He sat at the desk.",
+                options: ["1, 2, 3, 4", "2, 1, 3, 4", "1, 3, 2, 4", "4, 3, 2, 1"],
+                correct: 0,
+                explanation: "The correct order is: He opened the door, entered the room, switched on the light, and sat at the desk."
+            },
+            {
+                question: "Arrange the following sentences in the correct order: 1. She took out the ingredients. 2. She preheated the oven. 3. She mixed the batter. 4. She baked the cake.",
+                options: ["1, 2, 3, 4", "2, 1, 3, 4", "1, 3, 2, 4", "4, 3, 2, 1"],
+                correct: 1,
+                explanation: "The correct order is: She preheated the oven, took out the ingredients, mixed the batter, and baked the cake."
+            },
+            {
+                question: "Arrange the following sentences in the correct order: 1. He packed his bags. 2. He booked a ticket. 3. He reached the airport. 4. He boarded the plane.",
+                options: ["1, 2, 3, 4", "2, 1, 3, 4", "1, 3, 2, 4", "4, 3, 2, 1"],
+                correct: 1,
+                explanation: "The correct order is: He booked a ticket, packed his bags, reached the airport, and boarded the plane."
+            },
+            {
+                question: "Arrange the following sentences in the correct order: 1. She turned off the lights. 2. She went to bed. 3. She brushed her teeth. 4. She set the alarm.",
+                options: ["1, 2, 3, 4", "3, 4, 1, 2", "2, 1, 3, 4", "4, 3, 2, 1"],
+                correct: 1,
+                explanation: "The correct order is: She brushed her teeth, set the alarm, turned off the lights, and went to bed."
+            },
+            {
+                question: "Arrange the following sentences in the correct order: 1. He started the car. 2. He drove to work. 3. He put on his seatbelt. 4. He parked the car.",
+                options: ["1, 2, 3, 4", "1, 3, 2, 4", "2, 1, 3, 4", "4, 3, 2, 1"],
+                correct: 1,
+                explanation: "The correct order is: He started the car, put on his seatbelt, drove to work, and parked the car."
+            }
+        ],
+        'Cloze Test': [
+            {
+                question: "Fill in the blank: 'The cat sat _____ the mat.'",
+                options: ["on", "in", "at", "under"],
+                correct: 0,
+                explanation: "The correct preposition is 'on'."
+            },
+            {
+                question: "Fill in the blank: 'She is afraid _____ dogs.'",
+                options: ["of", "from", "with", "by"],
+                correct: 0,
+                explanation: "The correct preposition is 'of'."
+            },
+            {
+                question: "Fill in the blank: 'He is interested _____ learning new languages.'",
+                options: ["on", "in", "at", "with"],
+                correct: 1,
+                explanation: "The correct preposition is 'in'."
+            },
+            {
+                question: "Fill in the blank: 'She is good _____ singing.'",
+                options: ["on", "in", "at", "with"],
+                correct: 2,
+                explanation: "The correct preposition is 'at'."
+            },
+            {
+                question: "Fill in the blank: 'They are fond _____ playing football.'",
+                options: ["on", "in", "of", "with"],
+                correct: 2,
+                explanation: "The correct preposition is 'of'."
+            },
+            {
+                question: "Fill in the blank: 'He is afraid _____ the dark.'",
+                options: ["on", "in", "of", "with"],
+                correct: 2,
+                explanation: "The correct preposition is 'of'."
+            },
+            {
+                question: "Fill in the blank: 'She is proud _____ her achievements.'",
+                options: ["on", "in", "of", "with"],
+                correct: 2,
+                explanation: "The correct preposition is 'of'."
+            },
+            {
+                question: "Fill in the blank: 'He is capable _____ doing great things.'",
+                options: ["on", "in", "of", "with"],
+                correct: 2,
+                explanation: "The correct preposition is 'of'."
+            },
+            {
+                question: "Fill in the blank: 'They are tired _____ waiting.'",
+                options: ["on", "in", "of", "with"],
+                correct: 2,
+                explanation: "The correct preposition is 'of'."
+            },
+            {
+                question: "Fill in the blank: 'She is excited _____ her trip.'",
+                options: ["on", "in", "about", "with"],
+                correct: 2,
+                explanation: "The correct preposition is 'about'."
+            }
+        ],
+        'Comprehension': [
+            {
+                question: "Read the passage and answer the question: 'The sun was setting behind the mountains. The sky was painted in hues of orange and pink. Birds were returning to their nests.' What time of day is described in the passage?",
+                options: ["Morning", "Afternoon", "Evening", "Night"],
+                correct: 2,
+                explanation: "The passage describes the evening, as the sun is setting."
+            },
+            {
+                question: "Read the passage and answer the question: 'The children were playing in the park. The sun was shining brightly. The flowers were in full bloom.' What season is likely described in the passage?",
+                options: ["Winter", "Spring", "Summer", "Autumn"],
+                correct: 1,
+                explanation: "The passage likely describes spring, as the flowers are in full bloom and the sun is shining brightly."
+            },
+            {
+                question: "Read the passage and answer the question: 'The streets were empty. The wind was howling. The trees were swaying violently.' What weather condition is described in the passage?",
+                options: ["Sunny", "Rainy", "Stormy", "Snowy"],
+                correct: 2,
+                explanation: "The passage describes stormy weather, as the wind is howling and trees are swaying violently."
+            },
+            {
+                question: "Read the passage and answer the question: 'The students were sitting quietly in the classroom. The teacher was explaining a new lesson. Everyone was paying attention.' What is happening in the passage?",
+                options: ["A test", "A lecture", "A break", "A discussion"],
+                correct: 1,
+                explanation: "The passage describes a lecture, as the teacher is explaining a new lesson and students are paying attention."
+            },
+            {
+                question: "Read the passage and answer the question: 'The chef was preparing a special dish. The ingredients were fresh and colorful. The aroma filled the kitchen.' What is the chef doing in the passage?",
+                options: ["Cleaning", "Cooking", "Eating", "Shopping"],
+                correct: 1,
+                explanation: "The passage describes the chef cooking, as he is preparing a special dish with fresh ingredients."
+            },
+            {
+                question: "Read the passage and answer the question: 'The athletes were running on the track. The spectators were cheering loudly. The atmosphere was electric.' What event is described in the passage?",
+                options: ["A concert", "A race", "A meeting", "A party"],
+                correct: 1,
+                explanation: "The passage describes a race, as athletes are running on the track and spectators are cheering."
+            },
+            {
+                question: "Read the passage and answer the question: 'The scientist was conducting an experiment. The lab was filled with equipment. The results were being recorded carefully.' What is the scientist doing in the passage?",
+                options: ["Teaching", "Researching", "Sleeping", "Eating"],
+                correct: 1,
+                explanation: "The passage describes the scientist researching, as he is conducting an experiment and recording results."
+            },
+            {
+                question: "Read the passage and answer the question: 'The artist was painting a beautiful landscape. The colors were vibrant and bright. The canvas was almost complete.' What is the artist doing in the passage?",
+                options: ["Singing", "Dancing", "Painting", "Writing"],
+                correct: 2,
+                explanation: "The passage describes the artist painting, as he is working on a beautiful landscape on canvas."
+            },
+            {
+                question: "Read the passage and answer the question: 'The musician was playing a melodious tune. The audience was captivated. The concert hall was filled with music.' What is the musician doing in the passage?",
+                options: ["Dancing", "Singing", "Playing an instrument", "Writing"],
+                correct: 2,
+                explanation: "The passage describes the musician playing an instrument, as he is performing a melodious tune in a concert hall."
+            },
+            {
+                question: "Read the passage and answer the question: 'The writer was sitting at her desk. The pages were filled with words. The story was coming to life.' What is the writer doing in the passage?",
+                options: ["Reading", "Writing", "Drawing", "Sleeping"],
+                correct: 1,
+                explanation: "The passage describes the writer writing, as the pages are filled with words and the story is coming to life."
+            }
+        ]
+    },
+    reasoning: {
+        'Logical Reasoning': [
+            {
+                question: "If all roses are flowers and some flowers are red, which conclusion is definitely true?",
+                options: ["All roses are red", "Some roses are red", "No roses are red", "Some roses may be red"],
+                correct: 3,
+                explanation: "We cannot conclude that roses are definitely red, but it's possible that some roses may be red."
+            },
+            {
+                question: "In a certain code, COMPUTER is written as RFUVQNPC. How is MEDICINE written in that code?",
+                options: ["EOJDEJFM", "EOJDJEFM", "NFEJDJOF", "NFEJDEJF"],
+                correct: 2,
+                explanation: "Each letter is replaced by the letter that comes after it in the alphabet. M→N, E→F, D→E, I→J, C→D, I→J, N→O, E→F."
+            },
+            {
+                question: "Find the missing number in the series: 2, 6, 12, 20, 30, ?",
+                options: ["40", "42", "44", "46"],
+                correct: 1,
+                explanation: "The differences are 4, 6, 8, 10, so the next difference should be 12. 30 + 12 = 42."
+            },
+            {
+                question: "If A is taller than B, B is taller than C, and C is taller than D, who is the shortest?",
+                options: ["A", "B", "C", "D"],
+                correct: 3,
+                explanation: "Following the chain A > B > C > D, D is the shortest person."
+            },
+            {
+                question: "Which number should come next in the sequence: 1, 4, 9, 16, 25, ?",
+                options: ["30", "35", "36", "49"],
+                correct: 2,
+                explanation: "These are perfect squares: 1², 2², 3², 4², 5², so next is 6² = 36."
+            },
+            {
+                question: "If FRIEND is coded as HUMJTK, then CANDLE is coded as:",
+                options: ["EDRIRL", "ECQFNG", "DCPMFG", "ECQGMF"],
+                correct: 1,
+                explanation: "Each letter is moved 2 positions forward in the alphabet. C→E, A→C, N→P, D→F, L→N, E→G."
+            },
+            {
+                question: "In a row of children, Ravi is 9th from the left and 38th from the right. How many children are there in the row?",
+                options: ["45", "46", "47", "48"],
+                correct: 1,
+                explanation: "Total children = Position from left + Position from right - 1 = 9 + 38 - 1 = 46."
+            },
+            {
+                question: "If today is Wednesday, what day will it be 100 days from now?",
+                options: ["Monday", "Tuesday", "Wednesday", "Friday"],
+                correct: 3,
+                explanation: "100 ÷ 7 = 14 remainder 2. So 100 days from Wednesday will be Friday (2 days after Wednesday)."
+            },
+            {
+                question: "Find the odd one out: 3, 5, 7, 12, 13, 17, 19",
+                options: ["3", "5", "12", "19"],
+                correct: 2,
+                explanation: "All numbers except 12 are prime numbers. 12 is composite (divisible by 2, 3, 4, 6)."
+            },
+            {
+                question: "If EARTH is written as 51238, how is HEART written?",
+                options: ["85123", "81523", "85132", "81532"],
+                correct: 1,
+                explanation: "E=5, A=1, R=2, T=3, H=8. So HEART = H(8) + E(5) + A(1) + R(2) + T(3) = 81523."
+            }
+        ]
+    },
+    general: {
+        'Indian History': [
+            {
+                question: "Who was the first President of India?",
+                options: ["Jawaharlal Nehru", "Dr. Rajendra Prasad", "Dr. A.P.J. Abdul Kalam", "Dr. S. Radhakrishnan"],
+                correct: 1,
+                explanation: "Dr. Rajendra Prasad was the first President of India, serving from 1950 to 1962."
+            },
+            {
+                question: "The Quit India Movement was launched in which year?",
+                options: ["1940", "1942", "1944", "1946"],
+                correct: 1,
+                explanation: "The Quit India Movement was launched by Mahatma Gandhi on August 8, 1942."
+            },
+            {
+                question: "Who founded the Mauryan Empire?",
+                options: ["Ashoka", "Chandragupta Maurya", "Bindusara", "Bimbisara"],
+                correct: 1,
+                explanation: "Chandragupta Maurya founded the Mauryan Empire around 321 BCE with the help of Chanakya."
+            },
+            {
+                question: "The Battle of Plassey was fought in which year?",
+                options: ["1757", "1764", "1767", "1770"],
+                correct: 0,
+                explanation: "The Battle of Plassey was fought on June 23, 1757, between the British East India Company and the Nawab of Bengal."
+            },
+            {
+                question: "Who was known as the 'Iron Man of India'?",
+                options: ["Jawaharlal Nehru", "Mahatma Gandhi", "Sardar Vallabhbhai Patel", "Subhas Chandra Bose"],
+                correct: 2,
+                explanation: "Sardar Vallabhbhai Patel was known as the 'Iron Man of India' for his role in the integration of princely states."
+            },
+            {
+                question: "The Harappan Civilization belonged to which age?",
+                options: ["Stone Age", "Bronze Age", "Iron Age", "Copper Age"],
+                correct: 1,
+                explanation: "The Harappan Civilization (2600-1900 BCE) belonged to the Bronze Age, known for its advanced urban planning."
+            },
+            {
+                question: "Who wrote 'Hind Swaraj'?",
+                options: ["Bal Gangadhar Tilak", "Mahatma Gandhi", "Jawaharlal Nehru", "Rabindranath Tagore"],
+                correct: 1,
+                explanation: "Mahatma Gandhi wrote 'Hind Swaraj' in 1909, outlining his vision of Indian self-rule."
+            },
+            {
+                question: "The First War of Indian Independence took place in:",
+                options: ["1857", "1858", "1859", "1860"],
+                correct: 0,
+                explanation: "The First War of Indian Independence (Sepoy Mutiny) began on May 10, 1857."
+            },
+            {
+                question: "Who was the last Mughal Emperor?",
+                options: ["Akbar Shah II", "Bahadur Shah Zafar", "Shah Alam II", "Muhammad Shah"],
+                correct: 1,
+                explanation: "Bahadur Shah Zafar was the last Mughal Emperor, who was exiled to Burma after the 1857 revolt."
+            },
+            {
+                question: "The Indian National Congress was founded in which year?",
+                options: ["1883", "1885", "1887", "1889"],
+                correct: 1,
+                explanation: "The Indian National Congress was founded in 1885 by Allan Octavian Hume."
+            }
+        ]
+    },
+    shorthand: {
+        'Basic Shorthand': {
+            'Volume 1': [
+                {
+                    question: "In Pitman shorthand, which stroke represents the sound 'P'?",
+                    options: ["Light downward stroke", "Heavy downward stroke", "Light upward stroke", "Heavy upward stroke"],
+                    correct: 0,
+                    explanation: "In Pitman shorthand, 'P' is represented by a light downward stroke."
+                },
+                {
+                    question: "What does a dot placed after a consonant indicate in shorthand?",
+                    options: ["Vowel 'a'", "Vowel 'e'", "Vowel 'i'", "Vowel 'o'"],
+                    correct: 0,
+                    explanation: "A dot placed after a consonant indicates the vowel 'a' in Pitman shorthand."
+                },
+                {
+                    question: "Which shorthand system uses thickness of strokes to distinguish between sounds?",
+                    options: ["Gregg", "Pitman", "Teeline", "Speedwriting"],
+                    correct: 1,
+                    explanation: "Pitman shorthand uses thick and thin strokes to distinguish between voiced and voiceless consonants."
+                },
+                {
+                    question: "In shorthand, what is the term for joining strokes together?",
+                    options: ["Blending", "Joining", "Phrasing", "Connecting"],
+                    correct: 2,
+                    explanation: "Phrasing is the technique of joining shorthand outlines together to increase writing speed."
+                },
+                {
+                    question: "What does a dash placed above a consonant represent?",
+                    options: ["Vowel 'a'", "Vowel 'e'", "Vowel 'i'", "Vowel 'o'"],
+                    correct: 1,
+                    explanation: "A dash placed above a consonant represents the vowel 'e' in Pitman shorthand."
+                },
+                {
+                    question: "Which position indicates the vowel 'i' in Pitman shorthand?",
+                    options: ["Dot before consonant", "Dot after consonant", "Dash before consonant", "Dash after consonant"],
+                    correct: 2,
+                    explanation: "A dash placed before a consonant indicates the vowel 'i' in Pitman shorthand."
+                },
+                {
+                    question: "What is the shorthand outline for the word 'the'?",
+                    options: ["T-H-E written separately", "A single tick mark", "TH joined with E", "A special symbol"],
+                    correct: 3,
+                    explanation: "The word 'the' has a special abbreviated symbol in shorthand for speed and efficiency."
+                },
+                {
+                    question: "In shorthand dictation, what speed is typically required for stenographer exams?",
+                    options: ["60 wpm", "80 wpm", "100 wpm", "120 wpm"],
+                    correct: 1,
+                    explanation: "Most stenographer exams require a minimum speed of 80 words per minute in shorthand dictation."
+                },
+                {
+                    question: "What does the term 'transcription' mean in shorthand?",
+                    options: ["Writing shorthand", "Reading shorthand aloud", "Converting shorthand to longhand", "Taking dictation"],
+                    correct: 2,
+                    explanation: "Transcription is the process of converting shorthand notes back into normal longhand writing."
+                },
+                {
+                    question: "Which vowel is represented by a dot placed before a consonant?",
+                    options: ["a", "e", "i", "o"],
+                    correct: 3,
+                    explanation: "A dot placed before a consonant represents the vowel 'o' in Pitman shorthand."
+                }
+            ]
+        }
+    }
+};
+
 
         // Function to calculate completion percentage for a topic/chapter
         function calculateCompletionPercentage(subject, topic) {
@@ -2247,9 +2930,10 @@ Tips:
             english: {
                 name: 'English',
                 topics: [
-                    'Grammar Fundamentals', 'Vocabulary Building', 'Reading Comprehension', 
-                    'Sentence Formation', 'Tenses & Voice', 'Error Detection',
-                    'Synonyms & Antonyms', 'Idioms & Phrases', 'Para Jumbles', 'Cloze Test'
+                    'Spot the Error', 'Sentence Improvement', 'Active Passive',
+                    'Direct Indirect', 'Fill in the Blank', 'Synonyms',
+                    'Antonyms', 'Idioms & Phrases', 'One Word Substitution',
+                    'Spelling Check', 'Para Jumbles', 'Cloze Test', 'Comprehension'
                 ]
             },
             reasoning: {
@@ -2677,7 +3361,7 @@ Tips:
                                     </div>
                                     <div>
                                         <h3 class="text-lg sm:text-xl font-bold text-gray-800 mb-1">${topic}</h3>
-                                        <p class="text-gray-500 text-xs sm:text-sm">Master the fundamentals</p>
+                                        
                                     </div>
                                 </div>
                                 ${completionPercentage > 0 ? `
